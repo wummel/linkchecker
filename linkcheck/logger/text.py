@@ -198,14 +198,24 @@ class TextLogger (Logger):
         self.write(_n("%d link checked.", "%d links checked.",
                       self.stats.number) % self.stats.number)
         self.write(u" ")
-        self.write(_n("%d warning found", "%d warnings found",
-             self.stats.warnings_printed) % self.stats.warnings_printed)
+        warning_text = _n("%d warning found", "%d warnings found",
+             self.stats.warnings_printed) % self.stats.warnings_printed
+        if self.stats.warnings_printed:
+            warning_color = self.colorwarning
+        else:
+            warning_color = self.colorinfo
+        self.write(warning_text, color=warning_color)
         if self.stats.warnings != self.stats.warnings_printed:
             self.write(_(" (%d ignored or duplicates not printed)") %
                 (self.stats.warnings - self.stats.warnings_printed))
         self.write(u". ")
-        self.write(_n("%d error found", "%d errors found",
-             self.stats.errors_printed) % self.stats.errors_printed)
+        error_text = _n("%d error found", "%d errors found",
+             self.stats.errors_printed) % self.stats.errors_printed
+        if self.stats.errors_printed:
+            error_color = self.colorerror
+        else:
+            error_color = self.colorvalid
+        self.write(error_text, color=error_color)
         if self.stats.errors != self.stats.errors_printed:
             self.write(_(" (%d duplicates not printed)") %
                 (self.stats.errors - self.stats.errors_printed))

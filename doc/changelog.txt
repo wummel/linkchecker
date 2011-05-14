@@ -6,6 +6,9 @@ Changes:
 - gui: Remember last 10 checked URLs in GUI.
   Closes: SF bug #3297243
 
+Features:
+- logging: Colorize result in text logger.
+
 
 6.9 "Cowboy Bebop" (released 6.5.2011)
 
