@@ -396,10 +396,18 @@ Version 2 or later.
 
     def set_properties (self, selected, deselected):
         """Set URL properties for selected item."""
-        index = selected.indexes()[0]
-        urlitem = self.model.getUrlItem(index)
-        if urlitem is not None:
-            set_properties(self, urlitem.url_data)
+        indexes = selected.indexes()
+        if len(indexes):
+            index = indexes[0]
+            urlitem = self.model.getUrlItem(index)
+            if urlitem is not None:
+                set_properties(self, urlitem.url_data)
+        selected_rows = len(self.treeView.selectionModel().selectedRows())
+        if selected_rows:
+            self.set_statusmsg(_n("%d URL selected.", "%d URLs selected",
+                               selected_rows) % selected_rows)
+        else:
+            self.set_statusmsg(_("Ready."))
 
     def on_treeView_customContextMenuRequested (self, point):
         """Show item context menu."""

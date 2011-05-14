@@ -9,6 +9,8 @@ Changes:
   Closes: SF bug #3297252
 - gui: Remember last 10 checked URLs in GUI.
   Closes: SF bug #3297243
+- gui: Display the number of selected rows as status message.
+  Closes: SF bug #3297247
 
 Features:
 - logging: Colorize result in text logger.
