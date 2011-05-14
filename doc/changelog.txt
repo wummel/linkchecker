@@ -1,5 +1,9 @@
 7.0 "" (released xx.xx.2011)
 
+Fixes:
+- doc: Correct reference to RFC 2822 for cookie file format.
+  Closes: SF bug #3299557
+
 Changes:
 - gui: Display status info into GUI main window instead of modal window.
   Closes: SF bug #3297252
