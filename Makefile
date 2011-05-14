@@ -229,7 +229,7 @@ dnsdiff:
 
 .PHONY: changelog
 changelog:
-	sftrack_changelog linkchecker calvin@users.sourceforge.net doc/changelog.txt
+	sftrack_changelog linkchecker calvin@users.sourceforge.net doc/changelog.txt $(DRYRUN)
 
 .PHONY: gui
 gui:
