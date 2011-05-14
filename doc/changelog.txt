@@ -11,6 +11,8 @@ Changes:
   Closes: SF bug #3297243
 - gui: Display the number of selected rows as status message.
   Closes: SF bug #3297247
+- doc: Document the ability to search for URLs with --warning-regex.
+  Closes: SF bug #3297248
 
 Features:
 - logging: Colorize result in text logger.
