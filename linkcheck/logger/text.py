@@ -212,7 +212,7 @@ class TextLogger (Logger):
         error_text = _n("%d error found", "%d errors found",
              self.stats.errors_printed) % self.stats.errors_printed
         if self.stats.errors_printed:
-            error_color = self.colorerror
+            error_color = self.colorinvalid
         else:
             error_color = self.colorvalid
         self.write(error_text, color=error_color)
