@@ -1,7 +1,7 @@
 7.0 "" (released xx.xx.2011)
 
 Fixes:
-- doc: Correct reference to RFC 2822 for cookie file format.
+- doc: Correct reference to RFC 2616 for cookie file format.
   Closes: SF bug #3299557
 
 Changes:

@@ -31,8 +31,8 @@ import time
 import re
 import Cookie
 import cookielib
+import httplib
 from cStringIO import StringIO
-import rfc822
 from . import strformat
 
 
@@ -372,13 +372,13 @@ def from_file (filename):
 
 
 def from_headers (strheader):
-    """Parse cookie data from a string in HTTP header (RFC 822) format.
+    """Parse cookie data from a string in HTTP header (RFC 2616) format.
 
     @return: tuple (headers, scheme, host, path)
     @raises: ValueError for incomplete or invalid data
     """
     fp = StringIO(strheader)
-    headers = rfc822.Message(fp, seekable=True)
+    headers = httplib.HTTPMessage(fp, seekable=True)
     if "Host" not in headers:
         raise ValueError("Required header 'Host:' missing")
     host = headers["Host"]
