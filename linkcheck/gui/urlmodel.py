@@ -60,14 +60,18 @@ class UrlItem (object):
         if self.url_data.valid:
             if self.url_data.warnings:
                 self.result_color = QtCore.Qt.darkYellow
+                text = u"\n".join(x[1] for x in self.url_data.warnings)
+                result = u"Warning: %s" % strformat.limit(text, length=25)
             else:
                 self.result_color = QtCore.Qt.darkGreen
-            result = u"Valid"
+                result = u"Valid"
+                if self.url_data.result:
+                    result += u": %s" % self.url_data.result
         else:
             self.result_color = QtCore.Qt.darkRed
             result = u"Error"
-        if self.url_data.result:
-            result += u": %s" % self.url_data.result
+            if self.url_data.result:
+                result += u": %s" % self.url_data.result
         # Parent URL
         if self.url_data.parent_url:
             parent = u"%s%s%s" % (self.url_data.parent_url,
