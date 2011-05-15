@@ -27,7 +27,8 @@ import os
 import pprint
 import socket
 import optparse
-
+import getpass
+# installs _() and _n() gettext functions into global namespace
 import linkcheck
 # override optparse gettext method with the one from linkcheck.init_i18n()
 optparse._ = _
@@ -657,7 +658,6 @@ if options.password:
               {"user": _username}
     else:
         msg = _("Enter LinkChecker HTTP/FTP password:")
-    import getpass
     _password = getpass.getpass(console.encode(msg))
     constructauth = True
 if options.pause is not None:
@@ -723,7 +723,6 @@ for entry in config["authentication"]:
         attrs["strpattern"] = attrs["pattern"].pattern
         msg = _("Enter LinkChecker password for user %(user)s" \
                 " at %(strpattern)s:") % attrs
-        import getpass
         entry["password"] = getpass.getpass(console.encode(msg))
 # now sanitize the configuration
 config.sanitize()

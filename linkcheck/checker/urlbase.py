@@ -433,8 +433,8 @@ class UrlBase (object):
             return
         # check for obfuscated IP address
         if iputil.is_obfuscated_ip(self.host):
-             ips = iputil.resolve_host(self.host)
-             if ips:
+            ips = iputil.resolve_host(self.host)
+            if ips:
                 self.add_warning(
                    _("URL %(url)s has obfuscated IP address %(ip)s") % \
                    {"url": self.base_url, "ip": ips.pop()},

@@ -72,7 +72,7 @@ class NntpUrl (urlbase.UrlBase):
         later", are caught.
         """
         tries = 0
-        nntp = value = None
+        nntp = None
         while tries < 2:
             tries += 1
             try:

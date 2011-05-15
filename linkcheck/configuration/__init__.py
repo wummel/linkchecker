@@ -327,7 +327,7 @@ class Configuration (dict):
         """Make anchor configuration consistent."""
         if not self["warnings"]:
             self["warnings"] = True
-            from ..checker import Warnings
+            from ..checker.const import Warnings
             self["ignorewarnings"] = Warnings.keys()
         if 'url-anchor-not-found' in self["ignorewarnings"]:
             self["ignorewarnings"].remove('url-anchor-not-found')
@@ -432,9 +432,9 @@ def get_standard_config_files ():
             if not os.path.exists(userdir):
                 os.makedirs(userdir)
             shutil.copy(syspath, userpath)
-        except StandardError, msg:
+        except StandardError:
             log.warn(LOG_CHECK, "could not copy system config from %r to %r",
-                     syspath, userpath)
+                     syspath, userpath, traceback=True)
     return (syspath, userpath)
 
 
@@ -633,7 +633,7 @@ def add_kde_setting (key, value, data):
     elif key == "Proxy Config Script":
         data["autoconfig_url"] = value
     elif key == "httpProxy":
-       add_kde_proxy("http_proxy", value, data)
+        add_kde_proxy("http_proxy", value, data)
     elif key == "httpsProxy":
         add_kde_proxy("https_proxy", value, data)
     elif key == "ftpProxy":

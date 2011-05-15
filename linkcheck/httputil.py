@@ -71,9 +71,9 @@ if hasattr(httplib, 'HTTPS'):
     class HttpsWithGzipHandler (urllib2.HTTPSHandler):
         """Support gzip encoding."""
 
-        def http_open (self, req):
+        def https_open (self, req):
             """Send request and decode answer."""
-            return decode(urllib2.HTTPSHandler.http_open(self, req))
+            return decode(urllib2.HTTPSHandler.https_open(self, req))
 
 # end of urlutils.py routines
 ###########################################################################
