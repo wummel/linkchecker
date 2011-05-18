@@ -32,7 +32,7 @@ class LineNumberArea (QtGui.QWidget):
 
     def sizeHint (self):
         """Return calculated width for line number area."""
-        return QtGui.QSize(self.parentWidget().lineNumberAreaWidth(), 0)
+        return QtCore.QSize(self.parentWidget().lineNumberAreaWidth(), 0)
 
     def paintEvent (self, event):
         """Call paint method of parent widget."""
