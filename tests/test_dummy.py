@@ -19,7 +19,6 @@ Test dummy object.
 """
 
 import unittest
-import linkcheck.strformat
 import linkcheck.dummy
 
 
@@ -52,13 +51,13 @@ class TestDummy (unittest.TestCase):
 
     def test_indexes (self):
         dummy = linkcheck.dummy.Dummy()
-        i = len(dummy)
+        len(dummy)
         dummy[1] = dummy[2]
         dummy[1][-1]
         dummy[1:3] = None
         del dummy[1]
         del dummy[2]
         del dummy[2:3]
-        s = str(dummy)
-        s = repr(dummy)
-        s = unicode(dummy)
+        str(dummy)
+        repr(dummy)
+        unicode(dummy)
