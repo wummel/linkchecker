@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options.ui'
 #
-# Created: Wed Mar 16 18:06:04 2011
+# Created: Wed May 18 21:15:07 2011
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -18,7 +18,7 @@ class Ui_Options(object):
     def setupUi(self, Options):
         Options.setObjectName(_fromUtf8("Options"))
         Options.setWindowModality(QtCore.Qt.ApplicationModal)
-        Options.resize(271, 239)
+        Options.resize(278, 240)
         self.verticalLayout = QtGui.QVBoxLayout(Options)
         self.verticalLayout.setSpacing(2)
         self.verticalLayout.setSizeConstraint(QtGui.QLayout.SetMinimumSize)
@@ -128,6 +128,11 @@ class Ui_Options(object):
         spacerItem1 = QtGui.QSpacerItem(20, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.verticalLayout_4.addItem(spacerItem1)
         self.label_7 = QtGui.QLabel(self.frame_2)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
+        self.label_7.setSizePolicy(sizePolicy)
         self.label_7.setWordWrap(True)
         self.label_7.setObjectName(_fromUtf8("label_7"))
         self.verticalLayout_4.addWidget(self.label_7)
@@ -143,7 +148,7 @@ class Ui_Options(object):
         self.verticalLayout.addWidget(self.tabWidget)
 
         self.retranslateUi(Options)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(Options)
 
     def retranslateUi(self, Options):
