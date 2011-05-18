@@ -87,13 +87,11 @@ class Settings (object):
         """Return stored GUI options."""
         data = dict(debug=None, verbose=None, recursionlevel=None)
         self.settings.beginGroup('output')
-        debug = verbose = None
         for key in ("debug", "verbose"):
             if self.settings.contains(key):
                 data[key] = self.settings.value(key).toBool()
         self.settings.endGroup()
         self.settings.beginGroup('checking')
-        recursionlevel = None
         if self.settings.contains('recursionlevel'):
             value, ok = self.settings.value('recursionlevel').toInt()
             if ok:
