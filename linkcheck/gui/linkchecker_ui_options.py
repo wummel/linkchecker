@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options.ui'
 #
-# Created: Wed May 18 21:15:07 2011
+# Created: Wed May 18 22:40:48 2011
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -18,7 +18,7 @@ class Ui_Options(object):
     def setupUi(self, Options):
         Options.setObjectName(_fromUtf8("Options"))
         Options.setWindowModality(QtCore.Qt.ApplicationModal)
-        Options.resize(278, 240)
+        Options.resize(264, 221)
         self.verticalLayout = QtGui.QVBoxLayout(Options)
         self.verticalLayout.setSpacing(2)
         self.verticalLayout.setSizeConstraint(QtGui.QLayout.SetMinimumSize)
@@ -125,14 +125,13 @@ class Ui_Options(object):
         self.sys_config_button.setToolTip(_fromUtf8(""))
         self.sys_config_button.setObjectName(_fromUtf8("sys_config_button"))
         self.verticalLayout_4.addWidget(self.sys_config_button)
-        spacerItem1 = QtGui.QSpacerItem(20, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.verticalLayout_4.addItem(spacerItem1)
         self.label_7 = QtGui.QLabel(self.frame_2)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
         self.label_7.setSizePolicy(sizePolicy)
+        self.label_7.setAlignment(QtCore.Qt.AlignBottom|QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft)
         self.label_7.setWordWrap(True)
         self.label_7.setObjectName(_fromUtf8("label_7"))
         self.verticalLayout_4.addWidget(self.label_7)
@@ -141,8 +140,6 @@ class Ui_Options(object):
         self.user_config_button.setToolTip(_fromUtf8(""))
         self.user_config_button.setObjectName(_fromUtf8("user_config_button"))
         self.verticalLayout_4.addWidget(self.user_config_button)
-        spacerItem2 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.verticalLayout_4.addItem(spacerItem2)
         self.verticalLayout_5.addWidget(self.frame_2)
         self.tabWidget.addTab(self.config_options, _fromUtf8(""))
         self.verticalLayout.addWidget(self.tabWidget)
