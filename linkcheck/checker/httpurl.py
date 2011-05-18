@@ -25,7 +25,6 @@ import errno
 import zlib
 import socket
 from cStringIO import StringIO
-import Cookie
 
 from .. import (log, LOG_CHECK, gzip2 as gzip, strformat, url as urlutil,
     httplib2 as httplib, LinkCheckerError, configuration, get_link_pat)
@@ -288,7 +287,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """Return content MIME type or empty string."""
         if self.content_type is None:
             if self.headers:
-               self.content_type = headers.get_content_type(self.headers)
+                self.content_type = headers.get_content_type(self.headers)
             else:
                 self.content_type = u""
         return self.content_type
@@ -468,14 +467,11 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 for c in self.cookies:
                     self.add_info(_("Sent cookie: %(cookie)s.") %
                                   {"cookie": c})
-                try:
-                    out = self.aggregate.cookies.add(self.headers,
-                                                     self.urlparts[0],
-                                                     self.urlparts[1],
-                                                     self.urlparts[2])
-                except Cookie.CookieError, msg:
-                    self.add_warning(_("Could not store cookies: %(msg)s.") %
-                                     {'msg': str(msg)},
+                jar = self.aggregate.cookies.add(self.headers, self.urlparts[0],
+                                                 self.urlparts[1], self.urlparts[2])
+                if not jar:
+                    self.add_warning(_("Could not store cookies from headers: %(headers)s.") %
+                                     {'headers': str(self.headers)},
                                      tag=WARN_HTTP_COOKIE_STORE_ERROR)
             if response.status >= 200:
                 self.set_result(u"%r %s" % (response.status, response.reason))
