@@ -603,7 +603,7 @@ class UrlBase (object):
         return handler.follow
 
     def get_anchors (self):
-        """Store list of anchors for this URL. Precondition: this URL is
+        """Store anchors for this URL. Precondition: this URL is
         an HTML resource."""
         log.debug(LOG_CHECK, "Getting HTML anchors %s", self)
         handler = linkparse.LinkFinder(self.add_anchor,
@@ -633,7 +633,8 @@ class UrlBase (object):
         log.debug(LOG_CHECK, "checking anchor %r in %s", self.anchor, self.anchors)
         if any(x for x in self.anchors if x[0] == self.anchor):
             return
-        anchors = u",".join(u"`%s'" % x[0] for x in self.anchors)
+        anchornames = sorted(set(u"`%s'" % x[0] for x in self.anchors))
+        anchors = u", ".join(anchornames)
         args = {"name": self.anchor, "anchors": anchors}
         msg = u"%s %s" % (_("Anchor `%(name)s' not found.") % args,
                           _("Available anchors: %(anchors)s.") % args)
