@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>264</width>
-    <height>217</height>
+    <height>229</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,6 +25,12 @@
    </property>
    <item>
     <widget class="QTabWidget" name="tabWidget">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="toolTip">
       <string/>
      </property>
@@ -95,7 +101,7 @@
            <number>4</number>
           </property>
           <property name="verticalSpacing">
-           <number>4</number>
+           <number>8</number>
           </property>
           <item row="0" column="0">
            <widget class="QLabel" name="label">
@@ -236,7 +242,7 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <property name="spacing">
-           <number>1</number>
+           <number>4</number>
           </property>
           <item>
            <widget class="QLabel" name="label_6">

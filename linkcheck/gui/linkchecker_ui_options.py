@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options.ui'
 #
-# Created: Thu May 19 20:04:22 2011
+# Created: Thu May 19 20:11:50 2011
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -18,12 +18,17 @@ class Ui_Options(object):
     def setupUi(self, Options):
         Options.setObjectName(_fromUtf8("Options"))
         Options.setWindowModality(QtCore.Qt.ApplicationModal)
-        Options.resize(264, 217)
+        Options.resize(264, 229)
         self.verticalLayout = QtGui.QVBoxLayout(Options)
         self.verticalLayout.setSpacing(2)
         self.verticalLayout.setSizeConstraint(QtGui.QLayout.SetMinimumSize)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.tabWidget = QtGui.QTabWidget(Options)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.tabWidget.sizePolicy().hasHeightForWidth())
+        self.tabWidget.setSizePolicy(sizePolicy)
         self.tabWidget.setToolTip(_fromUtf8(""))
         self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
         self.gui_options = QtGui.QWidget()
@@ -56,7 +61,8 @@ class Ui_Options(object):
         self.formLayout = QtGui.QFormLayout(self.frame)
         self.formLayout.setSizeConstraint(QtGui.QLayout.SetDefaultConstraint)
         self.formLayout.setFieldGrowthPolicy(QtGui.QFormLayout.ExpandingFieldsGrow)
-        self.formLayout.setSpacing(4)
+        self.formLayout.setHorizontalSpacing(4)
+        self.formLayout.setVerticalSpacing(8)
         self.formLayout.setObjectName(_fromUtf8("formLayout"))
         self.label = QtGui.QLabel(self.frame)
         self.label.setObjectName(_fromUtf8("label"))
@@ -122,7 +128,7 @@ class Ui_Options(object):
         self.frame_2.setMidLineWidth(0)
         self.frame_2.setObjectName(_fromUtf8("frame_2"))
         self.verticalLayout_4 = QtGui.QVBoxLayout(self.frame_2)
-        self.verticalLayout_4.setSpacing(1)
+        self.verticalLayout_4.setSpacing(4)
         self.verticalLayout_4.setObjectName(_fromUtf8("verticalLayout_4"))
         self.label_6 = QtGui.QLabel(self.frame_2)
         self.label_6.setToolTip(_fromUtf8(""))
