@@ -48,10 +48,8 @@ def get_install_data ():
 
 
 def get_config_dir ():
-    """Return absolute path of LinkChecker configuration directory."""
-    if main_is_frozen():
-        return os.path.join(module_path(), "share", "linkchecker")
-    return configdata.config_dir
+    """Return absolute path of LinkChecker example configuration."""
+    return os.path.join(get_install_data(), "share", "linkchecker")
 
 
 # application log areas

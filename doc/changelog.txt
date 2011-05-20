@@ -19,9 +19,11 @@ Changes:
   Closes: SF bug #3302498
 - doc: Document the ability to search for URLs with --warning-regex.
   Closes: SF bug #3297248
+- checking: Support for a system configuration file has been removed.
+  There is now only one user-configurable configuration file.
 
 Features:
-- logging: Colorize result in text logger.
+- logging: Colorize number of errors in text output logger.
 
 
 6.9 "Cowboy Bebop" (released 6.5.2011)

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options.ui'
 #
-# Created: Thu May 19 20:11:50 2011
+# Created: Fri May 20 20:24:08 2011
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -18,7 +18,7 @@ class Ui_Options(object):
     def setupUi(self, Options):
         Options.setObjectName(_fromUtf8("Options"))
         Options.setWindowModality(QtCore.Qt.ApplicationModal)
-        Options.resize(264, 229)
+        Options.resize(275, 229)
         self.verticalLayout = QtGui.QVBoxLayout(Options)
         self.verticalLayout.setSpacing(2)
         self.verticalLayout.setSizeConstraint(QtGui.QLayout.SetMinimumSize)
@@ -130,35 +130,28 @@ class Ui_Options(object):
         self.verticalLayout_4 = QtGui.QVBoxLayout(self.frame_2)
         self.verticalLayout_4.setSpacing(4)
         self.verticalLayout_4.setObjectName(_fromUtf8("verticalLayout_4"))
-        self.label_6 = QtGui.QLabel(self.frame_2)
-        self.label_6.setToolTip(_fromUtf8(""))
-        self.label_6.setObjectName(_fromUtf8("label_6"))
-        self.verticalLayout_4.addWidget(self.label_6)
-        self.sys_config_button = QtGui.QPushButton(self.frame_2)
-        self.sys_config_button.setEnabled(False)
-        self.sys_config_button.setToolTip(_fromUtf8(""))
-        self.sys_config_button.setObjectName(_fromUtf8("sys_config_button"))
-        self.verticalLayout_4.addWidget(self.sys_config_button)
-        self.label_7 = QtGui.QLabel(self.frame_2)
+        self.user_config_label = QtGui.QLabel(self.frame_2)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
-        self.label_7.setSizePolicy(sizePolicy)
-        self.label_7.setFrameShape(QtGui.QFrame.NoFrame)
-        self.label_7.setLineWidth(0)
-        self.label_7.setAlignment(QtCore.Qt.AlignBottom|QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft)
-        self.label_7.setWordWrap(True)
-        self.label_7.setMargin(0)
-        self.label_7.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
-        self.label_7.setObjectName(_fromUtf8("label_7"))
-        self.verticalLayout_4.addWidget(self.label_7)
+        sizePolicy.setHeightForWidth(self.user_config_label.sizePolicy().hasHeightForWidth())
+        self.user_config_label.setSizePolicy(sizePolicy)
+        self.user_config_label.setFrameShape(QtGui.QFrame.NoFrame)
+        self.user_config_label.setLineWidth(0)
+        self.user_config_label.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.user_config_label.setWordWrap(True)
+        self.user_config_label.setMargin(0)
+        self.user_config_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
+        self.user_config_label.setObjectName(_fromUtf8("user_config_label"))
+        self.verticalLayout_4.addWidget(self.user_config_label)
         self.user_config_button = QtGui.QPushButton(self.frame_2)
         self.user_config_button.setEnabled(False)
         self.user_config_button.setToolTip(_fromUtf8(""))
         self.user_config_button.setObjectName(_fromUtf8("user_config_button"))
         self.verticalLayout_4.addWidget(self.user_config_button)
         self.verticalLayout_5.addWidget(self.frame_2)
+        spacerItem = QtGui.QSpacerItem(20, 60, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
+        self.verticalLayout_5.addItem(spacerItem)
         self.tabWidget.addTab(self.config_options, _fromUtf8(""))
         self.verticalLayout.addWidget(self.tabWidget)
 
@@ -178,12 +171,9 @@ class Ui_Options(object):
         self.label_4.setText(_("Debug"))
         self.closeButton.setText(_("Close"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.gui_options), _("GUI options"))
-        self.label_9.setText(_("The configuration files can be edited with an integrated text editor."))
-        self.label_6.setText(_("System configuration file"))
-        self.sys_config_button.setText(_("Edit"))
-        self.label_7.setToolTip(_("Overrides system wide configuration file settings."))
-        self.label_7.setText(QtGui.QApplication.translate("Options", "User configuration file\n"
-"(overrides system configuration)", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_9.setText(_("The user configuration file holds advanced options and can be edited with an integrated text editor."))
+        self.user_config_label.setToolTip(_("Overrides system wide configuration file settings."))
+        self.user_config_label.setText(_("/home/user/.linkchecker/linkcheckerrc"))
         self.user_config_button.setText(_("Edit"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.config_options), _("Configuration files"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.config_options), _("Configuration file"))
 

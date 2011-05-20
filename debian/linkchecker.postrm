@@ -1,9 +1,7 @@
-#!/bin/sh
+#!/bin/sh -e
 # postrm script for linkchecker
 #
 # see: dh_installdeb(1)
-
-set -e
 
 # summary of how this script can be called:
 #        * <postrm> `remove'
@@ -30,5 +28,7 @@ if [ "$1" = "purge" ]; then
         rm -rf /usr/lib/python2.4/site-packages/linkcheck
     fi
 fi
+# remove system conffile for versions >= 7.0
+dpkg-maintscript-helper rm_conffile /etc/linkchecker/linkcheckerrc 6.9 -- "$@"
 
 exit 0

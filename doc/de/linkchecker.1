@@ -56,9 +56,8 @@ Erzeuge einen Sitemap Graphen und konvertiere ihn mit dem graphviz dot Programm:
 Hilfe! Gebe Gebrauchsanweisung für dieses Programm aus.
 .TP 
 \fB\-f\fP\fIDATEINAME\fP, \fB\-\-config=\fP\fIDATEINAME\fP
-Benutze \fIDATEINAME\fP als Konfigurationsdatei. Standardmäßig sucht
-LinkChecker zuerst nach \fB/etc/linkchecker/linkcheckerrc\fP und dann
-\fB~/.linkchecker/linkcheckerrc\fP.
+Benutze \fIDATEINAME\fP als Konfigurationsdatei. Standardmäßig benutzt
+LinkChecker \fB~/.linkchecker/linkcheckerrc\fP.
 .TP 
 \fB\-t\fP\fINUMMER\fP, \fB\-\-threads=\fP\fINUMMER\fP
 Generiere nicht mehr als die angegebene Anzahl von Threads. Standard Anzahl
@@ -508,8 +507,7 @@ Hauptspeichers sehr groß werden. Dies könnte das Programm oder sogar das
 gesamte System verlangsamen.
 .
 .SH DATEIEN
-\fB/etc/linkchecker/linkcheckerrc\fP, \fB~/.linkchecker/linkcheckerrc\fP \-
-Standardkonfigurationsdateien
+\fB~/.linkchecker/linkcheckerrc\fP \- Standardkonfigurationsdatei
 .br
 \fB~/.linkchecker/blacklist\fP \- Standard Dateiname der blacklist Logger
 Ausgabe

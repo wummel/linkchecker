@@ -31,14 +31,12 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
         self.setupUi(self)
         self.editor = EditorWindow(self)
         self.closeButton.clicked.connect(self.close)
-        self.sys_config_button.clicked.connect(self.edit_sys_config)
         self.user_config_button.clicked.connect(self.edit_user_config)
         self.reset()
 
     def reset (self):
         """Reset GUI and config options."""
-        files = configuration.get_standard_config_files()
-        self.sys_config, self.user_config = files
+        self.user_config = configuration.get_user_config()
         self.reset_gui_options()
         self.reset_config_options()
 
@@ -50,17 +48,9 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
 
     def reset_config_options (self):
         """Reset configuration file edit buttons."""
-        self.sys_config_writable = os.access(self.sys_config, os.W_OK)
         self.user_config_writable = os.access(self.user_config, os.W_OK)
-        set_edit_button(self.sys_config, self.sys_config_button,
-                        self.sys_config_writable)
         set_edit_button(self.user_config, self.user_config_button,
                         self.user_config_writable)
-
-    def edit_sys_config (self):
-        """Show editor for system wide configuration file."""
-        return start_editor(self.sys_config, self.sys_config_writable,
-                            self.editor)
 
     def edit_user_config (self):
         """Show editor for user specific configuration file."""

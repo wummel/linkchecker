@@ -1,6 +1,6 @@
-# Sample resource file; see the linkcheckerrc(5) man page or
+# Sample configuration file; see the linkcheckerrc(5) man page or
 # execute linkchecker -h for help on these options.
-# Commandline options override these settings.
+# Commandline or GUI options override these settings.
 
 ##################### output configuration ##########################
 [output]

@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>264</width>
+    <width>275</width>
     <height>229</height>
    </rect>
   </property>
@@ -210,7 +210,7 @@
        <string/>
       </property>
       <attribute name="title">
-       <string>Configuration files</string>
+       <string>Configuration file</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_5">
        <property name="spacing">
@@ -219,7 +219,7 @@
        <item>
         <widget class="QLabel" name="label_9">
          <property name="text">
-          <string>The configuration files can be edited with an integrated text editor.</string>
+          <string>The user configuration file holds advanced options and can be edited with an integrated text editor.</string>
          </property>
          <property name="textFormat">
           <enum>Qt::AutoText</enum>
@@ -245,30 +245,7 @@
            <number>4</number>
           </property>
           <item>
-           <widget class="QLabel" name="label_6">
-            <property name="toolTip">
-             <string extracomment="Test"/>
-            </property>
-            <property name="text">
-             <string>System configuration file</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="sys_config_button">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="toolTip">
-             <string/>
-            </property>
-            <property name="text">
-             <string>Edit</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_7">
+           <widget class="QLabel" name="user_config_label">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -285,11 +262,10 @@
              <number>0</number>
             </property>
             <property name="text">
-             <string>User configuration file
-(overrides system configuration)</string>
+             <string>/home/user/.linkchecker/linkcheckerrc</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
             </property>
             <property name="wordWrap">
              <bool>true</bool>
@@ -317,6 +293,22 @@
           </item>
          </layout>
         </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>60</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>

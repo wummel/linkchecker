@@ -274,7 +274,7 @@ class Configuration (dict):
         else:
             cfiles = files[:]
         if not cfiles:
-            cfiles.extend(get_standard_config_files())
+            cfiles.append(get_user_config())
         # weed out invalid files
         cfiles = [f for f in cfiles if os.path.isfile(f)]
         log.debug(LOG_CHECK, "reading configuration from %s", cfiles)
@@ -417,25 +417,26 @@ class Configuration (dict):
                 self["proxy"]["ftp"] = ftp_proxy
 
 
-def get_standard_config_files ():
-    """Try to generate user configuration file from the system wide
-    configuration.
-    Returns tuple (system config file, user config file)."""
-    # system wide config settings
-    syspath = normpath(os.path.join(get_config_dir(), "linkcheckerrc"))
+def get_user_config():
+    """Find user configuration file.
+    Generate user configuration file from the example configuration
+    if it does not yet exist.
+    Returns path to user config file"""
+    # example config
+    exampleconf = normpath(os.path.join(get_config_dir(), "linkcheckerrc"))
     # per user config settings
-    userpath = normpath("~/.linkchecker/linkcheckerrc")
-    if os.path.isfile(syspath) and not os.path.exists(userpath):
+    userconf = normpath("~/.linkchecker/linkcheckerrc")
+    if os.path.isfile(exampleconf) and not os.path.exists(userconf):
         # copy the system configuration to the user configuration
         try:
-            userdir = os.path.dirname(userpath)
+            userdir = os.path.dirname(userconf)
             if not os.path.exists(userdir):
                 os.makedirs(userdir)
-            shutil.copy(syspath, userpath)
+            shutil.copy(exampleconf, userconf)
         except StandardError:
-            log.warn(LOG_CHECK, "could not copy system config from %r to %r",
-                     syspath, userpath, traceback=True)
-    return (syspath, userpath)
+            log.warn(LOG_CHECK, "could not copy example config from %r to %r",
+                     exampleconf, userconf, traceback=True)
+    return userconf
 
 
 def get_gconf_http_proxy ():

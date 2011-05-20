@@ -15,5 +15,7 @@ Log all checked URLs once. Default is to log only errors and warnings.
 Log debugging output for each check.
 It can be displayed with Help->Show Debug
 
-## Configuration files
-The configuration files can be edited with an integrated text editor.
+## Configuration file
+The configuration file can be edited with an integrated text editor.
+It holds advanced options for checking and filtering that cannot
+be set directly in the GUI.

@@ -12,10 +12,13 @@ configure|reconfigure|abort-upgrade|abort-remove|abort-deconfigure)
     ;;
 esac
 
-# move old logfile
+# move old system conffile
 if [ -f /etc/linkcheckerrc ]; then
     mv -f /etc/linkcheckerrc /etc/linkchecker/linkcheckerrc.old || true
 fi
+# remove system conffile for versions >= 7.0
+dpkg-maintscript-helper rm_conffile /etc/linkchecker/linkcheckerrc 6.9 -- "$@"
+
 
 #DEBHELPER#
 

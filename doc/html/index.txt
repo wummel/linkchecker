@@ -140,21 +140,15 @@ Note that the local and FTP directory recursion reads all files in that
 directory, not just a subset like ``index.htm*``.
 
 
-## Configuration files
+## Configuration file
 
-There are two locations where LinkChecker looks for configuration files.
-The first is the system configuration file which is valid for all users.
-The second is the user configuration file which can be adjusted
-by the current user.
+Each user can edit a configuration with advanced options for
+checking or filtering.
 
-On Unix systems the locations are
+On Unix systems the user configuration file is at
 
-- ``/etc/linkchecker/linkcheckerrc`` (system configuration)
-- ``~/.linkchecker/linkcheckerrc`` (user configuration)
+- ``~/.linkchecker/linkcheckerrc``
 
-On Windows the locations are
+On Windows the user configuration file is at
 
-- ``%ProgramFiles%\linkchecker\share\linkchecker\linkcheckerrc`` (system
-  configuration)
-- ``%HOMEPATH%\.linkchecker\linkcheckerrc`` (user configuration)
-
+- ``%HOMEPATH%\.linkchecker\linkcheckerrc``
