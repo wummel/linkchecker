@@ -3,6 +3,8 @@
 Fixes:
 - doc: Correct reference to RFC 2616 for cookie file format.
   Closes: SF bug #3299557
+- checking: HTML parser detects and handles stray "<" characters.
+  Closes: SF bug #3302895
 
 Changes:
 - gui: Display status info into GUI main window instead of modal window.
