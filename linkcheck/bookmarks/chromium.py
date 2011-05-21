@@ -34,19 +34,19 @@ def get_profile_dir ():
                 basedir = get_shell_folder("Local AppData")
             except EnvironmentError:
                 basedir = os.path.join(os.environ["USERPROFILE"], "Local Settings", "Application Data")
-        dirpath = os.path.join(basedir, u"Google", u"Chrome", u"User Data")
+        dirpath = os.path.join(basedir, u"Chromium", u"User Data")
     elif os.name == 'posix':
         basedir = unicode(os.environ["HOME"])
         dirpath = os.path.join(basedir, u".config", u"chromium")
     return dirpath
 
 
-def find_bookmark_file ():
+def find_bookmark_file (profile="Default"):
     """Return the bookmark file of the Default profile.
     Returns absolute filename if found, or empty string if no bookmark file
     could be found.
     """
-    dirname = os.path.join(get_profile_dir(), "Default")
+    dirname = os.path.join(get_profile_dir(), profile)
     if os.path.isdir(dirname):
         fname = os.path.join(dirname, "Bookmarks")
         if os.path.isfile(fname):
@@ -54,36 +54,36 @@ def find_bookmark_file ():
     return u""
 
 
-def parse_bookmarks_data (data):
+def parse_bookmark_data (data):
     """Parse data string.
     Return iterator for bookmarks of the form (url, name).
     Bookmarks are not sorted.
     """
-    for url, name in parse_bookmarks_json(json.loads(data)):
+    for url, name in parse_bookmark_json(json.loads(data)):
         yield url, name
 
 
-def parse_bookmarks_file (file):
+def parse_bookmark_file (file):
     """Parse file object.
     Return iterator for bookmarks of the form (url, name).
     Bookmarks are not sorted.
     """
-    for url, name in parse_bookmarks_json(json.load(file)):
+    for url, name in parse_bookmark_json(json.load(file)):
         yield url, name
 
 
-def parse_bookmarks_json (data):
+def parse_bookmark_json (data):
     """Parse complete JSON data for Chromium Bookmarks."""
     for entry in data["roots"].values():
-        for entry in parse_bookmarks_node(entry):
+        for entry in parse_bookmark_node(entry):
             yield entry
 
 
-def parse_bookmarks_node (node):
+def parse_bookmark_node (node):
     """Parse one JSON node of Chromium Bookmarks."""
     if node["type"] == "url":
         yield node["url"], node["name"]
     elif node["type"] == "folder":
         for child in node["children"]:
-            for entry in parse_bookmarks_node(child):
+            for entry in parse_bookmark_node(child):
                 yield entry

@@ -26,6 +26,8 @@ Changes:
 
 Features:
 - logging: Colorize number of errors in text output logger.
+- checking: Support both Chromium and Google Chrome profile dirs
+  for finding bookmark files.
 
 
 6.9 "Cowboy Bebop" (released 6.5.2011)

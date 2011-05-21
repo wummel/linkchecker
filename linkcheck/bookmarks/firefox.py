@@ -42,13 +42,13 @@ def get_profile_dir ():
     return dirpath
 
 
-def find_bookmark_file ():
+def find_bookmark_file (profile="*.default"):
     """Return the first found places.sqlite file of the profile directories
-    ending with '.default'.
+    ending with '.default' (or another given profile name).
     Returns absolute filename if found, or empty string if no bookmark file
     could be found.
     """
-    for dirname in glob.glob(u"%s/*.default" % get_profile_dir()):
+    for dirname in glob.glob(u"%s/%s" % (get_profile_dir(), profile)):
         if os.path.isdir(dirname):
             fname = os.path.join(dirname, "places.sqlite")
             if os.path.isfile(fname):

@@ -173,15 +173,19 @@ class LineEdit (QtGui.QLineEdit):
     def contextMenuEvent (self, event):
         """Add Firefox bookmark action to context menu."""
         menu = self.createStandardContextMenu()
-        if find_firefox():
-            action = menu.addAction(_("Insert Firefox bookmark file"))
-            action.triggered.connect(lambda: self.setText(find_firefox()))
-        if find_chromium():
-            action = menu.addAction(_("Insert Google Chrome bookmark file"))
-            action.triggered.connect(lambda: self.setText(find_chromium()))
-        if find_opera():
-            action = menu.addAction(_("Insert Opera bookmark file"))
-            action.triggered.connect(lambda: self.setText(find_opera()))
+        functions = (
+            (find_firefox, u"Firefox"),
+            (find_chrome, u"Google Chrome"),
+            (find_chromium, u"Chromium"),
+            (find_opera, u"Opera"),
+        )
+        for find_function, browser in functions:
+            if not find_function():
+                continue
+            args = {"browser": browser}
+            name = _("Insert %(browser)s bookmark file") % args
+            action = menu.addAction(name)
+            action.triggered.connect(lambda: self.setText(find_function()))
         menu.exec_(event.globalPos())
 
 
@@ -191,8 +195,14 @@ def find_firefox ():
     return find_bookmark_file()
 
 
-def find_chromium ():
+def find_chrome ():
     """Return Google Chrome bookmark filename or empty string if not found."""
+    from ..bookmarks.chrome import find_bookmark_file
+    return find_bookmark_file()
+
+
+def find_chromium ():
+    """Return Chromium bookmark filename or empty string if not found."""
     from ..bookmarks.chromium import find_bookmark_file
     return find_bookmark_file()
 

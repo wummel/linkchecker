@@ -16,55 +16,41 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 import os
 
+
 # Windows filename encoding
 nt_filename_encoding="mbcs"
-
-# List of possible Opera bookmark files.
-OperaBookmarkFiles = (
-  "bookmarks.adr", # for Opera >= 10.0
-  "opera6.adr",
-)
 
 
 def get_profile_dir ():
     """Return path where all profiles of current user are stored."""
     if os.name == 'nt':
-        basedir = unicode(os.environ["APPDATA"], nt_filename_encoding)
-        dirpath = os.path.join(basedir, u"Opera", u"Opera")
+        if "LOCALAPPDATA" in os.environ:
+            basedir = unicode(os.environ["LOCALAPPDATA"], nt_filename_encoding)
+        else:
+            # read local appdata directory from registry
+            from ..winutil import get_shell_folder
+            try:
+                basedir = get_shell_folder("Local AppData")
+            except EnvironmentError:
+                basedir = os.path.join(os.environ["USERPROFILE"], "Local Settings", "Application Data")
+        dirpath = os.path.join(basedir, u"Google", u"Chrome", u"User Data")
     elif os.name == 'posix':
         basedir = unicode(os.environ["HOME"])
-        dirpath = os.path.join(basedir, u".opera")
+        dirpath = os.path.join(basedir, u".config", u"Google", u"Chrome")
     return dirpath
 
 
-def find_bookmark_file ():
-    """Return the bookmark file of the Opera profile.
+def find_bookmark_file (profile="Default"):
+    """Return the bookmark file of the Default profile.
     Returns absolute filename if found, or empty string if no bookmark file
     could be found.
     """
-    dirname = get_profile_dir()
+    dirname = os.path.join(get_profile_dir(), profile)
     if os.path.isdir(dirname):
-        for name in OperaBookmarkFiles:
-            fname = os.path.join(dirname, name)
-            if os.path.isfile(fname):
-                return fname
+        fname = os.path.join(dirname, "Bookmarks")
+        if os.path.isfile(fname):
+            return fname
     return u""
 
 
-def parse_bookmark_data (data):
-    """Return iterator for bookmarks of the form (url, name, line number).
-    Bookmarks are not sorted.
-    """
-    name = None
-    lineno = 0
-    for line in data.splitlines():
-        lineno += 1
-        line = line.strip()
-        if line.startswith("NAME="):
-            name = line[5:]
-        elif line.startswith("URL="):
-            url = line[4:]
-            if url and name is not None:
-                yield (url, name, lineno)
-        else:
-            name = None
+from .chromium import parse_bookmark_data, parse_bookmark_file
