@@ -5,6 +5,8 @@ Fixes:
   Closes: SF bug #3299557
 - checking: HTML parser detects and handles stray "<" characters.
   Closes: SF bug #3302895
+- checking: Correct wrong import path in configuration file.
+  Closes: SF bug #3305351
 
 Changes:
 - gui: Display status info into GUI main window instead of modal window.
