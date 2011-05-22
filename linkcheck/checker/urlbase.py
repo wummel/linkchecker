@@ -629,7 +629,7 @@ class UrlBase (object):
         A warning is logged and True is returned if the anchor is not found.
         """
         if not (self.anchor and self.aggregate.config["anchors"] and
-                self.valid and self.is_parseable()):
+                self.valid and self.is_html()):
             return
         log.debug(LOG_CHECK, "checking anchor %r in %s", self.anchor, self.anchors)
         if any(x for x in self.anchors if x[0] == self.anchor):
