@@ -310,7 +310,7 @@ class UrlBase (object):
         self.anchors = cache_data["anchors"]
         self.content_type = cache_data["content_type"]
         self.cached = True
-        if anchor_changed and self.valid and self.anchor:
+        if anchor_changed and self.valid:
             # recheck anchor
             if self.check_anchor():
                 # a new warning has been added - remove cached flag
@@ -625,10 +625,11 @@ class UrlBase (object):
         self.anchors.append((url, line, column, name, base))
 
     def check_anchor (self):
-        """If URL was valid and has an anchor, check it. A warning is
-        logged and True is returned if the anchor is not found.
+        """If URL is valid, parseable and has an anchor, check it.
+        A warning is logged and True is returned if the anchor is not found.
         """
-        if not self.aggregate.config["anchors"]:
+        if not (self.anchor and self.aggregate.config["anchors"] and
+                self.valid and self.is_parseable()):
             return
         log.debug(LOG_CHECK, "checking anchor %r in %s", self.anchor, self.anchors)
         if any(x for x in self.anchors if x[0] == self.anchor):
@@ -703,8 +704,7 @@ class UrlBase (object):
             self.set_title_from_content()
             if self.aggregate.config["anchors"]:
                 self.get_anchors()
-        if self.anchor:
-            self.check_anchor()
+        self.check_anchor()
         self.check_warningregex()
         # is it an intern URL?
         if not self.extern[0]:
@@ -724,16 +724,17 @@ class UrlBase (object):
     def check_warningregex (self):
         """Check if content matches a given regular expression."""
         warningregex = self.aggregate.config["warningregex"]
-        if warningregex:
-            log.debug(LOG_CHECK, "checking content")
-            try:
-                match = warningregex.search(self.get_content())
-                if match:
-                    self.add_warning(_("Found %(match)r in link contents.") %
-                       {"match": match.group()}, tag=WARN_URL_WARNREGEX_FOUND)
-            except tuple(ExcList):
-                value = self.handle_exception()
-                self.set_result(unicode_safe(value), valid=False)
+        if not (warningregex and self.valid and self.is_parseable()):
+            return
+        log.debug(LOG_CHECK, "checking content")
+        try:
+            match = warningregex.search(self.get_content())
+            if match:
+                self.add_warning(_("Found %(match)r in link contents.") %
+                   {"match": match.group()}, tag=WARN_URL_WARNREGEX_FOUND)
+        except tuple(ExcList):
+            value = self.handle_exception()
+            self.set_result(unicode_safe(value), valid=False)
 
     def check_size (self):
         """Check content size if it is zero or larger than a given

@@ -7,6 +7,9 @@ Fixes:
   Closes: SF bug #3302895
 - checking: Correct wrong import path in configuration file.
   Closes: SF bug #3305351
+- checking: Only check warning patterns in parseable content.
+  Avoids false errors downloading large binary files.
+  Closes: SF bug #3297970
 
 Changes:
 - gui: Display status info into GUI main window instead of modal window.
