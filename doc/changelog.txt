@@ -11,10 +11,6 @@ Fixes:
 Changes:
 - gui: Display status info into GUI main window instead of modal window.
   Closes: SF bug #3297252
-- gui: Remember last 10 checked URLs in GUI.
-  Closes: SF bug #3297243
-- gui: Display the number of selected rows as status message.
-  Closes: SF bug #3297247
 - gui: Display warnings in result column.
   Closes: SF bug #3298036
 - gui: Improved option dialog layout.
@@ -28,6 +24,10 @@ Features:
 - logging: Colorize number of errors in text output logger.
 - checking: Support both Chromium and Google Chrome profile dirs
   for finding bookmark files.
+- gui: Remember last 10 checked URLs in GUI.
+  Closes: SF bug #3297243
+- gui: Display the number of selected rows as status message.
+  Closes: SF bug #3297247
 
 
 6.9 "Cowboy Bebop" (released 6.5.2011)
