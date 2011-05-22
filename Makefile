@@ -238,3 +238,8 @@ gui:
 .PHONY: count
 count:
 	@sloccount linkchecker linkchecker-gui linkcheck | grep "Total Physical Source Lines of Code"
+
+# run eclipse ide
+.PHONY: ide
+ide:
+	eclipse-3.6 -data .
