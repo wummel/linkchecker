@@ -507,9 +507,7 @@ class Resolver(object):
             except WindowsError:
                 servers = None
             if servers:
-                # Annoyingly, the DhcpNameServer list is apparently space
-                # separated instead of comma separated like NameServer.
-                self._config_win32_nameservers(servers, ' ')
+                self._config_win32_nameservers(servers)
                 try:
                     dom, rtype = _winreg.QueryValueEx(key, 'DhcpDomain')
                     if dom:
