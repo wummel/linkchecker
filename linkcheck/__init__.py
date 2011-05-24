@@ -56,7 +56,6 @@ def get_config_dir ():
 LOG_ROOT = "linkcheck"
 LOG_CMDLINE = "linkcheck.cmdline"
 LOG_CHECK = "linkcheck.check"
-LOG_DNS = "linkcheck.dns"
 LOG_CACHE = "linkcheck.cache"
 LOG_GUI = "linkcheck.gui"
 LOG_THREAD = "linkcheck.thread"
@@ -65,7 +64,6 @@ lognames = {
     "checking": LOG_CHECK,
     "cache": LOG_CACHE,
     "gui": LOG_GUI,
-    "dns": LOG_DNS,
     "thread": LOG_THREAD,
     "all": LOG_ROOT,
 }
@@ -136,7 +134,7 @@ def init_i18n ():
     logging.addLevelName(logging.DEBUG, _('DEBUG'))
     logging.addLevelName(logging.NOTSET, _('NOTSET'))
 
-# initialize i18n, puts _() function into global namespace
+# initialize i18n, puts _() and _n() function into global namespace
 init_i18n()
 
 
@@ -149,3 +147,13 @@ def drop_privileges ():
                        "dropping privileges by changing user to nobody."))
         import pwd
         os.seteuid(pwd.getpwnam('nobody')[3])
+
+
+def find_third_party_modules ():
+    """Find third party modules and add them to the python path."""
+    parent = os.path.dirname(os.path.dirname(__file__))
+    third_party = os.path.join(parent, "third_party")
+    if os.path.isdir(third_party):
+        sys.path.append(os.path.join(third_party, "dnspython"))
+
+find_third_party_modules()

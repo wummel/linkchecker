@@ -52,5 +52,5 @@ include doc/de/*.1 doc/de/*.5
 include doc/Makefile
 include doc/examples/*.sh doc/examples/*.bat doc/examples/*.py
 include doc/examples/linkcheckerrc_loginurl
-include linkcheck/dns/changelog.txt
+recursive-include third_party *
 recursive-include tests *.py *.result *.html *.ico *.txt *.zip *.asc *.css *.xhtml *.sqlite *.adr *.swf

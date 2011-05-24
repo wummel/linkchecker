@@ -1,0 +1,23 @@
+The following changes were made to the original dnspython sources:
+
+* Replace bare "except:" with "except StandardError:" and
+  make DNSException inherit from StandardError.
+  Avoids catching StopIteration and Warning exceptions.
+  Changed: *.py
+  
+* Replace "x.has_key(y)" with "y in x".
+  Changed: *.py
+
+* honor EnableDHCP flag in Windows registry config and add __str__()
+  method
+  Changed: resolver.py
+
+* strip() lines from /etc/resolv.conf
+  Changed: resolver.py
+
+* added set of localhost addresses to resolver config
+  Changed: resolver.py
+  Added: ifconfig.py
+
+* added search patterns for domain names
+  Changed: resolver.py

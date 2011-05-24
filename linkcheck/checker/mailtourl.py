@@ -27,11 +27,11 @@ from email._parseaddr import AddressList
 
 from . import urlbase
 from .. import log, LOG_CHECK, strformat, url as urlutil
-from ..dns import resolver
+from dns import resolver
 if False:
     # needed for py2exe to properly include all dns submodules
-    from ..dns.rdtypes.ANY import *
-    from ..dns.rdtypes.IN import *
+    from dns.rdtypes.ANY import *
+    from dns.rdtypes.IN import *
 from ..network import iputil
 from .const import WARN_MAIL_NO_MX_HOST, \
     WARN_MAIL_UNVERIFIED_ADDRESS, WARN_MAIL_NO_CONNECTION
@@ -249,7 +249,7 @@ class MailtoUrl (urlbase.UrlBase):
         """
         Check a single mail address.
         """
-        from ..dns.exception import DNSException
+        from dns.exception import DNSException
         log.debug(LOG_CHECK, "checking mail address %r", mail)
         mail = strformat.ascii_safe(mail)
         username, domain = mail.rsplit('@', 1)
@@ -275,7 +275,7 @@ class MailtoUrl (urlbase.UrlBase):
             mxdata = [(0, rdata.to_text(omit_final_dot=True))
                       for rdata in answers]
         else:
-            from linkcheck.dns.rdtypes.mxbase import MXBase
+            from dns.rdtypes.mxbase import MXBase
             mxdata = [(rdata.preference,
                        rdata.exchange.to_text(omit_final_dot=True))
                        for rdata in answers if isinstance(rdata, MXBase)]

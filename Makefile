@@ -15,10 +15,10 @@ PAGER ?= less
 BUILDDIR:=$(HOME)/packages/official
 DEB_ORIG_TARGET:=$(BUILDDIR)/linkchecker_$(VERSION).orig.tar.bz2
 # original dnspython repository module
-DNSPYTHON:=$(HOME)/src/dnspython-git/dns
+DNSPYTHON:=$(HOME)/src/dnspython-git
 # options to run the pep8 utility
 PEP8OPTS:=--repeat --ignore=E211,E501,E225,E301,E302,E241 \
-   --exclude="dns,gzip2.py,httplib2.py,robotparser2.py,reindent.py"
+   --exclude="gzip2.py,httplib2.py,robotparser2.py,reindent.py"
 PY2APPOPTS ?=
 
 
@@ -223,9 +223,12 @@ diff:
 	  diff -u linkcheck/$${f}2.py $(PYTHONSRC)/$${f}.py | $(PAGER); \
 	done
 
+# Compare dnspython files with the ones from upstream repository
 .PHONY: dnsdiff
 dnsdiff:
-	diff -BurN --exclude=changelog.txt linkcheck/dns $(DNSPYTHON) | $(PAGER)
+	@(for d in dns tests; do \
+	  diff -BurN --exclude=*.pyc third_party/dnspython/$$d $(DNSPYTHON)/$$d; \
+	done) | $(PAGER)
 
 .PHONY: changelog
 changelog:

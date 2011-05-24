@@ -8,7 +8,7 @@ import array
 import struct
 import subprocess
 from _network import ifreq_size
-from .. import log, LOG_DNS
+from .. import log, LOG_CHECK
 
 
 def pipecmd (cmd1, cmd2):
@@ -89,7 +89,7 @@ class IfConfig (object):
         try:
             result = self._ioctl(func, self._getifreq(ifname))
         except IOError, msg:
-            log.warn(LOG_DNS,
+            log.warn(LOG_CHECK,
                   "error getting addr for interface %r: %s", ifname, msg)
             return None
         return socket.inet_ntoa(result[20:24])
@@ -140,7 +140,7 @@ class IfConfig (object):
         try:
             result = self._ioctl(self.SIOCGIFFLAGS, self._getifreq(ifname))
         except IOError, msg:
-            log.warn(LOG_DNS,
+            log.warn(LOG_CHECK,
                  "error getting flags for interface %r: %s", ifname, msg)
             return 0
         # extract the interface's flags from the return value

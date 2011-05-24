@@ -23,7 +23,7 @@ import nntplib
 import ftplib
 import httplib as orighttplib
 from .. import LinkCheckerError, httplib2 as httplib
-from ..dns.exception import DNSException
+from dns.exception import DNSException
 
 # Catch these exception on syntax checks.
 ExcSyntaxList = [
