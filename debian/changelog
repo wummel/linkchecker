@@ -1,6 +1,8 @@
 linkchecker (7.0-1) unstable; urgency=low
 
   * New upstream release.
+  * Added conflict to python-dnspython since linkchecker installs
+    a patched version of that module.
 
  -- Bastian Kleineidam <calvin@debian.org>  Sat, 07 May 2011 14:01:23 +0200
 

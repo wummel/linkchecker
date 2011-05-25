@@ -14,6 +14,7 @@ Package: linkchecker
 Architecture: any
 Depends: ${python:Depends}, ${shlibs:Depends}, ${misc:Depends}
 Provides: ${python:Provides}
+Conflicts: python-dnspython
 Suggests: apache2 | httpd, python-optcomplete (>= 1.2-5),
  python-geoip (>= 1.2.1-2), clamav-daemon, python-utidylib,
  python-cssutils, python-pysqlite2, python-twill, python-gconf,
