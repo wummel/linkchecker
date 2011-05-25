@@ -10,6 +10,9 @@ Fixes:
 - checking: Only check warning patterns in parseable content.
   Avoids false errors downloading large binary files.
   Closes: SF bug #3297970
+- checking: Correctly include dns.rdtypes.IN and dns.rdtypes.ANY
+  submodules in Windows and OSX installers. Fixes false DNS errors.
+  Closes: SF bug #3297235
 
 Changes:
 - gui: Display status info into GUI main window instead of modal window.
