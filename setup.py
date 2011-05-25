@@ -53,8 +53,9 @@ from distutils.command.clean import clean
 from distutils.command.build import build
 from distutils.command.install_data import install_data
 from distutils.command.register import register
-from distutils.dir_util import remove_tree, copy_tree
+from distutils.dir_util import remove_tree
 from distutils.file_util import write_file
+from distutils.spawn import find_executable
 from distutils import util, log
 try:
     # py2exe monkey-patches the distutils.core.Distribution class
@@ -143,6 +144,50 @@ def get_release_date ():
         if mo:
             release_date = mo.groups(1)
     return release_date
+
+
+def get_qt_plugin_dir_win ():
+    """Get Qt plugin dir on Windows systems."""
+    import PyQt4
+    return os.path.join(os.path.dirname(PyQt4.__file__), "plugins")
+
+
+def get_qt_plugin_dir_osx ():
+    """Get Qt plugin dir on OSX systems."""
+    # note: works on Qt installed with homebrew
+    qtbindir = os.path.dirname(os.path.realpath(find_executable("qmake")))
+    return os.path.join(os.path.dirname(qtbindir), "plugins")
+
+
+def add_qt_plugin_file (files, plugin_dir, dirname, filename):
+    """Add one Qt plugin file to list of data files."""
+    files.append((dirname, [os.path.join(plugin_dir, dirname, filename)]))
+
+
+def add_qt_plugin_files (files):
+    """Add needed Qt plugins to list of data files. Filename prefix and
+    suffix are different for Windows and OSX."""
+    if os.name == 'nt':
+        plugin_dir = get_qt_plugin_dir_win()
+        args = ("", "4.dll")
+    elif sys.platform == 'darwin':
+        plugin_dir = get_qt_plugin_dir_osx()
+        args = ("lib", ".dylib")
+    else:
+        raise ValueError("unsupported qt plugin platform")
+    # Copy needed sqlite plugin files to distribution directory.
+    add_qt_plugin_file(files, plugin_dir, "sqldrivers", "%sqsqlite%s" % args)
+    # Copy needed gif image plugin files to distribution directory.
+    add_qt_plugin_file(files, plugin_dir, "imageformats", "%sqgif%s" % args)
+
+
+def add_msvc_files (files):
+    """Add needed MSVC++ runtime files."""
+    dirname = "Microsoft.VC90.CRT"
+    prog_dir, architecture = get_nt_platform_vars()
+    p = r'%s\Microsoft Visual Studio 9.0\VC\redist\%s\%s\*.*'
+    args = (prog_dir, architecture, dirname)
+    files.append((dirname, glob.glob(p % args)))
 
 
 class MyInstallLib (install_lib, object):
@@ -476,10 +521,11 @@ if os.name == 'posix':
                'doc/examples/check_blacklist.sh',
                'doc/examples/check_for_x_errors.sh',
                'doc/examples/check_urls.sh']))
-elif os.name == 'nt':
-    p = r'%s\Microsoft Visual Studio 9.0\VC\redist\%s\Microsoft.VC90.CRT\*.*'
-    files = glob.glob(p % get_nt_platform_vars())
-    data_files.append(('Microsoft.VC90.CRT', files))
+if 'py2app' in sys.argv[1:]:
+    add_qt_plugin_files(data_files)
+elif 'py2exe' in sys.argv[1:]:
+    add_qt_plugin_files(data_files)
+    add_msvc_files(data_files)
 
 
 class InnoScript:
@@ -582,17 +628,6 @@ try:
             print "*** preparing the inno setup script ***"
             lib_dir = self.lib_dir
             dist_dir = self.dist_dir
-            # Copy needed sqlite plugin files to distribution directory.
-            import PyQt4
-            src = os.path.join(os.path.dirname(PyQt4.__file__), "plugins", "sqldrivers")
-            dst = os.path.join(dist_dir, "sqldrivers")
-            copy_tree(src, dst)
-            # Copy needed gif image plugin files to distribution directory.
-            src = os.path.join(os.path.dirname(PyQt4.__file__), "plugins", "imageformats")
-            dst = os.path.join(dist_dir, "imageformats")
-            copy_tree(src, dst)
-            for path in os.listdir(dst):
-                self.lib_files.append(os.path.join(dst, path))
             # create the Installer, using the files py2exe has created.
             script = InnoScript(lib_dir, dist_dir, self.windows_exe_files,
                 self.console_exe_files, self.service_exe_files,
