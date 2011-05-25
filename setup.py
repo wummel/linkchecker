@@ -587,6 +587,10 @@ try:
             src = os.path.join(os.path.dirname(PyQt4.__file__), "plugins", "sqldrivers")
             dst = os.path.join(dist_dir, "sqldrivers")
             copy_tree(src, dst)
+            # Copy needed gif image plugin files to distribution directory.
+            src = os.path.join(os.path.dirname(PyQt4.__file__), "plugins", "imageformats")
+            dst = os.path.join(dist_dir, "imageformats")
+            copy_tree(src, dst)
             for path in os.listdir(dst):
                 self.lib_files.append(os.path.join(dst, path))
             # create the Installer, using the files py2exe has created.
