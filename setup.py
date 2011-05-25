@@ -68,6 +68,8 @@ from distutils.core import Distribution
 AppVersion = "7.0"
 AppName = "LinkChecker"
 
+# basic includes for py2exe and py2app
+py_includes = ['dns.rdtypes.IN.*', 'dns.rdtypes.ANY.*']
 # basic excludes for py2exe and py2app
 py_excludes = ['doctest', 'unittest', 'optcomplete', 'Tkinter',
     'PyQt4.QtDesigner', 'PyQt4.QtNetwork', 'PyQt4.QtOpenGL',
@@ -81,13 +83,14 @@ py2exe_options = dict(
     dll_excludes=['MSVCP90.dll'],
     # add sip so that PyQt4 works
     # add PyQt4.QtSql so that sqlite needed by QHelpCollection works
-    includes=["sip", "PyQt4.QtSql"],
+    includes=py_includes + ["sip", "PyQt4.QtSql"],
     compressed=1,
     optimize=2,
 )
 # py2app options for OSX packaging
 py2app_options = dict(
-    includes=['sip', 'PyQt4', 'PyQt4.QtCore', 'PyQt4.QtGui', 'PyQt4.QtSql'],
+    includes=py_includes + ['sip', 'PyQt4',
+      'PyQt4.QtCore', 'PyQt4.QtGui', 'PyQt4.QtSql'],
     excludes=py_excludes,
     strip=True,
     optimize=2,
