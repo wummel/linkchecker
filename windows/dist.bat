@@ -23,6 +23,8 @@ rd /s /q build > nul
 call %~dp0\build.bat
 rd /s /q dist > nul
 %PYDIR%\python.exe setup.py py2exe
+:: uncomment for skipping portable dist creation
+::goto :finish
 
 echo Building portable distribution
 rd /s /q %PORTDIR% > nul
@@ -34,3 +36,5 @@ for /r %PORTDIR% %%f in (*.pyd,*.exe) do %UPX_EXE% "%%f" --best
 echo Generating portable distribution file
 %SZ_EXE% a -mx=9 -md=32m LinkChecker-%VERSION%-portable.zip %PORTDIR%
 rd /s /q %PORTDIR%
+
+:finish
