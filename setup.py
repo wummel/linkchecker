@@ -54,7 +54,7 @@ from distutils.command.build import build
 from distutils.command.install_data import install_data
 from distutils.command.register import register
 from distutils.dir_util import remove_tree
-from distutils.file_util import write_file, move_file
+from distutils.file_util import write_file
 from distutils.spawn import find_executable
 from distutils import util, log
 try:
@@ -193,10 +193,10 @@ def fix_qt_plugins_py2app (dist_dir):
     qt_plugins = ('sqldrivers', 'imageformats')
     qt_modules = ('QtCore', 'QtGui', 'QtSql')
     for plugin in qt_plugins:
-        # move files
-        move_file(os.path.join(data_dir, plugin), plugin_dir)
-        # fix libraries
         target_dir = os.path.join(plugin_dir, plugin)
+        # move libraries
+        os.rename(os.path.join(data_dir, plugin), target_dir)
+        # fix libraries
         for library in glob.glob("%s/*.dylib" % target_dir):
             for module in qt_modules:
                 libpath = "%s.framework/Versions/4/%s" % (module, module)
