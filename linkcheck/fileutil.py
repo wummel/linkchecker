@@ -227,3 +227,8 @@ def get_temp_file (**kwargs):
     file."""
     fd, filename = tempfile.mkstemp(**kwargs)
     return os.fdopen(fd), filename
+
+
+def is_tty (fp):
+    """Check if is a file object pointing to a TTY."""
+    return (hasattr(fp, "isatty") and fp.isatty())
