@@ -1,1 +1,3 @@
+- GIF animation does not work under OSX. Get those Qt plugins to work.
+  http://web.archiveorange.com/archive/v/zm9PCDeYBX13EFrfIkpp
 - Port to Python 3.x (will not happen anytime soon though)
