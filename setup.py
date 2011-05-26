@@ -21,6 +21,7 @@ Setup file for the distuils module.
 It includes the following features:
 - py2exe support (including InnoScript installer generation)
 - py2app support (including DMG package generation)
+- Qt plugin installation for py2exe and py2app
 - creation and installation of configuration file with installation data
 - automatic detection and usage of GNU99 standard for C compiler
 - automatic MANIFEST.in check
