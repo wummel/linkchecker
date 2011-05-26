@@ -306,7 +306,7 @@ class LCOptionParser (optparse.OptionParser, object):
                  Examples, LoggerTypes, RegularExpressions, CookieFormat,
                  ProxySupport, Notes, Retval, Warnings)
         s = console.encode(s)
-        if os.name != 'posix':
+        if linkcheck.fileutil.is_tty(sys.stdout):
             strformat.paginate(s)
         else:
             print s

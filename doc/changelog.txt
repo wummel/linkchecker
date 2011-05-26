@@ -25,6 +25,7 @@ Changes:
   Closes: SF bug #3297248
 - checking: Support for a system configuration file has been removed.
   There is now only one user-configurable configuration file.
+- doc: Paginate linkchecker -h output when printing to console.
 
 Features:
 - logging: Colorize number of errors in text output logger.
