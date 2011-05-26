@@ -61,18 +61,10 @@ WConio module: http://newcenturycomputers.net/projects/wconio.html
 import os
 import logging
 import types
-try:
-    import WConio
-    has_wconio = True
-except ImportError:
-    # no WConio available
-    has_wconio = False
-try:
-    import curses
-    has_curses = True
-except ImportError:
-    # no curses available
-    has_curses = False
+from .fileutil import has_module, is_tty
+
+has_wconio = has_module("WConio")
+has_curses = has_module("curses")
 
 # Color constants
 
@@ -165,7 +157,7 @@ def has_colors (fp):
     """Test if given file is an ANSI color enabled tty."""
     # The isatty() function ensures that we do not colorize
     # redirected streams, as this is almost never what we want
-    if not (hasattr(fp, "isatty") and fp.isatty()):
+    if not is_tty(fp):
         return False
     if os.name == 'nt':
         # On Win9x system, ANSI.SYS would also work. But this
