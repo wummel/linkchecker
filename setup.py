@@ -54,7 +54,7 @@ from distutils.command.build import build
 from distutils.command.install_data import install_data
 from distutils.command.register import register
 from distutils.dir_util import remove_tree
-from distutils.file_util import write_file
+from distutils.file_util import write_file, move_file
 from distutils.spawn import find_executable
 from distutils import util, log
 try:
@@ -179,6 +179,31 @@ def add_qt_plugin_files (files):
     add_qt_plugin_file(files, plugin_dir, "sqldrivers", "%sqsqlite%s" % args)
     # Copy needed gif image plugin files to distribution directory.
     add_qt_plugin_file(files, plugin_dir, "imageformats", "%sqgif%s" % args)
+
+
+def fix_qt_plugins_py2app (dist_dir):
+    """Fix Qt plugin files installed in data_dir by moving them to
+    app_dir/Plugins and change the install_name."""
+    app_dir = os.path.join(dist_dir, '%s.app' % AppName, 'Contents')
+    plugin_dir = os.path.join(app_dir, 'Plugins')
+    data_dir = os.path.join(app_dir, 'Resources')
+    qt_lib_dir = os.path.join(os.path.dirname(get_qt_plugin_dir_osx()), 'lib')
+    # make target plugin directory
+    os.mkdir(plugin_dir)
+    qt_plugins = ('sqldrivers', 'imageformats')
+    qt_modules = ('QtCore', 'QtGui', 'QtSql')
+    for plugin in qt_plugins:
+        # move files
+        move_file(os.path.join(data_dir, plugin), plugin_dir)
+        # fix libraries
+        target_dir = os.path.join(plugin_dir, plugin)
+        for library in glob.glob("%s/*.dylib" % target_dir):
+            for module in qt_modules:
+                libpath = "%s.framework/Versions/4/%s" % (module, module)
+                oldpath = os.path.join(qt_lib_dir, libpath)
+                newpath = '@executable_path/../Frameworks/%s' % libpath
+                args = ['install_name_tool', '-change', oldpath, newpath, library]
+                subprocess.check_call(args)
 
 
 def add_msvc_files (files):
@@ -522,7 +547,10 @@ if os.name == 'posix':
                'doc/examples/check_for_x_errors.sh',
                'doc/examples/check_urls.sh']))
 if 'py2app' in sys.argv[1:]:
+    # add Qt plugins which are later fixed by fix_qt_plugins_py2app()
     add_qt_plugin_files(data_files)
+    # needed for Qt to load the plugins
+    data_files.append(('', ['osx/qt.conf']))
 elif 'py2exe' in sys.argv[1:]:
     add_qt_plugin_files(data_files)
     add_msvc_files(data_files)
@@ -655,6 +683,9 @@ try:
             # First, let py2app do it's work.
             py2app_build.run(self)
             dist_dir = self.dist_dir
+            # Fix install names for Qt plugin libraries.
+            fix_qt_plugins_py2app(dist_dir)
+            # Generate .dmg image
             imgPath = os.path.join(dist_dir, "LinkChecker-%s.dmg" % AppVersion)
             tmpImgPath = os.path.join(dist_dir, "LinkChecker.tmp.dmg")
             print "*** generating temporary DMG image ***"
