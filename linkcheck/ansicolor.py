@@ -166,6 +166,7 @@ def has_colors (fp):
         # an old system.
         return has_wconio
     elif has_curses:
+        import curses
         try:
             curses.setupterm()
             if curses.tigetnum("colors") >= 8:
@@ -196,6 +197,7 @@ def _write_color_ansi (fp, text, color):
 
 
 if os.name == 'nt' and has_wconio:
+    import WConio
     WConioColor = {
         None: WConio.LIGHTGREY,
         default: WConio.LIGHTGREY,
