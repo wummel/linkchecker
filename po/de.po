@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
 "POT-Creation-Date: 2011-05-20 20:53+0200\n"
-"PO-Revision-Date: 2011-05-20 20:58+0100\n"
+"PO-Revision-Date: 2011-05-28 08:45+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "Language: \n"
@@ -134,9 +134,8 @@ msgid "Status:"
 msgstr "Status:"
 
 #: ../linkcheck/gui/linkchecker_ui_main.py:769
-#, fuzzy
 msgid "O"
-msgstr "Ok"
+msgstr "O"
 
 #: ../linkcheck/gui/linkchecker_ui_main.py:770
 msgid "URL properties"
@@ -433,7 +432,7 @@ msgstr "Überschreibt systemweite Konfiguration."
 
 #: ../linkcheck/gui/linkchecker_ui_options.py:176
 msgid "/home/user/.linkchecker/linkcheckerrc"
-msgstr ""
+msgstr "/home/user/.linkchecker/linkcheckerrc"
 
 #: ../linkcheck/gui/linkchecker_ui_options.py:178
 msgid "Configuration file"
