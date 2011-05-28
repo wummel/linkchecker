@@ -3,6 +3,7 @@
 Fixes:
 - checking: HTML parser detects and handles stray "<" characters before
   end tags.
+- checking: Reset content type setting after loading HTTP headers again.
 
 
 7.0 "Plots with a View" (released 28.5.2011)

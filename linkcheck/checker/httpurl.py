@@ -560,6 +560,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         response = self.url_connection.getresponse(True)
         self.timeout = headers.http_timeout(response)
         self.headers = response.msg
+        self.content_type = None
         self.persistent = not response.will_close
         if self.persistent and self.method == "HEAD":
             # Some servers send page content after a HEAD request,
@@ -623,6 +624,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         response = self._try_http_response()
         response = self.follow_redirections(response, set_result=False)[1]
         self.headers = response.msg
+        self.content_type = None
         # Re-read size info, since the GET request result could be different
         # than a former HEAD request.
         self.add_size_info()
