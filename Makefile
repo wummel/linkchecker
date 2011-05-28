@@ -20,6 +20,7 @@ DNSPYTHON:=$(HOME)/src/dnspython-git
 PEP8OPTS:=--repeat --ignore=E211,E501,E225,E301,E302,E241 \
    --exclude="gzip2.py,httplib2.py,robotparser2.py,reindent.py"
 PY2APPOPTS ?=
+NUMPROCESSORS:=$(shell grep -c processor /proc/cpuinfo)
 
 
 .PHONY: all
@@ -198,7 +199,8 @@ sign_distfiles:
 
 .PHONY: test
 test:	localbuild
-	$(PYTHON) $(shell which nosetests) -v -m "^test_.*" $(TESTOPTS) $(TESTS)
+	$(PYTHON) $(shell which nosetests) --processes=$(NUMPROCESSORS) \
+	  -v -m "^test_.*" $(TESTOPTS) $(TESTS)
 
 .PHONY: pyflakes
 pyflakes:
