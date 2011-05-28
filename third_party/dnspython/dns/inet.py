@@ -45,7 +45,7 @@ def inet_pton(family, text):
     implemented.
     @rtype: string
     """
-    
+
     if family == AF_INET:
         return dns.ipv4.inet_aton(text)
     elif family == AF_INET6:
@@ -105,4 +105,4 @@ def is_multicast(text):
             return (first == 255)
         except StandardError:
             raise ValueError
-    
+

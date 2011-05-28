@@ -21,3 +21,6 @@ The following changes were made to the original dnspython sources:
 
 * added search patterns for domain names
   Changed: resolver.py
+
+* Replaced tabs with spaces, remove trailing whitespace.
+  Changed: *.py

@@ -89,7 +89,7 @@ def to_text(flags):
     @rtype: string"""
 
     return _to_text(flags, _by_value, _flags_order)
-    
+
 
 def edns_from_text(text):
     """Convert a space-separated list of EDNS flag text values into a EDNS

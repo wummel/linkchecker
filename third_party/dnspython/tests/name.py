@@ -25,7 +25,7 @@ import dns.e164
 class NameTestCase(unittest.TestCase):
     def setUp(self):
         self.origin = dns.name.from_text('example.')
-        
+
     def testFromTextRel1(self):
         n = dns.name.from_text('foo.bar')
         self.failUnless(n.labels == ('foo', 'bar', ''))
@@ -68,7 +68,7 @@ class NameTestCase(unittest.TestCase):
             r'..',
             r'.a',
             r'\\..',
-            '\\',		# yes, we don't want the 'r' prefix!
+            '\\',                # yes, we don't want the 'r' prefix!
             r'\0',
             r'\00',
             r'\00Z',
@@ -352,7 +352,7 @@ class NameTestCase(unittest.TestCase):
         n = dns.name.from_text('FOO.bar', None)
         d = n.to_digestable(dns.name.root)
         self.failUnless(d == '\x03foo\x03bar\x00')
-        
+
     def testBadDigestable(self):
         def bad():
             n = dns.name.from_text('FOO.bar', None)

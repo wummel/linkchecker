@@ -18,7 +18,7 @@ import unittest
 import dns.rrset
 
 class RRsetTestCase(unittest.TestCase):
-        
+
     def testEqual1(self):
         r1 = dns.rrset.from_text('foo', 300, 'in', 'a', '10.0.0.1', '10.0.0.2')
         r2 = dns.rrset.from_text('FOO', 300, 'in', 'a', '10.0.0.2', '10.0.0.1')

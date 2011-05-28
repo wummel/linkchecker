@@ -129,7 +129,7 @@ class ZoneTestCase(unittest.TestCase):
         for n in names:
             print >> f, z[n].to_text(n)
         self.failUnless(f.getvalue() == example_text_output)
-            
+
     def testTorture1(self):
         #
         # Read a zone containing all our supported RR types, and
