@@ -1,4 +1,4 @@
-7.0 "" (released xx.xx.2011)
+7.0 "Plots with a View" (released 28.5.2011)
 
 Fixes:
 - doc: Correct reference to RFC 2616 for cookie file format.
