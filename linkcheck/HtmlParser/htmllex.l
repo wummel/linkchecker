@@ -478,7 +478,26 @@ RX_DATA  [-a-zA-Z0-9_:]+
     RETURN(T_ELEMENT_START);
 }
 
-<S_TAGSTART>< {
+<S_TAGSTART><\/ {
+    /* Abort parsing this start tag and begin an endtag. Assume
+    the last "<" was a stray unquoted character. */
+    char* tmp = NULL;
+    UPDATE_COLUMN;
+    BEGIN(S_TAGEND);
+    /* Add missing "<" at beginning of buffer. */
+    RESIZE_BUF(tmp, strlen(yyextra->tmp_buf)+2);
+    tmp[0] = '<';
+    tmp[1] = '\0';
+    strlcat(tmp, yyextra->tmp_buf, sizeof(tmp));
+    RESIZE_BUF(yyextra->tmp_buf, strlen(tmp)+1);
+    yyextra->tmp_buf[0] = '\0';
+    strlcat(yyextra->tmp_buf, tmp, sizeof(yyextra->tmp_buf));
+    free(tmp);
+    SETLVAL_UNICODE;
+    RETURN(T_TEXT);
+}
+
+<S_TAGSTART></[^/] {
     /* Abort parsing this start tag and begin a new one. Assume
     the last "<" was a stray unquoted character. */
     char* tmp = NULL;

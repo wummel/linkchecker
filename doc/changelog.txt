@@ -1,5 +1,9 @@
 7.1 "" (released xx.xx.2011)
 
+Fixes:
+- checking: HTML parser detects and handles stray "<" characters before
+  end tags.
+
 
 7.0 "Plots with a View" (released 28.5.2011)
 

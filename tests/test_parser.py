@@ -163,8 +163,10 @@ parsetests = [
     ("""</td<td  a="b" >""", """</td><td a="b">"""),
     # missing beginning quote
     ("""<td a=b">""", """<td a="b">"""),
-    # stray < before tag
+    # stray < before start tag
     ("""<0.<td  a="b" >""", """<0.<td a="b">"""),
+    # stray < before end tag
+    ("""<0.</td >""", """<0.</td>"""),
     # missing end quote (XXX TODO)
     #("""<td a="b>\n""", """<td a="b">\n"""),
     #("""<td a="b></td>\na""", """<td a="b"></td>\na"""),
