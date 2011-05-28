@@ -52,10 +52,10 @@ linkcheck/optcomplete.py
 #* OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #******************************************************************************\
 
-linkcheck/dns/*
----------------
+third_party/dnspython/*
+-----------------------
 
-Copyright (C) 2001-2003 Nominum, Inc.
+Copyright (C) 2001-2011 Nominum, Inc.
 
 Permission to use, copy, modify, and distribute this software and its
 documentation for any purpose with or without fee is hereby granted,
