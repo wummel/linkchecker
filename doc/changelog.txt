@@ -1,3 +1,6 @@
+7.1 "" (released xx.xx.2011)
+
+
 7.0 "Plots with a View" (released 28.5.2011)
 
 Fixes:
