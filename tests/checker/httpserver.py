@@ -22,6 +22,7 @@ import SimpleHTTPServer
 import BaseHTTPServer
 import httplib
 import time
+import threading
 from . import LinkCheckTest
 
 
@@ -102,36 +103,40 @@ class HttpServerTest (LinkCheckTest):
         Init test class and store default http server port.
         """
         super(HttpServerTest, self).__init__(methodName=methodName)
-        self.port = 8001
+        self.port = None
 
     def start_server (self, handler=NoQueryHttpRequestHandler):
-        """
-        Start a new HTTP server in a new thread.
-        """
-        try:
-            import threading
-        except ImportError:
-            self.fail("This test needs threading support")
-        t = threading.Thread(None, start_server, None, (self.port, handler))
-        t.start()
-        # wait for server to start up
-        time.sleep(3)
+        """Start a new HTTP server in a new thread."""
+        self.port = start_server(handler)
+        assert self.port is not None
 
     def stop_server (self):
-        """
-        Send QUIT request to http server.
-        """
-        conn = httplib.HTTPConnection("localhost:%d" % self.port)
-        conn.request("QUIT", "/")
-        conn.getresponse()
+        """Send QUIT request to http server."""
+        stop_server(self.port)
 
 
-def start_server (port, handler):
-    """
-    Start an HTTP server on given port.
-    """
-    ServerClass = StoppableHttpServer
-    server_address = ('', port)
+def start_server (handler):
+    """Start an HTTP server thread and return its port number."""
+    server_address = ('localhost', 0)
     handler.protocol_version = "HTTP/1.0"
-    httpd = ServerClass(server_address, handler)
-    httpd.serve_forever()
+    httpd = StoppableHttpServer(server_address, handler)
+    port = httpd.server_port
+    t = threading.Thread(None, httpd.serve_forever)
+    t.start()
+    # wait for server to start up
+    while True:
+        try:
+            conn = httplib.HTTPConnection("localhost:%d" % port)
+            conn.request("GET", "/")
+            conn.getresponse()
+            break
+        except:
+            time.sleep(0.5)
+    return port
+
+
+def stop_server (port):
+    """Stop an HTTP server thread."""
+    conn = httplib.HTTPConnection("localhost:%d" % port)
+    conn.request("QUIT", "/")
+    conn.getresponse()
