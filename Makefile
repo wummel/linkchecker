@@ -20,7 +20,11 @@ DNSPYTHON:=$(HOME)/src/dnspython-git
 PEP8OPTS:=--repeat --ignore=E211,E501,E225,E301,E302,E241 \
    --exclude="gzip2.py,httplib2.py,robotparser2.py,reindent.py"
 PY2APPOPTS ?=
-NUMPROCESSORS:=$(shell grep -c processor /proc/cpuinfo)
+ifeq ($(shell uname),Darwin)
+  NUMPROCESSORS:=$(shell sysctl -a | grep machdep.cpu.core_count | cut -d " " -f 2)
+else
+  NUMPROCESSORS:=$(shell grep -c processor /proc/cpuinfo)
+endif
 
 
 .PHONY: all
