@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Sat May 14 14:08:08 2011
+# Created: Sat May 28 07:42:18 2011
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -87,15 +87,6 @@ class Ui_MainWindow(object):
         self.label_15 = QtGui.QLabel(self.centralwidget)
         self.label_15.setObjectName(_fromUtf8("label_15"))
         self.horizontalLayout_4.addWidget(self.label_15)
-        self.label_status = QtGui.QLabel(self.centralwidget)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_status.sizePolicy().hasHeightForWidth())
-        self.label_status.setSizePolicy(sizePolicy)
-        self.label_status.setText(_fromUtf8(""))
-        self.label_status.setObjectName(_fromUtf8("label_status"))
-        self.horizontalLayout_4.addWidget(self.label_status)
         self.label_busy = QtGui.QLabel(self.centralwidget)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(16)
@@ -105,6 +96,15 @@ class Ui_MainWindow(object):
         self.label_busy.setMinimumSize(QtCore.QSize(16, 16))
         self.label_busy.setObjectName(_fromUtf8("label_busy"))
         self.horizontalLayout_4.addWidget(self.label_busy)
+        self.label_status = QtGui.QLabel(self.centralwidget)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_status.sizePolicy().hasHeightForWidth())
+        self.label_status.setSizePolicy(sizePolicy)
+        self.label_status.setText(_fromUtf8(""))
+        self.label_status.setObjectName(_fromUtf8("label_status"))
+        self.horizontalLayout_4.addWidget(self.label_status)
         self.verticalLayout.addLayout(self.horizontalLayout_4)
         self.treeView = QtGui.QTreeView(self.centralwidget)
         self.treeView.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
