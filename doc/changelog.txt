@@ -4,6 +4,9 @@ Fixes:
 - checking: HTML parser detects and handles stray "<" characters before
   end tags.
 - checking: Reset content type setting after loading HTTP headers again.
+- checking: Remove query and fragment parts of file URLs. Fixes false
+  errors checking sites on local file systems.
+  Closes: SF bug #3308753
 
 
 7.0 "Plots with a View" (released 28.5.2011)

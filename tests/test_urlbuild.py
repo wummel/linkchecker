@@ -56,6 +56,16 @@ class TestUrlBuild (unittest.TestCase):
         res = linkcheck.checker.urlbase.urljoin(parent_url, base_url, scheme)
         self.assertEqual(res, 'http://localhost:8001/;param=value')
 
+    def test_urljoin_file (self):
+        parent_url = "file:///a/b.html"
+        base_url = "?c=d"
+        recursion_level = 0
+        aggregate = get_test_aggregate()
+        o = linkcheck.checker.fileurl.FileUrl(base_url, recursion_level,
+               aggregate, parent_url=parent_url)
+        o.build_url()
+        self.assertEqual(o.url, parent_url)
+
     def test_http_build2 (self):
         parent_url = u'http://example.org/test?a=b&c=d'
         base_url = u'#usemap'

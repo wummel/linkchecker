@@ -123,6 +123,18 @@ class FileUrl (urlbase.UrlBase):
         """
         Calls super.build_url() and adds a trailing slash to directories.
         """
+        if self.parent_url is not None:
+            # URL joining with the parent URL only works if the query
+            # of the base URL are removed first.
+            # Otherwise the join function thinks the query is part of
+            # the file name.
+            from .urlbase import url_norm
+            # norm base url - can raise UnicodeError from url.idna_encode()
+            base_url, is_idn = url_norm(self.base_url, self.encoding)
+            urlparts = list(urlparse.urlsplit(base_url))
+            # ignore query part for filesystem urls
+            urlparts[3] = ''
+            self.base_url = urlparse.urlunsplit(urlparts)
         super(FileUrl, self).build_url()
         # ignore query and fragment url parts for filesystem urls
         self.urlparts[3] = self.urlparts[4] = ''
