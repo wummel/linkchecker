@@ -1,0 +1,80 @@
+--- linkchecker.1.html.orig	2011-06-14 21:14:55.016011206 +0200
++++ linkchecker.1.html	2011-06-14 21:17:07.108913849 +0200
+@@ -38,7 +38,7 @@
+ 
+ The most common use checks the given domain recursively, plus any
+ URL pointing outside of the domain:
+-<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;<A HREF="http://www.example.net/">http://www.example.net/</A></B>
++<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;http://www.example.net/</B>
+ <BR>
+ 
+ Beware that this checks the whole site which can have thousands of URLs.
+@@ -59,15 +59,15 @@
+ <BR>
+ 
+ You can skip the <B>http://</B> url part if the domain starts with <B>www.</B>:
+-<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;<A HREF="http://www.example.com">www.example.com</A></B>
++<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;www.example.com</B>
+ <BR>
+ 
+ You can skip the <B>ftp://</B> url part if the domain starts with <B>ftp.</B>:
+-<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;-r0&nbsp;<A HREF="ftp://ftp.example.org">ftp.example.org</A></B>
++<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;-r0&nbsp;ftp.example.org</B>
+ <BR>
+ 
+ Generate a sitemap graph and convert it with the graphviz dot utility:
+-<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;-odot&nbsp;-v&nbsp;<A HREF="http://www.example.com">www.example.com</A>&nbsp;|&nbsp;dot&nbsp;-Tps&nbsp;&gt;&nbsp;sitemap.ps</B>
++<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;-odot&nbsp;-v&nbsp;www.example.com&nbsp;|&nbsp;dot&nbsp;-Tps&nbsp;&gt;&nbsp;sitemap.ps</B>
+ <A NAME="lbAF">&nbsp;</A>
+ <H2>OPTIONS</H2>
+ 
+@@ -302,8 +302,8 @@
+ 
+ Multiple entries are separated by a blank line.
+ The example below will send two cookies to all URLs starting with
+-<B><A HREF="http://example.com/hello/">http://example.com/hello/</A></B> and one to all URLs starting
+-with <B><A HREF="https://example.org/">https://example.org/</A></B>:
++<B>http://example.com/hello/</B> and one to all URLs starting
++with <B>https://example.org/</B>:
+ <P>
+ <BR>&nbsp;Host:&nbsp;example.com
+ <BR>&nbsp;Path:&nbsp;/hello
+@@ -326,15 +326,15 @@
+ variables to ignore any proxy settings for these domains.
+ Setting a HTTP proxy on Unix for example looks like this:
+ <P>
+-<BR>&nbsp;&nbsp;export&nbsp;http_proxy=&quot;<A HREF="http://proxy.example.com:8080">http://proxy.example.com:8080</A>&quot;
++<BR>&nbsp;&nbsp;export&nbsp;http_proxy=&quot;http://proxy.example.com:8080&quot;
+ <P>
+ Proxy authentication is also supported:
+ <P>
+-<BR>&nbsp;&nbsp;export&nbsp;http_proxy=&quot;<A HREF="http://user1:mypass@proxy.example.org:8081">http://user1:mypass@proxy.example.org:8081</A>&quot;
++<BR>&nbsp;&nbsp;export&nbsp;http_proxy=&quot;http://user1:mypass@proxy.example.org:8081&quot;
+ <P>
+ Setting a proxy on the Windows command prompt:
+ <P>
+-<BR>&nbsp;&nbsp;set&nbsp;http_proxy=<A HREF="http://proxy.example.com:8080">http://proxy.example.com:8080</A>
++<BR>&nbsp;&nbsp;set&nbsp;http_proxy=http://proxy.example.com:8080
+ <P>
+ <A NAME="lbAO">&nbsp;</A>
+ <H2>PERFORMED CHECKS</H2>
+@@ -470,8 +470,8 @@
+ <H2>NOTES</H2>
+ 
+ URLs on the commandline starting with <B>ftp.</B> are treated like
+-<B><A HREF="ftp://ftp.">ftp://ftp.</A></B>, URLs starting with <B>www.</B> are treated like
+-<B><A HREF="http://www.">http://www.</A></B>.
++<B>ftp://ftp.</B>, URLs starting with <B>www.</B> are treated like
++<B>http://www.</B>.
+ You can also give local files as arguments.
+ <P>
+ If you have your system configured to automatically establish a
+@@ -584,7 +584,7 @@
+ </DL>
+ <HR>
+ This document was created by
+-<A HREF="/cgi-bin/man/man2html">man2html</A>,
++man2html,
+ using the manual pages.<BR>
+ </BODY>
+ </HTML>

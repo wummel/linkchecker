@@ -1,0 +1,11 @@
+--- linkcheckerrc.5.html.orig	2011-06-15 06:38:09.830998286 +0200
++++ linkcheckerrc.5.html	2011-06-15 06:38:18.327310373 +0200
+@@ -487,7 +487,7 @@
+ </DL>
+ <HR>
+ This document was created by
+-<A HREF="/cgi-bin/man/man2html">man2html</A>,
++man2html,
+ using the manual pages.<BR>
+ 
+ </BODY>
