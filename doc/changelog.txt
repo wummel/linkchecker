@@ -12,6 +12,7 @@ Fixes:
   authentication information to base64. Fixes HTTP basic
   authentication.
   Closes: SF bug #3377193
+- checking: Ignore attribute errors when printing the Qt version.
 
 Features:
 - checking: New option --user-agent to set the User-Agent header

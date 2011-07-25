@@ -79,7 +79,7 @@ def get_modules_info ():
         from PyQt4 import QtCore
         lines.append(u"Qt: %s / PyQt: %s" %
                      (QtCore.QT_VERSION_STR, QtCore.PYQT_VERSION_STR))
-    except ImportError:
+    except (ImportError, AttributeError):
         pass
     # modules
     modules = [name for (mod, name) in Modules if fileutil.has_module(mod)]
