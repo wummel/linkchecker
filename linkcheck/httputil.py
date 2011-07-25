@@ -8,6 +8,7 @@ import re
 import zlib
 import urllib
 import urllib2
+import base64
 
 
 ###########################################################################
@@ -109,3 +110,8 @@ def encode_multipart_formdata(fields, files=None):
     body = CRLF.join(L)
     content_type = 'multipart/form-data; boundary=%s' % BOUNDARY
     return content_type, body
+
+
+def encode_base64 (s):
+    """Encode given string in base64, excluding trailing newlines."""
+    return base64.b64encode(s)

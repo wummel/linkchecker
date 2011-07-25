@@ -27,7 +27,8 @@ import socket
 from cStringIO import StringIO
 
 from .. import (log, LOG_CHECK, gzip2 as gzip, strformat, url as urlutil,
-    httplib2 as httplib, LinkCheckerError, configuration, get_link_pat)
+    httplib2 as httplib, LinkCheckerError, configuration, get_link_pat,
+    httputil)
 from . import (internpaturl, proxysupport, httpheaders as headers, urlbase,
     get_url_from)
 # import warnings
@@ -253,10 +254,9 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                        tag=WARN_HTTP_AUTH_UNKNOWN)
                     return
                 if not self.auth:
-                    import base64
                     _user, _password = self.get_user_password()
                     self.auth = "Basic " + \
-                        base64.encodestring("%s:%s" % (_user, _password))
+                        httputil.encode_base64("%s:%s" % (_user, _password))
                     log.debug(LOG_CHECK,
                         "Authentication %s/%s", _user, _password)
                     continue

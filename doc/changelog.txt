@@ -4,9 +4,14 @@ Fixes:
 - checking: HTML parser detects and handles stray "<" characters before
   end tags.
 - checking: Reset content type setting after loading HTTP headers again.
+  Closes: SF bug #3324125
 - checking: Remove query and fragment parts of file URLs. Fixes false
   errors checking sites on local file systems.
   Closes: SF bug #3308753
+- checking: Do not append a stray newline character when encoding
+  authentication information to base64. Fixes HTTP basic
+  authentication.
+  Closes: SF bug #3377193
 
 
 7.0 "Plots with a View" (released 28.5.2011)
