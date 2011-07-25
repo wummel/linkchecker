@@ -6,7 +6,7 @@ Migrating from 6.x to 7.0
 The system configuration file support has been removed.
 There is now only one user-configurable configuration file.
 On Unix systems it is at $HOME/.linkchecker/linkcheckerrc
-and on Windows systems at %HOMEPATH%\.linkchecker/linkcheckerrc
+and on Windows systems at %HOMEPATH%\.linkchecker\linkcheckerrc
 
 Migrating from 6.6 to 6.7
 -------------------------

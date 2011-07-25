@@ -1,7 +1,7 @@
 Installation
 ============
 If you are upgrading from older versions of LinkChecker you should
-also read the upgrading documentation stored in UPGRADING.txt.
+also read the upgrading documentation stored in upgrading.txt.
 
 
 Setup for Windows
@@ -15,8 +15,14 @@ Double click ``LinkChecker-x.y.dmg`` and drop the LinkChecker application
 in your programs folder
 
 
-Setup for Unix/Linux
---------------------
+Setup for GNU/Linux
+-------------------
+On all major Linux distributions (Debian, Mandriva, Redhat, Suse, Ubuntu),
+the ``linkchecker`` package is available for install.
+
+
+Manual setup for Unix systems
+-----------------------------
 First, install the required software.
 
 1. You need a standard GNU development environment with
@@ -42,6 +48,7 @@ First, install the required software.
    The binary "qcollectiongenerator" is used to generate the
    documentation files.
    On Debian or Ubuntu systems, install the package qt4-dev-tools.
+   On Redhat systems, install the package qt-devel.
 
 4. *Optional, for bash-completion:*
    optcomplete Python module from http://furius.ca/optcomplete/
