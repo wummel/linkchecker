@@ -117,6 +117,8 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.urlinput.setModel(self.recent)
         if url:
             self.urlinput.setText(url)
+        elif documents:
+            self.urlinput.setText(documents[0])
 
     def init_app (self):
         """Set window size and position, GUI options and reset status."""

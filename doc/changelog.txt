@@ -14,6 +14,11 @@ Fixes:
   Closes: SF bug #3377193
 - checking: Ignore attribute errors when printing the Qt version.
 
+Changes:
+- gui: Default to last URL checked in GUI (if no URL is given as
+  commandline parameter).
+  Closes: SF bug 3311271
+
 Features:
 - checking: New option --user-agent to set the User-Agent header
   string sent to HTTP web servers. Note that this does not change
