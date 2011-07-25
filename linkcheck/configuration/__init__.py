@@ -190,6 +190,7 @@ class Configuration (dict):
         self["checkcssw3"] = False
         self["scanvirus"] = False
         self["clamavconf"] = clamav.canonical_clamav_conf()
+        self["useragent"] = UserAgent
 
     def init_logging (self, status_logger, debug=None, handler=None):
         """

@@ -227,6 +227,11 @@ requests to the same host. Default is no pause between requests.
 Specify an NNTP server for \fBnews:\fP links. Default is the
 environment variable \fBNNTP_SERVER\fP. If no host is given,
 only the syntax of the link is checked.
+.TP
+\fB\-\-user\-agent=\fP\fISTRING\fP
+Specify the User-Agent string to send to the HTTP server, for example
+"Mozilla/4.0". The default is "LinkChecker/X.Y" where X.Y is the current
+version of LinkChecker.
 
 .SH "CONFIGURATION FILES"
 Configuration files can specify all options above. They can also

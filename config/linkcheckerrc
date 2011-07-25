@@ -148,6 +148,8 @@
 #clamavconf=/etc/clamav/clamd.conf
 # Send and store cookies
 #cookies=1
+# User-Agent header string to send to HTTP web servers
+#useragent=Mozilla/4.0
 
 
 ##################### filtering options ##########################

@@ -13,6 +13,11 @@ Fixes:
   authentication.
   Closes: SF bug #3377193
 
+Features:
+- checking: New option --user-agent to set the User-Agent header
+  string sent to HTTP web servers. Note that this does not change
+  or prevent robots.txt checking.
+
 
 7.0 "Plots with a View" (released 28.5.2011)
 

@@ -27,8 +27,7 @@ import socket
 from cStringIO import StringIO
 
 from .. import (log, LOG_CHECK, gzip2 as gzip, strformat, url as urlutil,
-    httplib2 as httplib, LinkCheckerError, configuration, get_link_pat,
-    httputil)
+    httplib2 as httplib, LinkCheckerError, get_link_pat, httputil)
 from . import (internpaturl, proxysupport, httpheaders as headers, urlbase,
     get_url_from)
 # import warnings
@@ -542,7 +541,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if (self.parent_url and
             self.parent_url.startswith(('http://', 'https://'))):
             self.url_connection.putheader("Referer", self.parent_url)
-        self.url_connection.putheader("User-Agent", configuration.UserAgent)
+        self.url_connection.putheader("User-Agent",
+            self.aggregate.config["useragent"])
         self.url_connection.putheader("Accept-Encoding",
                                   "gzip;q=1.0, deflate;q=0.9, identity;q=0.5")
         if self.aggregate.config['sendcookies']:

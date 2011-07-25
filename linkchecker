@@ -502,6 +502,12 @@ group.add_option("-N", "--nntp-server", type="string", dest="nntpserver",
 """Specify an NNTP server for 'news:...' links. Default is the
 environment variable NNTP_SERVER. If no host is given,
 only the syntax of the link is checked."""))
+group.add_option("--user-agent", type="string", dest="useragent",
+                 metavar="STRING",
+                 help=_(
+"""Specify the User-Agent string to send to the HTTP server, for example
+"Mozilla/4.0". The default is "LinkChecker/X.Y" where X.Y is the current
+version of LinkChecker."""))
 optparser.add_option_group(group)
 
 ################# auto completion #####################
@@ -724,6 +730,8 @@ for entry in config["authentication"]:
         msg = _("Enter LinkChecker password for user %(user)s" \
                 " at %(strpattern)s:") % attrs
         entry["password"] = getpass.getpass(console.encode(msg))
+if options.useragent is not None:
+    config["useragent"] = options.useragent
 # now sanitize the configuration
 config.sanitize()
 
