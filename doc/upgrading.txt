@@ -1,6 +1,11 @@
 Upgrading
 =========
 
+Migrating from 7.0 to 7.1
+-------------------------
+The FastCGI module lc.fcgi has been removed.
+The lc.cgi module can be used instead.
+
 Migrating from 6.x to 7.0
 -------------------------
 The system configuration file support has been removed.

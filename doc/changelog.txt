@@ -18,6 +18,8 @@ Changes:
 - gui: Default to last URL checked in GUI (if no URL is given as
   commandline parameter).
   Closes: SF bug 3311271
+- cgi: Removed FastCGI module. The normal CGI module should be
+  sufficient.
 
 Features:
 - checking: New option --user-agent to set the User-Agent header

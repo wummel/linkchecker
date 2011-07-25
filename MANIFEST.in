@@ -4,7 +4,7 @@ include config/linkchecker-completion config/create.sql
 include config/linkcheckerrc config/logging.conf
 include config/reindent.py config/linkchecker.apache2.conf install-rpm.sh
 include linkchecker.freshmeat
-include cgi-bin/lc.cgi cgi-bin/lc.fcgi cgi-bin/README
+include cgi-bin/lc.cgi cgi-bin/README
 include Makefile
 include debian/rules
 include debian/changelog

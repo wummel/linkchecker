@@ -532,7 +532,6 @@ data_files = [
          'cgi-bin/lconline/lc_cgi.html.de',
          'cgi-bin/lconline/check.js',
          'cgi-bin/lc.cgi',
-         'cgi-bin/lc.fcgi',
          'config/linkchecker.apache2.conf',
         ]),
 ]
