@@ -17,7 +17,7 @@ Fixes:
 Changes:
 - gui: Default to last URL checked in GUI (if no URL is given as
   commandline parameter).
-  Closes: SF bug 3311271
+  Closes: SF bug #3311271
 - cgi: Removed FastCGI module. The normal CGI module should be
   sufficient.
 
@@ -25,6 +25,7 @@ Features:
 - checking: New option --user-agent to set the User-Agent header
   string sent to HTTP web servers. Note that this does not change
   or prevent robots.txt checking.
+  Closes: SF bug #3325026
 
 
 7.0 "Plots with a View" (released 28.5.2011)
