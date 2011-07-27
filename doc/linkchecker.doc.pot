@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-07-27 20:36+0300\n"
+"POT-Creation-Date: 2011-07-27 20:49+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1393,7 +1393,7 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:532 en/linkcheckerrc.5:431 en/linkchecker-gui.1:11
+#: en/linkchecker.1:532 en/linkcheckerrc.5:514 en/linkchecker-gui.1:11
 #, no-wrap
 msgid "SEE ALSO"
 msgstr ""
@@ -1404,24 +1404,24 @@ msgid "B<linkcheckerrc>(5)"
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:535 en/linkcheckerrc.5:434 en/linkchecker-gui.1:14
+#: en/linkchecker.1:535 en/linkcheckerrc.5:517 en/linkchecker-gui.1:14
 #, no-wrap
 msgid "AUTHOR"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:537 en/linkcheckerrc.5:436 en/linkchecker-gui.1:16
+#: en/linkchecker.1:537 en/linkcheckerrc.5:519 en/linkchecker-gui.1:16
 msgid "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:538 en/linkcheckerrc.5:437 en/linkchecker-gui.1:17
+#: en/linkchecker.1:538 en/linkcheckerrc.5:520 en/linkchecker-gui.1:17
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:539 en/linkcheckerrc.5:438
+#: en/linkchecker.1:539 en/linkcheckerrc.5:521
 msgid "Copyright \\(co 2000-2011 Bastian Kleineidam"
 msgstr ""
 
@@ -1683,8 +1683,8 @@ msgstr ""
 #. type: Plain text
 #: en/linkcheckerrc.5:118
 msgid ""
-"Ignore the comma-separated list of warnings. See B<linkchecker -h> or the "
-"B<linkchecker(1)> man page for the list of recognized warnings."
+"Ignore the comma-separated list of warnings. See B<WARNNIGS> for the list of "
+"supported warnings."
 msgstr ""
 
 #. type: TP
@@ -2375,11 +2375,310 @@ msgstr ""
 #, no-wrap
 msgid ""
 " [filtering]\n"
-" ignorewarnings=anchor-not-found\n"
+" ignorewarnings=http-moved-permanent\n"
+msgstr ""
+
+#. type: SH
+#: en/linkcheckerrc.5:431
+#, no-wrap
+msgid "WARNINGS"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:433
+#: en/linkcheckerrc.5:434
+msgid ""
+"The following warnings are recognized in the 'ignorewarnings' config file "
+"entry:"
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:435
+#, no-wrap
+msgid "B<file-missing-slash>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:438
+msgid "The file: URL is missing a trailing slash."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:438
+#, no-wrap
+msgid "B<file-system-path>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:441
+msgid "The file: path is not the same as the system specific path."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:441
+#, no-wrap
+msgid "B<ftp-missing-slash>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:444
+msgid "The ftp: URL is missing a trailing slash."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:444
+#, no-wrap
+msgid "B<http-auth-unknonwn>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:447
+msgid "Unsupported HTTP authentication method."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:447
+#, no-wrap
+msgid "B<http-cookie-store-error>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:450
+msgid "An error occurred while storing a cookie."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:450
+#, no-wrap
+msgid "B<http-decompress-error>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:453
+msgid "An error occurred while decompressing the URL content."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:453
+#, no-wrap
+msgid "B<http-empty-content>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:456
+msgid "The URL had no content."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:456
+#, no-wrap
+msgid "B<http-moved-permanent>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:459
+msgid "The URL has moved permanently."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:459
+#, no-wrap
+msgid "B<http-robots-denied>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:462
+msgid "The http: URL checking has been denied."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:462
+#, no-wrap
+msgid "B<http-unsupported-encoding>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:465
+msgid "The URL content is encoded with an unknown encoding."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:465
+#, no-wrap
+msgid "B<http-wrong-redirect>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:468
+msgid "The URL has been redirected to an URL of a different type."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:468
+#, no-wrap
+msgid "B<ignore-url>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:471
+msgid "The URL has been ignored."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:471
+#, no-wrap
+msgid "B<mail-no-connection>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:474
+msgid "No connection to a MX host could be established."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:474
+#, no-wrap
+msgid "B<mail-no-mx-host>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:477
+msgid "The mail MX host could not be found."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:477
+#, no-wrap
+msgid "B<mail-unverified-address>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:480
+msgid "The mailto: address could not be verified."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:480
+#, no-wrap
+msgid "B<nntp-no-newsgroup>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:483
+msgid "The NNTP newsgroup could not be found."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:483
+#, no-wrap
+msgid "B<nntp-no-server>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:486
+msgid "No NNTP server was found."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:486
+#, no-wrap
+msgid "B<url-anchor-not-found>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:489
+msgid "URL anchor was not found."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:489
+#, no-wrap
+msgid "B<url-content-size-unequal>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:492
+msgid "The URL content size and download size are unequal."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:492
+#, no-wrap
+msgid "B<url-content-size-zero>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:495
+msgid "The URL content size is zero."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:495
+#, no-wrap
+msgid "B<url-content-too-large>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:498
+msgid "The URL content size is too large."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:498
+#, no-wrap
+msgid "B<url-effective-url>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:501
+msgid "The effective URL is different from the original."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:501
+#, no-wrap
+msgid "B<url-error-getting-content>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:504
+msgid "Could not get the content of the URL."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:504
+#, no-wrap
+msgid "B<url-obfuscated-ip>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:507
+msgid "The IP is obfuscated."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:507
+#, no-wrap
+msgid "B<url-warnregex-found>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:510
+msgid "The warning regular expression was found in the URL contents."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:510
+#, no-wrap
+msgid "B<url-whitespace>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:513
+msgid "The URL contains leading or trailing whitespace."
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:516
 msgid "linkchecker(1)"
 msgstr ""
 

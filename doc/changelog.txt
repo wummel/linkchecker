@@ -20,6 +20,9 @@ Changes:
   Closes: SF bug #3311271
 - cgi: Removed FastCGI module. The normal CGI module should be
   sufficient.
+- doc: Document the list of supported warnings in the linkcheckerrc(5)
+  man page.
+  Closes: SF bug #3340449
 
 Features:
 - checking: New option --user-agent to set the User-Agent header

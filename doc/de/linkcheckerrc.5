@@ -120,8 +120,8 @@ Rekursion durch.
 Kommandozeilenoption: \fB\-\-no\-follow\-url\fP
 .TP 
 \fBignorewarnings=\fP\fINAME\fP[\fB,\fP\fINAME\fP...]
-Ignoriere die kommagetrennte Liste von Warnungen. Siehe \fBlinkchecker \-h\fP
-oder die \fBlinkchecker(1)\fP Hilfeseite für die Liste von erkannten Warnungen.
+Ignoriere die kommagetrennte Liste von Warnungen. Siehe \fBWARNUNGEN\fP für die
+Liste von erkannten Warnungen.
 .br
 Kommandozeilenoption: keine
 .TP 
@@ -430,8 +430,91 @@ ignoriert, müssen aber eingerückt sein.
  threads=5
 
  [filtering]
- ignorewarnings=anchor\-not\-found
+ ignorewarnings=http\-moved\-permanent
 .
+.SH WARNUNGEN
+The following warnings are recognized in the 'ignorewarnings' config file
+entry:
+.br
+.TP 
+\fBfile\-missing\-slash\fP
+The file: URL is missing a trailing slash.
+.TP 
+\fBfile\-system\-path\fP
+The file: path is not the same as the system specific path.
+.TP 
+\fBftp\-missing\-slash\fP
+The ftp: URL is missing a trailing slash.
+.TP 
+\fBhttp\-auth\-unknonwn\fP
+Unsupported HTTP authentication method.
+.TP 
+\fBhttp\-cookie\-store\-error\fP
+An error occurred while storing a cookie.
+.TP 
+\fBhttp\-decompress\-error\fP
+An error occurred while decompressing the URL content.
+.TP 
+\fBhttp\-empty\-content\fP
+The URL had no content.
+.TP 
+\fBhttp\-moved\-permanent\fP
+The URL has moved permanently.
+.TP 
+\fBhttp\-robots\-denied\fP
+The http: URL checking has been denied.
+.TP 
+\fBhttp\-unsupported\-encoding\fP
+The URL content is encoded with an unknown encoding.
+.TP 
+\fBhttp\-wrong\-redirect\fP
+The URL has been redirected to an URL of a different type.
+.TP 
+\fBignore\-url\fP
+The URL has been ignored.
+.TP 
+\fBmail\-no\-connection\fP
+No connection to a MX host could be established.
+.TP 
+\fBmail\-no\-mx\-host\fP
+The mail MX host could not be found.
+.TP 
+\fBmail\-unverified\-address\fP
+The mailto: address could not be verified.
+.TP 
+\fBnntp\-no\-newsgroup\fP
+The NNTP newsgroup could not be found.
+.TP 
+\fBnntp\-no\-server\fP
+No NNTP server was found.
+.TP 
+\fBurl\-anchor\-not\-found\fP
+URL anchor was not found.
+.TP 
+\fBurl\-content\-size\-unequal\fP
+The URL content size and download size are unequal.
+.TP 
+\fBurl\-content\-size\-zero\fP
+The URL content size is zero.
+.TP 
+\fBurl\-content\-too\-large\fP
+The URL content size is too large.
+.TP 
+\fBurl\-effective\-url\fP
+The effective URL is different from the original.
+.TP 
+\fBurl\-error\-getting\-content\fP
+Could not get the content of the URL.
+.TP 
+\fBurl\-obfuscated\-ip\fP
+The IP is obfuscated.
+.TP 
+\fBurl\-warnregex\-found\fP
+The warning regular expression was found in the URL contents.
+.TP 
+\fBurl\-whitespace\fP
+The URL contains leading or trailing whitespace.
+
 .SH "SIEHE AUCH"
 BEISPIEL
 .
