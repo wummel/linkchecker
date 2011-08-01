@@ -305,12 +305,6 @@ class HttpCookie (object):
                   for k, v in self.attributes.items() if k != "version"])
         return "; ".join(parts)
 
-    def __eq__ (self, other):
-        """Compare equality of cookie."""
-        return isinstance(other, HttpCookie) and \
-               self.server_header_value() == other.server_header_value()
-
-
 class NetscapeCookie (HttpCookie):
     """Parses RFC 2109 (Netscape) cookies."""
 
@@ -322,6 +316,23 @@ class NetscapeCookie (HttpCookie):
     def server_header_name (self):
         """Return "Set-Cookie" as server header name."""
         return "Set-Cookie"
+
+    def __eq__ (self, other):
+        """Compare equality of cookie."""
+        return (isinstance(other, NetscapeCookie) and
+            self.name.lower() == other.name.lower() and
+            self.attributes['domain'] == other.attributes['domain'] and
+            self.attributes['path'] == other.attributes['path'])
+
+    def __hash__ (self):
+        """Cookie hash value"""
+        data = (
+          self.name.lower(),
+          self.attributes['domain'],
+          self.attributes['path'],
+        )
+        return hash(data)
+
 
 
 class Rfc2965Cookie (HttpCookie):
@@ -348,6 +359,23 @@ class Rfc2965Cookie (HttpCookie):
         if key == "port":
             return quote(value, LegalChars="")
         return quote(value)
+
+    def __eq__ (self, other):
+        """Compare equality of cookie."""
+        return (isinstance(other, Rfc2965Cookie) and
+            self.name.lower() == other.name.lower() and
+            self.attributes['domain'].lower() ==
+                other.attributes['domain'].lower() and
+            self.attributes['path'] == other.attributes['path'])
+
+    def __hash__ (self):
+        """Cookie hash value"""
+        data = (
+          self.name.lower(),
+          self.attributes['domain'].lower(),
+          self.attributes['path'],
+        )
+        return hash(data)
 
 
 def from_file (filename):

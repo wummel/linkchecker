@@ -43,17 +43,25 @@ class CookieJar (object):
         for h in headers.getallmatchingheaders("Set-Cookie"):
             # RFC 2109 (Netscape) cookie type
             try:
-                jar.add(cookies.NetscapeCookie(h, scheme, host, path))
-            except cookies.CookieError:
+                cookie = cookies.NetscapeCookie(h, scheme, host, path)
+                if cookie in jar:
+                    jar.remove(cookie)
+                if not cookie.is_expired():
+                    jar.add(cookie)
+            except cookies.CookieError, msg:
                 log.debug(LOG_CACHE,
-               "Invalid cookie header for %s:%s%s: %r", scheme, host, path, h)
+              "Invalid cookie %r for %s:%s%s: %s", h, scheme, host, path, msg)
         for h in headers.getallmatchingheaders("Set-Cookie2"):
             # RFC 2965 cookie type
             try:
-                jar.add(cookies.Rfc2965Cookie(h, scheme, host, path))
-            except cookies.CookieError:
+                cookie = cookies.Rfc2965Cookie(h, scheme, host, path)
+                if cookie in jar:
+                    jar.remove(cookie)
+                if not cookie.is_expired():
+                    jar.add(cookie)
+            except cookies.CookieError, msg:
                 log.debug(LOG_CACHE,
-              "Invalid cookie2 header for %s:%s%s: %r", scheme, host, path, h)
+             "Invalid cookie2 %r for %s:%s%s: %s", h, scheme, host, path, msg)
         self.cache[host] = jar
         return jar
 

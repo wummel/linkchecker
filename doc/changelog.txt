@@ -13,6 +13,8 @@ Fixes:
   authentication.
   Closes: SF bug #3377193
 - checking: Ignore attribute errors when printing the Qt version.
+- checking: Update cookie values instead of adding duplicate entries.
+  Closes: SF bug #3373910
 
 Changes:
 - gui: Default to last URL checked in GUI (if no URL is given as

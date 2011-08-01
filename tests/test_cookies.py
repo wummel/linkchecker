@@ -113,6 +113,36 @@ class TestCookies (unittest.TestCase):
         self.assertTrue(cookie.is_valid_for("http", "www.example.org", 80, "/"))
         self.assertFalse(cookie.is_valid_for("http", "www.b.example.org", 80, "/"))
 
+    def test_netscape_cookie7 (self):
+        data1 = (
+            ("Foo", "Bar"),
+            ("Domain", "example.org"),
+            ("Path", "/"),
+        )
+        data2 = (
+            ("FOO", "Baz"),
+            ("Domain", "example.org"),
+            ("Path", "/"),
+        )
+        data3 = (
+            ("FOOl", "Baz"),
+            ("Domain", "example.org"),
+            ("Path", "/"),
+        )
+        # note: values are without quotes
+        value1 = "; ".join('%s=%s' % (key, value) for key, value in data1)
+        value2 = "; ".join('%s=%s' % (key, value) for key, value in data2)
+        value3 = "; ".join('%s=%s' % (key, value) for key, value in data3)
+        scheme = "http"
+        host = "example.org"
+        path = "/"
+        cookie1 = linkcheck.cookies.NetscapeCookie(value1, scheme, host, path)
+        cookie2 = linkcheck.cookies.NetscapeCookie(value2, scheme, host, path)
+        cookie3 = linkcheck.cookies.NetscapeCookie(value3, scheme, host, path)
+        self.assertEqual(cookie1, cookie2)
+        self.assertNotEqual(cookie1, cookie3)
+        self.assertNotEqual(cookie2, cookie3)
+
     def test_rfc_cookie1 (self):
         data = (
             ("Foo", "Bar"),
@@ -168,6 +198,36 @@ class TestCookies (unittest.TestCase):
         path = "/"
         cookie = linkcheck.cookies.Rfc2965Cookie(value, scheme, host, path)
         self.assertTrue(cookie.is_valid_for("http", host, 100, "/"))
+
+    def test_rfc_cookie5 (self):
+        data1 = (
+            ("Foo", "Bar"),
+            ("Domain", "example.org"),
+            ("Path", "/"),
+        )
+        data2 = (
+            ("FOO", "Baz"),
+            ("Domain", "EXAMPLE.org"),
+            ("Path", "/"),
+        )
+        data3 = (
+            ("FOOl", "Baz"),
+            ("Domain", "EXAMPLE.org"),
+            ("Path", "/"),
+        )
+        # note: values are without quotes
+        value1 = "; ".join('%s=%s' % (key, value) for key, value in data1)
+        value2 = "; ".join('%s=%s' % (key, value) for key, value in data2)
+        value3 = "; ".join('%s=%s' % (key, value) for key, value in data3)
+        scheme = "http"
+        host = "example.org"
+        path = "/"
+        cookie1 = linkcheck.cookies.Rfc2965Cookie(value1, scheme, host, path)
+        cookie2 = linkcheck.cookies.Rfc2965Cookie(value2, scheme, host, path)
+        cookie3 = linkcheck.cookies.Rfc2965Cookie(value3, scheme, host, path)
+        self.assertEqual(cookie1, cookie2)
+        self.assertNotEqual(cookie1, cookie3)
+        self.assertNotEqual(cookie2, cookie3)
 
     def test_cookie_parse1 (self):
         lines = [
