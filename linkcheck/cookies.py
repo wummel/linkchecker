@@ -188,10 +188,6 @@ class HttpCookie (object):
             return scheme == "https"
         return True
 
-    def client_header_name (self):
-        """Return "Cookie" as client header name."""
-        return "Cookie"
-
     def set_attribute (self, key, value):
         """Helper method to set attribute values. Called when parsing
         cookie data.
