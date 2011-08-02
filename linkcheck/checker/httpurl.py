@@ -546,16 +546,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         self.url_connection.putheader("Accept-Encoding",
                                   "gzip;q=1.0, deflate;q=0.9, identity;q=0.5")
         if self.aggregate.config['sendcookies']:
-            scheme = self.urlparts[0]
-            host = self.urlparts[1]
-            port = urlutil.default_ports.get(scheme, 80)
-            host, port = urllib.splitnport(host, port)
-            path = self.urlparts[2]
-            self.cookies = self.aggregate.cookies.get(scheme, host, port, path)
-            for c in self.cookies:
-                name = c.client_header_name()
-                value = c.client_header_value()
-                self.url_connection.putheader(name, value)
+            self.send_cookies()
         self.url_connection.endheaders()
         response = self.url_connection.getresponse(True)
         self.timeout = headers.http_timeout(response)
@@ -580,6 +571,19 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if response.status in httplib.responses:
             response.reason = httplib.responses[response.status]
         return response
+
+    def send_cookies (self):
+        """Add cookie headers to request."""
+        scheme = self.urlparts[0]
+        host = self.urlparts[1]
+        port = urlutil.default_ports.get(scheme, 80)
+        host, port = urllib.splitnport(host, port)
+        path = self.urlparts[2]
+        self.cookies = self.aggregate.cookies.get(scheme, host, port, path)
+        for c in self.cookies:
+            name = c.client_header_name()
+            value = c.client_header_value()
+            self.url_connection.putheader(name, value)
 
     def get_http_object (self, host, scheme):
         """
