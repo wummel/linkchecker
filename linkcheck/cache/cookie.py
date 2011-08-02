@@ -67,10 +67,14 @@ class CookieJar (object):
 
     @synchronized(_lock)
     def get (self, scheme, host, port, path):
-        """Cookie cache getter function."""
+        """Cookie cache getter function. Return ordered list of cookies
+        which match the given host, port and path.
+        Cookies with more specific paths are listed first."""
         jar = self.cache.setdefault(host, set())
         cookies = [x for x in jar if x.check_expired() and \
                    x.is_valid_for(scheme, host, port, path)]
+        # order cookies with more specific (ie. longer) paths first
+        cookies.sort(key=lambda c: len(c.attributes['path']), reverse=True)
         log.debug(LOG_CACHE, "Found %d cookies for host %r path %r",
                   len(cookies), host, path)
         return cookies
