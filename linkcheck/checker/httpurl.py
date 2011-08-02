@@ -580,10 +580,28 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         host, port = urllib.splitnport(host, port)
         path = self.urlparts[2]
         self.cookies = self.aggregate.cookies.get(scheme, host, port, path)
+        if not self.cookies:
+            return
+        # add one cookie header with all cookie data
+        # this is limited by maximum header length
+        headername = "Cookie"
+        headervalue = ""
+        max_value_len = headers.MAX_HEADER_BYTES - len(headername) - 2
         for c in self.cookies:
-            name = c.client_header_name()
-            value = c.client_header_value()
-            self.url_connection.putheader(name, value)
+            cookievalue = c.client_header_value()
+            if "version" in c.attributes:
+                # add separate header for explicit versioned cookie
+                if headervalue:
+                    self.url_connection.putheader(headername, headervalue)
+                self.url_connection.putheader(headername, cookievalue)
+                headervalue = ""
+                continue
+            if (len(headervalue) + len(cookievalue)) < max_value_len:
+                headervalue += cookievalue
+            else:
+                log.debug(LOG_CHECK, "Discard too-long cookie %r", cookievalue)
+        if headervalue:
+            self.url_connection.putheader(headername, headervalue)
 
     def get_http_object (self, host, scheme):
         """

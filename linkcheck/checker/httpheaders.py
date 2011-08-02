@@ -20,6 +20,8 @@ Helper functions dealing with HTTP headers.
 
 DEFAULT_TIMEOUT_SECS = 300
 
+MAX_HEADER_BYTES = 8*1024
+
 def has_header_value (headers, name, value):
     """
     Look in headers for a specific header name and value.
