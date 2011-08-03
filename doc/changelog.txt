@@ -15,6 +15,8 @@ Fixes:
 - checking: Ignore attribute errors when printing the Qt version.
 - checking: Update cookie values instead of adding duplicate entries.
   Closes: SF bug #3373910
+- checking: Send cookies in as few headers as possible.
+  Closes: SF bug #3346972
 
 Changes:
 - gui: Default to last URL checked in GUI (if no URL is given as
