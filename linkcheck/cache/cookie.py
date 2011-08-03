@@ -39,6 +39,7 @@ class CookieJar (object):
     @synchronized(_lock)
     def add (self, headers, scheme, host, path):
         """Parse cookie values, add to cache."""
+        errors = []
         jar = self.cache.setdefault(host, set())
         for h in headers.getallmatchingheaders("Set-Cookie"):
             # RFC 2109 (Netscape) cookie type
@@ -49,8 +50,9 @@ class CookieJar (object):
                 if not cookie.is_expired():
                     jar.add(cookie)
             except cookies.CookieError, msg:
-                log.debug(LOG_CACHE,
-              "Invalid cookie %r for %s:%s%s: %s", h, scheme, host, path, msg)
+                errmsg = "Invalid cookie %r for %s:%s%s: %s" % (
+                         h, scheme, host, path, msg)
+                errors.append(errmsg)
         for h in headers.getallmatchingheaders("Set-Cookie2"):
             # RFC 2965 cookie type
             try:
@@ -60,10 +62,11 @@ class CookieJar (object):
                 if not cookie.is_expired():
                     jar.add(cookie)
             except cookies.CookieError, msg:
-                log.debug(LOG_CACHE,
-             "Invalid cookie2 %r for %s:%s%s: %s", h, scheme, host, path, msg)
+                errmsg = "Invalid cookie2 %r for %s:%s%s: %s" % (
+                         h, scheme, host, path, msg)
+                errors.append(errmsg)
         self.cache[host] = jar
-        return jar
+        return errors
 
     @synchronized(_lock)
     def get (self, scheme, host, port, path):

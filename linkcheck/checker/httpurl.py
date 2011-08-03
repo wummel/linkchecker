@@ -466,12 +466,13 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 for c in self.cookies:
                     self.add_info(_("Sent cookie: %(cookie)s.") %
                                   {"cookie": c})
-                jar = self.aggregate.cookies.add(self.headers, self.urlparts[0],
-                                                 self.urlparts[1], self.urlparts[2])
-                if not jar:
-                    self.add_warning(_("Could not store cookies from headers: %(headers)s.") %
-                                     {'headers': str(self.headers)},
-                                     tag=WARN_HTTP_COOKIE_STORE_ERROR)
+                errors = self.aggregate.cookies.add(self.headers,
+                    self.urlparts[0], self.urlparts[1], self.urlparts[2])
+                if errors:
+                    self.add_warning(
+                      _("Could not store cookies from headers: %(error)s.") %
+                       {'error': "\n".join(errors)},
+                       tag=WARN_HTTP_COOKIE_STORE_ERROR)
             if response.status >= 200:
                 self.set_result(u"%r %s" % (response.status, response.reason))
             else:
