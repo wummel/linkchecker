@@ -17,6 +17,8 @@ Fixes:
   Closes: SF bug #3373910
 - checking: Send cookies in as few headers as possible.
   Closes: SF bug #3346972
+- checking: Send all domain-matching cookies that apply.
+  Closes: SF bug #3375899
 
 Changes:
 - gui: Default to last URL checked in GUI (if no URL is given as

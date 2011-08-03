@@ -25,30 +25,25 @@ from ..lock import get_lock
 _lock = get_lock("cookie")
 
 class CookieJar (object):
-    """
-    Cookie storage, implementing the default cookie handling policy for
-    LinkChecker.
-    """
+    """Cookie storage, implementing the cookie handling policy."""
 
     def __init__ (self):
-        """Initialize empty per-host cookie cache."""
-        # mapping { hostname -> Jar implementation }
-        # with Jar implemenations coming from the cookies module
-        self.cache = {}
+        """Initialize empty cookie cache."""
+        # Store all cookies in a set.
+        self.cache = set()
 
     @synchronized(_lock)
     def add (self, headers, scheme, host, path):
         """Parse cookie values, add to cache."""
         errors = []
-        jar = self.cache.setdefault(host, set())
         for h in headers.getallmatchingheaders("Set-Cookie"):
             # RFC 2109 (Netscape) cookie type
             try:
                 cookie = cookies.NetscapeCookie(h, scheme, host, path)
-                if cookie in jar:
-                    jar.remove(cookie)
+                if cookie in self.cache:
+                    self.cache.remove(cookie)
                 if not cookie.is_expired():
-                    jar.add(cookie)
+                    self.cache.add(cookie)
             except cookies.CookieError, msg:
                 errmsg = "Invalid cookie %r for %s:%s%s: %s" % (
                          h, scheme, host, path, msg)
@@ -57,15 +52,14 @@ class CookieJar (object):
             # RFC 2965 cookie type
             try:
                 cookie = cookies.Rfc2965Cookie(h, scheme, host, path)
-                if cookie in jar:
-                    jar.remove(cookie)
+                if cookie in self.cache:
+                    self.cache.remove(cookie)
                 if not cookie.is_expired():
-                    jar.add(cookie)
+                    self.cache.add(cookie)
             except cookies.CookieError, msg:
                 errmsg = "Invalid cookie2 %r for %s:%s%s: %s" % (
                          h, scheme, host, path, msg)
                 errors.append(errmsg)
-        self.cache[host] = jar
         return errors
 
     @synchronized(_lock)
@@ -73,8 +67,7 @@ class CookieJar (object):
         """Cookie cache getter function. Return ordered list of cookies
         which match the given host, port and path.
         Cookies with more specific paths are listed first."""
-        jar = self.cache.setdefault(host, set())
-        cookies = [x for x in jar if x.check_expired() and \
+        cookies = [x for x in self.cache if x.check_expired() and \
                    x.is_valid_for(scheme, host, port, path)]
         # order cookies with more specific (ie. longer) paths first
         cookies.sort(key=lambda c: len(c.attributes['path']), reverse=True)
