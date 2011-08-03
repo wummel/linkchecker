@@ -224,7 +224,7 @@ class HttpCookie (object):
 
     def parse (self, text, patt=CookiePattern):
         """Parse cookie data."""
-        text = strformat.ascii_safe(text)
+        text = strformat.ascii_safe(text.rstrip('\r\n'))
         # reset values
         self.name = None
         self.value = None
