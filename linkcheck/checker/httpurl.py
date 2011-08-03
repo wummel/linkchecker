@@ -464,8 +464,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             # store cookies for valid links
             if self.aggregate.config['storecookies']:
                 for c in self.cookies:
-                    self.add_info(_("Sent cookie: %(cookie)s.") %
-                                  {"cookie": c})
+                    self.add_info(_("Sent Cookie: %(cookie)s.") %
+                                  {"cookie": c.client_header_value()})
                 errors = self.aggregate.cookies.add(self.headers,
                     self.urlparts[0], self.urlparts[1], self.urlparts[2])
                 if errors:
