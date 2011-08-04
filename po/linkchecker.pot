@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2011-08-03 21:22+0200\n"
+"POT-Creation-Date: 2011-08-04 20:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -137,11 +137,11 @@ msgid "Start checking the given URL."
 msgstr ""
 
 #: ../linkcheck/gui/linkchecker_ui_main.py:768
-msgid "Status:"
+msgid "Info:"
 msgstr ""
 
 #: ../linkcheck/gui/linkchecker_ui_main.py:769
-msgid "O"
+msgid "-"
 msgstr ""
 
 #: ../linkcheck/gui/linkchecker_ui_main.py:770

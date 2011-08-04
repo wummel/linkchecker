@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2011-08-03 21:22+0200\n"
-"PO-Revision-Date: 2011-08-04 19:27+0100\n"
+"POT-Creation-Date: 2011-08-04 20:34+0200\n"
+"PO-Revision-Date: 2011-08-04 20:34+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "Language: \n"
@@ -130,12 +130,12 @@ msgid "Start checking the given URL."
 msgstr "Beginne, die gegebene URL zu Prüfen"
 
 #: ../linkcheck/gui/linkchecker_ui_main.py:768
-msgid "Status:"
-msgstr "Status:"
+msgid "Info:"
+msgstr "Info:"
 
 #: ../linkcheck/gui/linkchecker_ui_main.py:769
-msgid "O"
-msgstr "O"
+msgid "-"
+msgstr "-"
 
 #: ../linkcheck/gui/linkchecker_ui_main.py:770
 msgid "URL properties"
@@ -2364,6 +2364,12 @@ msgstr "%s Option erfordert %d Argumente"
 #, python-format
 msgid "%s option does not take a value"
 msgstr "%s Option nimmt kein Wert"
+
+#~ msgid "Status:"
+#~ msgstr "Status:"
+
+#~ msgid "O"
+#~ msgstr "O"
 
 #~ msgid "Insert Firefox bookmark file"
 #~ msgstr "Firefox Favoritendatei einfügen"

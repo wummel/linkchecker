@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Sat May 28 07:42:18 2011
+# Created: Thu Aug  4 20:33:50 2011
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -677,7 +677,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addLayout(self.horizontalLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 782, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 782, 20))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuEdit = QtGui.QMenu(self.menubar)
         self.menuEdit.setObjectName(_fromUtf8("menuEdit"))
@@ -765,8 +765,8 @@ class Ui_MainWindow(object):
         self.label_queued.setText(_("0"))
         self.label_28.setText(_("Checked:"))
         self.label_checked.setText(_("0"))
-        self.label_15.setText(_("Status:"))
-        self.label_busy.setText(_("O"))
+        self.label_15.setText(_("Info:"))
+        self.label_busy.setText(_("-"))
         self.url_properties.setTitle(_("URL properties"))
         self.label_2.setText(_("URL"))
         self.label_3.setText(_("Name"))
