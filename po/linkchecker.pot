@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2011-07-25 20:30+0200\n"
+"POT-Creation-Date: 2011-08-03 21:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -482,28 +482,28 @@ msgstr ""
 msgid ", col %d"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:131 ../linkcheck/gui/__init__.py:410
+#: ../linkcheck/gui/__init__.py:133 ../linkcheck/gui/__init__.py:412
 msgid "Ready."
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:158
+#: ../linkcheck/gui/__init__.py:160
 msgid "Check finished."
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:228
+#: ../linkcheck/gui/__init__.py:230
 msgid "Start"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:252
+#: ../linkcheck/gui/__init__.py:254
 msgid "Stop"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:300
+#: ../linkcheck/gui/__init__.py:302
 #, python-format
 msgid "About %(appname)s"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:301
+#: ../linkcheck/gui/__init__.py:303
 #, python-format
 msgid ""
 "<qt><center>\n"
@@ -520,32 +520,32 @@ msgid ""
 "</center></qt>"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:346
+#: ../linkcheck/gui/__init__.py:348
 msgid "Closing pending connections..."
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:380
+#: ../linkcheck/gui/__init__.py:382
 msgid "Error, empty URL"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:382
+#: ../linkcheck/gui/__init__.py:384
 #, python-format
 msgid "Checking '%s'."
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:387
+#: ../linkcheck/gui/__init__.py:389
 #, python-format
 msgid "Error, invalid URL `%s'."
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:407
+#: ../linkcheck/gui/__init__.py:409
 #, python-format
 msgid "%d URL selected."
 msgid_plural "%d URLs selected"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/gui/__init__.py:487
+#: ../linkcheck/gui/__init__.py:489
 msgid "LinkChecker internal error"
 msgstr ""
 
@@ -942,7 +942,7 @@ msgid ""
 msgstr ""
 
 #: ../linkcheck/checker/fileurl.py:190 ../linkcheck/checker/urlbase.py:695
-#: ../linkcheck/checker/httpurl.py:634
+#: ../linkcheck/checker/httpurl.py:656
 msgid "File size too large"
 msgstr ""
 
@@ -1353,95 +1353,95 @@ msgstr ""
 msgid "Found MX mail host %(host)s"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:137
+#: ../linkcheck/checker/httpurl.py:136
 msgid "Access denied by robots.txt, skipping content checks."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:144
+#: ../linkcheck/checker/httpurl.py:143
 msgid "Amazon servers block HTTP HEAD requests."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:146
+#: ../linkcheck/checker/httpurl.py:145
 msgid "Using GET method for Amazon server."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:153
+#: ../linkcheck/checker/httpurl.py:152
 msgid "unknown"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:155
+#: ../linkcheck/checker/httpurl.py:154
 #, python-format
 msgid ""
 "Server `%(name)s' did not support HEAD request; a GET request was used "
 "instead."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:206
+#: ../linkcheck/checker/httpurl.py:205
 #, python-format
 msgid "Enforced proxy `%(name)s'."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:211
+#: ../linkcheck/checker/httpurl.py:210
 #, python-format
 msgid "Enforced proxy `%(name)s' ignored, aborting."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:242
+#: ../linkcheck/checker/httpurl.py:241
 #, python-format
 msgid "more than %d redirections, aborting"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:252
+#: ../linkcheck/checker/httpurl.py:251
 #, python-format
 msgid ""
 "Unsupported HTTP authentication `%(auth)s', only `Basic' authentication is "
 "supported."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:316
+#: ../linkcheck/checker/httpurl.py:315
 #, python-format
 msgid "Redirected to `%(url)s'."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:356
+#: ../linkcheck/checker/httpurl.py:355
 #, python-format
 msgid "Redirection to url `%(newurl)s' is not allowed."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:379
+#: ../linkcheck/checker/httpurl.py:378
 msgid "The redirected URL is outside of the domain filter, checked only syntax."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:392
+#: ../linkcheck/checker/httpurl.py:391
 msgid "Access to redirected URL denied by robots.txt, checked only syntax."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:410
+#: ../linkcheck/checker/httpurl.py:409
 #, python-format
 msgid ""
 "recursive redirection encountered:\n"
 " %(urls)s"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:427
+#: ../linkcheck/checker/httpurl.py:426
 #, python-format
 msgid ""
 "Redirection to URL `%(newurl)s' with different scheme found; the original URL "
 "was `%(url)s'."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:439
+#: ../linkcheck/checker/httpurl.py:438
 msgid "HTTP 301 (moved permanent) encountered: you should update this link."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:468
+#: ../linkcheck/checker/httpurl.py:467
 #, python-format
-msgid "Sent cookie: %(cookie)s."
+msgid "Sent Cookie: %(cookie)s."
 msgstr ""
 
 #: ../linkcheck/checker/httpurl.py:473
 #, python-format
-msgid "Could not store cookies from headers: %(headers)s."
+msgid "Could not store cookies from headers: %(error)s."
 msgstr ""
 
 #: ../linkcheck/checker/httpurl.py:482
@@ -1449,17 +1449,17 @@ msgstr ""
 msgid "Last modified %(date)s."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:609
+#: ../linkcheck/checker/httpurl.py:631
 #, python-format
 msgid "Unsupported HTTP url scheme `%(scheme)s'"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:654
+#: ../linkcheck/checker/httpurl.py:676
 #, python-format
 msgid "Decompress error %(err)s"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:670
+#: ../linkcheck/checker/httpurl.py:692
 #, python-format
 msgid "Unsupported content encoding `%(encoding)s'."
 msgstr ""
