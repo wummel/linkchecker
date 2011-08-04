@@ -19,6 +19,8 @@ Fixes:
   Closes: SF bug #3346972
 - checking: Send all domain-matching cookies that apply.
   Closes: SF bug #3375899
+- gui: Properly reset active URL count checking stops.
+  Closes: SF bug #3311270
 
 Changes:
 - gui: Default to last URL checked in GUI (if no URL is given as

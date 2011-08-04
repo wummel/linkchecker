@@ -236,16 +236,16 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.treeView.setSortingEnabled(True)
             self.treeView.scrollToTop()
             self.movie.stop()
+            # Reset progress information.
+            self.label_active.setText(u"0")
+            self.label_queued.setText(u"0")
+            self.label_checked.setText(u"0")
             self.label_busy.hide()
             self.menubar.setEnabled(True)
             self.urlinput.setEnabled(True)
         elif status == Status.checking:
             self.treeView.setSortingEnabled(False)
             self.debug.reset()
-            # Reset progress information.
-            self.label_active.setText(u"0")
-            self.label_queued.setText(u"0")
-            self.label_checked.setText(u"0")
             self.set_statusmsg(u"Checking site...")
             # disable commands
             self.menubar.setEnabled(False)
