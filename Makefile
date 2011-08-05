@@ -12,7 +12,7 @@ TESTS ?= tests/
 TESTOPTS=
 PAGER ?= less
 # build dir for debian package
-BUILDDIR:=$(HOME)/packages/official
+BUILDDIR:=$(HOME)/projects/debian/official
 DEB_ORIG_TARGET:=$(BUILDDIR)/linkchecker_$(VERSION).orig.tar.bz2
 # original dnspython repository module
 DNSPYTHON:=$(HOME)/src/dnspython-git
