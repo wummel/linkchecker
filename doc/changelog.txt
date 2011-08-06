@@ -1,4 +1,4 @@
-7.1 "" (released xx.xx.2011)
+7.1 "A fish called Wanda" (released 6.8.2011)
 
 Fixes:
 - checking: HTML parser detects and handles stray "<" characters before
