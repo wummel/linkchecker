@@ -1,3 +1,11 @@
+7.2 "" (released xx.xx.2011)
+
+Fixes:
+- checking: HTML parser now correctly detects character encoding for
+  some sites.
+  Closes: SF bug #3388291
+
+
 7.1 "A fish called Wanda" (released 6.8.2011)
 
 Fixes:

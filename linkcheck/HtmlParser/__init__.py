@@ -221,11 +221,18 @@ def set_encoding (parsobj, attrs):
     @type attrs: dict
     @return: None
     """
-    if attrs.get_true('http-equiv', u'').lower() == u"content-type":
+    charset = attrs.get_true('charset', u'')
+    if charset:
+        # <meta charset="utf-8">
+        # eg. in http://cn.dolphin-browser.com/activity/Dolphinjump
+        charset = charset.encode('ascii', 'ignore').lower()
+    elif attrs.get_true('http-equiv', u'').lower() == u"content-type":
+        # <meta http-equiv="content-type" content="text/html;charset="utf-8">
         charset = attrs.get_true('content', u'')
-        charset = get_ctype_charset(charset.encode('ascii', 'ignore'))
-        if charset and charset.lower() in SUPPORTED_CHARSETS:
-            parsobj.encoding = charset
+        charset = charset.encode('ascii', 'ignore').lower()
+        charset = get_ctype_charset(charset)
+    if charset and charset in SUPPORTED_CHARSETS:
+        parsobj.encoding = charset
 
 
 def get_ctype_charset (text):
