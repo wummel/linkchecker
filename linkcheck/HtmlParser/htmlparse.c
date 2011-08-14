@@ -2408,6 +2408,15 @@ static int parser_setencoding (parser_object* self, PyObject* value, void* closu
     Py_DECREF(self->encoding);
     Py_INCREF(value);
     self->encoding = value;
+    if (yydebug > 0) {
+        /* print debug message */
+        PyObject* repr = PyObject_Repr(value);
+        if (repr == NULL) {
+            return -1;
+        }
+        fprintf(stderr, "htmlsax: set encoding to %s\n", PyString_AsString(repr));
+        Py_DECREF(repr);
+    }
     return 0;
 }
 
