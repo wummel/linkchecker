@@ -723,15 +723,28 @@ class UrlBase (object):
 
     def check_warningregex (self):
         """Check if content matches a given regular expression."""
-        warningregex = self.aggregate.config["warningregex"]
+        config = self.aggregate.config
+        warningregex = config["warningregex"]
         if not (warningregex and self.valid and self.is_parseable()):
             return
-        log.debug(LOG_CHECK, "checking content")
+        log.debug(LOG_CHECK, "checking content for warning regex")
         try:
-            match = warningregex.search(self.get_content())
-            if match:
-                self.add_warning(_("Found %(match)r in link contents.") %
-                   {"match": match.group()}, tag=WARN_URL_WARNREGEX_FOUND)
+            content = self.get_content()
+            curpos = 0
+            curline = 1
+            # add warnings for found matches, up to the maximum allowed number
+            for num, match in enumerate(warningregex.finditer(content)):
+                # calculate line number for match
+                curline += content.count('\n', curpos, match.start())
+                curpos = match.start()
+                # add a warning message
+                msg = _("Found %(match)r at line %(line)d in link contents.")
+                self.add_warning(msg %
+                   {"match": match.group(), "line": curline},
+                   tag=WARN_URL_WARNREGEX_FOUND)
+                # check for maximum number of warnings
+                if num >= config["warningregex_max"]:
+                    break
         except tuple(ExcList):
             value = self.handle_exception()
             self.set_result(unicode_safe(value), valid=False)
@@ -950,10 +963,8 @@ class UrlBase (object):
             self.aggregate.urlqueue.put(url_data)
 
     def parse_text (self):
-        """
-        Parse a text file with on url per line; comment and blank
-        lines are ignored.
-        """
+        """Parse a text file with one url per line; comment and blank
+        lines are ignored."""
         log.debug(LOG_CHECK, "Parsing text %s", self)
         lineno = 0
         for line in self.get_content().splitlines():

@@ -5,6 +5,11 @@ Fixes:
   some sites.
   Closes: SF bug #3388291
 
+Features:
+- checking: If a warning regex is configured, multiple matches in
+  the URL content are added as warnings.
+  Closes: SF bug #3412317
+
 
 7.1 "A fish called Wanda" (released 6.8.2011)
 

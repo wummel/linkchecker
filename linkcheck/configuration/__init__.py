@@ -179,6 +179,7 @@ class Configuration (dict):
         self['output'] = 'text'
         self['logger'] = None
         self["warningregex"] = None
+        self["warningregex_max"] = 5
         self["warnsizebytes"] = None
         self["nntpserver"] = os.environ.get("NNTP_SERVER", None)
         self["threads"] = 10
