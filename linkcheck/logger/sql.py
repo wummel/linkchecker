@@ -83,7 +83,7 @@ class SQLLogger (Logger):
         """
         self.writeln(u"insert into %(table)s(urlname,"
               "parentname,baseref,valid,result,warning,info,url,line,col,"
-              "name,checktime,dltime,dlsize,cached) values ("
+              "name,checktime,dltime,dlsize,cached,level) values ("
               "%(base_url)s,"
               "%(url_parent)s,"
               "%(base_ref)s,"

@@ -4,6 +4,8 @@ Fixes:
 - checking: HTML parser now correctly detects character encoding for
   some sites.
   Closes: SF bug #3388291
+- logging: Fix SQL output.
+  Closes: SF bug #3415274
 
 Features:
 - checking: If a warning regex is configured, multiple matches in

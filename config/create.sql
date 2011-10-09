@@ -5,7 +5,6 @@ drop table linksdb;
 
 create table linksdb (
     urlname        varchar(256) not null,
-    recursionlevel int not null,
     parentname     varchar(256),
     baseref        varchar(256),
     valid          int,
@@ -20,5 +19,5 @@ create table linksdb (
     dltime         int,
     dlsize         int,
     cached         int,
-    level          int
+    level          int not null
 );
