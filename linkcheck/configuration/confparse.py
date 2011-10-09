@@ -18,7 +18,7 @@
 
 import ConfigParser
 import re
-from .. import LOG_CHECK, LinkCheckerError, get_link_pat
+from .. import LinkCheckerError, get_link_pat
 
 
 def read_multiline (value):
@@ -54,7 +54,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             self.read_filtering_config()
         except Exception, msg:
             raise LinkCheckerError(
-              "Error parsing configuration: %s", str(msg))
+              _("Error parsing configuration: %s") % unicode(msg))
 
     def read_output_config (self):
         """Read configuration options in section "output"."""
@@ -113,7 +113,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             num = self.getint(section, "timeout")
             if num < 0:
                 raise LinkCheckerError(
-                    _("invalid negative value for timeout: %d\n"), num)
+                    _("invalid negative value for timeout: %d\n") % num)
             self.config['timeout'] = num
         if self.has_option(section, "anchors"):
             self.config["anchors"] = self.getboolean(section, "anchors")
@@ -164,16 +164,14 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                 elif len(auth) == 2:
                     self.config.add_auth(pattern=auth[0], user=auth[1])
                 else:
-                    raise LinkCheckerError(LOG_CHECK,
-                       _("missing auth part in entry %(val)r") % \
-                       {"val": val})
+                    raise LinkCheckerError(
+                       _("missing auth part in entry %(val)r") % {"val": val})
         # read login URL and field names
         if self.has_option(section, "loginurl"):
             val = self.get(section, "loginurl").strip()
             if not (val.lower().startswith("http:") or
                     val.lower().startswith("https:")):
-                raise LinkCheckerError(LOG_CHECK,
-                _("Invalid login URL `%s'. Only " \
+                raise LinkCheckerError(_("invalid login URL `%s'. Only " \
                   "HTTP and HTTPS URLs are supported.") % val)
             self.config["loginurl"] = val
             self.config["storecookies"] = self.config["sendcookies"] = True
