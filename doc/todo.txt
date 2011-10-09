@@ -1,1 +1,2 @@
+- Add ignore filter and warning regex to GUI options
 - Port to Python 3.x (will not happen anytime soon though)
