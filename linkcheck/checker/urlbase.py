@@ -71,6 +71,17 @@ def url_norm (url, encoding=None):
         raise LinkCheckerError(msg)
 
 
+def getXmlText (parent, tag):
+    """Return XML content of given tag in parent element."""
+    elem = parent.getElementsByTagName(tag)[0]
+    # Yes, the DOM standard is awful.
+    rc = []
+    for node in elem.childNodes:
+        if node.nodeType == node.TEXT_NODE:
+            rc.append(node.data)
+    return ''.join(rc)
+
+
 class UrlBase (object):
     """An URL with additional information like validity etc."""
 
@@ -829,6 +840,21 @@ class UrlBase (object):
                 _("warning: cssutils parsing caused error: %(msg)s") %
                 {"msg": err})
 
+    def check_w3_errors (self, xml, w3type):
+        """Add warnings for W3C HTML or CSS errors in xml format.
+        w3type is either "W3C HTML" or "W3C CSS"."""
+        from xml.dom.minidom import parseString
+        dom = parseString(xml)
+        for error in dom.getElementsByTagName('m:error'):
+            warnmsg = _("%(w3type)s validation error at line %(line)s col %(column)s: %(msg)s")
+            attrs = {
+                "w3type": w3type,
+                "line": getXmlText(error, "m:line"),
+                "column": getXmlText(error, "m:col"),
+                "msg": getXmlText(error, "m:message"),
+            }
+            self.add_warning(warnmsg % attrs)
+
     def check_html_w3 (self):
         """Check HTML syntax of this page (which is supposed to be HTML)
         with the online W3C HTML validator documented at
@@ -839,17 +865,14 @@ class UrlBase (object):
             u = urllib2.urlopen('http://validator.w3.org/check',
                 urllib.urlencode({
                     'fragment': self.get_content(),
-                    'output': 'xml',
+                    'output': 'soap12',
                 }))
             if u.headers.get('x-w3c-validator-status', 'Invalid') == 'Valid':
                 self.add_info(u"W3C Validator: %s" % _("valid HTML syntax"))
                 return
-            from xml.dom.minidom import parseString
-            dom = parseString(u.read())
-            elements = dom.getElementsByTagName('messages')[0].getElementsByTagName('msg')
-            for msg in [e.firstChild.wholeText for e in elements]:
-                self.add_warning(u"W3C HTML validation: %s" % msg)
+            self.check_w3_errors(u.read(), "W3C HTML")
         except Exception:
+            raise
             # catch _all_ exceptions since we dont want third party module
             # errors to propagate into this library
             err = str(sys.exc_info()[1])
@@ -883,11 +906,7 @@ class UrlBase (object):
             if r.getheader('X-W3C-Validator-Status', 'Invalid') == 'Valid':
                 self.add_info(u"W3C Validator: %s" % _("valid CSS syntax"))
                 return
-            from xml.dom.minidom import parseString
-            dom = parseString(r.read())
-            elements = dom.getElementsByTagName('m:errors')[0].getElementsByTagName('m:error')
-            for msg in [e.firstChild.wholeText for e in elements]:
-                self.add_warning(u"W3C HTML validation: %s" % msg)
+            self.check_w3_errors(r.read(), "W3C HTML")
         except Exception:
             # catch _all_ exceptions since we dont want third party module
             # errors to propagate into this library
