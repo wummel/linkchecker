@@ -5,7 +5,7 @@ Fixes:
   some sites.
   Closes: SF bug #3388291
 - logging: Fix SQL output.
-  Closes: SF bug #3415274
+  Closes: SF bug #3415274, #3422230
 - checking: Fix W3C HTML checking by using the new soap12 output.
   Closes: SF bug #3413022
 - gui: Fix startup when configuration file contains errors.

@@ -29,7 +29,7 @@ def sqlify (s):
     """
     if not s:
         return "NULL"
-    return "'%s'" % s.replace("'", "''")
+    return "'%s'" % s.replace("'", "''").replace(os.linesep, r"\n")
 
 
 def intify (s):
