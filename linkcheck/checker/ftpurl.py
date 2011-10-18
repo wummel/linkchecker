@@ -119,10 +119,14 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
     def negotiate_encoding (self):
         """Check if server can handle UTF-8 encoded filenames.
         See also RFC 2640."""
-        features = self.url_connection.sendcmd("FEAT")
-        log.debug(LOG_CHECK, "FTP features %s", features)
-        if " UTF-8" in features.splitlines():
-            self.filename_encoding = "utf-8"
+        try:
+            features = self.url_connection.sendcmd("FEAT")
+        except ftplib.error_perm, msg:
+            log.debug(LOG_CHECK, "Ignoring error when getting FTP features: %s" % msg)
+        else:
+            log.debug(LOG_CHECK, "FTP features %s", features)
+            if " UTF-8" in features.splitlines():
+                self.filename_encoding = "utf-8"
 
     def cwd (self):
         """
