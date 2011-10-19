@@ -172,19 +172,19 @@ class LineEdit (QtGui.QLineEdit):
 
     def addMenuEntries (self, menu):
         """Add browser bookmark actions to menu."""
-        functions = (
-            (find_firefox, u"Firefox"),
-            (find_chrome, u"Google Chrome"),
-            (find_chromium, u"Chromium"),
-            (find_opera, u"Opera"),
-        )
-        for find_function, browser in functions:
-            if not find_function():
-                continue
-            args = {"browser": browser}
-            name = _("Insert %(browser)s bookmark file") % args
-            action = menu.addAction(name)
-            action.triggered.connect(lambda: self.setText(find_function()))
+        name = _("Insert %(browser)s bookmark file")
+        if find_firefox():
+            action = menu.addAction(name % {"browser": u"Firefox"})
+            action.triggered.connect(lambda: self.setText(find_firefox()))
+        if find_chrome():
+            action = menu.addAction(name % {"browser": u"Google Chrome"})
+            action.triggered.connect(lambda: self.setText(find_chrome()))
+        if find_chromium():
+            action = menu.addAction(name % {"browser": u"Chromium"})
+            action.triggered.connect(lambda: self.setText(find_chromium()))
+        if find_opera():
+            action = menu.addAction(name % {"browser": u"Opera"})
+            action.triggered.connect(lambda: self.setText(find_opera()))
 
     def contextMenuEvent (self, event):
         """Handle context menu event."""
