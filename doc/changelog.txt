@@ -10,10 +10,12 @@ Fixes:
   Closes: SF bug #3413022
 - gui: Fix startup when configuration file contains errors.
   Closes: SF bug #3392021
-- configuration: Parse logger and logging part names case insensitive.
-  Closes: SF bug #3380114
 - checking: Ignore errors trying to get FTP feature set.
   Closes: SF bug #3424719
+
+Changes:
+- configuration: Parse logger and logging part names case insensitive.
+  Closes: SF bug #3380114
 
 Features:
 - checking: If a warning regex is configured, multiple matches in
