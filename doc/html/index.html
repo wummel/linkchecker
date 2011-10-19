@@ -27,7 +27,7 @@ img { border: 0; }
 <h2>Basic usage</h2>
 
 <p>To check a URL like <code>http://www.example.org/</code> it is enough to
-type <code>linkchecker www.example.org/</code> on the command line or
+type <code>linkchecker www.example.org</code> on the command line or
 type <code>www.example.org</code> in the GUI application. This will check the
 complete domain of <code>http://www.example.org</code> recursively. All links
 pointing outside of the domain are also checked for validity.</p>
@@ -50,24 +50,26 @@ All final HTTP status codes other than 2xx are errors.</p></li>
 <li><p>Local files (<code>file:</code>)</p>
 
 <p>A regular, readable file that can be opened is valid. A readable
-directory is also valid. All other files, for example device files,
-unreadable or non-existing files are errors.</p>
+directory is also valid. All other files, for example unreadable,
+non-existing or device files are errors.</p>
 
-<p>File contents are checked for recursion.</p></li>
+<p>File contents are checked for recursion. If they are parseable
+files (for example HTML files), all links in that file will be
+checked.</p></li>
 <li><p>Mail links (<code>mailto:</code>)</p>
 
-<p>A mailto: link eventually resolves to a list of email addresses.
-If one address fails, the whole list will fail.
+<p>A mailto: link resolves to a list of email addresses.
+If one address fails the whole list will fail.
 For each mail address the following things are checked:</p>
 
 <ol>
-<li>Check the adress syntax, both of the part before and after
+<li>Check the adress syntax, both the part before and after
 the @ sign.</li>
 <li>Look up the MX DNS records. If no MX record is found,
 print an error.</li>
-<li>Check if one of the mail hosts accept an SMTP connection.
+<li>Check if one of the MX mail hosts accept an SMTP connection.
 Check hosts with higher priority first.
-If no host accepts SMTP, a warning is printed.</li>
+If none of the hosts accept SMTP, a warning is printed.</li>
 <li>Try to verify the address with the VRFY command. If there is
 an answer, the verified address is printed as an info.</li>
 </ol></li>
@@ -145,7 +147,8 @@ conditions. The conditions are checked in this order:</p>
 <ol>
 <li>The URL must be valid.</li>
 <li>The URL must be parseable. This currently includes HTML files,
-Opera bookmarks files, and directories. If a file type cannot
+Opera bookmarks files, directories and on Windows systems MS Word
+files if Word is installed on your system. If a file type cannot
 be determined (for example it does not have a common HTML file
 extension, and the content does not look like HTML), it is assumed
 to be non-parseable.</li>
@@ -159,8 +162,9 @@ The recursion level is unlimited by default.</li>
 the <code>--ignore-url</code> command line option or through the
 configuration file.</li>
 <li>The Robots Exclusion Protocol must allow links in the URL to be
-followed recursively. This is checked by searching for a
-"nofollow" directive in the HTML header data.</li>
+followed recursively. This is checked by evaluating the servers
+robots.txt file and searching for a "nofollow" directive in the
+HTML header data.</li>
 </ol>
 
 <p>Note that the local and FTP directory recursion reads all files in that
@@ -171,7 +175,7 @@ directory, not just a subset like <code>index.htm*</code>.</p>
 <p>Each user can edit a configuration with advanced options for
 checking or filtering.</p>
 
-<p>On Unix systems the user configuration file is at</p>
+<p>On Unix or OS X systems the user configuration file is at</p>
 
 <ul>
 <li><code>~/.linkchecker/linkcheckerrc</code></li>

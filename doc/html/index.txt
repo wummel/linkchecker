@@ -3,7 +3,7 @@
 ## Basic usage
 
 To check a URL like ``http://www.example.org/`` it is enough to
-type ``linkchecker www.example.org/`` on the command line or
+type ``linkchecker www.example.org`` on the command line or
 type ``www.example.org`` in the GUI application. This will check the
 complete domain of ``http://www.example.org`` recursively. All links
 pointing outside of the domain are also checked for validity.
@@ -26,24 +26,26 @@ checking. All connection check types are described below.
 - Local files (``file:``)
   
   A regular, readable file that can be opened is valid. A readable
-  directory is also valid. All other files, for example device files,
-  unreadable or non-existing files are errors.
+  directory is also valid. All other files, for example unreadable,
+  non-existing or device files are errors.
   
-  File contents are checked for recursion.
+  File contents are checked for recursion. If they are parseable
+  files (for example HTML files), all links in that file will be
+  checked.
   
 - Mail links (``mailto:``)
   
-  A mailto: link eventually resolves to a list of email addresses.
-  If one address fails, the whole list will fail.
+  A mailto: link resolves to a list of email addresses.
+  If one address fails the whole list will fail.
   For each mail address the following things are checked:
   
-  1. Check the adress syntax, both of the part before and after
+  1. Check the adress syntax, both the part before and after
      the @ sign.
   2. Look up the MX DNS records. If no MX record is found,
      print an error.
-  3. Check if one of the mail hosts accept an SMTP connection.
+  3. Check if one of the MX mail hosts accept an SMTP connection.
      Check hosts with higher priority first.
-     If no host accepts SMTP, a warning is printed.
+     If none of the hosts accept SMTP, a warning is printed.
   4. Try to verify the address with the VRFY command. If there is
      an answer, the verified address is printed as an info.
 
@@ -119,7 +121,8 @@ conditions. The conditions are checked in this order:
 
 1. The URL must be valid.
 2. The URL must be parseable. This currently includes HTML files,
-   Opera bookmarks files, and directories. If a file type cannot
+   Opera bookmarks files, directories and on Windows systems MS Word
+   files if Word is installed on your system. If a file type cannot
    be determined (for example it does not have a common HTML file
    extension, and the content does not look like HTML), it is assumed
    to be non-parseable.
@@ -133,8 +136,9 @@ conditions. The conditions are checked in this order:
    the ``--ignore-url`` command line option or through the
    configuration file.
 6. The Robots Exclusion Protocol must allow links in the URL to be
-   followed recursively. This is checked by searching for a
-   "nofollow" directive in the HTML header data.
+   followed recursively. This is checked by evaluating the servers
+   robots.txt file and searching for a "nofollow" directive in the
+   HTML header data.
 
 Note that the local and FTP directory recursion reads all files in that
 directory, not just a subset like ``index.htm*``.
@@ -145,7 +149,7 @@ directory, not just a subset like ``index.htm*``.
 Each user can edit a configuration with advanced options for
 checking or filtering.
 
-On Unix systems the user configuration file is at
+On Unix or OS X systems the user configuration file is at
 
 - ``~/.linkchecker/linkcheckerrc``
 
