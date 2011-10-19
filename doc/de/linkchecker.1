@@ -89,13 +89,11 @@ Definieren Sie einen regulären Ausdruck der eine Warnung ausgibt falls er
 auf den Inhalt einer geprüften URL zutrifft. Dies gilt nur für gültige
 Seiten deren Inhalt wir bekommen können.
 .br
-Benutzen Sie dies, um nach Seiten zu suchen, welche bestimmte Fehler
-enthalten, zum Beispiel "Diese Seite wurde entfernt" oder "Oracle
-Applikationsfehler".
+Use this to check for pages that contain some form of error, for example
+"This page has moved" or "Oracle Application error".
 .br
-Bei HTML\-Seiten wird der reguläre Ausdruck im kompletten HTML\-Quellcode
-gesucht. Dies macht es möglich, bestimmte URLs in der Seitezu finden,
-beispielsweise "badsite.example.com".
+Note that multiple values can be combined in the regular expression, for
+example "(This page has moved|Oracle Application error)".
 .br
 Siehe Abschnitt \fBREGULAR EXPRESSIONS\fP für weitere Infos.
 .TP 

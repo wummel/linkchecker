@@ -86,11 +86,10 @@ content of the checked link.
 This applies only to valid pages, so we can get their content.
 .br
 Use this to check for pages that contain some form of error, for example
-"This page has moved" or "Oracle Application Server error".
+"This page has moved" or "Oracle Application error".
 .br
-Note that for HTML pages the regular expression is matched against the
-complete HTML source. This makes it possible to match against certain
-URLs in the page, for example "badsite.example.com".
+Note that multiple values can be combined in the regular expression,
+for example "(This page has moved|Oracle Application error)".
 .br
 See section \fBREGULAR EXPRESSIONS\fP for more info.
 .TP
