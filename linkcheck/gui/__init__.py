@@ -108,6 +108,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.connect_widgets()
         self.init_config()
         self.read_config()
+        self.init_menu()
         self.init_app()
 
     def init_url (self, url):
@@ -119,6 +120,10 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.urlinput.setText(url)
         elif documents:
             self.urlinput.setText(documents[0])
+
+    def init_menu (self):
+        """Add menu entries for bookmark file checking."""
+        self.urlinput.addMenuEntries(self.menuEdit)
 
     def init_app (self):
         """Set window size and position, GUI options and reset status."""
