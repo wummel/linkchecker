@@ -170,9 +170,8 @@ class LineEdit (QtGui.QLineEdit):
         else:
             self.listview.hide()
 
-    def contextMenuEvent (self, event):
-        """Add Firefox bookmark action to context menu."""
-        menu = self.createStandardContextMenu()
+    def addMenuEntries (self, menu):
+        """Add browser bookmark actions to menu."""
         functions = (
             (find_firefox, u"Firefox"),
             (find_chrome, u"Google Chrome"),
@@ -186,6 +185,11 @@ class LineEdit (QtGui.QLineEdit):
             name = _("Insert %(browser)s bookmark file") % args
             action = menu.addAction(name)
             action.triggered.connect(lambda: self.setText(find_function()))
+
+    def contextMenuEvent (self, event):
+        """Handle context menu event."""
+        menu = self.createStandardContextMenu()
+        self.addMenuEntries(menu)
         menu.exec_(event.globalPos())
 
 
