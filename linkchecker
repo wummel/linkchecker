@@ -368,7 +368,10 @@ so we can get their content.
 
 Use this to check for pages that contain some form of error
 message, for example 'This page has moved' or 'Oracle
-Application Server error'."""))
+Application error'.
+
+Note that multiple values can be combined in the regular expression,
+for example "(This page has moved|Oracle Application error)"."""))
 group.add_option("--warning-size-bytes", dest="warningsizebytes",
                  metavar="NUMBER",
                  help=_(
