@@ -19,6 +19,7 @@ import os
 from PyQt4 import QtGui
 from .linkchecker_ui_options import Ui_Options
 from .editor import EditorWindow
+from .validator import PyRegexValidator, check_regex
 from .. import configuration
 
 
@@ -29,10 +30,25 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
         """Reset all options and initialize the editor window."""
         super(LinkCheckerOptions, self).__init__(parent)
         self.setupUi(self)
+        self.validator = PyRegexValidator(self.warningregex)
+        self.warningregex.setValidator(self.validator)
+        self.warningregex.textChanged.connect(self.check_warningregex)
         self.editor = EditorWindow(self)
         self.closeButton.clicked.connect(self.close)
         self.user_config_button.clicked.connect(self.edit_user_config)
         self.reset()
+
+    def check_warningregex (self, text):
+        """Display red text for invalid regex contents."""
+        if check_regex(unicode(text)):
+            style = "QLineEdit {}"
+            self.warningregex.setStyleSheet(style)
+            self.warningregex.setToolTip(u"")
+        else:
+            # red text
+            style = "QLineEdit {color:#aa0000;}"
+            self.warningregex.setStyleSheet(style)
+            self.warningregex.setToolTip(_("Invalid regular expression"))
 
     def reset (self):
         """Reset GUI and config options."""
@@ -45,6 +61,7 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
         self.recursionlevel.setValue(-1)
         self.verbose.setChecked(False)
         self.debug.setChecked(False)
+        self.warningregex.setText(u"")
 
     def reset_config_options (self):
         """Reset configuration file edit buttons."""
@@ -63,6 +80,7 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
             debug=self.debug.isChecked(),
             verbose=self.verbose.isChecked(),
             recursionlevel=self.recursionlevel.value(),
+            warningregex=self.warningregex.text(),
         )
 
     def set_options (self, data):
@@ -73,6 +91,8 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
             self.verbose.setChecked(data["verbose"])
         if data["recursionlevel"] is not None:
             self.recursionlevel.setValue(data["recursionlevel"])
+        if data["warningregex"] is not None:
+            self.warningregex.setText(data["warningregex"])
 
 
 def start_editor (filename, writable, editor):

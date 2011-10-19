@@ -17,6 +17,7 @@
 """Read and store QSettings for this application."""
 
 from PyQt4 import QtCore
+from .validator import check_regex
 
 
 def save_point (qpoint):
@@ -85,7 +86,8 @@ class Settings (object):
 
     def read_options (self):
         """Return stored GUI options."""
-        data = dict(debug=None, verbose=None, recursionlevel=None)
+        data = dict(debug=None, verbose=None, recursionlevel=None,
+            warningregex=None)
         self.settings.beginGroup('output')
         for key in ("debug", "verbose"):
             if self.settings.contains(key):
@@ -103,6 +105,11 @@ class Settings (object):
             else:
                 value = -1
             data['recursionlevel'] = value
+        if self.settings.contains('warningregex'):
+            value = self.settings.value('warningregex').toString()
+            value = unicode(value)
+            if not value or check_regex(value):
+                data['warningregex'] = value
         self.settings.endGroup()
         return data
 
@@ -114,6 +121,8 @@ class Settings (object):
         self.settings.endGroup()
         self.settings.beginGroup('checking')
         key = "recursionlevel"
+        self.settings.setValue(key, QtCore.QVariant(data[key]))
+        key = "warningregex"
         self.settings.setValue(key, QtCore.QVariant(data[key]))
         self.settings.endGroup()
 

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options.ui'
 #
-# Created: Fri May 20 20:24:08 2011
+# Created: Wed Oct 19 21:24:58 2011
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -18,7 +18,7 @@ class Ui_Options(object):
     def setupUi(self, Options):
         Options.setObjectName(_fromUtf8("Options"))
         Options.setWindowModality(QtCore.Qt.ApplicationModal)
-        Options.resize(275, 229)
+        Options.resize(279, 239)
         self.verticalLayout = QtGui.QVBoxLayout(Options)
         self.verticalLayout.setSpacing(2)
         self.verticalLayout.setSizeConstraint(QtGui.QLayout.SetMinimumSize)
@@ -94,6 +94,12 @@ class Ui_Options(object):
         self.debug.setText(_fromUtf8(""))
         self.debug.setObjectName(_fromUtf8("debug"))
         self.formLayout.setWidget(2, QtGui.QFormLayout.FieldRole, self.debug)
+        self.warningregex = QtGui.QLineEdit(self.frame)
+        self.warningregex.setObjectName(_fromUtf8("warningregex"))
+        self.formLayout.setWidget(3, QtGui.QFormLayout.FieldRole, self.warningregex)
+        self.label_3 = QtGui.QLabel(self.frame)
+        self.label_3.setObjectName(_fromUtf8("label_3"))
+        self.formLayout.setWidget(3, QtGui.QFormLayout.LabelRole, self.label_3)
         self.verticalLayout_3.addWidget(self.frame)
         self.widget = QtGui.QWidget(self.gui_options)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
@@ -169,6 +175,7 @@ class Ui_Options(object):
         self.label_2.setText(_("Verbose output"))
         self.verbose.setToolTip(_("Log all checked URLs once. Default is to log only errors and warnings."))
         self.label_4.setText(_("Debug"))
+        self.label_3.setText(_("Warning regex"))
         self.closeButton.setText(_("Close"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.gui_options), _("GUI options"))
         self.label_9.setText(_("The user configuration file holds advanced options and can be edited with an integrated text editor."))
