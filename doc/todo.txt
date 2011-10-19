@@ -1,2 +1,5 @@
-- Add ignore filter and warning regex to GUI options
-- Port to Python 3.x (will not happen anytime soon though)
+- Add ignore filter to GUI options
+  Not sure how UI for multiple entries should look like
+  perhaps a textarea, or a table with a fixed number of entries?
+
+- Port to Python 3.x (will not happen anytime soon)
