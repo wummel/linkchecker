@@ -18,7 +18,7 @@ DEB_ORIG_TARGET:=$(BUILDDIR)/linkchecker_$(VERSION).orig.tar.bz2
 DNSPYTHON:=$(HOME)/src/dnspython-git
 # options to run the pep8 utility
 PEP8OPTS:=--repeat --ignore=E211,E501,E225,E301,E302,E241 \
-   --exclude="gzip2.py,httplib2.py,robotparser2.py,reindent.py"
+   --exclude="gzip2.py,httplib2.py,robotparser2.py"
 PY2APPOPTS ?=
 ifeq ($(shell uname),Darwin)
   NUMPROCESSORS:=$(shell sysctl -a | grep machdep.cpu.core_count | cut -d " " -f 2)
@@ -216,10 +216,6 @@ pyflakes:
 .PHONY: pep8
 pep8:
 	pep8 $(PEP8OPTS) $(PY_FILES_DIRS)
-
-.PHONY: reindent
-reindent:
-	$(PYTHON) config/reindent.py -r -v linkcheck
 
 # Compare custom Python files with the original ones from subversion.
 .PHONY: diff
