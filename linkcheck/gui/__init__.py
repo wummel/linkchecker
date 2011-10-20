@@ -17,6 +17,7 @@
 
 import os
 import sys
+import re
 import webbrowser
 from PyQt4 import QtCore, QtGui
 from .linkchecker_ui_main import Ui_MainWindow
@@ -222,6 +223,8 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.config["threads"] = 1
         else:
             self.config.reset_loglevel()
+        if data["warningregex"]:
+            self.config["warningregex"] = re.compile(data["warningregex"])
 
     def get_status (self):
         """Return current application status."""

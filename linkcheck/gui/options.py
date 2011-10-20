@@ -80,7 +80,7 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
             debug=self.debug.isChecked(),
             verbose=self.verbose.isChecked(),
             recursionlevel=self.recursionlevel.value(),
-            warningregex=self.warningregex.text(),
+            warningregex=unicode(self.warningregex.text()),
         )
 
     def set_options (self, data):
