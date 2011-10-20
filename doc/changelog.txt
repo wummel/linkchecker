@@ -1,4 +1,4 @@
-7.2 "" (released xx.xx.2011)
+7.2 "Driver" (released 20.10.2011)
 
 Fixes:
 - checking: HTML parser now correctly detects character encoding for

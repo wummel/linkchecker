@@ -1,5 +1,5 @@
 Project: LinkChecker
-Version: 7.1
+Version: 7.2
 Release-Focus: Minor bugfixes
 Hide: N
 Website-URL: http://linkchecker.sourceforge.net/
@@ -10,5 +10,7 @@ GIT-Tree-URL: http://linkchecker.git.sourceforge.net/
 Windows-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.exe
 OSX-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.dmg
 
-Bugs were fixed for HTML parsing, HTTP authentication and cookie handling.
-A new option allows setting of the HTTP User-Agent string.
+Bugs were fixed for HTML and FTP character encoding detection,
+SQL output and HTML validation with the W3C validator.
+The GUI now allows configuration of a warning regular expression for
+page contents.
