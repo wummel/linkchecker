@@ -726,6 +726,7 @@ args = dict(
     download_url="http://sourceforge.net/project/showfiles.php?group_id=1913",
     license = "GPL",
     long_description = """Linkchecker features:
+
 o recursive and multithreaded checking
 o output in colored or normal text, HTML, SQL, CSV, XML or a sitemap
   graph in different formats
@@ -740,6 +741,7 @@ o HTML and CSS syntax check
 o Antivirus check
 o a command line interface
 o a (Fast)CGI web interface (requires HTTP server)
+
 """,
     distclass = MyDistribution,
     cmdclass = {
