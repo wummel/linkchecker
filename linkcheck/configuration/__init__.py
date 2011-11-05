@@ -53,10 +53,10 @@ distribution."""
 
 
 def normpath (path):
-    """
-    Norm given system path with all available norm funcs in os.path.
-    """
-    return os.path.normcase(os.path.normpath(os.path.expanduser(path)))
+    """Norm given system path with all available norm or expand functions
+    in os.path."""
+    expanded = os.path.expanduser(os.path.expandvars(path))
+    return os.path.normcase(os.path.normpath(expanded))
 
 
 # List optional Python modules in the form (module, name)

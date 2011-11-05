@@ -1,3 +1,10 @@
+7.3 "" (released xx.xx.2011)
+
+Fixes:
+- configuration: properly detect home directory on OS X systems.
+  Closes: SF bug #3423110
+
+
 7.2 "Driver" (released 20.10.2011)
 
 Fixes:
