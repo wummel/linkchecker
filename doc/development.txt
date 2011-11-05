@@ -22,8 +22,8 @@ installation is recommended.
   QScintilla from
   http://www.riverbankcomputing.co.uk/software/qscintilla/download
   
-- *On Windows only*, install the MinGW suite from
-  http://mingw.sourceforge.net/
+- *On Windows only*, install the Windows SDK
+  http://msdn.microsoft.com/de-de/windows/bb980924
 
 - *On Windows only*, install InnoSetup from
   http://www.jrsoftware.org/isinfo.php
