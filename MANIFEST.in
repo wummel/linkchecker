@@ -1,4 +1,4 @@
-include readme.txt doc/install.txt COPYING doc/todo.txt doc/upgrading.txt
+include readme.txt doc/install.txt COPYING doc/upgrading.txt
 include MANIFEST.in doc/changelog.txt
 include config/linkchecker-completion config/create.sql
 include config/linkcheckerrc config/logging.conf
@@ -52,5 +52,5 @@ include doc/de/*.1 doc/de/*.5
 include doc/Makefile
 include doc/examples/*.sh doc/examples/*.bat doc/examples/*.py
 include doc/examples/linkcheckerrc_loginurl
-recursive-include third_party *
+recursive-include third_party *.py *.txt Makefile example*
 recursive-include tests *.py *.result *.html *.ico *.txt *.zip *.asc *.css *.xhtml *.sqlite *.adr *.swf
