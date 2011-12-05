@@ -19,6 +19,7 @@ Cache for DNS lookups.
 """
 import socket
 import sys
+from .. import LinkCheckerError
 from ..lock import get_lock
 from ..containers import LFUCache
 from ..decorators import synchronized
@@ -35,10 +36,19 @@ def getaddrinfo (host, port):
     if key in addrinfos:
         value = addrinfos[key]
     else:
+        # check if it's an ascii host
+        if isinstance(host, unicode):
+            try:
+                host = host.encode('ascii')
+            except UnicodeEncodeError:
+                pass
         try:
             value = socket.getaddrinfo(host, port, 0, socket.SOCK_STREAM)
         except socket.error:
             value = sys.exc_info()[1]
+        except UnicodeError, msg:
+            args = dict(host=host, msg=str(msg))
+            value = LinkCheckerError(_("could not parse host %(host)r: %(msg)s") % args)
         addrinfos[key] = value
     if isinstance(value, Exception):
         raise value
