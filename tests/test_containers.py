@@ -39,30 +39,20 @@ class TestAttrDict (unittest.TestCase):
 
 
 class TestListDict (unittest.TestCase):
-    """
-    Test list dictionary routines.
-    """
+    """Test list dictionary routines."""
 
     def setUp (self):
-        """
-        Set up self.d as empty listdict.
-        """
+        """Set up self.d as empty listdict."""
         self.d = linkcheck.containers.ListDict()
 
-    def test_insert (self):
-        """
-        Test insertion order.
-        """
+    def test_insertion_order (self):
         self.assertTrue(not self.d)
         self.d[2] = 1
         self.d[1] = 2
         self.assertTrue(2 in self.d)
         self.assertTrue(1 in self.d)
 
-    def test_delete (self):
-        """
-        Test deletion order.
-        """
+    def test_deletion_order (self):
         self.assertTrue(not self.d)
         self.d[2] = 1
         self.d[1] = 2
@@ -70,10 +60,7 @@ class TestListDict (unittest.TestCase):
         self.assertTrue(2 in self.d)
         self.assertTrue(1 not in self.d)
 
-    def test_update (self):
-        """
-        Test update order.
-        """
+    def test_update_order (self):
         self.assertTrue(not self.d)
         self.d[2] = 1
         self.d[1] = 2
@@ -81,9 +68,6 @@ class TestListDict (unittest.TestCase):
         self.assertEqual(self.d[1], 1)
 
     def test_sorting (self):
-        """
-        Test sorting.
-        """
         self.assertTrue(not self.d)
         toinsert = random.sample(xrange(10000000), 60)
         for x in toinsert:
@@ -104,9 +88,6 @@ class TestListDict (unittest.TestCase):
             self.assertTrue(y in toinsert)
 
     def test_clear (self):
-        """
-        Test clearing.
-        """
         self.assertTrue(not self.d)
         self.d[2] = 1
         self.d[1] = 3
@@ -114,9 +95,6 @@ class TestListDict (unittest.TestCase):
         self.assertTrue(not self.d)
 
     def test_get_true (self):
-        """
-        Test getting a non-False object.
-        """
         self.assertTrue(not self.d)
         self.d["a"] = 0
         self.d["b"] = 1
@@ -125,14 +103,10 @@ class TestListDict (unittest.TestCase):
 
 
 class TestCaselessDict (unittest.TestCase):
-    """
-    Test caseless dictionary routines.
-    """
+    """Test caseless dictionary routines."""
 
     def setUp (self):
-        """
-        Set up self.d as empty caseless dict.
-        """
+        """Set up self.d as empty caseless dict."""
         self.d = linkcheck.containers.CaselessDict()
 
     def test_insert (self):
@@ -214,14 +188,10 @@ class TestCaselessDict (unittest.TestCase):
 
 
 class TestCaselessSortedDict (unittest.TestCase):
-    """
-    Test caseless sorted dictionary routines.
-    """
+    """Test caseless sorted dictionary routines."""
 
     def setUp (self):
-        """
-        Set up self.d as empty caseless sorted dict.
-        """
+        """Set up self.d as empty caseless sorted dict."""
         self.d = linkcheck.containers.CaselessSortedDict()
 
     def test_sorted (self):
@@ -243,14 +213,10 @@ class TestCaselessSortedDict (unittest.TestCase):
 
 
 class TestLFUCache (unittest.TestCase):
-    """
-    Test LFU cache implementation.
-    """
+    """Test LFU cache implementation."""
 
     def setUp (self):
-        """
-        Set up self.d as empty LFU cache with default size of 1000.
-        """
+        """Set up self.d as empty LFU cache with default size of 1000."""
         self.size = 1000
         self.d = linkcheck.containers.LFUCache(self.size)
 
@@ -281,7 +247,7 @@ class TestLFUCache (unittest.TestCase):
         for i in range(self.size):
             self.d[i] = i
         self.d[1001] = 1001
-        self.assertTrue(len(self.d) <= self.size)
+        self.assertTrue(950 <= len(self.d) <= self.size)
 
 
 class TestEnum (unittest.TestCase):

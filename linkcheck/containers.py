@@ -194,9 +194,8 @@ class LFUCache (dict):
     def __setitem__ (self, key, val):
         """Store given key/value."""
         if key in self:
-            # store value with existing number of uses
-            num_used = self[key][0]
-            super(LFUCache, self).__setitem__(key, [num_used, val])
+            # store value, do not increase number of uses
+            super(LFUCache, self).__getitem__(key)[1] = val
         else:
             super(LFUCache, self).__setitem__(key, [0, val])
             # check for size limit
@@ -205,18 +204,20 @@ class LFUCache (dict):
 
     def shrink (self):
         """Shrink ca. 5% of entries."""
-        trim = int(0.95*len(self))
+        trim = int(0.05*len(self))
         if trim:
-            items = super(LFUCache, self).items()
-            values = sorted([(value, key) for key, value in items])
-            for value, key in values[0:trim]:
+            items = super(LFUCache, self).iteritems()
+            # sorting function for items
+            keyfunc = lambda x: x[1][0]
+            values = sorted(items, key=keyfunc)
+            for key, value in values[0:trim]:
                 del self[key]
 
     def __getitem__ (self, key):
         """Update key usage and return value."""
-        value = super(LFUCache, self).__getitem__(key)
-        value[0] += 1
-        return value[1]
+        entry = super(LFUCache, self).__getitem__(key)
+        entry[0] += 1
+        return entry[1]
 
     def uses (self, key):
         """Get number of uses for given key (without increasing the number of
