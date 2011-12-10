@@ -268,12 +268,12 @@ def strtimezone ():
     return "%+04d" % (-zone//3600)
 
 
-_sub_ws = re.compile(r"\s+").sub
-def stripall (s):
-    """Remove all whitespace from given string."""
+def stripurl(s):
+    """Remove any lines from string after the first line.
+    Also remove whitespace at start and end from given string."""
     if not s:
         return s
-    return _sub_ws("", s)
+    return s.splitlines()[0].strip()
 
 
 def limit (s, length=72):

@@ -81,7 +81,7 @@ def checklink (out=None, form=None, env=os.environ):
     # start checking
     aggregate = director.get_aggregate(config)
     get_url_from = checker.get_url_from
-    url = strformat.stripall(form["url"].value)
+    url = strformat.stripurl(form["url"].value)
     url_data = get_url_from(url, 0, aggregate)
     try:
         add_intern_pattern(url_data, config)
