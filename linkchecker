@@ -772,7 +772,7 @@ if options.stdin:
     args.extend(read_stdin_urls())
 if args:
     for url in args:
-        aggregate_url(aggregate, config, strformat.stripall(url))
+        aggregate_url(aggregate, config, strformat.stripurl(url))
 else:
     log.warn(LOG_CMDLINE, _("no files or URLs given"))
 # set up profiling
