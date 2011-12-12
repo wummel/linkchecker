@@ -5,8 +5,8 @@ Fixes:
   Closes: SF bug #3423110
 - checking: Proper error reporting for too-long unicode hostnames.
   Closes: SF bug #3438553
-- gui: Do not remove whitespace inside the URL string, only at start
-  and end.
+- checking: Do not remove whitespace inside URLs given on the
+  commandline or GUI. Only remove whitespace at the start and end.
 
 
 7.2 "Driver" (released 20.10.2011)
