@@ -16,6 +16,7 @@ Features:
   expressions. The regular expressions can still be configured in
   the configuration file.
 - gui: Add configuration for ignore URL patterns.
+  Closes: SF bug #3311262
 
 
 7.2 "Driver" (released 20.10.2011)
