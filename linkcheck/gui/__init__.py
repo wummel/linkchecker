@@ -18,6 +18,7 @@
 import os
 import sys
 import re
+import copy
 import webbrowser
 from PyQt4 import QtCore, QtGui
 from .linkchecker_ui_main import Ui_MainWindow
@@ -36,7 +37,7 @@ from .urlsave import urlsave
 from .settings import Settings
 from .recentdocs import RecentDocumentModel
 from .. import configuration, checker, director, add_intern_pattern, \
-    strformat, fileutil, LinkCheckerError
+    strformat, fileutil, LinkCheckerError, get_link_pat
 from ..containers import enum
 from .. import url as urlutil
 from ..checker import httpheaders
@@ -70,6 +71,10 @@ def get_icon (name):
     icon = QtGui.QIcon()
     icon.addPixmap(QtGui.QPixmap(name), QtGui.QIcon.Normal, QtGui.QIcon.Off)
     return icon
+
+
+def warninglines2regex(lines):
+    return u"|".join([re.escape(line) for line in lines])
 
 
 class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
@@ -195,6 +200,8 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
     def init_config (self):
         """Create a configuration object."""
         self.config = configuration.Configuration()
+        # dictionary holding overwritten values
+        self.config_backup = {}
         # set standard GUI configuration values
         self.config.logger_add("gui", GuiLogger)
         self.config["logger"] = self.config.logger_new('gui',
@@ -223,8 +230,31 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.config["threads"] = 1
         else:
             self.config.reset_loglevel()
-        if data["warningregex"]:
-            self.config["warningregex"] = re.compile(data["warningregex"])
+        if data["warninglines"]:
+            lines = data["warninglines"].splitlines()
+            ro = re.compile(warninglines2regex(lines))
+            self.backup_config("warningregex", ro)
+        # set ignore patterns
+        ignorepats = data["ignorelines"].strip()
+        if ignorepats:
+            self.backup_config("externlinks")
+            lines = ignorepats.splitlines()
+            for line in lines:
+                pat = get_link_pat(line, strict=1)
+                self.config["externlinks"].append(pat)
+
+    def backup_config (self, key, value=None):
+        """Backup config key if not already done and set given value."""
+        if key not in self.config_backup:
+            # make copy of containers to avoid unwanted inserted items
+            self.config_backup[key] = copy.copy(self.config[key])
+        if value is not None:
+            self.config[key] = value
+
+    def restore_config (self):
+        """Restore config from backup."""
+        for key in self.config_backup:
+            self.config[key] = copy.copy(self.config_backup[key])
 
     def get_status (self):
         """Return current application status."""
@@ -251,6 +281,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.label_busy.hide()
             self.menubar.setEnabled(True)
             self.urlinput.setEnabled(True)
+            self.restore_config()
         elif status == Status.checking:
             self.treeView.setSortingEnabled(False)
             self.debug.reset()
@@ -392,6 +423,7 @@ Version 2 or later.
         self.set_statusmsg(_("Checking '%s'.") % strformat.limit(url, 40))
         url_data = checker.get_url_from(url, 0, aggregate)
         try:
+            self.backup_config('internlinks')
             add_intern_pattern(url_data, self.config)
         except UnicodeError:
             self.set_statusmsg(_("Error, invalid URL `%s'.") %

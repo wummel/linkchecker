@@ -8,6 +8,15 @@ Fixes:
 - checking: Do not remove whitespace inside URLs given on the
   commandline or GUI. Only remove whitespace at the start and end.
 
+Changes:
+- gui: Display all options in one dialog instead of tabbed panes.
+
+Features:
+- gui: Add configuration for warning strings instead of regular
+  expressions. The regular expressions can still be configured in
+  the configuration file.
+- gui: Add configuration for ignore URL patterns.
+
 
 7.2 "Driver" (released 20.10.2011)
 

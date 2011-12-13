@@ -87,7 +87,7 @@ class Settings (object):
     def read_options (self):
         """Return stored GUI options."""
         data = dict(debug=None, verbose=None, recursionlevel=None,
-            warningregex=None)
+            warninglines=None, ignorelines=None)
         self.settings.beginGroup('output')
         for key in ("debug", "verbose"):
             if self.settings.contains(key):
@@ -105,11 +105,12 @@ class Settings (object):
             else:
                 value = -1
             data['recursionlevel'] = value
-        if self.settings.contains('warningregex'):
-            value = self.settings.value('warningregex').toString()
-            value = unicode(value)
-            if not value or check_regex(value):
-                data['warningregex'] = value
+        if self.settings.contains('warninglines'):
+            value = self.settings.value('warninglines').toString()
+            data['warninglines'] = unicode(value)
+        if self.settings.contains('ignorelines'):
+            value = self.settings.value('ignorelines').toString()
+            data['ignorelines'] = unicode(value)
         self.settings.endGroup()
         return data
 
@@ -120,10 +121,8 @@ class Settings (object):
             self.settings.setValue(key, QtCore.QVariant(data[key]))
         self.settings.endGroup()
         self.settings.beginGroup('checking')
-        key = "recursionlevel"
-        self.settings.setValue(key, QtCore.QVariant(data[key]))
-        key = "warningregex"
-        self.settings.setValue(key, QtCore.QVariant(data[key]))
+        for key in ("recursionlevel", "warninglines", "ignorelines"):
+            self.settings.setValue(key, QtCore.QVariant(data[key]))
         self.settings.endGroup()
 
     def read_recent_documents (self):

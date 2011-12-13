@@ -208,7 +208,7 @@ test:	localbuild
 
 .PHONY: pyflakes
 pyflakes:
-	pyflakes --force $(PY_FILES_DIRS) 2>&1 | \
+	pyflakes $(PY_FILES_DIRS) 2>&1 | \
           grep -v "redefinition of unused 'linkcheck'" | \
           grep -v "undefined name '_'" | \
 	  grep -v "undefined name '_n'" | cat
