@@ -73,3 +73,9 @@ class Logger (object):
         transport = url_data.to_wire()
         for log in self.logs:
             log.log_filter_url(transport, do_print)
+
+    @synchronized(_lock)
+    def log_internal_error (self):
+        """Document that an internal error occurred."""
+        for logger in self.logs:
+            logger.log_internal_error()

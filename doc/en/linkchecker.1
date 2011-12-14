@@ -504,13 +504,17 @@ same as the host of the user browsing your pages.
 \fBLC_MESSAGES\fP, \fBLANG\fP, \fBLANGUAGE\fP - specify output language
 .
 .SH RETURN VALUE
-The return value is non-zero when
+The return value is 2 when
+.IP \(bu
+a program error occurred.
+.PP
+The return value is 1 when
 .IP \(bu
 invalid links were found or
 .IP \(bu
 link warnings were found and warnings are enabled
-.IP \(bu
-a program error occurred.
+.PP
+Else the return value is zero.
 .
 .SH LIMITATIONS
 LinkChecker consumes memory for each queued URL to check. With thousands

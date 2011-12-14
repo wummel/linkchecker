@@ -33,14 +33,13 @@ def check_url (urlqueue, logger):
             urlqueue.task_done(url_data)
 
 
-class Checker (task.CheckedTask):
+class Checker (task.LoggedCheckedTask):
     """URL check thread."""
 
     def __init__ (self, urlqueue, logger):
         """Store URL queue and logger."""
-        super(Checker, self).__init__()
+        super(Checker, self).__init__(logger)
         self.urlqueue = urlqueue
-        self.logger = logger
         self.origname = self.getName()
 
     def run_checked (self):

@@ -16,7 +16,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """Cleanup task."""
 import time
-from . import task
+from . import task, console
 
 
 class Cleanup (task.CheckedTask):
@@ -34,3 +34,7 @@ class Cleanup (task.CheckedTask):
         # clean every 15 seconds
         while not self.stopped(15):
             self.connections.remove_expired()
+
+    def internal_error (self):
+        """Print internal error to console."""
+        console.internal_error()

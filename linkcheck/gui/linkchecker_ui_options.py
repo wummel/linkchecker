@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options.ui'
 #
-# Created: Tue Dec 13 07:09:29 2011
+# Created: Wed Dec 14 22:41:04 2011
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ class Ui_Options(object):
         self.verticalLayout_3 = QtGui.QVBoxLayout(Options)
         self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
         self.groupBox_2 = QtGui.QGroupBox(Options)
-        self.groupBox_2.setTitle(_("Scanning options"))
+        self.groupBox_2.setTitle(_("Checking options"))
         self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
         self.verticalLayout = QtGui.QVBoxLayout(self.groupBox_2)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))

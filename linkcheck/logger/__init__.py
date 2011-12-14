@@ -70,16 +70,18 @@ class LogStatistics (object):
 
     def reset (self):
         """Reset all log statistics to default values."""
-        # number of logged urls
+        # number of logged URLs
         self.number = 0
-        # number of encountered errors
+        # number of encountered URL errors
         self.errors = 0
-        # number of errors that were printed
+        # number of URL errors that were printed
         self.errors_printed = 0
-        # number of warnings
+        # number of URL warnings
         self.warnings = 0
-        # number of warnings that were printed
+        # number of URL warnings that were printed
         self.warnings_printed = 0
+        # number of internal errors
+        self.internal_errors = 0
         self.domains = set()
         self.link_types = ContentTypes.copy()
         self.max_url_length = 0
@@ -119,6 +121,10 @@ class LogStatistics (object):
             self.avg_number += 1
             # calculate running average
             self.avg_url_length += (l - self.avg_url_length) / self.avg_number
+
+    def log_internal_error (self):
+        """Increase internal error count."""
+        self.internal_errors += 1
 
 
 class Logger (object):
@@ -273,8 +279,7 @@ class Logger (object):
             self.start_fileoutput()
         if self.fd is None:
             # Happens when aborting threads times out
-            log.warn(LOG_CHECK,
-                "writing to unitialized or closed file")
+            log.warn(LOG_CHECK, "writing to unitialized or closed file")
         else:
             self.fd.write(s, **args)
 
@@ -389,7 +394,13 @@ class Logger (object):
             except (IOError, AttributeError):
                 pass
 
-# note: don't confuse URL loggers with application logs above
+    def log_internal_error (self):
+        """Indicate that an internal error occurred in the program."""
+        log.warn(LOG_CHECK, "internal error occurred")
+        self.stats.log_internal_error()
+
+
+# the standard URL logger implementations
 from .text import TextLogger
 from .html import HtmlLogger
 from .gml import GMLLogger
@@ -402,7 +413,7 @@ from .customxml import CustomXMLLogger
 from .none import NoneLogger
 
 
-# default link logger classes
+# default URL logger classes
 Loggers = {
     "text": TextLogger,
     "html": HtmlLogger,

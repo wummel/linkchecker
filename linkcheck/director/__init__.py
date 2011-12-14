@@ -148,6 +148,7 @@ def check_urls (aggregate):
         # from badly-programmed libraries that raise all kinds of strange
         # exceptions.
         console.internal_error()
+        aggregate.logger.log_internal_error()
         abort(aggregate)
     # Not catched exceptions at this point are SystemExit and GeneratorExit,
     # and both should be handled by the calling layer.

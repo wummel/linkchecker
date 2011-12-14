@@ -19,14 +19,13 @@ import time
 from . import task
 
 
-class Status (task.CheckedTask):
+class Status (task.LoggedCheckedTask):
     """Status thread."""
 
     def __init__ (self, urlqueue, logger, wait_seconds):
         """Store urlqueue object."""
-        super(Status, self).__init__()
+        super(Status, self).__init__(logger)
         self.urlqueue = urlqueue
-        self.logger = logger
         self.wait_seconds = wait_seconds
 
     def run_checked (self):

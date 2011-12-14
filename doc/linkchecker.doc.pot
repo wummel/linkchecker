@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-10-19 22:32+0300\n"
+"POT-Creation-Date: 2011-12-14 22:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1318,38 +1318,48 @@ msgstr ""
 
 #. type: Plain text
 #: en/linkchecker.1:508
-msgid "The return value is non-zero when"
+msgid "The return value is 2 when"
 msgstr ""
 
 #. type: IP
-#: en/linkchecker.1:508 en/linkchecker.1:510 en/linkchecker.1:512
+#: en/linkchecker.1:508 en/linkchecker.1:512 en/linkchecker.1:514
 #, no-wrap
 msgid "\\(bu"
 msgstr ""
 
 #. type: Plain text
 #: en/linkchecker.1:510
-msgid "invalid links were found or"
+msgid "a program error occurred."
 msgstr ""
 
 #. type: Plain text
 #: en/linkchecker.1:512
-msgid "link warnings were found and warnings are enabled"
+msgid "The return value is 1 when"
 msgstr ""
 
 #. type: Plain text
 #: en/linkchecker.1:514
-msgid "a program error occurred."
+msgid "invalid links were found or"
+msgstr ""
+
+#. type: Plain text
+#: en/linkchecker.1:516
+msgid "link warnings were found and warnings are enabled"
+msgstr ""
+
+#. type: Plain text
+#: en/linkchecker.1:518
+msgid "Else the return value is zero."
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:515
+#: en/linkchecker.1:519
 #, no-wrap
 msgid "LIMITATIONS"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:519
+#: en/linkchecker.1:523
 msgid ""
 "LinkChecker consumes memory for each queued URL to check. With thousands of "
 "queued URLs the amount of consumed memory can become quite large. This might "
@@ -1357,70 +1367,70 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:520
+#: en/linkchecker.1:524
 #, no-wrap
 msgid "FILES"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:522
+#: en/linkchecker.1:526
 msgid "B<~/.linkchecker/linkcheckerrc> - default configuration file"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:524
+#: en/linkchecker.1:528
 msgid "B<~/.linkchecker/blacklist> - default blacklist logger output filename"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:526
+#: en/linkchecker.1:530
 msgid "B<linkchecker-out.>I<TYPE> - default logger file output name"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:528
+#: en/linkchecker.1:532
 msgid ""
 "B<http://docs.python.org/library/codecs.html#standard-encodings> - valid "
 "output encodings"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:530
+#: en/linkchecker.1:534
 msgid ""
 "B<http://docs.python.org/howto/regex.html> - regular expression "
 "documentation"
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:531 en/linkcheckerrc.5:514 en/linkchecker-gui.1:11
+#: en/linkchecker.1:535 en/linkcheckerrc.5:514 en/linkchecker-gui.1:11
 #, no-wrap
 msgid "SEE ALSO"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:533
+#: en/linkchecker.1:537
 msgid "B<linkcheckerrc>(5)"
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:534 en/linkcheckerrc.5:517 en/linkchecker-gui.1:14
+#: en/linkchecker.1:538 en/linkcheckerrc.5:517 en/linkchecker-gui.1:14
 #, no-wrap
 msgid "AUTHOR"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:536 en/linkcheckerrc.5:519 en/linkchecker-gui.1:16
+#: en/linkchecker.1:540 en/linkcheckerrc.5:519 en/linkchecker-gui.1:16
 msgid "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:537 en/linkcheckerrc.5:520 en/linkchecker-gui.1:17
+#: en/linkchecker.1:541 en/linkcheckerrc.5:520 en/linkchecker-gui.1:17
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:538 en/linkcheckerrc.5:521
+#: en/linkchecker.1:542 en/linkcheckerrc.5:521
 msgid "Copyright \\(co 2000-2011 Bastian Kleineidam"
 msgstr ""
 

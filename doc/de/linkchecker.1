@@ -89,11 +89,13 @@ Definieren Sie einen regulären Ausdruck der eine Warnung ausgibt falls er
 auf den Inhalt einer geprüften URL zutrifft. Dies gilt nur für gültige
 Seiten deren Inhalt wir bekommen können.
 .br
-Use this to check for pages that contain some form of error, for example
-"This page has moved" or "Oracle Application error".
+Benutzen Sie dies, um nach Seiten zu suchen, welche bestimmte Fehler
+enthalten, zum Beispiel "Diese Seite ist umgezogen" oder "Oracle
+Applikationsfehler".
 .br
-Note that multiple values can be combined in the regular expression, for
-example "(This page has moved|Oracle Application error)".
+Man beachte, dass mehrere Werte in dem regulären Ausdruck kombiniert
+werden können, zum Beispiel "(Diese Seite ist umgezogen|Oracle
+Applikationsfehler)".
 .br
 Siehe Abschnitt \fBREGULAR EXPRESSIONS\fP für weitere Infos.
 .TP 
@@ -495,13 +497,17 @@ Proxy\-Server kontaktiert werden
 \fBLC_MESSAGES\fP, \fBLANG\fP, \fBLANGUAGE\fP \- gibt Ausgabesprache an
 .
 .SH RÜCKGABEWERT
-Der Rückgabewert ist nicht Null falls
+Der Rückgabewert ist 2 falls
+.IP \(bu
+ein Programmfehler aufgetreten ist.
+.PP
+Der Rückgabewert ist 1 falls
 .IP \(bu
 ungültige Verknüpfungen gefunden wurden oder
 .IP \(bu
 Warnungen gefunden wurden und Warnungen aktiviert sind
-.IP \(bu
-ein Programmfehler aufgetreten ist.
+.PP
+Sonst ist der Rückgabewert Null.
 .
 .SH LIMITIERUNGEN
 LinkChecker benutzt Hauptspeicher für jede zu prüfende URL, die in der

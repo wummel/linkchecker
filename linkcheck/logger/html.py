@@ -283,6 +283,11 @@ class HtmlLogger (Logger):
                 (self.stats.errors - self.stats.errors_printed))
         self.writeln(u".")
         self.writeln(u"<br>")
+        num = self.stats.internal_errors
+        if num:
+            self.write(_n("There was %(num)d internal error.",
+                "There were %(num)d internal errors.", num) % {"num": num})
+            self.writeln(u"<br>")
         self.stoptime = time.time()
         duration = self.stoptime - self.starttime
         self.writeln(_("Stopped checking at %(time)s (%(duration)s)") %

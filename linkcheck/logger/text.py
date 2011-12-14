@@ -220,6 +220,10 @@ class TextLogger (Logger):
             self.write(_(" (%d duplicates not printed)") %
                 (self.stats.errors - self.stats.errors_printed))
         self.writeln(u".")
+        num = self.stats.internal_errors
+        if num:
+            self.writeln(_n("There was %(num)d internal error.",
+                "There were %(num)d internal errors.", num) % {"num": num})
         self.stoptime = time.time()
         duration = self.stoptime - self.starttime
         self.writeln(_("Stopped checking at %(time)s (%(duration)s)") %

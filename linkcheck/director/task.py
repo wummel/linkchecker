@@ -31,9 +31,27 @@ class CheckedTask (threader.StoppableThread):
             log.warn(LOG_CHECK, "interrupt did not reach the main thread")
             thread.interrupt_main()
         except Exception:
-            console.internal_error()
+            self.internal_error()
 
     @notimplemented
     def run_checked (self):
         """Overload in subclass."""
         pass
+
+    @notimplemented
+    def internal_error (self):
+        """Overload in subclass."""
+        pass
+
+
+class LoggedCheckedTask (CheckedTask):
+    """URL check task with a logger instance and internal error handling."""
+
+    def __init__ (self, logger):
+        super(CheckedTask, self).__init__()
+        self.logger = logger
+
+    def internal_error (self):
+        """Log an internal error on console and the logger."""
+        console.internal_error()
+        self.logger.log_internal_error()

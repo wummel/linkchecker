@@ -800,8 +800,10 @@ if do_profile:
 else:
     check_urls(aggregate)
 
-# if printed errors or warnings are encountered, exit with non-zero status
 stats = config['logger'].stats
-if stats.errors_printed or \
-  (stats.warnings_printed and config['warnings']):
+# on internal errors, exit with status 2
+if stats.internal_errors:
+    sys.exit(2)
+# on errors or printed warnings, exit with status 1
+if stats.errors or (stats.warnings_printed and config['warnings']):
     sys.exit(1)
