@@ -18,7 +18,6 @@
 import os
 import sys
 import re
-import copy
 import webbrowser
 from PyQt4 import QtCore, QtGui
 from .linkchecker_ui_main import Ui_MainWindow
@@ -246,15 +245,18 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
     def backup_config (self, key, value=None):
         """Backup config key if not already done and set given value."""
         if key not in self.config_backup:
-            # make copy of containers to avoid unwanted inserted items
-            self.config_backup[key] = copy.copy(self.config[key])
+            confvalue = self.config[key]
+            if isinstance(confvalue, list):
+                # make copy of lists to avoid unwanted inserted items
+                confvalue = list(confvalue)
+            self.config_backup[key] = confvalue
         if value is not None:
             self.config[key] = value
 
     def restore_config (self):
         """Restore config from backup."""
         for key in self.config_backup:
-            self.config[key] = copy.copy(self.config_backup[key])
+            self.config[key] = self.config_backup[key]
 
     def get_status (self):
         """Return current application status."""
