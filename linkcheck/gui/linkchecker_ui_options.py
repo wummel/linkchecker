@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options.ui'
 #
-# Created: Wed Dec 14 22:41:04 2011
+# Created: Fri Dec 16 21:48:49 2011
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_Options(object):
     def setupUi(self, Options):
         Options.setObjectName(_fromUtf8("Options"))
-        Options.resize(400, 550)
+        Options.resize(455, 550)
         Options.setMinimumSize(QtCore.QSize(400, 550))
         Options.setWindowTitle(_("Dialog"))
         self.verticalLayout_3 = QtGui.QVBoxLayout(Options)

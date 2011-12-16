@@ -1398,6 +1398,7 @@
      <string>&amp;Edit</string>
     </property>
     <addaction name="actionOptions"/>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
