@@ -22,10 +22,11 @@ PEP8OPTS:=--repeat --ignore=E211,E501,E225,E301,E302,E241 \
 PY2APPOPTS ?=
 ifeq ($(shell uname),Darwin)
   NUMPROCESSORS:=$(shell sysctl -a | grep machdep.cpu.core_count | cut -d " " -f 2)
+  CHMODMINUSMINUS:=
 else
   NUMPROCESSORS:=$(shell grep -c processor /proc/cpuinfo)
+  CHMODMINUSMINUS:=--
 endif
-
 
 .PHONY: all
 all:
@@ -97,7 +98,7 @@ release: distclean releasecheck dist-stamp sign_distfiles upload
 
 .PHONY: chmod
 chmod:
-	-chmod -R a+rX,u+w,go-w -- *
+	-chmod -R a+rX,u+w,go-w $(CHMODMINUSMINUS) *
 	find . -type d -exec chmod 755 {} \;
 
 .PHONY: dist
