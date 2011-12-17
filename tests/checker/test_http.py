@@ -29,20 +29,20 @@ class TestHttp (HttpServerTest):
             url = u"http://localhost:%d/tests/checker/data/" \
                   u"http.html" % self.port
             resultlines = self.get_resultlines("http.html")
-            #self.direct(url, resultlines, recursionlevel=1)
+            self.direct(url, resultlines, recursionlevel=1)
             url = u"http://localhost:%d/tests/checker/data/" \
                   u"http.xhtml" % self.port
             resultlines = self.get_resultlines("http.xhtml")
-            #self.direct(url, resultlines, recursionlevel=1)
-            #self.redirect1_http_test()
-            #self.redirect2_http_test()
-            #self.redirect3_http_test()
+            self.direct(url, resultlines, recursionlevel=1)
+            self.redirect1_http_test()
+            self.redirect2_http_test()
+            self.redirect3_http_test()
             self.redirect4_http_test()
             self.redirect5_http_test()
-            #self.robots_txt_test()
-            #self.robots_txt2_test()
-            #self.swf_test()
-            #self.obfuscate_test()
+            self.robots_txt_test()
+            self.robots_txt2_test()
+            self.swf_test()
+            self.obfuscate_test()
         finally:
             self.stop_server()
 

@@ -106,7 +106,6 @@ class TestFile (LinkCheckTest):
         # good file (missing double slash)
         attrs = self.get_attrs()
         url = u"file:%(curdir)s/%(datadir)s/file.txt" % attrs
-        nurl = self.norm(url)
         resultlines = [
             u"url %s" % url,
             u"cache key file://%(curdir)s/%(datadir)s/file.txt" % attrs,

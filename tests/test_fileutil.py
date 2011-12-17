@@ -35,7 +35,6 @@ class TestFileutil (unittest.TestCase):
         self.assertEqual(linkcheck.fileutil.get_size(file_non_existing), -1)
 
     def test_mtime (self):
-        filename = __file__
         self.assertTrue(linkcheck.fileutil.get_mtime(file_existing) > 0)
         self.assertEqual(linkcheck.fileutil.get_mtime(file_non_existing), 0)
 
