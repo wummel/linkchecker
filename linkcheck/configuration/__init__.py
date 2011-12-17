@@ -192,6 +192,8 @@ class Configuration (dict):
         self["scanvirus"] = False
         self["clamavconf"] = clamav.canonical_clamav_conf()
         self["useragent"] = UserAgent
+        from ..logger import Loggers
+        self.loggers = dict(**Loggers)
 
     def init_logging (self, status_logger, debug=None, handler=None):
         """
@@ -252,8 +254,7 @@ class Configuration (dict):
         args = {}
         args.update(self[loggertype])
         args.update(kwargs)
-        from ..logger import Loggers
-        return Loggers[loggertype](**args)
+        return self.loggers[loggertype](**args)
 
     def logger_add (self, loggertype, loggerclass, loggerargs=None):
         """
@@ -261,8 +262,7 @@ class Configuration (dict):
         """
         if loggerargs is None:
             loggerargs = {}
-        from ..logger import Loggers
-        Loggers[loggertype] = loggerclass
+        self.loggers[loggertype] = loggerclass
         self[loggertype] = loggerargs
 
     def read (self, files=None):
