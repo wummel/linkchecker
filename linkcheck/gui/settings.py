@@ -17,7 +17,6 @@
 """Read and store QSettings for this application."""
 
 from PyQt4 import QtCore
-from .validator import check_regex
 
 
 def save_point (qpoint):

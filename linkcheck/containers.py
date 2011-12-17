@@ -210,8 +210,8 @@ class LFUCache (dict):
             # sorting function for items
             keyfunc = lambda x: x[1][0]
             values = sorted(items, key=keyfunc)
-            for key, value in values[0:trim]:
-                del self[key]
+            for item in values[0:trim]:
+                del self[item[0]]
 
     def __getitem__ (self, key):
         """Update key usage and return value."""
