@@ -248,4 +248,4 @@ count:
 # run eclipse ide
 .PHONY: ide
 ide:
-	eclipse-3.6 -data $(CURDIR)/..
+	eclipse -data $(CURDIR)/..
