@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Fri Dec 16 21:48:49 2011
+# Created: Sat Dec 17 12:37:55 2011
 #      by: PyQt4 UI code generator 4.8.6
 #
 # WARNING! All changes made in this file will be lost!
@@ -806,7 +806,6 @@ class Ui_MainWindow(object):
         self.actionDonate.setText(_("Donate"))
         self.actionDonate.setObjectName(_fromUtf8("actionDonate"))
         self.menuEdit.addAction(self.actionOptions)
-        self.menuEdit.addSeparator()
         self.menuFile.addAction(self.actionSave)
         self.menuFile.addAction(self.actionQuit)
         self.menuHelp.addAction(self.actionAbout)
