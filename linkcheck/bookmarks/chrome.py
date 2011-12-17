@@ -14,8 +14,9 @@
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-import os
 
+import os
+import sys
 
 # Windows filename encoding
 nt_filename_encoding="mbcs"
@@ -36,7 +37,11 @@ def get_profile_dir ():
         dirpath = os.path.join(basedir, u"Google", u"Chrome", u"User Data")
     elif os.name == 'posix':
         basedir = unicode(os.environ["HOME"])
-        dirpath = os.path.join(basedir, u".config", u"Google", u"Chrome")
+        if sys.platform == 'darwin':
+            dirpath = os.path.join(basedir, u"Library", u"Application Support")
+        else:
+            dirpath = os.path.join(basedir, u".config")
+        dirpath = os.path.join(dirpath, u"Google", u"Chrome")
     return dirpath
 
 
