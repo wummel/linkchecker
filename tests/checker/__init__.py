@@ -166,6 +166,9 @@ class LinkCheckTest (unittest.TestCase):
         d = {'curdir': get_file_url(os.getcwd()),
              'datadir': get_file_url(get_file()),
             }
+        # the webserver uses the first free port number
+        if hasattr(self, 'port'):
+            d['port'] = self.port
         # all result files are encoded in utf-8
         with codecs.open(resultfile, "r", "utf-8") as f:
             return [line.rstrip(u'\r\n') % d for line in f

@@ -1,10 +1,10 @@
-url http://localhost:8001/%(datadir)s/redir.html
-cache key http://localhost:8001/%(datadir)s/redir.html
-real url http://localhost:8001/%(datadir)s/redir.html
+url http://localhost:%(port)d/%(datadir)s/redir.html
+cache key http://localhost:%(port)d/%(datadir)s/redir.html
+real url http://localhost:%(port)d/%(datadir)s/redir.html
 valid
 
 url redirect_newhost.html
-cache key http://localhost:8001/%(datadir)s/redirect_newhost.html
+cache key http://localhost:%(port)d/%(datadir)s/redirect_newhost.html
 real url http://www.iana.org/domains/example/
 name redirect to new host
 info Redirected to `http://www.example.com/'.

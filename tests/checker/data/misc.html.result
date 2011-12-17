@@ -4,9 +4,9 @@ real url file://%(curdir)s/%(datadir)s/misc.html
 name %(datadir)s/misc.html
 valid
 
-url http://localhost:8001/
-cache key http://localhost:8001/
-real url http://localhost:8001/
+url http://localhost:%(port)d/
+cache key http://localhost:%(port)d/
+real url http://localhost:%(port)d/
 error
 
 url favicon.ico

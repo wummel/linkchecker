@@ -1,33 +1,33 @@
-url http://localhost:8001/%(datadir)s/http.html
-cache key http://localhost:8001/%(datadir)s/http.html
-real url http://localhost:8001/%(datadir)s/http.html
+url http://localhost:%(port)d/%(datadir)s/http.html
+cache key http://localhost:%(port)d/%(datadir)s/http.html
+real url http://localhost:%(port)d/%(datadir)s/http.html
 valid
 
 url http.html (cached)
-cache key http://localhost:8001/%(datadir)s/http.html
-real url http://localhost:8001/%(datadir)s/http.html
+cache key http://localhost:%(port)d/%(datadir)s/http.html
+real url http://localhost:%(port)d/%(datadir)s/http.html
 name CSS urls
 valid
 
 url http.html (cached)
-cache key http://localhost:8001/%(datadir)s/http.html
-real url http://localhost:8001/%(datadir)s/http.html
+cache key http://localhost:%(port)d/%(datadir)s/http.html
+real url http://localhost:%(port)d/%(datadir)s/http.html
 name CSS urls
 valid
 
 url http.html (cached)
-cache key http://localhost:8001/%(datadir)s/http.html
-real url http://localhost:8001/%(datadir)s/http.html
+cache key http://localhost:%(port)d/%(datadir)s/http.html
+real url http://localhost:%(port)d/%(datadir)s/http.html
 valid
 
 url http.html (cached)
-cache key http://localhost:8001/%(datadir)s/http.html
-real url http://localhost:8001/%(datadir)s/http.html
+cache key http://localhost:%(port)d/%(datadir)s/http.html
+real url http://localhost:%(port)d/%(datadir)s/http.html
 valid
 
 url  (cached)
-cache key http://localhost:8001/%(datadir)s/http.html
-real url http://localhost:8001/%(datadir)s/http.html
+cache key http://localhost:%(port)d/%(datadir)s/http.html
+real url http://localhost:%(port)d/%(datadir)s/http.html
 valid
 
 url http://www.garantiertnixgutt.bla/
@@ -36,27 +36,27 @@ real url http://www.garantiertnixgutt.bla/
 name bad url
 error
 
-url http://localhost:8001/
-cache key http://localhost:8001/
-real url http://localhost:8001/
+url http://localhost:%(port)d/
+cache key http://localhost:%(port)d/
+real url http://localhost:%(port)d/
 name ok
 valid
 
-url http:/localhost:8001/
-cache key http:///localhost%%3A8001/
-real url http:///localhost%%3A8001/
+url http:/localhost:%(port)d/
+cache key http:///localhost%%3A%(port)d/
+real url http:///localhost%%3A%(port)d/
 name one slash
 error
 
-url http:localhost:8001/ (cached)
-cache key http:///localhost%%3A8001/
-real url http:///localhost%%3A8001/
+url http:localhost:%(port)d/ (cached)
+cache key http:///localhost%%3A%(port)d/
+real url http:///localhost%%3A%(port)d/
 name no slash
 error
 
-url //localhost:8001/ (cached)
-cache key http://localhost:8001/
-real url http://localhost:8001/
+url //localhost:%(port)d/ (cached)
+cache key http://localhost:%(port)d/
+real url http://localhost:%(port)d/
 name no scheme
 valid
 
@@ -78,9 +78,9 @@ real url http://
 name no url, no slash
 error
 
-url http://localhost:8001/stalter&sohn
-cache key http://localhost:8001/stalter%%26sohn
-real url http://localhost:8001/stalter%%26sohn
+url http://localhost:%(port)d/stalter&sohn
+cache key http://localhost:%(port)d/stalter%%26sohn
+real url http://localhost:%(port)d/stalter%%26sohn
 name unquoted ampersand
 error
 
@@ -90,33 +90,33 @@ real url http://slashdot.org/
 name unquoted
 valid
 
-url HtTP://LoCAlHOst:8001/ (cached)
-cache key http://localhost:8001/
-real url http://localhost:8001/
+url HtTP://LoCAlHOst:%(port)d/ (cached)
+cache key http://localhost:%(port)d/
+real url http://localhost:%(port)d/
 name should be cached
 valid
 
-url HTTP://LOCALHOST:8001/ (cached)
-cache key http://localhost:8001/
-real url http://localhost:8001/
+url HTTP://LOCALHOST:%(port)d/ (cached)
+cache key http://localhost:%(port)d/
+real url http://localhost:%(port)d/
 name should be cached
 valid
 
-url http://localhost:8001/?d=directory&p=page
-cache key http://localhost:8001/?d=directory&p=page
-real url http://localhost:8001/?d=directory&p=page
+url http://localhost:%(port)d/?d=directory&p=page
+cache key http://localhost:%(port)d/?d=directory&p=page
+real url http://localhost:%(port)d/?d=directory&p=page
 name should not be cached
 valid
 
-url http://localhost:8001/?d=directory&p=page1
-cache key http://localhost:8001/?d=directory&p=page1
-real url http://localhost:8001/?d=directory&p=page1
+url http://localhost:%(port)d/?d=directory&p=page1
+cache key http://localhost:%(port)d/?d=directory&p=page1
+real url http://localhost:%(port)d/?d=directory&p=page1
 name should not be cached
 valid
 
-url http://localhost:8001/?quoted=ü
-cache key http://localhost:8001/?quoted=%%C3%%BC
-real url http://localhost:8001/?quoted=%%C3%%BC
+url http://localhost:%(port)d/?quoted=ü
+cache key http://localhost:%(port)d/?quoted=%%C3%%BC
+real url http://localhost:%(port)d/?quoted=%%C3%%BC
 name html entities
 valid
 
@@ -127,8 +127,8 @@ baseurl http://example.org/foo/%%20#a%%3D1%%2C2%%2C3
 warning Clsid URL ignored.
 valid
 
-url http://localhost:8001/ (cached)
-cache key http://localhost:8001/
-real url http://localhost:8001/
+url http://localhost:%(port)d/ (cached)
+cache key http://localhost:%(port)d/
+real url http://localhost:%(port)d/
 name no beginning quote
 valid

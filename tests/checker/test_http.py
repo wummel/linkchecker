@@ -159,8 +159,7 @@ class TestHttp (HttpServerTest):
         self.direct(url, resultlines, recursionlevel=5)
 
     def swf_test (self):
-        url = u"http://localhost:%d/tests/checker/data/" \
-              u"test.swf" % self.port
+        url = u"http://localhost:%d/tests/checker/data/test.swf" % self.port
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % url,
