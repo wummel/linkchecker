@@ -200,8 +200,12 @@ def guess_mimetype (filename, read=None):
     """Return MIME type of file, or 'application/octet-stream' if it could
     not be determined."""
     mime, encoding = mimedb.guess_type(filename, strict=False)
+    basename = os.path.basename(filename)
+    # Special case for Safari Bookmark files
+    if not mime and basename == 'Bookmarks.plist':
+        return 'application/x-plist+safari'
     # Special case for Google Chrome Bookmark files.
-    if not mime and os.path.basename(filename) == 'Bookmarks':
+    if not mime and basename == 'Bookmarks':
         mime = 'text/plain'
     # Mime type text/plain can be differentiated further with content reading.
     if mime == "text/plain" and read is not None:

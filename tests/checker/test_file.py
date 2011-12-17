@@ -61,18 +61,6 @@ class TestFile (LinkCheckTest):
     def test_urllist (self):
         self.file_test("urllist.txt")
 
-    def test_firefox_bookmarks (self):
-        # firefox 3 bookmark file parsing
-        self.file_test("places.sqlite")
-
-    def test_opera_bookmarks (self):
-        # Opera bookmark file parsing
-        self.file_test("opera6.adr")
-
-    def test_chromium_bookmarks (self):
-        # Google Chrome bookmark file parsing
-        self.file_test("Bookmarks")
-
     def test_directory_listing (self):
         # unpack non-unicode filename which cannot be stored
         # in the SF subversion repository

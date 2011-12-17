@@ -19,6 +19,7 @@ Features:
   the configuration file.
 - gui: Add configuration for ignore URL patterns.
   Closes: SF bug #3311262
+- checking: Support parsing of Safari Bookmark files.
 
 
 7.2 "Driver" (released 20.10.2011)

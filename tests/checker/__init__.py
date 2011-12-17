@@ -27,6 +27,7 @@ import linkcheck.configuration
 import linkcheck.director
 import linkcheck.logger
 import linkcheck.i18n
+from .. import get_file
 
 # helper alias
 get_url_from = linkcheck.checker.get_url_from
@@ -96,16 +97,6 @@ class TestLogger (linkcheck.logger.Logger):
                 # Make them unicode.
                 line = unicode(line, "ascii", "replace")
             self.diff.append(line)
-
-
-def get_file (filename=None):
-    """
-    Get file name located within 'data' directory.
-    """
-    directory = os.path.join("tests", "checker", "data")
-    if filename:
-        return unicode(os.path.join(directory, filename))
-    return unicode(directory)
 
 
 def get_file_url (filename):

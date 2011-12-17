@@ -185,6 +185,9 @@ class LineEdit (QtGui.QLineEdit):
         if find_opera():
             action = menu.addAction(name % {"browser": u"Opera"})
             action.triggered.connect(lambda: self.setText(find_opera()))
+        if find_safari():
+            action = menu.addAction(name % {"browser": u"Safari"})
+            action.triggered.connect(lambda: self.setText(find_safari()))
 
     def contextMenuEvent (self, event):
         """Handle context menu event."""
@@ -214,4 +217,10 @@ def find_chromium ():
 def find_opera ():
     """Return Opera bookmark filename or empty string if not found."""
     from ..bookmarks.opera import find_bookmark_file
+    return find_bookmark_file()
+
+
+def find_safari ():
+    """Return Safari bookmark filename or empty string if not found."""
+    from ..bookmarks.safari import find_bookmark_file
     return find_bookmark_file()

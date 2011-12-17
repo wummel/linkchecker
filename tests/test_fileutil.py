@@ -19,10 +19,13 @@ Test file utility functions.
 """
 
 import unittest
+import os
+from . import get_file
 import linkcheck.fileutil
 
 file_existing = __file__
 file_non_existing = "XXX.i_dont_exist"
+
 
 class TestFileutil (unittest.TestCase):
     """Test file utility functions."""
@@ -31,8 +34,17 @@ class TestFileutil (unittest.TestCase):
         self.assertTrue(linkcheck.fileutil.get_size(file_existing) > 0)
         self.assertEqual(linkcheck.fileutil.get_size(file_non_existing), -1)
 
-
     def test_mtime (self):
         filename = __file__
         self.assertTrue(linkcheck.fileutil.get_mtime(file_existing) > 0)
         self.assertEqual(linkcheck.fileutil.get_mtime(file_non_existing), 0)
+
+    def mime_test (self, filename, mime_expected):
+        mime = linkcheck.fileutil.guess_mimetype(get_file(filename))
+        self.assertEqual(mime, mime_expected)
+
+    def test_mime (self):
+        filename = os.path.join("plist_binary", "Bookmarks.plist")
+        self.mime_test(filename, "application/x-plist+safari")
+        filename = os.path.join("plist_xml", "Bookmarks.plist")
+        self.mime_test(filename, "application/x-plist+safari")

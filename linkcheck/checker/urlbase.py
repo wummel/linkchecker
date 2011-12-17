@@ -99,6 +99,7 @@ class UrlBase (object):
         "text/plain+linkchecker": "text",
         "text/plain+opera": "opera",
         "text/plain+chromium": "chromium",
+        "application/x-plist+safari": "safari",
     }
 
     # Set maximum file size for downloaded files in bytes.
@@ -976,6 +977,15 @@ class UrlBase (object):
         """Parse a Chromium or Google Chrome bookmark file."""
         log.debug(LOG_CHECK, "Parsing Chromium bookmarks %s", self)
         from ..bookmarks.chromium import parse_bookmark_data
+        for url, name in parse_bookmark_data(self.get_content()):
+            url_data = get_url_from(url, self.recursion_level+1,
+               self.aggregate, parent_url=self.url, name=name)
+            self.aggregate.urlqueue.put(url_data)
+
+    def parse_safari (self):
+        """Parse a Safari bookmark file."""
+        log.debug(LOG_CHECK, "Parsing Safari bookmarks %s", self)
+        from ..bookmarks.safari import parse_bookmark_data
         for url, name in parse_bookmark_data(self.get_content()):
             url_data = get_url_from(url, self.recursion_level+1,
                self.aggregate, parent_url=self.url, name=name)

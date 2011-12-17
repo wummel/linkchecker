@@ -157,6 +157,18 @@ need_pyftpdlib = _need_func(has_pyftpdlib, "pyftpdlib")
 
 
 @memoized
+def has_biplib ():
+    """Test if biplib is available."""
+    try:
+        import biplib
+        return True
+    except ImportError:
+        return False
+
+need_biplib = _need_func(has_biplib, "biplib")
+
+
+@memoized
 def has_newsserver (server):
     import nntplib
     try:
@@ -232,6 +244,15 @@ def limit_time (seconds, skip=False):
         return new_func
     return run_limited
 
+
+def get_file (filename=None):
+    """
+    Get file name located within 'data' directory.
+    """
+    directory = os.path.join("tests", "checker", "data")
+    if filename:
+        return unicode(os.path.join(directory, filename))
+    return unicode(directory)
 
 if __name__ == '__main__':
     print has_clamav(), has_network(), has_msgfmt(), has_posix(), has_proxy()
