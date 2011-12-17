@@ -4,10 +4,11 @@ real url file://%(curdir)s/%(datadir)s/misc.html
 name %(datadir)s/misc.html
 valid
 
-url http://localhost:%(port)d/
-cache key http://localhost:%(port)d/
-real url http://localhost:%(port)d/
-error
+url http://www.example.com/
+cache key http://www.example.com/
+real url http://www.iana.org/domains/example/
+info Redirected to `http://www.iana.org/domains/example/'.
+valid
 
 url favicon.ico
 cache key file://%(curdir)s/%(datadir)s/favicon.ico

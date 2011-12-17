@@ -36,28 +36,30 @@ real url http://www.garantiertnixgutt.bla/
 name bad url
 error
 
-url http://localhost:%(port)d/
-cache key http://localhost:%(port)d/
-real url http://localhost:%(port)d/
+url http://www.example.com/
+cache key http://www.example.com/
+real url http://www.iana.org/domains/example/
 name ok
+info Redirected to `http://www.iana.org/domains/example/'.
 valid
 
-url http:/localhost:%(port)d/
-cache key http:///localhost%%3A%(port)d/
-real url http:///localhost%%3A%(port)d/
+url http:/www.example.com/
+cache key http:///www.example.com/
+real url http:///www.example.com/
 name one slash
 error
 
-url http:localhost:%(port)d/ (cached)
-cache key http:///localhost%%3A%(port)d/
-real url http:///localhost%%3A%(port)d/
+url http:www.example.com/ (cached)
+cache key http:///www.example.com/
+real url http:///www.example.com/
 name no slash
 error
 
-url //localhost:%(port)d/ (cached)
-cache key http://localhost:%(port)d/
-real url http://localhost:%(port)d/
+url //www.example.com/ (cached)
+cache key http://www.example.com/
+real url http://www.example.com/
 name no scheme
+info Redirected to `http://www.iana.org/domains/example/'.
 valid
 
 url http://
@@ -78,7 +80,7 @@ real url http://
 name no url, no slash
 error
 
-url http://localhost:%(port)d/stalter&sohn
+url /stalter&sohn
 cache key http://localhost:%(port)d/stalter%%26sohn
 real url http://localhost:%(port)d/stalter%%26sohn
 name unquoted ampersand
@@ -90,31 +92,33 @@ real url http://slashdot.org/
 name unquoted
 valid
 
-url HtTP://LoCAlHOst:%(port)d/ (cached)
-cache key http://localhost:%(port)d/
-real url http://localhost:%(port)d/
+url HtTP://WwW.ExaMple.cOm/ (cached)
+cache key http://www.example.com/
+real url http://www.example.com/
 name should be cached
+info Redirected to `http://www.iana.org/domains/example/'.
 valid
 
-url HTTP://LOCALHOST:%(port)d/ (cached)
-cache key http://localhost:%(port)d/
-real url http://localhost:%(port)d/
+url HTTP://WWW.EXAMPLE.COM/ (cached)
+cache key http://www.example.com/
+real url http://www.example.com/
 name should be cached
+info Redirected to `http://www.iana.org/domains/example/'.
 valid
 
-url http://localhost:%(port)d/?d=directory&p=page
+url /?d=directory&p=page
 cache key http://localhost:%(port)d/?d=directory&p=page
 real url http://localhost:%(port)d/?d=directory&p=page
 name should not be cached
 valid
 
-url http://localhost:%(port)d/?d=directory&p=page1
+url /?d=directory&p=page1
 cache key http://localhost:%(port)d/?d=directory&p=page1
 real url http://localhost:%(port)d/?d=directory&p=page1
 name should not be cached
 valid
 
-url http://localhost:%(port)d/?quoted=ü
+url /?quoted=ü
 cache key http://localhost:%(port)d/?quoted=%%C3%%BC
 real url http://localhost:%(port)d/?quoted=%%C3%%BC
 name html entities
@@ -127,8 +131,9 @@ baseurl http://example.org/foo/%%20#a%%3D1%%2C2%%2C3
 warning Clsid URL ignored.
 valid
 
-url http://localhost:%(port)d/ (cached)
-cache key http://localhost:%(port)d/
-real url http://localhost:%(port)d/
+url http://www.example.com/ (cached)
+cache key http://www.example.com/
+real url http://www.example.com/
 name no beginning quote
+info Redirected to `http://www.iana.org/domains/example/'.
 valid
