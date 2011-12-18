@@ -17,6 +17,8 @@
 """
 Test http checking.
 """
+import os
+import sys
 from .httpserver import HttpServerTest, NoQueryHttpRequestHandler
 from linkcheck.network import iputil
 
@@ -174,8 +176,7 @@ class TestHttp (HttpServerTest):
         self.direct(url, resultlines, recursionlevel=1)
 
     def obfuscate_test (self):
-        import os, sys
-        if os.name != "posix" and sys.platform != 'linux2':
+        if os.name != "posix" or sys.platform != 'linux2':
             return
         host = "www.golem.de"
         ip = iputil.resolve_host(host).pop()

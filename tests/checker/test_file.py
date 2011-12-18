@@ -18,6 +18,7 @@
 Test file parsing.
 """
 import os
+import sys
 import zipfile
 from . import LinkCheckTest, get_file
 
@@ -64,7 +65,7 @@ class TestFile (LinkCheckTest):
     def test_directory_listing (self):
         # unpack non-unicode filename which cannot be stored
         # in the SF subversion repository
-        if os.name != 'posix':
+        if os.name != 'posix' or sys.platform != 'linux2':
             return
         dirname = get_file("dir")
         if not os.path.isdir(dirname):
