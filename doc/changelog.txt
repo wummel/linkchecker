@@ -9,6 +9,7 @@ Fixes:
   commandline or GUI. Only remove whitespace at the start and end.
 - cmdline: Return with non-zero exit value when internal program
   errors occurred.
+- gui: Fix saving of check results as a file.
 
 Changes:
 - gui: Display all options in one dialog instead of tabbed panes.
