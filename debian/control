@@ -2,8 +2,11 @@ Source: linkchecker
 Section: web
 Priority: optional
 Maintainer: Bastian Kleineidam <calvin@debian.org>
-Build-Depends: python-all-dev (>= 2.6.6-3), debhelper (>= 7.0.50), gettext,
- qt4-dev-tools, hardening-wrapper
+Build-Depends: debhelper (>= 7.0.50),
+               gettext,
+               hardening-wrapper,
+               python-all-dev (>= 2.6.6-3),
+               qt4-dev-tools
 X-Python-Version: >= 2.6
 Standards-Version: 3.9.2
 Homepage: http://linkchecker.sourceforge.net/
@@ -12,13 +15,19 @@ Vcs-Browser: http://linkchecker.git.sourceforge.net/
 
 Package: linkchecker
 Architecture: any
-Depends: ${python:Depends}, ${shlibs:Depends}, ${misc:Depends}
+Depends: ${misc:Depends}, ${python:Depends}, ${shlibs:Depends}
 Provides: ${python:Provides}
 Conflicts: python-dnspython
-Suggests: apache2 | httpd, python-optcomplete (>= 1.2-5),
- python-geoip (>= 1.2.1-2), clamav-daemon, python-utidylib,
- python-cssutils, python-pysqlite2, python-twill, python-gconf,
- linkchecker-gui
+Suggests: apache2 | httpd,
+          clamav-daemon,
+          linkchecker-gui,
+          python-cssutils,
+          python-gconf,
+          python-geoip (>= 1.2.1-2),
+          python-optcomplete (>= 1.2-5),
+          python-pysqlite2,
+          python-twill,
+          python-utidylib
 Description: check websites and HTML documents for broken links
  Provides a command line program and web interface to check links
  of websites and HTML documents.
@@ -42,8 +51,11 @@ Description: check websites and HTML documents for broken links
 
 Package: linkchecker-gui
 Architecture: all
-Depends: linkchecker, python-qt4 (>= 4.5), libqt4-sql-sqlite,
- ${python:Depends}, ${misc:Depends}
+Depends: libqt4-sql-sqlite,
+         linkchecker,
+         python-qt4 (>= 4.5),
+         ${misc:Depends},
+         ${python:Depends}
 Recommends: python-qscintilla2
 Description: check websites and HTML documents for broken links (GUI client)
  Provides a graphical interface "linkchecker-gui" to check links of websites
