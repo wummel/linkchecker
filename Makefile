@@ -96,7 +96,7 @@ release: distclean releasecheck dist-stamp sign_distfiles upload
 	$(MAKE) -C ~/public_html/linkchecker.sf.net update upload
 	@echo "Register at Python Package Index..."
 	$(PYTHON) setup.py register
-	freshmeat-submit < linkchecker.freshmeat
+	freecode-submit < linkchecker.freecode
 
 .PHONY: chmod
 chmod:
@@ -193,8 +193,8 @@ releasecheck: check
 	@if egrep -i "xx\.|xxxx|\.xx" doc/changelog.txt > /dev/null; then \
 	  echo "Could not release: edit doc/changelog.txt release date"; false; \
 	fi
-	@if ! grep "Version: $(VERSION)" linkchecker.freshmeat > /dev/null; then \
-	  echo "Could not release: edit linkchecker.freshmeat version"; false; \
+	@if ! grep "Version: $(VERSION)" linkchecker.freecode > /dev/null; then \
+	  echo "Could not release: edit linkchecker.freecode version"; false; \
 	fi
 #	$(MAKE) -C doc test
 
