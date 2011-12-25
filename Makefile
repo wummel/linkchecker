@@ -178,6 +178,8 @@ doccheck:
 	  linkcheck/updater.py \
 	  linkcheck/url.py \
 	  linkcheck/winutil.py \
+	  linkchecker \
+	  linkchecker-gui \
 	  *.py
 
 filescheck:

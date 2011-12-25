@@ -250,6 +250,7 @@ class LCHelpFormatter (optparse.IndentedHelpFormatter):
     """Help formatter indenting paragraph-wise."""
 
     def format_option (self, option):
+        """Customized help display with indentation."""
         # The help for each option consists of two parts:
         #   * the opt strings and metavars
         #     eg. ("-x", or "-fFILENAME, --file=FILENAME")
