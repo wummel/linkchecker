@@ -1,6 +1,6 @@
 Project: LinkChecker
-Version: 7.2
-Release-Focus: Minor bugfixes
+Version: 7.3
+Release-Focus: Minor feature enhancements
 Hide: N
 Website-URL: http://linkchecker.sourceforge.net/
 Changelog-URL: http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker/linkchecker;a=blob;f=doc/changelog.txt;hb=HEAD
@@ -8,9 +8,9 @@ Source-Package-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${v
 Debian-Package-URL: http://packages.debian.org/linkchecker
 GIT-Tree-URL: http://linkchecker.git.sourceforge.net/
 Windows-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.exe
-OSX-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.dmg
 
-Bugs were fixed for HTML and FTP character encoding detection,
-SQL output and HTML validation with the W3C validator.
-The GUI now allows configuration of a warning regular expression for
-page contents.
+The GUI option dialog has been redesigned and allows now configuration
+of ignore URL patterns.
+Parsing of Safari Bookmark files has been added.
+Bugs were fixed for Unicode hostname parsing, GUI result file saving
+and the commandline script return code.

@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2006-2009 Bastian Kleineidam
+# Copyright (C) 2006-2011 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -48,6 +48,7 @@ class LoggedCheckedTask (CheckedTask):
     """URL check task with a logger instance and internal error handling."""
 
     def __init__ (self, logger):
+        """Initialize super instance and store given logger."""
         super(CheckedTask, self).__init__()
         self.logger = logger
 

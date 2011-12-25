@@ -61,6 +61,8 @@ def parse_bookmark_data (data):
 
 
 def get_plist_data_from_file (filename):
+    """Parse plist data for a file. Tries biplist, falling back to
+    plistlib."""
     if has_biplist:
         return biplist.readPlist(filename)
     # fall back to normal plistlist
@@ -72,6 +74,8 @@ def get_plist_data_from_file (filename):
 
 
 def get_plist_data_from_string (data):
+    """Parse plist data for a string. Tries biplist, falling back to
+    plistlib."""
     if has_biplist:
         return biplist.readPlistFromString(data)
     # fall back to normal plistlist
@@ -106,4 +110,5 @@ def is_leaf (entry):
 
 
 def has_children (entry):
+    """Return true if plist entry has children."""
     return entry.get(KEY_WEBBOOKMARKTYPE) == 'WebBookmarkTypeList'

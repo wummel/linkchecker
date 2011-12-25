@@ -73,6 +73,8 @@ def get_icon (name):
 
 
 def warninglines2regex(lines):
+    """Convert a list of strings to a regular expression matching any of
+    the given strings."""
     return u"|".join([re.escape(line) for line in lines])
 
 
