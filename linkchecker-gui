@@ -47,6 +47,8 @@ def sigint_handler(*args):
 
 
 def main (argv=None):
+    """Initialize the Qt application, handle commandline arguments
+    and show the main window."""
     if argv is None:
         argv = sys.argv
     app = QApplication(argv)
