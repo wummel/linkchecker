@@ -80,12 +80,12 @@ class TestMail (LinkCheckTest):
             u"valid",
         ]
         self.direct(url, resultlines)
-        url = self.norm(u"mailto:news-admins@freshmeat.net?subject="
+        url = self.norm(u"mailto:news-admins@freecode.com?subject="
                 "Re:%20[fm%20#11093]%20(news-admins)%20Submission%20"
                 "report%20-%20Pretty%20CoLoRs")
         resultlines = [
             u"url %s" % url,
-            u"cache key mailto:news-admins@freshmeat.net",
+            u"cache key mailto:news-admins@freecode.com",
             u"real url %s" % url,
             u"warning Unverified address: 502 5.5.1 VRFY command is disabled.",
             u"valid",

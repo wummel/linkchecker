@@ -812,7 +812,7 @@ RX_DATA  [-a-zA-Z0-9_:]+
 }
 
 <S_ATTR4>\\\" {
-    /* backslash escapes seen at freshmeat.net */
+    /* backslash escapes seen at freecode.com */
     UPDATE_COLUMN;
     BEGIN(S_STRING);
 }

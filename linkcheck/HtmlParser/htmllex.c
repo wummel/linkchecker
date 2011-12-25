@@ -4278,7 +4278,7 @@ case 94:
 YY_RULE_SETUP
 #line 814 "htmllex.l"
 {
-    /* backslash escapes seen at freshmeat.net */
+    /* backslash escapes seen at freecode.com */
     UPDATE_COLUMN;
     BEGIN(S_STRING);
 }

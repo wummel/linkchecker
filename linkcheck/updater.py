@@ -23,9 +23,9 @@ from .configuration import Version as CurrentVersion
 from .url import get_content
 from distutils.version import StrictVersion
 
-# Use the Freshmeat submit file as source since that file gets updated
+# Use the Freecode submit file as source since that file gets updated
 # only when releasing a new version.
-UPDATE_URL = "http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker/linkchecker;a=blob_plain;f=linkchecker.freshmeat;hb=HEAD"
+UPDATE_URL = "http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker/linkchecker;a=blob_plain;f=linkchecker.freecode;hb=HEAD"
 VERSION_TAG = 'Version:'
 if os.name == 'nt':
     URL_TAG = 'Windows-installer-URL:'
