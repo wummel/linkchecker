@@ -18,8 +18,8 @@
 set PYDIR=C:\Python27
 set PYVER=2.7
 
-:: Qt SDK installation
-set QTDEV=c:\qt\2010.05\qt
+:: PyQt installation
+set QTDEV=%PYDIR%\Lib\site-packages\PyQt4
 
 :: END configuration, no need to change anything below
 
@@ -45,6 +45,6 @@ if defined MSSdk (
 copy build\lib.%PLATFORM%-%PYVER%\linkcheck\HtmlParser\htmlsax.pyd linkcheck\HtmlParser
 copy build\lib.%PLATFORM%-%PYVER%\linkcheck\network\_network.pyd linkcheck\network
 :: generate GUI documentation
-%QTDEV%\bin\qcollectiongenerator doc\html\lccollection.qhcp -o doc\html\lccollection.qhc
+%QTDEV%\qcollectiongenerator.exe doc\html\lccollection.qhcp -o doc\html\lccollection.qhc
 
 :finish
