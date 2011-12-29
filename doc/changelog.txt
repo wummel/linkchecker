@@ -1,3 +1,10 @@
+7.4 "" (release xx.xx.2012)
+
+Fixes:
+- gui: Fix saving of check results as a file.
+  Closes: SF bug #3466545
+
+
 7.3 "Attack the block" (released 25.12.2011)
 
 Fixes:
@@ -23,7 +30,7 @@ Features:
 - checking: Support parsing of Safari Bookmark files.
 
 
-7.2 "Driver" (released 20.10.2011)
+7.2 "Drive" (released 20.10.2011)
 
 Fixes:
 - checking: HTML parser now correctly detects character encoding for

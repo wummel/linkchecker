@@ -33,10 +33,11 @@ FileExt2LogType = {
 
 def urlsave (parent, config, urls):
     """Save URL results in file."""
-    filename, filetype = get_save_filename(parent)
+    filename = get_save_filename(parent)
     if not filename:
         # user canceled
         return
+    filename = unicode(filename)
     logtype = FileExt2LogType.get(os.path.splitext(filename)[1])
     if not logtype:
         return
