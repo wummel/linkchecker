@@ -245,7 +245,7 @@ class LinkFinder (TagFinder):
                 u = mo.group("url")
                 urls.append(unquote(u, matching=True))
         elif attr == u'archive':
-            urls.extend(','.split(url))
+            urls.extend(url.split(u','))
         else:
             urls.append(url)
         if not urls:

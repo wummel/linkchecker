@@ -30,3 +30,6 @@ class TestMisc (LinkCheckTest):
 
     def test_html5 (self):
         self.file_test("html5.html")
+
+    def test_archive (self):
+        self.file_test("archive.html")
