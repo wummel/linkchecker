@@ -4,6 +4,9 @@ Fixes:
 - gui: Fix saving of check results as a file.
   Closes: SF bug #3466545
 
+Features:
+- checking: Add HTML5 link elements and attributes.
+
 
 7.3 "Attack the block" (released 25.12.2011)
 

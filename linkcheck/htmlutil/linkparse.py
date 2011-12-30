@@ -27,23 +27,27 @@ MAX_TITLELEN = 256
 
 unquote = strformat.unquote
 
-# ripped mainly from HTML::Tagset.pm
+# HTML4/5 link tags
+# ripped mainly from HTML::Tagset.pm with HTML5 added
 LinkTags = {
     'a':        [u'href'],
     'applet':   [u'archive', u'src'],
     'area':     [u'href'],
+    'audio':    [u'src'], # HTML5
     'bgsound':  [u'src'],
     'blockquote': [u'cite'],
     'body':     [u'background'],
+    'button':   [u'formaction'], # HTML5
     'del':      [u'cite'],
     'embed':    [u'pluginspage', u'src'],
     'form':     [u'action'],
     'frame':    [u'src', u'longdesc'],
     'head':     [u'profile'],
+    'html':     [u'manifest'], # HTML5
     'iframe':   [u'src', u'longdesc'],
     'ilayer':   [u'background'],
     'img':      [u'src', u'lowsrc', u'longdesc', u'usemap'],
-    'input':    [u'src', u'usemap'],
+    'input':    [u'src', u'usemap', u'formaction'],
     'ins':      [u'cite'],
     'isindex':  [u'action'],
     'layer':    [u'background', u'src'],
@@ -52,10 +56,13 @@ LinkTags = {
     'object':   [u'classid', u'data', u'archive', u'usemap'],
     'q':        [u'cite'],
     'script':   [u'src'],
+    'source':   [u'src'], # HTML5
     'table':    [u'background'],
     'td':       [u'background'],
     'th':       [u'background'],
     'tr':       [u'background'],
+    'track':    [u'src'], # HTML5
+    'video':    [u'src'], # HTML5
     'xmp':      [u'href'],
     None:       [u'style'],
 }
