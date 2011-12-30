@@ -184,8 +184,9 @@ class LinkFinder (TagFinder):
         if tag == "base" and not self.base_ref:
             self.base_ref = unquote(attrs.get_true("href", u''))
         tagattrs = self.tags.get(tag, [])
+        # add universal tag attributes using tagname None
         tagattrs.extend(self.tags.get(None, []))
-        # eliminate duplicate tag attrs
+        # eliminate duplicate tag attributes
         tagattrs = set(tagattrs)
         # parse URLs in tag (possibly multiple URLs in CSS styles)
         for attr in tagattrs:
@@ -243,6 +244,8 @@ class LinkFinder (TagFinder):
             for mo in css_url_re.finditer(url):
                 u = mo.group("url")
                 urls.append(unquote(u, matching=True))
+        elif attr == u'archive':
+            urls.extend(','.split(url))
         else:
             urls.append(url)
         if not urls:

@@ -4,6 +4,11 @@ Fixes:
 - gui: Fix saving of check results as a file.
   Closes: SF bug #3466545
 
+Changes:
+- checking: The archive attribute of <applet> and <object> is a
+  comma-separated list of URIs. The value is now split and each URI
+  is checked separately.
+
 Features:
 - checking: Add HTML5 link elements and attributes.
 
