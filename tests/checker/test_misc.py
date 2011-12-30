@@ -27,3 +27,6 @@ class TestMisc (LinkCheckTest):
 
     def test_misc (self):
         self.file_test("misc.html")
+
+    def test_html5 (self):
+        self.file_test("html5.html")

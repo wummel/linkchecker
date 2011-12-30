@@ -172,6 +172,13 @@ parsetests = [
     #("""<td a="b></td>\na""", """<td a="b"></td>\na"""),
     #("""<a  b="c><a b="c>\n""", """<a b="c"><a b="c">\n"""),
     #("""<td a="b c="d"></td>\n""", """<td a="b" c="d"></td>\n"""),
+    # HTML5 tags
+    ("""<audio  src=bla>""", """<audio src="bla">"""),
+    ("""<button  formaction=bla>""", """<button formaction="bla">"""),
+    ("""<html  manifest=bla>""", """<html manifest="bla">"""),
+    ("""<source  src=bla>""", """<source src="bla">"""),
+    ("""<track  src=bla>""", """<track src="bla">"""),
+    ("""<video  src=bla>""", """<video src="bla">"""),
 ]
 
 flushtests = [
