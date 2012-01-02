@@ -40,12 +40,6 @@ def excepthook (window, etype, evalue, tb):
     window.error_signal.emit(out.getvalue())
 
 
-def sigint_handler(*args):
-    """Handler for the SIGINT signal."""
-    sys.stderr.write('\r')
-    QApplication.quit()
-
-
 def main (argv=None):
     """Initialize the Qt application, handle commandline arguments
     and show the main window."""
@@ -62,7 +56,7 @@ def main (argv=None):
         url = args[1]
     else:
         url = u""
-    signal.signal(signal.SIGINT, sigint_handler)
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
     # use local variable here to avoid garbage collection of the main
     # window before app.exec_() finishes
     window = LinkCheckerMain(url=url)
