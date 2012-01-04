@@ -1,6 +1,11 @@
 Upgrading
 =========
 
+Migrating from 7.3 to 7.4
+-------------------------
+The deprecated options --interactive, --priority and --allow-root
+have been removed from the commandline client.
+
 Migrating from 7.0 to 7.1
 -------------------------
 The FastCGI module lc.fcgi has been removed.

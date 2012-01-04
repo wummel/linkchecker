@@ -327,24 +327,13 @@ group.add_option("-f", "--config", type="string", dest="configfile",
 """Use FILENAME as configuration file. Per default LinkChecker first
 searches /etc/linkchecker/linkcheckerrc and then ~/.linkchecker/linkcheckerrc
 (under Windows <path-to-program>\\linkcheckerrc)."""))
-# XXX deprecated
-group.add_option("-I", "--interactive", action="store_true",
-                 dest="interactive",
-                 help=_("""This option is deprecated and does nothing."""))
 group.add_option("-t", "--threads", type="int", dest="threads",
                  metavar="NUMBER",
                  help=_(
 """Generate no more than the given number of threads. Default number
 of threads is 10. To disable threading specify a non-positive number."""))
-# XXX deprecated
-group.add_option("--priority", action="store_true", dest="priority",
-                 help=_("""This option is deprecated and does nothing."""))
 group.add_option("-V", "--version", action="store_true", dest="version",
                  help=_("""Print version and exit."""))
-# XXX deprecated
-group.add_option("--allow-root", action="store_true", dest="allowroot",
-                 default=False,
-                 help=_("""This option is deprecated and does nothing."""))
 group.add_option("--stdin", action="store_true", dest="stdin",
                  help=_(
 """Read list of white-space separated URLs to check from stdin."""))
