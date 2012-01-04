@@ -210,7 +210,6 @@ def guess_mimetype (filename, read=None):
     # Mime type text/plain can be differentiated further with content reading.
     if mime == "text/plain" and read is not None:
         # try to read some content and do a poor man's file(1)
-        # XXX replace with file(1) on Unix systems
         try:
             data = read()[:30]
             for mime, ro in PARSE_CONTENTS.items():
