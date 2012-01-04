@@ -8,7 +8,9 @@ Changes:
 - checking: The archive attribute of <applet> and <object> is a
   comma-separated list of URIs. The value is now split and each URI
   is checked separately.
-- cmdline: remove deprecated options.
+- cmdline: Remove deprecated options.
+- configuration: The dictionary-based logging configuration is now
+  used. The logging.conf file has been removed.
 
 Features:
 - checking: Add HTML5 link elements and attributes.

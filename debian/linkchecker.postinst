@@ -16,8 +16,14 @@ esac
 if [ -f /etc/linkcheckerrc ]; then
     mv -f /etc/linkcheckerrc /etc/linkchecker/linkcheckerrc.old || true
 fi
+# remove old logging conffile
+if [ -f /etc/linkchecker/logging.conf ]; then
+    rm -f /etc/linkchecker/logging.conf || true
+fi
 # remove system conffile for versions >= 7.0
 dpkg-maintscript-helper rm_conffile /etc/linkchecker/linkcheckerrc 6.9 -- "$@"
+# remove system conffile for versions >= 7.4
+dpkg-maintscript-helper rm_conffile /etc/linkchecker/logging.conf 7.3 -- "$@"
 
 
 #DEBHELPER#

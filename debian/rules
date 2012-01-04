@@ -30,7 +30,6 @@ override_dh_auto_install:
 	dh_auto_install --buildsystem python_distutils
 # install system wide configuration files in etc
 	install -m 644 config/linkcheckerrc $(ETCDIR)/linkchecker/
-	install -m 644 config/logging.conf $(ETCDIR)/linkchecker/
 # install CGI files
 	install -m 644 cgi-bin/lconline/*.html $(HTMLDIR)
 	install -m 644 cgi-bin/lconline/*.de $(HTMLDIR)

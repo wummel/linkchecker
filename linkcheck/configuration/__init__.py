@@ -51,6 +51,22 @@ This is free software, and you are welcome to redistribute it
 under certain conditions. Look at the file `LICENSE' within this
 distribution."""
 
+# logging configuration
+configdict = {
+    'version': 1,
+    'loggers': {
+    },
+    'root': {
+      'level': 'DEBUG',
+    },
+}
+
+# configure the application loggers
+for applog in lognames.values():
+    # propagate except for root app logger 'linkcheck'
+    propagate = (applog != LOG_ROOT)
+    configdict['loggers'][applog] = dict(level='INFO', propagate=propagate)
+
 
 def normpath (path):
     """Norm given system path with all available norm or expand functions
@@ -197,16 +213,13 @@ class Configuration (dict):
 
     def init_logging (self, status_logger, debug=None, handler=None):
         """
-        Load logging.conf file settings to set up the
-        application logging (not to be confused with check loggers).
-        When debug is not None it is expected to be a list of
+        Set up the application logging (not to be confused with check
+        loggers). When debug is not None it is expected to be a list of
         logger names for which debugging will be enabled.
 
         If no thread debugging is enabled, threading will be disabled.
         """
-        filename = normpath(os.path.join(get_config_dir(), "logging.conf"))
-        if os.path.isfile(filename):
-            logging.config.fileConfig(filename)
+        logging.config.dictConfig(configdict)
         if handler is None:
             handler = ansicolor.ColoredStreamHandler(strm=sys.stderr)
         self.add_loghandler(handler)

@@ -26,5 +26,7 @@ if [ "$1" = "purge" ]; then
 fi
 # remove system conffile for versions >= 7.0
 dpkg-maintscript-helper rm_conffile /etc/linkchecker/linkcheckerrc 6.9 -- "$@"
+# remove system conffile for versions >= 7.4
+dpkg-maintscript-helper rm_conffile /etc/linkchecker/logging.conf 7.3 -- "$@"
 
 exit 0
