@@ -1,6 +1,7 @@
 linkchecker (7.4-1) unstable; urgency=low
 
   * New upstream release.
+    + Requires Python >= 2.7
   * Use debhelper v8.
 
  -- Bastian Kleineidam <calvin@debian.org>  Mon, 02 Jan 2012 12:25:46 +0100

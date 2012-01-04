@@ -5,9 +5,9 @@ Maintainer: Bastian Kleineidam <calvin@debian.org>
 Build-Depends: debhelper (>= 8),
                gettext,
                hardening-wrapper,
-               python-all-dev (>= 2.6.6-3),
+               python-all-dev (>= 2.7),
                qt4-dev-tools
-X-Python-Version: >= 2.6
+X-Python-Version: >= 2.7
 Standards-Version: 3.9.2
 Homepage: http://linkchecker.sourceforge.net/
 Vcs-Git: git://linkchecker.git.sourceforge.net/gitroot/linkchecker/linkchecker
