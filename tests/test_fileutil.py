@@ -24,7 +24,7 @@ from . import get_file
 import linkcheck.fileutil
 
 file_existing = __file__
-file_non_existing = "XXX.i_dont_exist"
+file_non_existing = "ZZZ.i_dont_exist"
 
 
 class TestFileutil (unittest.TestCase):
