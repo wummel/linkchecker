@@ -35,7 +35,4 @@ class StoppableThread (threading.Thread):
 
     def stopped (self, timeout=None):
         """Return True if stop event is set."""
-        self._stop.wait(timeout)
-        # XXX on Python >= 2.7 the result from wait() can be returned
-        # directly.
-        return self._stop.is_set()
+        return self._stop.wait(timeout)
