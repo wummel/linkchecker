@@ -29,3 +29,4 @@ Changelog.linkchecker*
 /po/*.mo
 /LinkChecker-*-portable.zip
 /LinkChecker-*.exe
+/todo
