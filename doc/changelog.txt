@@ -8,6 +8,7 @@ Changes:
 - checking: The archive attribute of <applet> and <object> is a
   comma-separated list of URIs. The value is now split and each URI
   is checked separately.
+- cmdline: remove deprecated options.
 
 Features:
 - checking: Add HTML5 link elements and attributes.
