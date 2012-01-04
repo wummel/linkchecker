@@ -59,12 +59,6 @@ class TestUrl (unittest.TestCase):
         nurl = "http://server/cskin.zip"
         self.assertEqual(linkcheck.url.url_quote(url_norm(url)), nurl)
 
-    def test_stripsite (self):
-        stripsite = linkcheck.url.stripsite
-        url = "http://example.org/a/b/c"
-        self.assertEqual(stripsite(url)[0], "example.org")
-        self.assertEqual(stripsite(url)[1], "/a/b/c")
-
     def test_safe_patterns (self):
         is_safe_host = linkcheck.url.is_safe_host
         safe_host_pattern = linkcheck.url.safe_host_pattern

@@ -166,13 +166,6 @@ def safe_host_pattern (host):
      (_safe_scheme_pattern, host, _safe_path_pattern, _safe_fragment_pattern)
 
 
-# XXX better name/implementation for this function
-def stripsite (url):
-    """Remove scheme and host from URL. return host, newurl."""
-    url = urlparse.urlsplit(url)
-    return url[1], urlparse.urlunsplit((0, 0, url[2], url[3], url[4]))
-
-
 def parse_qsl (qs, keep_blank_values=0, strict_parsing=0):
     """Parse a query given as a string argument.
 
