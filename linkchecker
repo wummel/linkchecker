@@ -51,8 +51,7 @@ _username = None
 _password = None
 
 # usage texts
-Usage = _("""USAGE\tlinkchecker [options] [file-or-url]...
-""")
+Usage = _("""USAGE\tlinkchecker [options] [file-or-url]...""")
 
 Notes = _("""NOTES
  o URLs on the command line starting with "ftp." are treated like
