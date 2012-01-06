@@ -38,6 +38,7 @@ import linkcheck.checker
 import linkcheck.configuration
 import linkcheck.fileutil
 import linkcheck.logger
+import linkcheck.ansicolor
 from linkcheck.director import console, check_urls, get_aggregate
 # optional modules
 has_optcomplete = linkcheck.fileutil.has_module("optcomplete")
@@ -246,8 +247,13 @@ def has_encoding (encoding):
         return False
 
 
-class LCHelpFormatter (optparse.IndentedHelpFormatter):
+class LCHelpFormatter (optparse.IndentedHelpFormatter, object):
     """Help formatter indenting paragraph-wise."""
+
+    def __init__ (self):
+        # get width for current console
+        width = linkcheck.ansicolor.get_columns(sys.stdout)
+        super(LCHelpFormatter, self).__init__(width=width)
 
     def format_option (self, option):
         """Customized help display with indentation."""

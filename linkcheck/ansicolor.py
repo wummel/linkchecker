@@ -178,6 +178,29 @@ def has_colors (fp):
     return False
 
 
+def get_columns (fp):
+    """Return number of columns for given file."""
+    if not is_tty(fp):
+        return 80
+    if has_wconio:
+        # gettextinfo() returns a tuple
+        # - left, top, right, bottom: window coordinates
+        # - textattr, normattr: current attributes
+        # - videomode: current video mode
+        # - height, width: screen size
+        # - curx, cury: current cursor position
+        # return the width:
+        return WConio.gettextinfo()[8]
+    if has_curses:
+        import curses
+        try:
+            curses.setupterm()
+            return curses.tigetnum("cols")
+        except curses.error:
+           pass
+    return 80
+
+
 def _write_color_nt (fp, text, color):
     """Assumes WConio has been imported at module level."""
     oldcolor = WConio.gettextinfo()[4]
