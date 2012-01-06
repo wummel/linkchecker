@@ -341,60 +341,31 @@ optparser.add_option_group(group)
 
 ################# output options ##################
 group = optparse.OptionGroup(optparser, _("Output options"))
-group.add_option("-v", "--verbose", action="store_true", dest="verbose",
-                 help=_(
-"""Log all URLs. Default is to log only errors and warnings."""))
-group.add_option("--complete", action="store_true", dest="complete",
-                 help=_("""Log all URLs, including duplicates.
-Default is to log duplicate URLs only once."""))
-group.add_option("--no-warnings", action="store_false", dest="warnings",
-                help=_("""Don't log warnings. Default is to log warnings."""))
-group.add_option("-W", "--warning-regex", type="string", dest="warningregex",
-                 metavar="REGEX",
-                 help=_(
-"""Define a regular expression which prints a warning if it matches
-any content of the checked link. This applies only to valid pages,
-so we can get their content.
-
-Use this to check for pages that contain some form of error
-message, for example 'This page has moved' or 'Oracle
-Application error'.
-
-Note that multiple values can be combined in the regular expression,
-for example "(This page has moved|Oracle Application error)"."""))
-group.add_option("--warning-size-bytes", dest="warningsizebytes",
-                 metavar="NUMBER",
-                 help=_(
-"""Print a warning if content size info is available and exceeds the
-given number of bytes."""))
-group.add_option("--check-html", action="store_true", dest="checkhtml",
-                 help=_(
-"""Check syntax of HTML URLs with local library (HTML tidy)."""))
-group.add_option("--check-html-w3", action="store_true", dest="checkhtmlw3",
-                 help=_(
-"""Check syntax of HTML URLs with W3C online validator."""))
 group.add_option("--check-css", action="store_true", dest="checkcss",
                  help=_(
 """Check syntax of CSS URLs with local library (cssutils)."""))
 group.add_option("--check-css-w3", action="store_true", dest="checkcssw3",
                  help=_(
 """Check syntax of CSS URLs with W3C online validator."""))
-group.add_option("--scan-virus", action="store_true", dest="scanvirus",
+group.add_option("--check-html", action="store_true", dest="checkhtml",
                  help=_(
-"""Scan content of URLs with ClamAV virus scanner."""))
-group.add_option("-q", "--quiet", action="store_true", dest="quiet",
+"""Check syntax of HTML URLs with local library (HTML tidy)."""))
+group.add_option("--check-html-w3", action="store_true", dest="checkhtmlw3",
                  help=_(
-"""Quiet operation, an alias for '-o none'.
-This is only useful with -F."""))
-group.add_option("-o", "--output", type="string", dest="output",
-                 metavar="TYPE[/ENCODING]",
-                 help=_(
-"""Specify output as %(loggertypes)s. Default output type is text.
-The ENCODING specifies the output encoding, the default is that of your
-locale.
-Valid encodings are listed at """ \
-"""http://docs.python.org/lib/standard-encodings.html.""") % \
-{'loggertypes': linkcheck.logger.LoggerKeys})
+"""Check syntax of HTML URLs with W3C online validator."""))
+group.add_option("--complete", action="store_true", dest="complete",
+                 help=_("""Log all URLs, including duplicates.
+Default is to log duplicate URLs only once."""))
+group.add_option("-D", "--debug", type="string", action="append",
+                 metavar="STRING",
+                 help=_("""Print debugging output for the given logger.
+Available loggers are %(lognamelist)s.
+Specifying 'all' is an alias for specifying all available loggers.
+The option can be given multiple times to debug with more
+than one logger.
+
+For accurate results, threading will be disabled during debug runs.""") % \
+{"lognamelist": linkcheck.lognamelist})
 group.add_option("-F", "--file-output", type="string", action="append",
                  dest="fileoutput", metavar="TYPE[/ENCODING][/FILENAME]",
                  help=_(
@@ -413,45 +384,63 @@ suppress all console output with the option '-o none'.""") % \
 group.add_option("--no-status", action="store_false", dest="status",
                  default=True, help=_(
 """Do not print check status messages."""))
-group.add_option("-D", "--debug", type="string", action="append",
-                 metavar="STRING",
-                 help=_("""Print debugging output for the given logger.
-Available loggers are %(lognamelist)s.
-Specifying 'all' is an alias for specifying all available loggers.
-The option can be given multiple times to debug with more
-than one logger.
-
-For accurate results, threading will be disabled during debug runs.""") % \
-{"lognamelist": linkcheck.lognamelist})
-group.add_option("--trace", action="store_true", dest="trace",
-                 help=_("""Print tracing information."""))
+group.add_option("--no-warnings", action="store_false", dest="warnings",
+                help=_("""Don't log warnings. Default is to log warnings."""))
+group.add_option("-o", "--output", type="string", dest="output",
+                 metavar="TYPE[/ENCODING]",
+                 help=_(
+"""Specify output as %(loggertypes)s. Default output type is text.
+The ENCODING specifies the output encoding, the default is that of your
+locale.
+Valid encodings are listed at """ \
+"""http://docs.python.org/lib/standard-encodings.html.""") % \
+{'loggertypes': linkcheck.logger.LoggerKeys})
 group.add_option("--profile", action="store_true", dest="profile",
                  help=_(
 """Write profiling data into a file named %s in the
 current working directory. See also --viewprof.""") % _profile)
+group.add_option("-q", "--quiet", action="store_true", dest="quiet",
+                 help=_(
+"""Quiet operation, an alias for '-o none'.
+This is only useful with -F."""))
+group.add_option("--scan-virus", action="store_true", dest="scanvirus",
+                 help=_(
+"""Scan content of URLs with ClamAV virus scanner."""))
+group.add_option("--trace", action="store_true", dest="trace",
+                 help=_("""Print tracing information."""))
+group.add_option("-v", "--verbose", action="store_true", dest="verbose",
+                 help=_(
+"""Log all URLs. Default is to log only errors and warnings."""))
 group.add_option("--viewprof", action="store_true", dest="viewprof",
                  help=_(
 """Print out previously generated profiling data. See also --profile."""))
+group.add_option("-W", "--warning-regex", type="string", dest="warningregex",
+                 metavar="REGEX",
+                 help=_(
+"""Define a regular expression which prints a warning if it matches
+any content of the checked link. This applies only to valid pages,
+so we can get their content.
+
+Use this to check for pages that contain some form of error
+message, for example 'This page has moved' or 'Oracle
+Application error'.
+
+Note that multiple values can be combined in the regular expression,
+for example "(This page has moved|Oracle Application error)"."""))
+group.add_option("--warning-size-bytes", dest="warningsizebytes",
+                 metavar="NUMBER",
+                 help=_(
+"""Print a warning if content size info is available and exceeds the
+given number of bytes."""))
 optparser.add_option_group(group)
 
 
 ################# checking options ##################
 group = optparse.OptionGroup(optparser, _("Checking options"))
-group.add_option("-r", "--recursion-level", type="int", dest="recursionlevel",
-                 metavar="NUMBER",
+group.add_option("-a", "--anchors", action="store_true", dest="anchors",
                  help=_(
-"""Check recursively all links up to given depth. A negative depth
-will enable infinite recursion. Default depth is infinite."""))
-group.add_option("--no-follow-url", type="string", action="append",
-                 metavar="REGEX",
-                 dest="extern", help=_(
-"""Check but do not recurse into URLs matching the given regular
-expression. This option can be given multiple times."""))
-group.add_option("--ignore-url", type="string", action="append",
-                 metavar="REGEX",
-                 dest="externstrict", help=_(
-"""Only check syntax of URLs matching the given regular expression.
- This option can be given multiple times."""))
+"""Check HTTP anchor references. Default is not to check anchors.
+This option enables logging of the warning 'url-anchor-not-found'."""))
 group.add_option("-C", "--cookies", action="store_true", dest="cookies",
                  help=_(
 """Accept and send HTTP cookies according to RFC 2109. Only cookies
@@ -463,38 +452,49 @@ group.add_option("--cookiefile", type="string", dest="cookiefile",
                  help=_(
 """Read a file with initial cookie data. The cookie data format is
 explained below."""))
-group.add_option("-a", "--anchors", action="store_true", dest="anchors",
-                 help=_(
-"""Check HTTP anchor references. Default is not to check anchors.
-This option enables logging of the warning 'url-anchor-not-found'."""))
-group.add_option("-u", "--user", type="string", dest="username",
-                 metavar="STRING",
-                 help=_(
-"""Try the given username for HTTP and FTP authorization.
-For FTP the default username is 'anonymous'. For HTTP there is
-no default username. See also -p."""))
-group.add_option("-p", "--password", action="store_false", dest="password",
-                 default=False,
-                 help=_(
-"""Read a password from console and use it for HTTP and FTP authorization.
-For FTP the default password is 'anonymous@'. For HTTP there is
-no default password. See also -u."""))
-group.add_option("--timeout", type="int", dest="timeout",
-                 metavar="NUMBER",
-                 help=_(
-"""Set the timeout for connection attempts in seconds. The default
-timeout is %d seconds.""") % config["timeout"])
-group.add_option("-P", "--pause", type="int", dest="pause",
-                 metavar="NUMBER",
-                 help=_(
-"""Pause the given number of seconds between two subsequent connection
-requests to the same host. Default is no pause between requests."""))
+group.add_option("--ignore-url", type="string", action="append",
+                 metavar="REGEX",
+                 dest="externstrict", help=_(
+"""Only check syntax of URLs matching the given regular expression.
+ This option can be given multiple times."""))
+group.add_option("--no-follow-url", type="string", action="append",
+                 metavar="REGEX",
+                 dest="extern", help=_(
+"""Check but do not recurse into URLs matching the given regular
+expression. This option can be given multiple times."""))
 group.add_option("-N", "--nntp-server", type="string", dest="nntpserver",
                  metavar="STRING",
                  help=_(
 """Specify an NNTP server for 'news:...' links. Default is the
 environment variable NNTP_SERVER. If no host is given,
 only the syntax of the link is checked."""))
+group.add_option("-p", "--password", action="store_false", dest="password",
+                 default=False,
+                 help=_(
+"""Read a password from console and use it for HTTP and FTP authorization.
+For FTP the default password is 'anonymous@'. For HTTP there is
+no default password. See also -u."""))
+group.add_option("-P", "--pause", type="int", dest="pause",
+                 metavar="NUMBER",
+                 help=_(
+"""Pause the given number of seconds between two subsequent connection
+requests to the same host. Default is no pause between requests."""))
+group.add_option("-r", "--recursion-level", type="int", dest="recursionlevel",
+                 metavar="NUMBER",
+                 help=_(
+"""Check recursively all links up to given depth. A negative depth
+will enable infinite recursion. Default depth is infinite."""))
+group.add_option("--timeout", type="int", dest="timeout",
+                 metavar="NUMBER",
+                 help=_(
+"""Set the timeout for connection attempts in seconds. The default
+timeout is %d seconds.""") % config["timeout"])
+group.add_option("-u", "--user", type="string", dest="username",
+                 metavar="STRING",
+                 help=_(
+"""Try the given username for HTTP and FTP authorization.
+For FTP the default username is 'anonymous'. For HTTP there is
+no default username. See also -p."""))
 group.add_option("--user-agent", type="string", dest="useragent",
                  metavar="STRING",
                  help=_(
