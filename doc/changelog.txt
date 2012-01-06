@@ -1,8 +1,8 @@
-7.4 "" (release xx.xx.2012)
+7.4 "Warrior" (release 07.01.2012)
 
 Fixes:
 - gui: Fix saving of check results as a file.
-  Closes: SF bug #3466545
+  Closes: SF bug #3466545, #3470389
 
 Changes:
 - checking: The archive attribute of <applet> and <object> is a
@@ -11,6 +11,7 @@ Changes:
 - cmdline: Remove deprecated options.
 - configuration: The dictionary-based logging configuration is now
   used. The logging.conf file has been removed.
+- dependencies: Python >= 2.7 is now required
 
 Features:
 - checking: Add HTML5 link elements and attributes.
