@@ -250,7 +250,7 @@ class LCHelpFormatter (optparse.IndentedHelpFormatter, object):
     """Help formatter indenting paragraph-wise."""
 
     def __init__ (self):
-        # get width for current console
+        """Set current console width for this formatter."""
         width = linkcheck.ansicolor.get_columns(sys.stdout)
         super(LCHelpFormatter, self).__init__(width=width)
 
