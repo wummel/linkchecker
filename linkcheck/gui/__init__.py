@@ -113,6 +113,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.init_url(url)
         self.init_treeview()
         self.connect_widgets()
+        self.init_shortcuts()
         self.init_config()
         self.read_config()
         self.init_menu()
@@ -178,6 +179,14 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.error_signal.connect(self.internal_error)
         self.options.editor.saved.connect(self.read_config)
         self.log_status_signal.connect(self.log_status)
+
+    def init_shortcuts (self):
+        """Configure application shortcuts."""
+        def selectUrl():
+            self.urlinput.setFocus()
+            self.urlinput.selectAll()
+        shortcut = QtGui.QShortcut(QtGui.QKeySequence("Ctrl+L"), self)
+        shortcut.activated.connect(selectUrl)
 
     def init_treeview (self):
         """Set treeview model and layout."""
