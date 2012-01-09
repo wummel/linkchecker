@@ -1,4 +1,7 @@
-7.4 "Warrior" (release 07.01.2012)
+7.5 "" (released xx.xx.2012)
+
+
+7.4 "Warrior" (released 07.01.2012)
 
 Fixes:
 - gui: Fix saving of check results as a file.
