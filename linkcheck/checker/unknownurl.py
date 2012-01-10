@@ -46,6 +46,7 @@ acap        # application configuration access protocol
 |service    # service location
 |shttp      # secure HTTP
 |sip        # session initiation protocol
+|steam      # Steam browser protocol
 |tel        # telephone
 |tip        # Transaction Internet Protocol
 |tn3270     # Interactive 3270 emulation sessions

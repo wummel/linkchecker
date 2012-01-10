@@ -1,5 +1,9 @@
 7.5 "" (released xx.xx.2012)
 
+Changes:
+- checking: Add steam:// URIs to the list of ignored URIs.
+  Closes: SF bug #3471570
+
 Features:
 - gui: add Ctrl-L shortcut to highlight the URL input.
 

@@ -56,3 +56,15 @@ class TestUnknown (LinkCheckTest):
             u"valid",
         ]
         self.direct(url, resultlines)
+
+    def test_steam (self):
+        url = u"steam://connect/example.org"
+        nurl = self.norm(url)
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % nurl,
+            u"warning Steam URL ignored.",
+            u"valid",
+        ]
+        self.direct(url, resultlines)
