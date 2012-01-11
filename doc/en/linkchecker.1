@@ -1,6 +1,6 @@
 .TH LINKCHECKER 1 2010-07-01 "LinkChecker" "LinkChecker commandline usage"
 .SH NAME
-linkchecker - check HTML documents and websites for broken links
+linkchecker - command line client to check HTML documents and websites for broken links
 .
 .SH SYNOPSIS
 \fBlinkchecker\fP [\fIoptions\fP] [\fIfile-or-url\fP]...
@@ -8,20 +8,30 @@ linkchecker - check HTML documents and websites for broken links
 .SH DESCRIPTION
 .LP
 LinkChecker features
-recursive checking,
-multithreading,
-output in colored or normal text, HTML, SQL, CSV or a sitemap
-graph in GML or XML,
-support for HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Telnet
-and local file links,
-restriction of link checking with regular expression filters for URLs,
+.IP \(bu
+recursive and multithreaded checking,
+.IP \(bu
+output in colored or normal text, HTML, SQL, CSV, XML or a sitemap graph in different formats,
+.IP \(bu
+support for HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Telnet and local file links,
+.IP \(bu
+restriction of link checking with URL filters,
+.IP \(bu
 proxy support,
-username/password authorization for HTTP and FTP,
-robots.txt exclusion protocol support,
-i18n support,
-a command line interface and
-a (Fast)CGI web interface (requires HTTP server)
-.
+.IP \(bu
+username/password authorization for HTTP, FTP and Telnet,
+.IP \(bu
+support for robots.txt exclusion protocol,
+.IP \(bu
+support for Cookies
+.IP \(bu
+support for HTML5
+.IP \(bu
+HTML and CSS syntax check
+.IP \(bu
+Antivirus check
+.IP \(bu
+a command line, GUI and web interface
 .SH EXAMPLES
 The most common use checks the given domain recursively, plus any
 URL pointing outside of the domain:

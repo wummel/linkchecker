@@ -5,22 +5,41 @@
 .\"*******************************************************************
 .TH LINKCHECKER 1 2010\-07\-01 LinkChecker "LinkChecker auf der Kommandozeile"
 .SH NAME
-linkchecker \- prüfe HTML Dokumente und Webseiten auf ungültige Verknüpfungen
+linkchecker \- Kommandozeilenprogramm zum Prüfen von HTML Dokumenten und
+Webseiten auf ungültige Verknüpfungen
 .
 .SH SYNTAX
 \fBlinkchecker\fP [\fIOptionen\fP] [\fIDatei\-oder\-URL\fP]...
 .
 .SH BESCHREIBUNG
 .LP
-LinkChecker bietet rekursives Prüfen, Multithreading, Ausgabe als farbigen
-oder normalen Text, HTML, SQL, CSV oder einen Sitemap\-Graphen in GML oder
-XML, Unterstützung für HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Telnet
-und lokale Dateiverknüpfungen, Einschränkung der Verknüpfungsüberprüfung mit
-URL Filtern bestehend aus regulären Ausdrücken, Proxy Unterstützung,
-Benutzer/Passwort Authentifizierung für HTTP und FTP, Unterstützung des
-robots.txt Protokolls, Mehrsprachigkeit, eine Kommandozeilenschnittstelle
-sowie eine CGI Webschnittstelle (benötigt einen HTTP Server).
-.
+LinkChecker beinhaltet
+.IP \(bu
+rekursives Prüfen und Multithreading
+.IP \(bu
+Ausgabe als farbigen oder normalen Text, HTML, SQL, CSV, XML oder einen
+Sitemap\-Graphen in verschiedenen Formaten
+.IP \(bu
+Unterstützung von HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Telnet und
+Verknüpfungen auf lokale Dateien
+.IP \(bu
+Einschränkung der Linküberprüfung mit URL\-Filter,
+.IP \(bu
+Proxy\-Unterstützung
+.IP \(bu
+Benutzer/Passwort Authorisierung für HTTP, FTP und Telnet
+.IP \(bu
+Unterstützung des robots.txt Protokolls
+.IP \(bu
+Unterstützung für Cookies
+.IP \(bu
+Unterstützung für HTML5
+.IP \(bu
+HTML\- und CSS\-Syntaxprüfung
+.IP \(bu
+Antivirusprüfung
+.IP \(bu
+ein Kommandozeilenprogramm, GUI und web interface
 .SH BEISPIELE
 Der häufigste Gebrauchsfall prüft die angegebene Domäne rekursiv,
 inklusive aller einzelnen nach außen zeigenden Verknüpfungen:
