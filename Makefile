@@ -198,7 +198,7 @@ releasecheck: check
 	@if ! grep "Version: $(VERSION)" linkchecker.freecode > /dev/null; then \
 	  echo "Could not release: edit linkchecker.freecode version"; false; \
 	fi
-#	$(MAKE) -C doc test
+	$(PYTHON) setup.py check --restructuredtext
 
 .PHONY: sign_distfiles
 sign_distfiles:
