@@ -1,5 +1,9 @@
 7.5 "" (released xx.xx.2012)
 
+Fixes:
+- checking: Properly handle non-ascii HTTP header values.
+  Closes: SF bug #3473359
+
 Changes:
 - checking: Add steam:// URIs to the list of ignored URIs.
   Closes: SF bug #3471570

@@ -201,7 +201,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             # proxy enforcement (overrides standard proxy)
             if response.status == 305 and self.headers:
                 oldproxy = (self.proxy, self.proxyauth)
-                newproxy = self.headers.getheader("Location")
+                newproxy = self.headers.get("Location")
                 self.add_info(_("Enforced proxy `%(name)s'.") %
                               {"name": newproxy})
                 self.set_proxy(newproxy)
@@ -307,8 +307,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
 
     def follow_redirection (self, response, set_result, redirected):
         """Follow one redirection of http response."""
-        newurl = self.headers.getheader("Location",
-                     self.headers.getheader("Uri", ""))
+        newurl = self.headers.get("Location",
+                     self.headers.get("Uri", ""))
         # make new url absolute and unicode
         newurl = urlparse.urljoin(redirected, unicode_safe(newurl))
         log.debug(LOG_CHECK, "Redirected to %r", newurl)
@@ -551,7 +551,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         self.url_connection.endheaders()
         response = self.url_connection.getresponse(True)
         self.timeout = headers.http_timeout(response)
-        self.headers = response.msg
+        self.headers = headers.decode_headers(response.msg)
         self.content_type = None
         self.persistent = not response.will_close
         if self.persistent and self.method == "HEAD":
@@ -564,7 +564,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         # Note that for POST method the connection should also be closed,
         # but this method is never used.
         if self.persistent and (self.method == "GET" or
-           self.headers.getheader("Content-Length") != "0"):
+           self.headers.get("Content-Length") != "0"):
             # always read content from persistent connections
             self._read_content(response)
             assert not response.will_close
@@ -646,7 +646,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         self.method = "GET"
         response = self._try_http_response()
         response = self.follow_redirections(response, set_result=False)[1]
-        self.headers = response.msg
+        self.headers = headers.decode_headers(response.msg)
         self.content_type = None
         # Re-read size info, since the GET request result could be different
         # than a former HEAD request.
