@@ -36,13 +36,13 @@ class ProxySupport (object):
         if not self.proxy:
             return
         proxyargs = {"proxy": self.proxy}
+        self.proxytype, self.proxy = urllib.splittype(self.proxy)
         if self.proxytype not in ('http', 'https'):
             # Note that invalid proxies might raise TypeError in urllib2,
             # so make sure to stop checking at this point, not later.
             msg = _("Proxy value `%(proxy)s' must start with 'http:' or 'https:'.") \
                  % proxyargs
             raise LinkCheckerError(msg)
-        self.proxytype, self.proxy = urllib.splittype(self.proxy)
         self.proxy = urllib.splithost(self.proxy)[0]
         self.proxyauth, self.proxy = urllib.splituser(self.proxy)
         if self.ignore_proxy_host():
