@@ -117,6 +117,22 @@ After installation
 LinkChecker is now installed. Have fun!
 
 
+Manual setup for OSX systems
+----------------------------
+
+1. Install the XCode developer tools
+
+2. Install homebrew_ and then install pyqt.
+   
+   .. _homebrew: http://mxcl.github.com/homebrew/
+
+3. Run ``make app``.
+   
+   Note: this appears not to be working due to bugs
+   in third-party libraries. Since I don't have no OSX hardware
+   anymore, I cannot fix that myself.
+
+
 (Fast)CGI web interface
 -----------------------
 The included CGI scripts can run LinkChecker with a nice graphical web
