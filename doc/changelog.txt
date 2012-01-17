@@ -3,6 +3,9 @@
 Fixes:
 - checking: Properly handle non-ascii HTTP header values.
   Closes: SF bug #3473359
+- checking: Work around a squid bug which resulted in not detecting
+  broken links.
+  Closes: SF bug #3472341
 
 Changes:
 - checking: Add steam:// URIs to the list of ignored URIs.

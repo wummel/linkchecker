@@ -260,11 +260,17 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                         "Authentication %s/%s", _user, _password)
                     continue
             elif response.status >= 400:
-                # retry with GET (but do not set fallback flag)
+                # Retry with GET, but do not set fallback_get flag.
+                # This ensures that sites that do not properly support HEAD
+                # requests do not give false errors.
                 if self.method == "HEAD" and self.method_get_allowed:
-                    self.method = "GET"
-                    self.aliases = []
-                    continue
+                    # The squid proxy reports valid 200 instead of 404 due to
+                    # garbage sent from the server at the start of the GET
+                    # request. See http://www.aldec.com/Products
+                    if u'squid' not in self.headers.get('Via', '').lower():
+                        self.method = "GET"
+                        self.aliases = []
+                        continue
             elif self.headers and self.method == "HEAD" and self.method_get_allowed:
                 # test for HEAD support
                 mime = self.get_content_type()
