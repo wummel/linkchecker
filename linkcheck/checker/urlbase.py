@@ -783,7 +783,7 @@ class UrlBase (object):
         """Check HTML syntax of this page (which is supposed to be HTML)
         with the local HTML tidy module."""
         if not fileutil.has_module("tidy"):
-            log.warn(LOG_CHECK, _("warning: tidy module is not available; " \
+            log.warn(LOG_CHECK, _("tidy module is not available; " \
                  "download from http://utidylib.berlios.de/"))
             return
         import tidy
@@ -802,19 +802,18 @@ class UrlBase (object):
             # errors to propagate into this library
             err = str(sys.exc_info()[1])
             log.warn(LOG_CHECK,
-                _("warning: tidy HTML parsing caused error: %(msg)s ") %
+                _("tidy HTML parsing caused error: %(msg)s ") %
                 {"msg": err})
 
     def check_css (self):
         """Check CSS syntax of this page (which is supposed to be CSS)
         with the local cssutils module."""
-        try:
-            import cssutils
-        except ImportError:
+        if not fileutil.has_module("cssutils"):
             log.warn(LOG_CHECK,
-                _("warning: cssutils module is not available; " \
+                _("cssutils module is not available; " \
                  "download from http://cthedot.de/cssutils/"))
             return
+        import cssutils
         try:
             csslog = logging.getLogger('cssutils')
             csslog.propagate = 0
@@ -834,7 +833,7 @@ class UrlBase (object):
             # errors to propagate into this library
             err = str(sys.exc_info()[1])
             log.warn(LOG_CHECK,
-                _("warning: cssutils parsing caused error: %(msg)s") %
+                _("cssutils parsing caused error: %(msg)s") %
                 {"msg": err})
 
     def check_w3_errors (self, xml, w3type):
@@ -874,7 +873,7 @@ class UrlBase (object):
             # errors to propagate into this library
             err = str(sys.exc_info()[1])
             log.warn(LOG_CHECK,
-                _("warning: HTML W3C validation caused error: %(msg)s ") %
+                _("HTML W3C validation caused error: %(msg)s ") %
                 {"msg": err})
 
     def check_css_w3 (self):
@@ -909,7 +908,7 @@ class UrlBase (object):
             # errors to propagate into this library
             err = str(sys.exc_info()[1])
             log.warn(LOG_CHECK,
-                _("warning: CSS W3C validation caused error: %(msg)s ") %
+                _("CSS W3C validation caused error: %(msg)s ") %
                 {"msg": err})
 
     def scan_virus (self):

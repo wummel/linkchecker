@@ -21,7 +21,7 @@ import os
 import thread
 import urlparse
 from cStringIO import StringIO
-from .. import log, LOG_CHECK, LinkCheckerInterrupt, cookies, dummy
+from .. import log, LOG_CHECK, LinkCheckerInterrupt, cookies, dummy, fileutil
 from ..cache import urlqueue, robots_txt, cookie, connection
 from . import aggregator, console
 from ..httplib2 import HTTPMessage
@@ -33,11 +33,10 @@ def visit_loginurl (aggregate):
     url = config["loginurl"]
     if not url:
         return
-    try:
-        from twill import commands as tc
-    except ImportError:
+    if not fileutil.has_module("twill"):
         log.warn(LOG_CHECK, _("Could not import twill for login URL visit"))
         return
+    from twill import commands as tc
     log.debug(LOG_CHECK, u"Visiting login URL %s", url)
     configure_twill(tc)
     tc.go(url)

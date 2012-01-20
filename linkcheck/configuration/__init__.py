@@ -300,7 +300,7 @@ class Configuration (dict):
         """Add given authentication data."""
         if not user or not pattern:
             log.warn(LOG_CHECK,
-            _("warning: missing user or URL pattern in authentication data."))
+            _("missing user or URL pattern in authentication data."))
             return
         entry = dict(
             user=user,
@@ -350,7 +350,7 @@ class Configuration (dict):
     def sanitize_logger (self):
         """Make logger configuration consistent."""
         if not self['output']:
-            log.warn(LOG_CHECK, _("warning: activating text logger output."))
+            log.warn(LOG_CHECK, _("activating text logger output."))
             self['output'] = 'text'
         self['logger'] = self.logger_new(self['output'])
 
@@ -358,7 +358,7 @@ class Configuration (dict):
         """Ensure HTML tidy is installed for checking HTML."""
         if not fileutil.has_module("tidy"):
             log.warn(LOG_CHECK,
-                _("warning: tidy module is not available; " \
+                _("tidy module is not available; " \
                  "download from http://utidylib.berlios.de/"))
             self['checkhtml'] = False
 
@@ -366,7 +366,7 @@ class Configuration (dict):
         """Ensure cssutils is installed for checking CSS."""
         if not fileutil.has_module("cssutils"):
             log.warn(LOG_CHECK,
-                _("warning: cssutils module is not available; " \
+                _("cssutils module is not available; " \
                  "download from http://cthedot.de/cssutils/"))
             self['checkcss'] = False
 
@@ -376,13 +376,13 @@ class Configuration (dict):
             clamav.init_clamav_conf(self['clamavconf'])
         except clamav.ClamavError:
             log.warn(LOG_CHECK,
-                _("warning: Clamav could not be initialized"))
+                _("Clamav could not be initialized"))
             self['scanvirus'] = False
 
     def sanitize_cookies (self):
         """Make cookie configuration consistent."""
         if not self['sendcookies']:
-            log.warn(LOG_CHECK, _("warning: activating sendcookies " \
+            log.warn(LOG_CHECK, _("activating sendcookies " \
                                   "because storecookies is active."))
             self['sendcookies'] = True
 
@@ -392,26 +392,26 @@ class Configuration (dict):
         disable = False
         if not self["loginpasswordfield"]:
             log.warn(LOG_CHECK,
-            _("warning: no CGI password fieldname given for login URL."))
+            _("no CGI password fieldname given for login URL."))
             disable = True
         if not self["loginuserfield"]:
             log.warn(LOG_CHECK,
-            _("warning: no CGI user fieldname given for login URL."))
+            _("no CGI user fieldname given for login URL."))
             disable = True
         if self.get_user_password(url) == (None, None):
             log.warn(LOG_CHECK,
-            _("warning: no user/password authentication data found for login URL."))
+            _("no user/password authentication data found for login URL."))
             disable = True
         if not url.lower().startswith(("http:", "https:")):
-            log.warn(LOG_CHECK, _("warning: login URL is not a HTTP URL."))
+            log.warn(LOG_CHECK, _("login URL is not a HTTP URL."))
             disable = True
         urlparts = urlparse.urlsplit(url)
         if not urlparts[0] or not urlparts[1] or not urlparts[2]:
-            log.warn(LOG_CHECK, _("warning: login URL is incomplete."))
+            log.warn(LOG_CHECK, _("login URL is incomplete."))
             disable = True
         if disable:
             log.warn(LOG_CHECK,
-              _("warning: disabling login URL %(url)s.") % {"url": url})
+              _("disabling login URL %(url)s.") % {"url": url})
             self["loginurl"] = None
         elif not self['storecookies']:
             # login URL implies storing and sending cookies
