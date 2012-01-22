@@ -717,7 +717,7 @@ args = dict(
     name = AppName,
     version = AppVersion,
     description = "check websites and HTML documents for broken links",
-    keywords = "link,url,checking,verification",
+    keywords = "link,url,site,checking,crawling,verification",
     author = myname,
     author_email = myemail,
     maintainer = myname,
@@ -727,7 +727,7 @@ args = dict(
     license = "GPL",
     long_description = """Linkchecker features:
 
-o recursive and multithreaded checking
+o recursive and multithreaded checking and site crawling
 o output in colored or normal text, HTML, SQL, CSV, XML or a sitemap graph in different formats
 o HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Telnet and local file links support
 o restrict link checking with regular expression filters for URLs
