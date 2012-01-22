@@ -10,6 +10,9 @@ Fixes:
 Changes:
 - checking: Add steam:// URIs to the list of ignored URIs.
   Closes: SF bug #3471570
+- checking: Deprecate the --check-html-w3 and --check-css-w3 options.
+  The W3C checkers are automatically used if a local check library
+  is not installed.
 
 Features:
 - gui: add Ctrl-L shortcut to highlight the URL input.

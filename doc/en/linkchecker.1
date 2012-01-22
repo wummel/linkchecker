@@ -108,16 +108,12 @@ Print a warning if content size info is available and exceeds the given
 number of \fIbytes\fP.
 .TP
 \fB\-\-check\-html\fP
-Check syntax of HTML URLs with local library (HTML tidy).
-.TP
-\fB\-\-check\-html\-w3\fP
-Check syntax of HTML URLs with W3C online validator.
+Check syntax of HTML URLs with HTML tidy. If it's not installed,
+check with the W3C online validator.
 .TP
 \fB\-\-check\-css\fP
-Check syntax of CSS URLs with local library (cssutils).
-.TP
-\fB\-\-check\-css\-w3\fP
-Check syntax of CSS URLs with W3C online validator.
+Check syntax of CSS URLs with cssutils. If it's not installed,
+check with the W3C online validator.
 .TP
 \fB\-\-scan\-virus\fP
 Scan content of URLs for viruses with ClamAV.

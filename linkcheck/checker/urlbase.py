@@ -783,9 +783,7 @@ class UrlBase (object):
         """Check HTML syntax of this page (which is supposed to be HTML)
         with the local HTML tidy module."""
         if not fileutil.has_module("tidy"):
-            log.warn(LOG_CHECK, _("tidy module is not available; " \
-                 "download from http://utidylib.berlios.de/"))
-            return
+            return self.check_html_w3()
         import tidy
         options = dict(output_html=0, show_warnings=1, quiet=True,
             input_encoding='utf8', output_encoding='utf8', tidy_mark=0)
@@ -809,10 +807,7 @@ class UrlBase (object):
         """Check CSS syntax of this page (which is supposed to be CSS)
         with the local cssutils module."""
         if not fileutil.has_module("cssutils"):
-            log.warn(LOG_CHECK,
-                _("cssutils module is not available; " \
-                 "download from http://cthedot.de/cssutils/"))
-            return
+            return self.check_css_w3()
         import cssutils
         try:
             csslog = logging.getLogger('cssutils')

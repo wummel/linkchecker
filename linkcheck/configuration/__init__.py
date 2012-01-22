@@ -326,10 +326,6 @@ class Configuration (dict):
             self.sanitize_anchors()
         if self['logger'] is None:
             self.sanitize_logger()
-        if self['checkhtml']:
-            self.sanitize_checkhtml()
-        if self['checkcss']:
-            self.sanitize_checkcss()
         if self['scanvirus']:
             self.sanitize_scanvirus()
         if self['storecookies']:
@@ -353,22 +349,6 @@ class Configuration (dict):
             log.warn(LOG_CHECK, _("activating text logger output."))
             self['output'] = 'text'
         self['logger'] = self.logger_new(self['output'])
-
-    def sanitize_checkhtml (self):
-        """Ensure HTML tidy is installed for checking HTML."""
-        if not fileutil.has_module("tidy"):
-            log.warn(LOG_CHECK,
-                _("tidy module is not available; " \
-                 "download from http://utidylib.berlios.de/"))
-            self['checkhtml'] = False
-
-    def sanitize_checkcss (self):
-        """Ensure cssutils is installed for checking CSS."""
-        if not fileutil.has_module("cssutils"):
-            log.warn(LOG_CHECK,
-                _("cssutils module is not available; " \
-                 "download from http://cthedot.de/cssutils/"))
-            self['checkcss'] = False
 
     def sanitize_scanvirus (self):
         """Ensure clamav is installed for virus checking."""
