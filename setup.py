@@ -147,6 +147,11 @@ def get_release_date ():
     return release_date
 
 
+def get_portable():
+    """Return portable flag as string."""
+    return os.environ.get('LINKCHECKER_PORTABLE', '0')
+
+
 def get_qt_plugin_dir_win ():
     """Get Qt plugin dir on Windows systems."""
     import PyQt4
@@ -374,6 +379,7 @@ class MyDistribution (Distribution, object):
             data.append(cmd)
         data.append('appname = "LinkChecker"')
         data.append('release_date = "%s"' % get_release_date())
+        data.append('portable = %s' % get_portable())
         # write the config file
         util.execute(write_file, (filename, data),
                      "creating %s" % filename, self.verbose >= 1, self.dry_run)

@@ -27,7 +27,7 @@ import urlparse
 import shutil
 import _LinkChecker_configdata as configdata
 from .. import (log, LOG_CHECK, LOG_ROOT, ansicolor, lognames, clamav,
-    get_config_dir, fileutil)
+    get_config_dir, fileutil, configdict)
 from . import confparse
 from ..decorators import memoized
 
@@ -37,8 +37,8 @@ AppName = configdata.appname
 App = AppName+u" "+Version
 Author = configdata.author
 HtmlAuthor = Author.replace(u' ', u'&nbsp;')
-Copyright = u"Copyright (C) 2000-2011 "+Author
-HtmlCopyright = u"Copyright &copy; 2000-2011 "+HtmlAuthor
+Copyright = u"Copyright (C) 2000-2012 "+Author
+HtmlCopyright = u"Copyright &copy; 2000-2012 "+HtmlAuthor
 AppInfo = App+u"              "+Copyright
 HtmlAppInfo = App+u", "+HtmlCopyright
 Url = configdata.url
@@ -50,23 +50,7 @@ Freeware = AppName+u""" comes with ABSOLUTELY NO WARRANTY!
 This is free software, and you are welcome to redistribute it
 under certain conditions. Look at the file `LICENSE' within this
 distribution."""
-
-# logging configuration
-configdict = {
-    'version': 1,
-    'loggers': {
-    },
-    'root': {
-      'level': 'DEBUG',
-    },
-}
-
-# configure the application loggers
-for applog in lognames.values():
-    # propagate except for root app logger 'linkcheck'
-    propagate = (applog != LOG_ROOT)
-    configdict['loggers'][applog] = dict(level='INFO', propagate=propagate)
-
+Portable = configdata.portable
 
 def normpath (path):
     """Norm given system path with all available norm or expand functions
@@ -414,14 +398,17 @@ class Configuration (dict):
 
 def get_user_config():
     """Find user configuration file.
+    On portable installations, an internal example configfile is returned.
     Generate user configuration file from the example configuration
     if it does not yet exist.
-    Returns path to user config file"""
+    Returns path to user config file (which might not exist do to copy
+    failures)."""
     # example config
     exampleconf = normpath(os.path.join(get_config_dir(), "linkcheckerrc"))
     # per user config settings
     userconf = normpath("~/.linkchecker/linkcheckerrc")
-    if os.path.isfile(exampleconf) and not os.path.exists(userconf):
+    if os.path.isfile(exampleconf) and not os.path.exists(userconf) and \
+       not Portable:
         # copy the system configuration to the user configuration
         try:
             userdir = os.path.dirname(userconf)

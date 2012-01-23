@@ -27,6 +27,9 @@ rd /s /q dist > nul
 ::goto :finish
 
 echo Building portable distribution
+set LINKCHECKER_PORTABLE=1
+rd /s /q dist > nul
+%PYDIR%\python.exe setup.py py2exe
 rd /s /q %PORTDIR% > nul
 xcopy /e /i dist %PORTDIR%
 del %PORTDIR%\omt.iss

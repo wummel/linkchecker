@@ -69,6 +69,25 @@ lognames = {
 }
 lognamelist = ", ".join(repr(name) for name in lognames)
 
+# logging configuration
+configdict = {
+    'version': 1,
+    'loggers': {
+    },
+    'root': {
+      'level': 'DEBUG',
+    },
+}
+
+def init_log_config():
+    """Configure the application loggers."""
+    for applog in lognames.values():
+        # propagate except for root app logger 'linkcheck'
+        propagate = (applog != LOG_ROOT)
+        configdict['loggers'][applog] = dict(level='INFO', propagate=propagate)
+
+init_log_config()
+
 from . import log
 
 
