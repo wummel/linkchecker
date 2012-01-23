@@ -71,12 +71,16 @@ Erzeuge einen Sitemap Graphen und konvertiere ihn mit dem graphviz dot Programm:
 .SH OPTIONEN
 .SS "Allgemeine Optionen"
 .TP 
-\fB\-h\fP, \fB\-\-help\fP
-Hilfe! Gebe Gebrauchsanweisung für dieses Programm aus.
-.TP 
 \fB\-f\fP\fIDATEINAME\fP, \fB\-\-config=\fP\fIDATEINAME\fP
 Benutze \fIDATEINAME\fP als Konfigurationsdatei. Standardmäßig benutzt
 LinkChecker \fB~/.linkchecker/linkcheckerrc\fP.
+.TP 
+\fB\-h\fP, \fB\-\-help\fP
+Hilfe! Gebe Gebrauchsanweisung für dieses Programm aus.
+.TP 
+\fB\-\-stdin\fP
+Lese Liste von URLs zum Prüfen von der Standardeingabe, getrennt durch
+Leerzeichen.
 .TP 
 \fB\-t\fP\fINUMMER\fP, \fB\-\-threads=\fP\fINUMMER\fP
 Generiere nicht mehr als die angegebene Anzahl von Threads. Standard Anzahl
@@ -85,67 +89,27 @@ positive Nummer an.
 .TP 
 \fB\-V\fP, \fB\-\-version\fP
 Gebe die Version aus und beende das Programm.
-.TP 
-\fB\-\-stdin\fP
-Lese Liste von URLs zum Prüfen von der Standardeingabe, getrennt durch
-Leerzeichen.
 .
 .SS Ausgabeoptionen
-.TP 
-\fB\-v\fP, \fB\-\-verbose\fP
-Gebe alle geprüften URLs einmal aus. Standard ist es, nur fehlerhafte URLs
-und Warnungen auszugeben.
-.TP 
-\fB\-\-complete\fP
-Gebe alle geprüften URLs aus. Standard ist es, doppelte URLs nur einmal
-auszugeben.
-.TP 
-\fB\-\-no\-warnings\fP
-Gebe keine Warnungen aus. Standard ist die Ausgabe von Warnungen.
-.TP 
-\fB\-W\fP\fIREGEX\fP, \fB\-\-warning\-regex=\fP\fIREGEX\fP
-Definieren Sie einen regulären Ausdruck der eine Warnung ausgibt falls er
-auf den Inhalt einer geprüften URL zutrifft. Dies gilt nur für gültige
-Seiten deren Inhalt wir bekommen können.
-.br
-Benutzen Sie dies, um nach Seiten zu suchen, welche bestimmte Fehler
-enthalten, zum Beispiel "Diese Seite ist umgezogen" oder "Oracle
-Applikationsfehler".
-.br
-Man beachte, dass mehrere Werte in dem regulären Ausdruck kombiniert
-werden können, zum Beispiel "(Diese Seite ist umgezogen|Oracle
-Applikationsfehler)".
-.br
-Siehe Abschnitt \fBREGULAR EXPRESSIONS\fP für weitere Infos.
-.TP 
-\fB\-\-warning\-size\-bytes=\fP\fINUMMER\fP
-Gebe eine Warnung aus, wenn die Inhaltsgröße bekannt ist und die angegebene
-Anzahl von Bytes übersteigt.
-.TP 
-\fB\-\-check\-html\fP
-Prüfe Syntax von HTML URLs mit HTML tidy. Wenn es nicht installiert ist,
-prüfe mit dem W3C Online Validator.
 .TP 
 \fB\-\-check\-css\fP
 Prüfe Syntax von CSS URLs mit cssutils. Wenn es nicht installiert ist, prüfe
 mit dem W3C Online Validator.
 .TP 
-\fB\-\-scan\-virus\fP
-Prüfe Inhalt von URLs auf Viren mit ClamAV.
+\fB\-\-check\-html\fP
+Prüfe Syntax von HTML URLs mit HTML tidy. Wenn es nicht installiert ist,
+prüfe mit dem W3C Online Validator.
 .TP 
-\fB\-q\fP, \fB\-\-quiet\fP
-Keine Ausgabe, ein Alias für \fB\-o none\fP. Dies ist nur in Verbindung mit
-\fB\-F\fP nützlich.
+\fB\-\-complete\fP
+Gebe alle geprüften URLs aus. Standard ist es, doppelte URLs nur einmal
+auszugeben.
 .TP 
-\fB\-o\fP\fITYP\fP[\fB/\fP\fIENKODIERUNG\fP], \fB\-\-output=\fP\fITYP\fP[\fB/\fP\fIENKODIERUNG\fP]
-Gib Ausgabetyp als \fBtext\fP, \fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP,
-\fBnone\fP oder \fBblacklist\fP an.  Stadard Typ ist \fBtext\fP. Die verschiedenen
-Ausgabetypen sind unten dokumentiert.
-.br
-Das \fIENCODING\fP gibt die Ausgabekodierung an. Der Standard ist das der
-lokalen Spracheinstellung. Gültige Enkodierungen sind unter
-\fBhttp://docs.python.org/library/codecs.html#standard\-encodings\fP
-aufgelistet.
+\fB\-D\fP\fINAME\fP, \fB\-\-debug=\fP\fINAME\fP
+Gebe Testmeldungen aus für den angegebenen Logger. Verfügbare Logger sind
+\fBcmdline\fP, \fBchecking\fP,\fBcache\fP, \fBgui\fP, \fBdns\fP und \fBall\fP. Die Angabe
+\fBall\fP ist ein Synonym für alle verfügbaren Logger. Diese Option kann
+mehrmals angegeben werden, um mit mehr als einem Logger zu testen. Um
+akkurate Ergebnisse zu erzielen, werden Threads deaktiviert.
 .TP 
 \fB\-F\fP\fITYP\fP[\fB/\fP\fIENKODIERUNG\fP][\fB/\fP\fIDATEINAME\fP], \fB\-\-file\-output=\fP\fITYP\fP[\fB/\fP\fIENKODIERUNG\fP][\fB/\fP\fIDATEINAME\fP]
 Ausgabe in eine Datei namens \fBlinkchecker\-out.\fP\fITYP\fP,
@@ -169,44 +133,64 @@ Ausgaben auf der Konsole verhindern können.
 \fB\-\-no\-status\fP
 Gebe keine Statusmeldungen aus.
 .TP 
-\fB\-D\fP\fINAME\fP, \fB\-\-debug=\fP\fINAME\fP
-Gebe Testmeldungen aus für den angegebenen Logger. Verfügbare Logger sind
-\fBcmdline\fP, \fBchecking\fP,\fBcache\fP, \fBgui\fP, \fBdns\fP und \fBall\fP. Die Angabe
-\fBall\fP ist ein Synonym für alle verfügbaren Logger. Diese Option kann
-mehrmals angegeben werden, um mit mehr als einem Logger zu testen. Um
-akkurate Ergebnisse zu erzielen, werden Threads deaktiviert.
+\fB\-\-no\-warnings\fP
+Gebe keine Warnungen aus. Standard ist die Ausgabe von Warnungen.
 .TP 
-\fB\-\-trace\fP
-Trace\-Information ausgeben.
+\fB\-o\fP\fITYP\fP[\fB/\fP\fIENKODIERUNG\fP], \fB\-\-output=\fP\fITYP\fP[\fB/\fP\fIENKODIERUNG\fP]
+Gib Ausgabetyp als \fBtext\fP, \fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP,
+\fBnone\fP oder \fBblacklist\fP an.  Stadard Typ ist \fBtext\fP. Die verschiedenen
+Ausgabetypen sind unten dokumentiert.
+.br
+Das \fIENCODING\fP gibt die Ausgabekodierung an. Der Standard ist das der
+lokalen Spracheinstellung. Gültige Enkodierungen sind unter
+\fBhttp://docs.python.org/library/codecs.html#standard\-encodings\fP
+aufgelistet.
 .TP 
 \fB\-\-profile\fP
 Schreibe Profiling\-Daten in eine Datei namens \fBlinkchecker.prof\fP im
 aktuellen Arbeitsverzeichnis. Siehe auch \fB\-\-viewprof\fP.
 .TP 
+\fB\-q\fP, \fB\-\-quiet\fP
+Keine Ausgabe, ein Alias für \fB\-o none\fP. Dies ist nur in Verbindung mit
+\fB\-F\fP nützlich.
+.TP 
+\fB\-\-scan\-virus\fP
+Prüfe Inhalt von URLs auf Viren mit ClamAV.
+.TP 
+\fB\-\-trace\fP
+Trace\-Information ausgeben.
+.TP 
+\fB\-v\fP, \fB\-\-verbose\fP
+Gebe alle geprüften URLs einmal aus. Standard ist es, nur fehlerhafte URLs
+und Warnungen auszugeben.
+.TP 
 \fB\-\-viewprof\fP
 Gebe vorher generierte Profiling\-Daten aus. Siehe auch \fB\-\-profile\fP.
+.TP 
+\fB\-W\fP\fIREGEX\fP, \fB\-\-warning\-regex=\fP\fIREGEX\fP
+Definieren Sie einen regulären Ausdruck der eine Warnung ausgibt falls er
+auf den Inhalt einer geprüften URL zutrifft. Dies gilt nur für gültige
+Seiten deren Inhalt wir bekommen können.
+.br
+Benutzen Sie dies, um nach Seiten zu suchen, welche bestimmte Fehler
+enthalten, zum Beispiel "Diese Seite ist umgezogen" oder "Oracle
+Applikationsfehler".
+.br
+Man beachte, dass mehrere Werte in dem regulären Ausdruck kombiniert
+werden können, zum Beispiel "(Diese Seite ist umgezogen|Oracle
+Applikationsfehler)".
+.br
+Siehe Abschnitt \fBREGULAR EXPRESSIONS\fP für weitere Infos.
+.TP 
+\fB\-\-warning\-size\-bytes=\fP\fINUMMER\fP
+Gebe eine Warnung aus, wenn die Inhaltsgröße bekannt ist und die angegebene
+Anzahl von Bytes übersteigt.
 .
 .SS "Optionen zum Prüfen"
 .TP 
-\fB\-r\fP\fINUMMER\fP, \fB\-\-recursion\-level=\fP\fINUMMER\fP
-Prüfe rekursiv alle URLs bis zu der angegebenen Tiefe. Eine negative Tiefe
-bewirkt unendliche Rekursion. Standard Tiefe ist unendlich.
-.TP 
-\fB\-\-no\-follow\-url=\fP\fIREGEX\fP
-Prüfe URLs, welche dem angegebenen regulären Ausdruck entsprechen, aber
-führe keine Rekursion durch.
-.br
-Diese Option kann mehrmals angegeben werden.
-.br
-Siehe Abschnitt \fBREGULAR EXPRESSIONS\fP für weitere Infos.
-.TP 
-\fB\-\-ignore\-url=\fP\fIREGEX\fP
-Prüfe lediglich die Syntax von URLs, welche dem angegebenen regulären
-Ausdruck entsprechen.
-.br
-Diese Option kann mehrmals angegeben werden.
-.br
-Siehe Abschnitt \fBREGULAR EXPRESSIONS\fP für weitere Infos.
+\fB\-a\fP, \fB\-\-anchors\fP
+Prüfe HTTP Ankerverweise. Standard ist, Ankerverweise nicht zu prüfen. Diese
+Option aktiviert die Ausgabe der Warnung \fBurl\-anchor\-not\-found\fP.
 .TP 
 \fB\-C\fP, \fB\-\-cookies\fP
 Akzeptiere und sende HTTP Cookies nach der RFC 2109. Lediglich Cookies, die
@@ -218,33 +202,49 @@ aufgeführt.
 Lese eine Datei mit Cookie\-Daten. Das Cookie Datenformat wird weiter unten
 erklärt.
 .TP 
-\fB\-a\fP, \fB\-\-anchors\fP
-Prüfe HTTP Ankerverweise. Standard ist, Ankerverweise nicht zu prüfen. Diese
-Option aktiviert die Ausgabe der Warnung \fBurl\-anchor\-not\-found\fP.
+\fB\-\-ignore\-url=\fP\fIREGEX\fP
+Prüfe lediglich die Syntax von URLs, welche dem angegebenen regulären
+Ausdruck entsprechen.
+.br
+Diese Option kann mehrmals angegeben werden.
+.br
+Siehe Abschnitt \fBREGULAR EXPRESSIONS\fP für weitere Infos.
 .TP 
-\fB\-u\fP\fINAME\fP, \fB\-\-user=\fP\fINAME\fP
-Verwende den angegebenen Benutzernamen für HTTP und FTP Autorisierung. Für
-FTP ist der Standardname \fBanonymous\fP. Für HTTP gibt es keinen
-Standardnamen. Siehe auch \fB\-p\fP.
+\fB\-N\fP\fINAME\fP, \fB\-\-nntp\-server=\fP\fINAME\fP
+Gibt ein NNTP Rechner für \fBnews:\fP Links. Standard ist die Umgebungsvariable
+\fBNNTP_SERVER\fP. Falls kein Rechner angegeben ist, wird lediglich auf
+korrekte Syntax des Links geprüft.
+.TP 
+\fB\-\-no\-follow\-url=\fP\fIREGEX\fP
+Prüfe URLs, welche dem angegebenen regulären Ausdruck entsprechen, aber
+führe keine Rekursion durch.
+.br
+Diese Option kann mehrmals angegeben werden.
+.br
+Siehe Abschnitt \fBREGULAR EXPRESSIONS\fP für weitere Infos.
 .TP 
 \fB\-p\fP, \fB\-\-password\fP
 Liest ein Passwort von der Kommandozeile und verwende es für HTTP und FTP
 Autorisierung. Für FTP ist das Standardpasswort \fBanonymous@\fP. Für HTTP gibt
 es kein Standardpasswort. Siehe auch \fB\-u\fP.
 .TP 
-\fB\-\-timeout=\fP\fINUMMER\fP
-Setze den Timeout für TCP\-Verbindungen in Sekunden. Der Standard Timeout ist
-60 Sekunden.
-.TP 
 \fB\-P\fP\fINUMMER\fP, \fB\-\-pause=\fP\fINUMMER\fP
 Pausiere die angegebene Anzahl von Sekunden zwischen zwei aufeinander
 folgenden Verbindungen zum demselben Rechner. Standard ist keine Pause
 zwischen Verbindungen.
 .TP 
-\fB\-N\fP\fINAME\fP, \fB\-\-nntp\-server=\fP\fINAME\fP
-Gibt ein NNTP Rechner für \fBnews:\fP Links. Standard ist die Umgebungsvariable
-\fBNNTP_SERVER\fP. Falls kein Rechner angegeben ist, wird lediglich auf
-korrekte Syntax des Links geprüft.
+\fB\-r\fP\fINUMMER\fP, \fB\-\-recursion\-level=\fP\fINUMMER\fP
+Prüfe rekursiv alle URLs bis zu der angegebenen Tiefe. Eine negative Tiefe
+bewirkt unendliche Rekursion. Standard Tiefe ist unendlich.
+.TP 
+\fB\-\-timeout=\fP\fINUMMER\fP
+Setze den Timeout für TCP\-Verbindungen in Sekunden. Der Standard Timeout ist
+60 Sekunden.
+.TP 
+\fB\-u\fP\fINAME\fP, \fB\-\-user=\fP\fINAME\fP
+Verwende den angegebenen Benutzernamen für HTTP und FTP Autorisierung. Für
+FTP ist der Standardname \fBanonymous\fP. Für HTTP gibt es keinen
+Standardnamen. Siehe auch \fB\-p\fP.
 .TP 
 \fB\-\-user\-agent=\fP\fISTRING\fP
 Gibt den User\-Agent an, der zu HTTP\-Servern geschickt wird,

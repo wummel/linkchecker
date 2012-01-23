@@ -62,12 +62,15 @@ Generate a sitemap graph and convert it with the graphviz dot utility:
 .SH OPTIONS
 .SS General options
 .TP
-\fB\-h\fP, \fB\-\-help\fP
-Help me! Print usage information for this program.
-.TP
 \fB\-f\fP\fIFILENAME\fP, \fB\-\-config=\fP\fIFILENAME\fP
 Use \fIFILENAME\fP as configuration file. As default LinkChecker
 uses \fB~/.linkchecker/linkcheckerrc\fP.
+.TP
+\fB\-h\fP, \fB\-\-help\fP
+Help me! Print usage information for this program.
+.TP
+\fB\-\-stdin\fP
+Read list of white-space separated URLs to check from stdin.
 .TP
 \fB\-t\fP\fINUMBER\fP, \fB\-\-threads=\fP\fINUMBER\fP
 Generate no more than the given number of threads. Default number
@@ -75,62 +78,29 @@ of threads is 10. To disable threading specify a non-positive number.
 .TP
 \fB\-V\fP, \fB\-\-version\fP
 Print version and exit.
-.TP
-\fB\-\-stdin\fP
-Read list of white-space separated URLs to check from stdin.
 .
 .SS Output options
-.TP
-\fB\-v\fP, \fB\-\-verbose\fP
-Log all checked URLs once. Default is to log only errors and warnings.
-.TP
-\fB\-\-complete\fP
-Log all URLs, including duplicates. Default is to log duplicate URLs only once.
-.TP
-\fB\-\-no\-warnings\fP
-Don't log warnings. Default is to log warnings.
-.TP
-\fB\-W\fP\fIREGEX\fP, \fB\-\-warning\-regex=\fIREGEX\fP
-Define a regular expression which prints a warning if it matches any
-content of the checked link.
-This applies only to valid pages, so we can get their content.
-.br
-Use this to check for pages that contain some form of error, for example
-"This page has moved" or "Oracle Application error".
-.br
-Note that multiple values can be combined in the regular expression,
-for example "(This page has moved|Oracle Application error)".
-.br
-See section \fBREGULAR EXPRESSIONS\fP for more info.
-.TP
-\fB\-\-warning\-size\-bytes=\fP\fINUMBER\fP
-Print a warning if content size info is available and exceeds the given
-number of \fIbytes\fP.
-.TP
-\fB\-\-check\-html\fP
-Check syntax of HTML URLs with HTML tidy. If it's not installed,
-check with the W3C online validator.
 .TP
 \fB\-\-check\-css\fP
 Check syntax of CSS URLs with cssutils. If it's not installed,
 check with the W3C online validator.
 .TP
-\fB\-\-scan\-virus\fP
-Scan content of URLs for viruses with ClamAV.
+\fB\-\-check\-html\fP
+Check syntax of HTML URLs with HTML tidy. If it's not installed,
+check with the W3C online validator.
 .TP
-\fB\-q\fP, \fB\-\-quiet\fP
-Quiet operation, an alias for \fB\-o none\fP.
-This is only useful with \fB\-F\fP.
+\fB\-\-complete\fP
+Log all URLs, including duplicates. Default is to log duplicate URLs only once.
 .TP
-\fB\-o\fP\fITYPE\fP[\fB/\fP\fIENCODING\fP], \fB\-\-output=\fP\fITYPE\fP[\fB/\fP\fIENCODING\fP]
-Specify output type as \fBtext\fP, \fBhtml\fP, \fBsql\fP,
-\fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBnone\fP or \fBblacklist\fP.
-Default type is \fBtext\fP. The various output types are documented
-below.
-.br
-The \fIENCODING\fP specifies the output encoding, the default is
-that of your locale. Valid encodings are listed at
-\fBhttp://docs.python.org/library/codecs.html#standard-encodings\fP.
+\fB\-D\fP\fISTRING\fP, \fB\-\-debug=\fP\fISTRING\fP
+Print debugging output for the given logger.
+Available loggers are \fBcmdline\fP, \fBchecking\fP,
+\fBcache\fP, \fBgui\fP, \fBdns\fP and \fBall\fP.
+Specifying \fBall\fP is an alias for specifying all available loggers.
+The option can be given multiple times to debug with more
+than one logger.
+.BR
+For accurate results, threading will be disabled during debug runs.
 .TP
 \fB\-F\fP\fITYPE\fP[\fB/\fP\fIENCODING\fP][\fB/\fP\fIFILENAME\fP], \fB\-\-file\-output=\fP\fITYPE\fP[\fB/\fP\fIENCODING\fP][\fB/\fP\fIFILENAME\fP]
 Output to a file \fBlinkchecker\-out.\fP\fITYPE\fP,
@@ -153,48 +123,62 @@ with the option \fB\-o none\fP.
 \fB\-\-no\-status\fP
 Do not print check status messages.
 .TP
-\fB\-D\fP\fISTRING\fP, \fB\-\-debug=\fP\fISTRING\fP
-Print debugging output for the given logger.
-Available loggers are \fBcmdline\fP, \fBchecking\fP,
-\fBcache\fP, \fBgui\fP, \fBdns\fP and \fBall\fP.
-Specifying \fBall\fP is an alias for specifying all available loggers.
-The option can be given multiple times to debug with more
-than one logger.
-.BR
-For accurate results, threading will be disabled during debug runs.
+\fB\-\-no\-warnings\fP
+Don't log warnings. Default is to log warnings.
 .TP
-\fB\-\-trace\fP
-Print tracing information.
+\fB\-o\fP\fITYPE\fP[\fB/\fP\fIENCODING\fP], \fB\-\-output=\fP\fITYPE\fP[\fB/\fP\fIENCODING\fP]
+Specify output type as \fBtext\fP, \fBhtml\fP, \fBsql\fP,
+\fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBnone\fP or \fBblacklist\fP.
+Default type is \fBtext\fP. The various output types are documented
+below.
+.br
+The \fIENCODING\fP specifies the output encoding, the default is
+that of your locale. Valid encodings are listed at
+\fBhttp://docs.python.org/library/codecs.html#standard-encodings\fP.
 .TP
 \fB\-\-profile\fP
 Write profiling data into a file named \fBlinkchecker.prof\fP
 in the current working directory. See also \fB\-\-viewprof\fP.
 .TP
+\fB\-q\fP, \fB\-\-quiet\fP
+Quiet operation, an alias for \fB\-o none\fP.
+This is only useful with \fB\-F\fP.
+.TP
+\fB\-\-scan\-virus\fP
+Scan content of URLs for viruses with ClamAV.
+.TP
+\fB\-\-trace\fP
+Print tracing information.
+.TP
+\fB\-v\fP, \fB\-\-verbose\fP
+Log all checked URLs once. Default is to log only errors and warnings.
+.TP
 \fB\-\-viewprof\fP
 Print out previously generated profiling data. See also
 \fB\-\-profile\fP.
+.TP
+\fB\-W\fP\fIREGEX\fP, \fB\-\-warning\-regex=\fIREGEX\fP
+Define a regular expression which prints a warning if it matches any
+content of the checked link.
+This applies only to valid pages, so we can get their content.
+.br
+Use this to check for pages that contain some form of error, for example
+"This page has moved" or "Oracle Application error".
+.br
+Note that multiple values can be combined in the regular expression,
+for example "(This page has moved|Oracle Application error)".
+.br
+See section \fBREGULAR EXPRESSIONS\fP for more info.
+.TP
+\fB\-\-warning\-size\-bytes=\fP\fINUMBER\fP
+Print a warning if content size info is available and exceeds the given
+number of \fIbytes\fP.
 .
 .SS Checking options
 .TP
-\fB\-r\fP\fINUMBER\fP, \fB\-\-recursion\-level=\fP\fINUMBER\fP
-Check recursively all links up to given depth.
-A negative depth will enable infinite recursion.
-Default depth is infinite.
-.TP
-\fB\-\-no\-follow\-url=\fP\fIREGEX\fP
-Check but do not recurse into URLs matching the given regular
-expression.
-.br
-This option can be given multiple times.
-.br
-See section \fBREGULAR EXPRESSIONS\fP for more info.
-.TP
-\fB\-\-ignore\-url=\fP\fIREGEX\fP
-Only check syntax of URLs matching the given regular expression.
-.br
-This option can be given multiple times.
-.br
-See section \fBREGULAR EXPRESSIONS\fP for more info.
+\fB\-a\fP, \fB\-\-anchors\fP
+Check HTTP anchor references. Default is not to check anchors.
+This option enables logging of the warning \fBurl\-anchor\-not\-found\fP.
 .TP
 \fB\-C\fP, \fB\-\-cookies\fP
 Accept and send HTTP cookies according to RFC 2109. Only cookies
@@ -206,32 +190,48 @@ information.
 Read a file with initial cookie data. The cookie data
 format is explained below.
 .TP
-\fB\-a\fP, \fB\-\-anchors\fP
-Check HTTP anchor references. Default is not to check anchors.
-This option enables logging of the warning \fBurl\-anchor\-not\-found\fP.
+\fB\-\-ignore\-url=\fP\fIREGEX\fP
+Only check syntax of URLs matching the given regular expression.
+.br
+This option can be given multiple times.
+.br
+See section \fBREGULAR EXPRESSIONS\fP for more info.
 .TP
-\fB\-u\fP\fISTRING\fP, \fB\-\-user=\fP\fISTRING\fP
-Try the given username for HTTP and FTP authorization.
-For FTP the default username is \fBanonymous\fP. For HTTP there is
-no default username. See also \fB\-p\fP.
+\fB\-N\fP\fISTRING\fP, \fB\-\-nntp\-server=\fP\fISTRING\fP
+Specify an NNTP server for \fBnews:\fP links. Default is the
+environment variable \fBNNTP_SERVER\fP. If no host is given,
+only the syntax of the link is checked.
+.TP
+\fB\-\-no\-follow\-url=\fP\fIREGEX\fP
+Check but do not recurse into URLs matching the given regular
+expression.
+.br
+This option can be given multiple times.
+.br
+See section \fBREGULAR EXPRESSIONS\fP for more info.
 .TP
 \fB\-p\fP, \fB\-\-password\fP
 Read a password from console and use it for HTTP and FTP authorization.
 For FTP the default password is \fBanonymous@\fP. For HTTP there is
 no default password. See also \fB\-u\fP.
 .TP
-\fB\-\-timeout=\fP\fINUMBER\fP
-Set the timeout for connection attempts in seconds. The default timeout
-is 60 seconds.
-.TP
 \fB\-P\fP\fINUMBER\fP, \fB\-\-pause=\fP\fINUMBER\fP
 Pause the given number of seconds between two subsequent connection
 requests to the same host. Default is no pause between requests.
 .TP
-\fB\-N\fP\fISTRING\fP, \fB\-\-nntp\-server=\fP\fISTRING\fP
-Specify an NNTP server for \fBnews:\fP links. Default is the
-environment variable \fBNNTP_SERVER\fP. If no host is given,
-only the syntax of the link is checked.
+\fB\-r\fP\fINUMBER\fP, \fB\-\-recursion\-level=\fP\fINUMBER\fP
+Check recursively all links up to given depth.
+A negative depth will enable infinite recursion.
+Default depth is infinite.
+.TP
+\fB\-\-timeout=\fP\fINUMBER\fP
+Set the timeout for connection attempts in seconds. The default timeout
+is 60 seconds.
+.TP
+\fB\-u\fP\fISTRING\fP, \fB\-\-user=\fP\fISTRING\fP
+Try the given username for HTTP and FTP authorization.
+For FTP the default username is \fBanonymous\fP. For HTTP there is
+no default username. See also \fB\-p\fP.
 .TP
 \fB\-\-user\-agent=\fP\fISTRING\fP
 Specify the User-Agent string to send to the HTTP server, for example
