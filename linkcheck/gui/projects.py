@@ -185,10 +185,21 @@ def openproject_msg(parent):
     return loadproject(filename, parent.config, parent.options, parent.urlinput)
 
 
-def loadproject(filename, config, options, urlinput):
+def loadproject(parent, filename):
+    """Load a project file."""
+    try:
+        msg = loadproject_msg(parent, filename)
+    except StandardError, errmsg:
+        args = dict(filename=filename, err=errmsg)
+        msg = _("Could not load project %(filename)s: %(err)s") % args
+    parent.set_statusmsg(msg)
+
+
+def loadproject_msg(parent, filename):
     """Load a project file. Returns message to display which indicates if
     file has been loaded successful."""
-    parser = ProjectParser(config, options, urlinput)
+    parser = ProjectParser(parent.config, parent.options, parent.urlinput)
     parser.read([filename])
     d = dict(filename=filename)
     return _("Project file %(filename)s loaded successfully.") % d
+

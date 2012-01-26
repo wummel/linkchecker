@@ -35,7 +35,7 @@ from .urlmodel import UrlItemModel
 from .urlsave import urlsave
 from .settings import Settings
 from .recentdocs import RecentDocumentModel
-from .projects import openproject, saveproject, loadproject
+from .projects import openproject, saveproject, loadproject, ProjectExt
 from .. import configuration, checker, director, add_intern_pattern, \
     strformat, fileutil, LinkCheckerError, get_link_pat
 from ..containers import enum
@@ -118,6 +118,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.init_config()
         self.read_config()
         self.init_menu()
+        self.init_drop()
         self.init_app(project)
 
     def init_url (self, url):
@@ -134,6 +135,12 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         """Add menu entries for bookmark file checking."""
         self.urlinput.addMenuEntries(self.menuEdit)
 
+    def init_drop(self):
+        self.__class__.dragEnterEvent = self.handleDragEvent
+        self.__class__.dragMoveEvent = self.handleDragEvent
+        self.__class__.dropEvent = self.handleDropEvent
+        self.setAcceptDrops(True)
+
     def init_app (self, project):
         """Set window size and position, GUI options and reset status."""
         data = self.settings.read_geometry()
@@ -145,14 +152,10 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.status = Status.idle
         self.actionSave.setEnabled(False)
         if project:
-            try:
-                msg = loadproject(project, self.config, self.options, self.urlinput)
-            except StandardError, errmsg:
-                args = dict(filename=project, err=errmsg)
-                msg = _("Could not load project %(filename)s: %(err)s") % args
+            loadproject(self, project)
         else:
             msg = self.config_error or _("Ready.")
-        self.set_statusmsg(msg)
+            self.set_statusmsg(msg)
 
     def get_qhcpath (self):
         """Helper function to search for the QHC help file in different
@@ -559,3 +562,22 @@ Version 2 or later.
     def internal_error (self, msg):
         """Display internal error message. Triggered by sys.excepthook()."""
         QtGui.QMessageBox.warning(self, _(u"LinkChecker internal error"), msg)
+
+    def handleDragEvent(self, event):
+        """Handle drag enter of move event."""
+        mime = event.mimeData()
+        if not mime.hasUrls():
+            return event.ignore()
+        url = mime.urls()[0]
+        if url.scheme() != 'file':
+            return event.ignore()
+        if not url.path().toLower().endsWith(ProjectExt):
+            return event.ignore()
+        event.accept()
+
+    def handleDropEvent(self, event):
+        """Handle drop event."""
+        mime = event.mimeData()
+        url = mime.urls()[0]
+        filename = unicode(url.toLocalFile())
+        loadproject(self, filename)
