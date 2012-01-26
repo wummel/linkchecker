@@ -35,6 +35,7 @@ from .urlmodel import UrlItemModel
 from .urlsave import urlsave
 from .settings import Settings
 from .recentdocs import RecentDocumentModel
+from .projects import openproject, saveproject, loadproject
 from .. import configuration, checker, director, add_intern_pattern, \
     strformat, fileutil, LinkCheckerError, get_link_pat
 from ..containers import enum
@@ -86,7 +87,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
     log_stats_signal = QtCore.pyqtSignal(object)
     error_signal = QtCore.pyqtSignal(str)
 
-    def __init__(self, parent=None, url=None):
+    def __init__(self, parent=None, url=None, project=None):
         """Initialize UI."""
         super(LinkCheckerMain, self).__init__(parent)
         self.setupUi(self)
@@ -117,7 +118,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.init_config()
         self.read_config()
         self.init_menu()
-        self.init_app()
+        self.init_app(project)
 
     def init_url (self, url):
         """Initialize URL input."""
@@ -133,7 +134,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         """Add menu entries for bookmark file checking."""
         self.urlinput.addMenuEntries(self.menuEdit)
 
-    def init_app (self):
+    def init_app (self, project):
         """Set window size and position, GUI options and reset status."""
         data = self.settings.read_geometry()
         if data["size"] is not None:
@@ -143,7 +144,14 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.options.set_options(self.settings.read_options())
         self.status = Status.idle
         self.actionSave.setEnabled(False)
-        msg = self.config_error or _("Ready.")
+        if project:
+            try:
+                msg = loadproject(project, self.config, self.options, self.urlinput)
+            except StandardError, errmsg:
+                args = dict(filename=project, err=errmsg)
+                msg = _("Could not load project %(filename)s: %(err)s") % args
+        else:
+            msg = self.config_error or _("Ready.")
         self.set_statusmsg(msg)
 
     def get_qhcpath (self):
@@ -376,8 +384,18 @@ Version 2 or later.
         self.debug.show()
 
     @QtCore.pyqtSlot()
+    def on_actionOpen_project_triggered (self):
+        """Open project."""
+        openproject(self)
+
+    @QtCore.pyqtSlot()
+    def on_actionSave_project_triggered (self):
+        """Save project."""
+        saveproject(self, self.get_url())
+
+    @QtCore.pyqtSlot()
     def on_actionSave_triggered (self):
-        """Quit application."""
+        """Save URL results."""
         urlsave(self, self.config, self.model.urls)
 
     @QtCore.pyqtSlot()
@@ -522,6 +540,7 @@ Version 2 or later.
 
     def set_statusmsg (self, msg):
         """Show given status message."""
+        self.statusBar.showMessage(msg)
         if len(msg) > 30:
             self.label_status.setToolTip(msg)
             msg = msg[:27]+u"..."

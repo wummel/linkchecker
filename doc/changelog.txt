@@ -15,7 +15,9 @@ Changes:
   is not installed.
 
 Features:
-- gui: add Ctrl-L shortcut to highlight the URL input.
+- gui: Add Ctrl-L shortcut to highlight the URL input.
+- gui: Support loading and saving of project files.
+  Closes: SF bug #3467492
 
 
 7.4 "Warrior" (released 07.01.2012)

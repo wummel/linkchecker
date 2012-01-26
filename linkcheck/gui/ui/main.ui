@@ -1403,6 +1403,8 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <addaction name="actionOpen_project"/>
+    <addaction name="actionSave_project"/>
     <addaction name="actionSave"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -1527,10 +1529,7 @@
      <normaloff>:/icons/save.png</normaloff>:/icons/save.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Save results...</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+S</string>
+    <string>Save &amp;results...</string>
    </property>
   </action>
   <action name="actionQuit">
@@ -1553,6 +1552,25 @@
   <action name="actionDonate">
    <property name="text">
     <string>Donate</string>
+   </property>
+  </action>
+  <action name="actionOpen_project">
+   <property name="text">
+    <string>&amp;Open project...</string>
+   </property>
+   <property name="iconText">
+    <string>Open project</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionSave_project">
+   <property name="text">
+    <string>&amp;Save project...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
  </widget>

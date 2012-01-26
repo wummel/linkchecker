@@ -235,3 +235,21 @@ def get_temp_file (**kwargs):
 def is_tty (fp):
     """Check if is a file object pointing to a TTY."""
     return (hasattr(fp, "isatty") and fp.isatty())
+
+
+def is_readable(filename):
+    """Check if file is a regular file and is readable."""
+    return os.path.isfile(filename) and os.access(filename, os.R_OK)
+
+
+def is_writable(filename):
+    """Check if
+    - the file is a regular file and is writable, or
+    - the file does not exist and its parent directory exists and is
+      writable
+    """
+    if not os.path.exists(filename):
+        parentdir = os.path.dirname(filename)
+        return os.path.isdir(parentdir) and os.access(parentdir, os.W_OK)
+    return os.path.isfile(filename) and os.access(filename, os.W_OK)
+

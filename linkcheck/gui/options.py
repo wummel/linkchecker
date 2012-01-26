@@ -19,6 +19,7 @@ import os
 from PyQt4 import QtGui
 from .linkchecker_ui_options import Ui_Options
 from .editor import EditorWindow
+from ..fileutil import is_writable
 from .. import configuration
 
 
@@ -50,7 +51,7 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
 
     def reset_config_options (self):
         """Reset configuration file edit buttons."""
-        self.user_config_writable = os.access(self.user_config, os.W_OK)
+        self.user_config_writable = is_writable(self.user_config)
         set_edit_button(self.user_config, self.user_config_button,
                         self.user_config_writable)
 
@@ -71,15 +72,15 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
 
     def set_options (self, data):
         """Set GUI options from given data."""
-        if data["debug"] is not None:
+        if data.get("debug") is not None:
             self.debug.setChecked(data["debug"])
-        if data["verbose"] is not None:
+        if data.get("verbose") is not None:
             self.verbose.setChecked(data["verbose"])
-        if data["recursionlevel"] is not None:
+        if data.get("recursionlevel") is not None:
             self.recursionlevel.setValue(data["recursionlevel"])
-        if data["warninglines"] is not None:
+        if data.get("warninglines") is not None:
             self.warninglines.setPlainText(data["warninglines"])
-        if data["ignorelines"] is not None:
+        if data.get("ignorelines") is not None:
             self.ignorelines.setPlainText(data["ignorelines"])
 
 

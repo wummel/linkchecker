@@ -27,7 +27,9 @@ if main_is_frozen():
     from linkcheck import get_install_data
     sys.path.append(os.path.join(get_install_data(), 'Microsoft.VC90.CRT'))
 from PyQt4.QtGui import QApplication
+from linkcheck.fileutil import is_readable
 from linkcheck.gui import LinkCheckerMain, get_app_style
+from linkcheck.gui.projects import ProjectExt
 
 
 def excepthook (window, etype, evalue, tb):
@@ -52,14 +54,17 @@ def main (argv=None):
     QApplication.setStyle(get_app_style())
     QApplication.setPalette(QApplication.style().standardPalette())
     args = app.arguments()
+    mainkwargs = {}
     if len(args) > 1:
-        url = args[1]
-    else:
-        url = u""
+        fileorurl = unicode(args[1])
+        if is_readable(fileorurl) and fileorurl.lower().endswith(ProjectExt):
+            mainkwargs["project"] = fileorurl
+        else:
+            mainkwargs["url"] = fileorurl
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     # use local variable here to avoid garbage collection of the main
     # window before app.exec_() finishes
-    window = LinkCheckerMain(url=url)
+    window = LinkCheckerMain(**mainkwargs)
     window.show()
     window.raise_() # this will raise the window on Mac OS X
     drop_privileges()
