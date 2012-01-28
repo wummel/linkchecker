@@ -13,6 +13,10 @@ Changes:
 - checking: Deprecate the --check-html-w3 and --check-css-w3 options.
   The W3C checkers are automatically used if a local check library
   is not installed.
+- distribution: The portable version of LinkChecker does not write
+  the configuration file in the user directory anymore. So a user
+  can use this version on a foreign system without leaving any traces
+  behind.
 
 Features:
 - gui: Add Ctrl-L shortcut to highlight the URL input.
