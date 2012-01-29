@@ -58,19 +58,19 @@ class ProjectParser (confparse.LCConfigParser):
         data = {}
         option = "debug"
         if self.has_option(section, option):
-             data[option] = self.getboolean(section, option) 
+             data[option] = self.getboolean(section, option)
         option = "verbose"
         if self.has_option(section, option):
-             data[option] = self.getboolean(section, option) 
+             data[option] = self.getboolean(section, option)
         option = "recursionlevel"
         if self.has_option(section, option):
-             data[option] = self.getint(section, option) 
+             data[option] = self.getint(section, option)
         option = "warninglines"
         if self.has_option(section, option):
-             data[option] = self.get(section, option) 
+             data[option] = self.get(section, option)
         option = "ignorelines"
         if self.has_option(section, option):
-             data[option] = self.get(section, option) 
+             data[option] = self.get(section, option)
         self.gui_options.set_options(data)
 
     def write (self, fp):

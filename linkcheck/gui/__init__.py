@@ -136,6 +136,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.urlinput.addMenuEntries(self.menuEdit)
 
     def init_drop(self):
+        """Set and activate drag-and-drop functions."""
         self.__class__.dragEnterEvent = self.handleDragEvent
         self.__class__.dragMoveEvent = self.handleDragEvent
         self.__class__.dropEvent = self.handleDropEvent
@@ -194,6 +195,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
     def init_shortcuts (self):
         """Configure application shortcuts."""
         def selectUrl():
+            """Highlight URL input textbox."""
             self.urlinput.setFocus()
             self.urlinput.selectAll()
         shortcut = QtGui.QShortcut(QtGui.QKeySequence("Ctrl+L"), self)
