@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2012-01-23 19:59+0100\n"
+"POT-Creation-Date: 2012-01-29 16:57+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1444,7 +1444,7 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:542 en/linkcheckerrc.5:514 en/linkchecker-gui.1:11
+#: en/linkchecker.1:542 en/linkcheckerrc.5:514 en/linkchecker-gui.1:16
 #, no-wrap
 msgid "SEE ALSO"
 msgstr ""
@@ -1455,18 +1455,18 @@ msgid "B<linkcheckerrc>(5)"
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:545 en/linkcheckerrc.5:517 en/linkchecker-gui.1:14
+#: en/linkchecker.1:545 en/linkcheckerrc.5:517 en/linkchecker-gui.1:19
 #, no-wrap
 msgid "AUTHOR"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:547 en/linkcheckerrc.5:519 en/linkchecker-gui.1:16
+#: en/linkchecker.1:547 en/linkcheckerrc.5:519 en/linkchecker-gui.1:21
 msgid "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:548 en/linkcheckerrc.5:520 en/linkchecker-gui.1:17
+#: en/linkchecker.1:548 en/linkcheckerrc.5:520 en/linkchecker-gui.1:22
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr ""
@@ -2791,7 +2791,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/linkchecker-gui.1:7
-msgid "B<linkchecker-gui> [I<file-or-url>]"
+msgid "B<linkchecker-gui> [I<file-or-url-or-project>]"
 msgstr ""
 
 #. type: Plain text
@@ -2799,12 +2799,26 @@ msgstr ""
 msgid "A graphical interface to check links of websites and HTML documents."
 msgstr ""
 
+#. type: SH
+#: en/linkchecker-gui.1:11
+#, no-wrap
+msgid "PROJECT FILES"
+msgstr ""
+
 #. type: Plain text
-#: en/linkchecker-gui.1:13
-msgid "B<linkchecker>(1)"
+#: en/linkchecker-gui.1:15
+msgid ""
+"A project file has a .lcp extension. The file stores all active preferences "
+"and the current checked URL. Project files can be loaded with the menu entry "
+"or with drag-and-drop on the GUI window."
 msgstr ""
 
 #. type: Plain text
 #: en/linkchecker-gui.1:18
+msgid "B<linkchecker>(1)"
+msgstr ""
+
+#. type: Plain text
+#: en/linkchecker-gui.1:23
 msgid "Copyright \\(co 2009-2012 Bastian Kleineidam"
 msgstr ""

@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 3.4\n"
-"POT-Creation-Date: 2012-01-23 19:59+0100\n"
-"PO-Revision-Date: 2012-01-21 08:03+0100\n"
+"POT-Creation-Date: 2012-01-29 16:57+0100\n"
+"PO-Revision-Date: 2012-01-29 17:05+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "Language: \n"
@@ -1860,7 +1860,7 @@ msgstr ""
 
 # type: SH
 #. type: SH
-#: en/linkchecker.1:542 en/linkcheckerrc.5:514 en/linkchecker-gui.1:11
+#: en/linkchecker.1:542 en/linkcheckerrc.5:514 en/linkchecker-gui.1:16
 #, no-wrap
 msgid "SEE ALSO"
 msgstr "SIEHE AUCH"
@@ -1873,20 +1873,20 @@ msgstr "B<linkcheckerrc>(5)"
 
 # type: SH
 #. type: SH
-#: en/linkchecker.1:545 en/linkcheckerrc.5:517 en/linkchecker-gui.1:14
+#: en/linkchecker.1:545 en/linkcheckerrc.5:517 en/linkchecker-gui.1:19
 #, no-wrap
 msgid "AUTHOR"
 msgstr "AUTHOR"
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:547 en/linkcheckerrc.5:519 en/linkchecker-gui.1:16
+#: en/linkchecker.1:547 en/linkcheckerrc.5:519 en/linkchecker-gui.1:21
 msgid "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
 msgstr "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
 
 # type: SH
 #. type: SH
-#: en/linkchecker.1:548 en/linkcheckerrc.5:520 en/linkchecker-gui.1:17
+#: en/linkchecker.1:548 en/linkcheckerrc.5:520 en/linkchecker-gui.1:22
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr "COPYRIGHT"
@@ -3485,8 +3485,8 @@ msgstr ""
 # type: Plain text
 #. type: Plain text
 #: en/linkchecker-gui.1:7
-msgid "B<linkchecker-gui> [I<file-or-url>]"
-msgstr "B<linkchecker-gui> [I<Datei-oder-URL>]"
+msgid "B<linkchecker-gui> [I<file-or-url-or-project>]"
+msgstr "B<linkchecker-gui> [I<Datei-oder-URL-oder-Projekt>]"
 
 # type: Plain text
 #. type: Plain text
@@ -3496,14 +3496,32 @@ msgstr ""
 "Eine graphische Benutzeroberfläche, um Verknüpfungen von Webseiten und HTML "
 "Dokumenten zu prüfen."
 
+# type: SH
+#. type: SH
+#: en/linkchecker-gui.1:11
+#, no-wrap
+msgid "PROJECT FILES"
+msgstr "PROJEKTDATEIEN"
+
+#. type: Plain text
+#: en/linkchecker-gui.1:15
+msgid ""
+"A project file has a .lcp extension. The file stores all active preferences "
+"and the current checked URL. Project files can be loaded with the menu entry "
+"or with drag-and-drop on the GUI window."
+msgstr ""
+"Eine Projektdatei hat die Dateierweiterung .lcp. Die Datei speichert alle "
+"aktiven Einstellungen und die zu prüfende URL. Projektdateien können mit dem "
+"Menü oder mit Drag-And-Drop auf das GUI-Fenster geladen werden."
+
 # type: TH
 #. type: Plain text
-#: en/linkchecker-gui.1:13
+#: en/linkchecker-gui.1:18
 msgid "B<linkchecker>(1)"
 msgstr "B<linkchecker>(1)"
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker-gui.1:18
+#: en/linkchecker-gui.1:23
 msgid "Copyright \\(co 2009-2012 Bastian Kleineidam"
 msgstr "Copyright \\(co 2009-2012 Bastian Kleineidam"
