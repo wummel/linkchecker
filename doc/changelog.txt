@@ -6,6 +6,8 @@ Fixes:
 - checking: Work around a Squid proxy bug which resulted in not
   detecting broken links.
   Closes: SF bug #3472341
+- documentation: Fix typo in the manual page.
+  Closes: SF bug #3485876
 
 Changes:
 - checking: Add steam:// URIs to the list of ignored URIs.
