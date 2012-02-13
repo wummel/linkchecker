@@ -1,6 +1,6 @@
 Project: LinkChecker
-Version: 7.4
-Release-Focus: Minor feature enhancements
+Version: 7.5
+Release-Focus: Major feature enhancements
 Hide: N
 Website-URL: http://linkchecker.sourceforge.net/
 Changelog-URL: http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker/linkchecker;a=blob;f=doc/changelog.txt;hb=HEAD
@@ -9,5 +9,5 @@ Debian-Package-URL: http://packages.debian.org/linkchecker
 GIT-Tree-URL: http://linkchecker.git.sourceforge.net/
 Windows-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.exe
 
-HTML5 link elements and attributes are checked now.
-Saving of result files in the GUI has been fixed.
+Support for loading and saving of project files has been added to the GUI.
+Some bugs have been fixed too.

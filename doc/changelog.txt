@@ -1,4 +1,4 @@
-7.5 "" (released xx.xx.2012)
+7.5 "Kukushka" (released 13.02.2012)
 
 Fixes:
 - checking: Properly handle non-ascii HTTP header values.
