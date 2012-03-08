@@ -67,7 +67,7 @@ except ImportError:
     pass
 from distutils.core import Distribution
 
-AppVersion = "7.5"
+AppVersion = "7.6"
 AppName = "LinkChecker"
 
 # basic includes for py2exe and py2app

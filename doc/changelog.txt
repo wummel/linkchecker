@@ -1,3 +1,6 @@
+7.6 "" (released xx.xx.2012)
+
+
 7.5 "Kukushka" (released 13.02.2012)
 
 Fixes:
