@@ -365,17 +365,15 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
 
     def check_redirection_domain (self, redirected, urlparts, set_result, response):
         """Return True if redirection domain is ok, else False."""
-        if urlparts[1] == self.urlparts[1]:
-            # URL domain did not change
-            return True
-        # URL domain changed
-        if self.recursion_level == 0 and urlparts[0] in ('http', 'https'):
-            # Add intern patterns for redirection of URLs given by the
-            # user for HTTP schemes.
-            pat = internpaturl.get_intern_pattern(redirected)
-            log.debug(LOG_CHECK, "Add intern pattern %r", pat)
-            self.aggregate.config['internlinks'].append(get_link_pat(pat))
-            return True
+        if urlparts[1] != self.urlparts[1]:
+            # URL domain changed
+            if self.recursion_level == 0 and urlparts[0] in ('http', 'https'):
+                # Add intern patterns for redirection of URLs given by the
+                # user for HTTP schemes.
+                pat = internpaturl.get_intern_pattern(redirected)
+                log.debug(LOG_CHECK, "Add intern pattern %r", pat)
+                self.aggregate.config['internlinks'].append(get_link_pat(pat))
+                return True
         # check extern filter again
         self.set_extern(redirected)
         if self.extern[0] and self.extern[1]:
