@@ -108,7 +108,7 @@ def normpath (path):
 
 
 def cnormpath (path):
-    """Norm a path name to platform specific notation."""
+    """Norm a path name to platform specific notation and make it absolute."""
     path = normpath(path)
     if os.name == 'nt':
         # replace slashes with backslashes
