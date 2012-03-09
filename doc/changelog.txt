@@ -6,6 +6,9 @@ Fixes:
   Closes: SF bug #3495407
 - checking: Fix non-ascii HTTP header handling.
   Closes: SF bug #3495621
+- checking: Fix non-ascii HTTP header debugging.
+  Closes: SF bug #3488675
+
 
 7.5 "Kukushka" (released 13.02.2012)
 

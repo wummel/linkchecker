@@ -37,6 +37,9 @@ from .const import WARN_HTTP_ROBOTS_DENIED, \
     WARN_HTTP_DECOMPRESS_ERROR, WARN_HTTP_UNSUPPORTED_ENCODING, \
     WARN_HTTP_AUTH_UNKNOWN
 
+# assumed HTTP header encoding
+HEADER_ENCODING = "iso-8859-1"
+
 # helper alias
 unicode_safe = strformat.unicode_safe
 
@@ -197,7 +200,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 response.reason = unicode_safe(response.reason)
             log.debug(LOG_CHECK,
                 "Response: %s %s", response.status, response.reason)
-            log.debug(LOG_CHECK, "Headers: %s", self.headers)
+            uheaders = unicode_safe(self.headers, encoding=HEADER_ENCODING)
+            log.debug(LOG_CHECK, "Headers: %s", uheaders)
             # proxy enforcement (overrides standard proxy)
             if response.status == 305 and self.headers:
                 oldproxy = (self.proxy, self.proxyauth)
@@ -453,7 +457,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         value = self.headers.get(name)
         if value is None:
             return default
-        return value.decode("iso-8859-1", "replace")
+        return unicode_safe(value, encoding=HEADER_ENCODING)
 
     def get_alias_cache_data (self):
         """
