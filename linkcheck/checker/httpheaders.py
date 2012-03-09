@@ -17,7 +17,6 @@
 """
 Helper functions dealing with HTTP headers.
 """
-from ..containers import CaselessDict
 
 DEFAULT_TIMEOUT_SECS = 300
 
@@ -100,18 +99,3 @@ def get_content_encoding (headers):
     @rtype: string
     """
     return headers.get("Content-Encoding", "").strip()
-
-
-def decode_headers (headers):
-    """Decode ISO-8859-1 headers to unicode. Since a dictionary is
-    returned, multiple header entries are not preserved.
-
-    @return: decoded keys and values
-    @rtype: CaselessDict(unicode -> unicode)
-    """
-    headers_encoded = CaselessDict()
-    for key, value in headers.items():
-        key = key.decode("iso-8859-1", "replace")
-        value = value.decode("iso-8859-1", "replace")
-        headers_encoded[key] = value
-    return headers_encoded

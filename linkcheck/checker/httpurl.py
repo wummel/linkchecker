@@ -102,7 +102,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             # Note that content-encoding causes size differences since
             # the content data is always decoded.
             try:
-                self.size = int(self.headers["Content-Length"])
+                self.size = int(self.getheader("Content-Length"))
                 if self.dlsize == -1:
                     self.dlsize = self.size
             except (ValueError, OverflowError):
@@ -147,7 +147,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         # check the http connection
         response = self.check_http_connection()
         if self.headers and "Server" in self.headers:
-            server = self.headers['Server']
+            server = self.getheader('Server')
         else:
             server = _("unknown")
         if self.fallback_get:
@@ -201,7 +201,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             # proxy enforcement (overrides standard proxy)
             if response.status == 305 and self.headers:
                 oldproxy = (self.proxy, self.proxyauth)
-                newproxy = self.headers.get("Location")
+                newproxy = self.getheader("Location")
                 self.add_info(_("Enforced proxy `%(name)s'.") %
                               {"name": newproxy})
                 self.set_proxy(newproxy)
@@ -243,7 +243,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 return response
             # user authentication
             if response.status == 401:
-                authenticate = self.headers.get('WWW-Authenticate')
+                authenticate = self.getheader('WWW-Authenticate')
                 if not authenticate or not authenticate.startswith("Basic"):
                     # LinkChecker only supports Basic authorization
                     args = {"auth": authenticate}
@@ -267,15 +267,15 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                     # The squid proxy reports valid 200 instead of 404 due to
                     # garbage sent from the server at the start of the GET
                     # request. See http://www.aldec.com/Products
-                    if u'squid' not in self.headers.get('Via', '').lower():
+                    if u'squid' not in self.getheader('Via', u'').lower():
                         self.method = "GET"
                         self.aliases = []
                         continue
             elif self.headers and self.method == "HEAD" and self.method_get_allowed:
                 # test for HEAD support
                 mime = self.get_content_type()
-                poweredby = self.headers.get('X-Powered-By', '')
-                server = self.headers.get('Server', '')
+                poweredby = self.getheader('X-Powered-By', u'')
+                server = self.getheader('Server', u'')
                 if ((mime in ('application/octet-stream', 'text/plain') and
                   (poweredby.startswith('Zope') or server.startswith('Zope')))
                  or ('ASP.NET' in poweredby and 'Microsoft-IIS' in server)):
@@ -313,8 +313,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
 
     def follow_redirection (self, response, set_result, redirected):
         """Follow one redirection of http response."""
-        newurl = self.headers.get("Location",
-                     self.headers.get("Uri", ""))
+        newurl = self.getheader("Location",
+                     self.getheader("Uri", u""))
         # make new url absolute and unicode
         newurl = urlparse.urljoin(redirected, unicode_safe(newurl))
         log.debug(LOG_CHECK, "Redirected to %r", newurl)
@@ -444,6 +444,17 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                              tag=WARN_HTTP_MOVED_PERMANENT)
             self.has301status = True
 
+    def getheader (self, name, default=None):
+        """Get decoded header value.
+
+        @return: decoded header value or default of not found
+        @rtype: unicode or type of default
+        """
+        value = self.headers.get(name)
+        if value is None:
+            return default
+        return value.decode("iso-8859-1", "replace")
+
     def get_alias_cache_data (self):
         """
         Return all data values that should be put in the cache,
@@ -481,7 +492,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 self.set_result(u"%r %s" % (response.status, response.reason))
             else:
                 self.set_result(u"OK")
-        modified = self.headers.get('Last-Modified', '')
+        modified = self.getheader('Last-Modified', u'')
         if modified:
             self.add_info(_("Last modified %(date)s.") % {"date": modified})
 
@@ -555,7 +566,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         self.url_connection.endheaders()
         response = self.url_connection.getresponse(True)
         self.timeout = headers.http_timeout(response)
-        self.headers = headers.decode_headers(response.msg)
+        self.headers = response.msg
         self.content_type = None
         self.persistent = not response.will_close
         if self.persistent and self.method == "HEAD":
@@ -568,7 +579,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         # Note that for POST method the connection should also be closed,
         # but this method is never used.
         if self.persistent and (self.method == "GET" or
-           self.headers.get("Content-Length") != "0"):
+           self.getheader("Content-Length") != u"0"):
             # always read content from persistent connections
             self._read_content(response)
             assert not response.will_close
@@ -650,7 +661,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         self.method = "GET"
         response = self._try_http_response()
         response = self.follow_redirections(response, set_result=False)[1]
-        self.headers = headers.decode_headers(response.msg)
+        self.headers = response.msg
         self.content_type = None
         # Re-read size info, since the GET request result could be different
         # than a former HEAD request.

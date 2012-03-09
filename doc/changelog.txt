@@ -4,7 +4,8 @@ Fixes:
 - checking: Recheck extern status on HTTP redirects even if domain
   did not change. Patch by Charles Jones.
   Closes: SF bug #3495407
-
+- checking: Fix non-ascii HTTP header handling.
+  Closes: SF bug #3495621
 
 7.5 "Kukushka" (released 13.02.2012)
 
