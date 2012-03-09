@@ -48,7 +48,7 @@ class TestHttp (HttpServerTest):
         finally:
             self.stop_server()
 
-    def test_redirect (self):
+    def _test_redirect (self):
         try:
             self.start_server(handler=RedirectHttpsRequestHandler)
             self.redirect_https_test()
@@ -178,13 +178,15 @@ class TestHttp (HttpServerTest):
     def obfuscate_test (self):
         if os.name != "posix" or sys.platform != 'linux2':
             return
-        host = "www.golem.de"
+        host = "www.google.de"
         ip = iputil.resolve_host(host).pop()
         url = u"http://%s/" % iputil.obfuscate_ip(ip)
+        rurl = u"http://%s/" % host
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % url,
-            u"real url %s" % url,
+            u"real url %s" % rurl,
+            u"info Redirected to `%s'." % rurl,
             u"warning URL %s has obfuscated IP address %s" % (url, ip),
             u"valid",
         ]
