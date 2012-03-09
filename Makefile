@@ -22,11 +22,9 @@ PEP8OPTS:=--repeat --ignore=E211,E501,E225,E301,E302,E241 \
 PY2APPOPTS ?=
 ifeq ($(shell uname),Darwin)
   NOSETESTS:=/usr/local/share/python/nosetests
-  NUMPROCESSORS:=$(shell sysctl -a | grep machdep.cpu.core_count | cut -d " " -f 2)
   CHMODMINUSMINUS:=
 else
   NOSETESTS:=$(shell which nosetests)
-  NUMPROCESSORS:=$(shell grep -c processor /proc/cpuinfo)
   CHMODMINUSMINUS:=--
 endif
 
@@ -208,8 +206,7 @@ sign_distfiles:
 
 .PHONY: test
 test:	localbuild
-	$(PYTHON) $(NOSETESTS) --processes=$(NUMPROCESSORS) \
-	  -v -m "^test_.*" $(TESTOPTS) $(TESTS)
+	$(PYTHON) $(NOSETESTS) -v -m "^test_.*" $(TESTOPTS) $(TESTS)
 
 .PHONY: pyflakes
 pyflakes:
