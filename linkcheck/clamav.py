@@ -187,7 +187,11 @@ def scan (data):
     @rtype ([], [])
     """
     clamconf = ClamavConfig(canonical_clamav_conf())
-    scanner = ClamdScanner(clamconf)
+    try:
+        scanner = ClamdScanner(clamconf)
+    except socket.error:
+        errmsg = _("Could not connect to ClamAV daemon.")
+        return ([], [errmsg])
     try:
         scanner.scan(data)
     finally:
