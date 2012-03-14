@@ -11,6 +11,9 @@ Fixes:
 - checking: Improved error message for connect errors to the ClamAV
   virus checking daemon.
 
+Changes:
+- checking: Add real url to cache.
+
 
 7.5 "Kukushka" (released 13.02.2012)
 

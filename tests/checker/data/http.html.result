@@ -57,7 +57,7 @@ error
 
 url //www.example.com/ (cached)
 cache key http://www.example.com/
-real url http://www.example.com/
+real url http://www.iana.org/domains/example/
 name no scheme
 info Redirected to `http://www.iana.org/domains/example/'.
 valid
@@ -94,14 +94,14 @@ valid
 
 url HtTP://WwW.ExaMple.cOm/ (cached)
 cache key http://www.example.com/
-real url http://www.example.com/
+real url http://www.iana.org/domains/example/
 name should be cached
 info Redirected to `http://www.iana.org/domains/example/'.
 valid
 
 url HTTP://WWW.EXAMPLE.COM/ (cached)
 cache key http://www.example.com/
-real url http://www.example.com/
+real url http://www.iana.org/domains/example/
 name should be cached
 info Redirected to `http://www.iana.org/domains/example/'.
 valid
@@ -133,7 +133,7 @@ valid
 
 url http://www.example.com/ (cached)
 cache key http://www.example.com/
-real url http://www.example.com/
+real url http://www.iana.org/domains/example/
 name no beginning quote
 info Redirected to `http://www.iana.org/domains/example/'.
 valid

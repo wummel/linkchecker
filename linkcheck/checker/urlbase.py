@@ -301,6 +301,7 @@ class UrlBase (object):
         """
         Fill attributes from cache data.
         """
+        self.url = cache_data["url"]
         self.result = cache_data["result"]
         self.has_result = True
         anchor_changed = (self.anchor != cache_data["anchor"])
@@ -326,7 +327,8 @@ class UrlBase (object):
 
     def get_cache_data (self):
         """Return all data values that should be put in the cache."""
-        return {"result": self.result,
+        return {"url": self.url,
+                "result": self.result,
                 "warnings": self.warnings,
                 "info": self.info,
                 "valid": self.valid,
