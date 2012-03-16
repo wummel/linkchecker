@@ -187,7 +187,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QLabel" name="user_config_label_2">
+       <widget class="QLabel" name="user_config_filename">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>

@@ -53,7 +53,7 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
         """Reset configuration file edit buttons."""
         self.user_config_writable = is_writable(self.user_config)
         set_edit_button(self.user_config, self.user_config_button,
-                        self.user_config_writable)
+                        self.user_config_filename, self.user_config_writable)
 
     def edit_user_config (self):
         """Show editor for user specific configuration file."""
@@ -96,9 +96,9 @@ def start_editor (filename, writable, editor):
     editor.show()
 
 
-def set_edit_button (filename, button, writable):
+def set_edit_button (filename, button, label, writable):
     """Update edit button depending on writable flag of file."""
-    button.setToolTip(filename)
+    label.setText(filename)
     if os.path.isfile(filename):
         button.setEnabled(True)
         if writable:

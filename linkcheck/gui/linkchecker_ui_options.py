@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options.ui'
 #
-# Created: Thu Mar 15 21:39:51 2012
+# Created: Thu Mar 15 21:43:48 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -88,20 +88,20 @@ class Ui_Options(object):
         self.verticalLayout_2.addWidget(self.label_3)
         spacerItem1 = QtGui.QSpacerItem(20, 10, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.verticalLayout_2.addItem(spacerItem1)
-        self.user_config_label_2 = QtGui.QLabel(self.groupBox)
+        self.user_config_filename = QtGui.QLabel(self.groupBox)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.user_config_label_2.sizePolicy().hasHeightForWidth())
-        self.user_config_label_2.setSizePolicy(sizePolicy)
-        self.user_config_label_2.setFrameShape(QtGui.QFrame.NoFrame)
-        self.user_config_label_2.setLineWidth(0)
-        self.user_config_label_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
-        self.user_config_label_2.setWordWrap(True)
-        self.user_config_label_2.setMargin(0)
-        self.user_config_label_2.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
-        self.user_config_label_2.setObjectName(_fromUtf8("user_config_label_2"))
-        self.verticalLayout_2.addWidget(self.user_config_label_2)
+        sizePolicy.setHeightForWidth(self.user_config_filename.sizePolicy().hasHeightForWidth())
+        self.user_config_filename.setSizePolicy(sizePolicy)
+        self.user_config_filename.setFrameShape(QtGui.QFrame.NoFrame)
+        self.user_config_filename.setLineWidth(0)
+        self.user_config_filename.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.user_config_filename.setWordWrap(True)
+        self.user_config_filename.setMargin(0)
+        self.user_config_filename.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
+        self.user_config_filename.setObjectName(_fromUtf8("user_config_filename"))
+        self.verticalLayout_2.addWidget(self.user_config_filename)
         self.user_config_button = QtGui.QPushButton(self.groupBox)
         self.user_config_button.setEnabled(False)
         self.user_config_button.setToolTip(_fromUtf8(""))
@@ -139,8 +139,8 @@ class Ui_Options(object):
         self.label_6.setText(_("Ignore URLs matching one of these patterns (one per line):"))
         self.groupBox.setTitle(_("Configuration file"))
         self.label_3.setText(_("The configuration file holds advanced options and can be edited with an integrated text editor."))
-        self.user_config_label_2.setToolTip(_("Overrides system wide configuration file settings."))
-        self.user_config_label_2.setText(_("/home/user/.linkchecker/linkcheckerrc"))
+        self.user_config_filename.setToolTip(_("Overrides system wide configuration file settings."))
+        self.user_config_filename.setText(_("/home/user/.linkchecker/linkcheckerrc"))
         self.user_config_button.setText(_("Edit"))
         self.closeButton.setText(_("Close"))
 
