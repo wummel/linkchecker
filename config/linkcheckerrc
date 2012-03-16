@@ -150,7 +150,9 @@
 #cookies=1
 # User-Agent header string to send to HTTP web servers
 #useragent=Mozilla/4.0
-
+# Pause the given number of seconds between two subsequent connection
+# requests to the same host.
+#pause=0
 
 ##################### filtering options ##########################
 [filtering]

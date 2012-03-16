@@ -15,6 +15,9 @@ Fixes:
 Changes:
 - checking: Add real url to cache.
 
+Features:
+- config: Allow --pause to be set in configuration file.
+
 
 7.5 "Kukushka" (released 13.02.2012)
 

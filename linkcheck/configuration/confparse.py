@@ -131,6 +131,12 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             self.config["nntpserver"] = self.get(section, "nntpserver")
         if self.has_option(section, "useragent"):
             self.config["useragent"] = self.get(section, "useragent")
+        if self.has_option(section, "pause"):
+            num = self.getint(section, "pause")
+            if num < 0:
+                raise LinkCheckerError(
+                    _("invalid negative value for pause: %d\n") % num)
+            self.config["wait"] = num
         self.read_check_options(section)
 
     def read_check_options (self, section):
