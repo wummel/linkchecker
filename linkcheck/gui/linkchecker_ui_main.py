@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Mon Jan 23 22:46:26 2012
-#      by: PyQt4 UI code generator 4.9
+# Created: Fri Mar 16 21:23:10 2012
+#      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -751,7 +751,6 @@ class Ui_MainWindow(object):
         self.menuHelp.addAction(self.actionHelp)
         self.menuHelp.addAction(self.actionDebug)
         self.menuHelp.addAction(self.actionCheckUpdates)
-        self.menuHelp.addAction(self.actionDonate)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuEdit.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())

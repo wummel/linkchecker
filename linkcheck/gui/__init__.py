@@ -379,11 +379,6 @@ Version 2 or later.
 </center></qt>""") % d)
 
     @QtCore.pyqtSlot()
-    def on_actionDonate_triggered (self):
-        """Open donation URL."""
-        webbrowser.open(configuration.DonateUrl)
-
-    @QtCore.pyqtSlot()
     def on_actionDebug_triggered (self):
         """Display debug dialog."""
         self.debug.show()

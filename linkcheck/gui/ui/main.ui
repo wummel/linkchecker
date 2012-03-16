@@ -1416,7 +1416,6 @@
     <addaction name="actionHelp"/>
     <addaction name="actionDebug"/>
     <addaction name="actionCheckUpdates"/>
-    <addaction name="actionDonate"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
