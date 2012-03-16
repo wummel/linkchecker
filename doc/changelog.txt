@@ -14,6 +14,9 @@ Fixes:
 
 Changes:
 - checking: Add real url to cache.
+- checking: Specify timeout for SMTP connections. Avoids spurious
+  connect errors when checking email addresses.
+  Closes: SF bug #3504366
 
 Features:
 - config: Allow --pause to be set in configuration file.
