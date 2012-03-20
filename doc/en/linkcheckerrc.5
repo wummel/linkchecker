@@ -90,7 +90,7 @@ Scan content of URLs for viruses with ClamAV.
 .br
 Command line option: \fB\-\-scan\-virus\fP
 .TP
-\fBclamavconf=\fIfilename\fP
+\fBclamavconf=\fP\fIfilename\fP
 Filename of \fBclamd.conf\fP config file.
 .br
 Command line option: none
@@ -99,6 +99,12 @@ Command line option: none
 Accept and send HTTP cookies.
 .br
 Command line option: \fB\-\-cookies\fP
+.TP
+\fBpause=\fP\fINUMBER\fP
+Pause the given number of seconds between two subsequent connection
+requests to the same host.
+.br
+Command line option: \fB\-\-pause\fP
 .SS \fB[filtering]\fP
 .TP
 \fBignore=\fP\fIREGEX\fP (MULTILINE)

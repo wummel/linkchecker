@@ -10,7 +10,7 @@ Fixes:
   Closes: SF bug #3488675
 - checking: Improved error message for connect errors to the ClamAV
   virus checking daemon.
-- gui: Replace configuration filename in options dialog.n
+- gui: Replace configuration filename in options dialog.
 
 Changes:
 - checking: Add real url to cache.
