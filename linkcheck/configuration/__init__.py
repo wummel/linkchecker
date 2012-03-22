@@ -120,6 +120,7 @@ class Configuration (dict):
         self["wait"] = 0
         self['sendcookies'] = False
         self['storecookies'] = False
+        self['cookiefile'] = None
         self["status"] = False
         self["status_wait_seconds"] = 5
         self["fileoutput"] = []
@@ -312,7 +313,7 @@ class Configuration (dict):
             self.sanitize_logger()
         if self['scanvirus']:
             self.sanitize_scanvirus()
-        if self['storecookies']:
+        if self['storecookies'] or self['cookiefile']:
             self.sanitize_cookies()
         if self['loginurl']:
             self.sanitize_loginurl()
@@ -346,9 +347,11 @@ class Configuration (dict):
     def sanitize_cookies (self):
         """Make cookie configuration consistent."""
         if not self['sendcookies']:
-            log.warn(LOG_CHECK, _("activating sendcookies " \
-                                  "because storecookies is active."))
+            log.warn(LOG_CHECK, _("activating sendcookies."))
             self['sendcookies'] = True
+        if not self['storecookies']:
+            log.warn(LOG_CHECK, _("activating storecookies."))
+            self['storecookies'] = True
 
     def sanitize_loginurl (self):
         """Make login configuration consistent."""

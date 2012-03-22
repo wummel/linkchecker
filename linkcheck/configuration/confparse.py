@@ -157,6 +157,8 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         if self.has_option(section, "cookies"):
             self.config["sendcookies"] = self.config["storecookies"] = \
                 self.getboolean(section, "cookies")
+        if self.has_option(section, "cookiefile"):
+            self.config['cookiefile'] = self.get(section, 'cookiefile')
 
     def read_authentication_config (self):
         """Read configuration options in section "authentication"."""

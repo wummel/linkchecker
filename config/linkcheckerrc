@@ -148,6 +148,8 @@
 #clamavconf=/etc/clamav/clamd.conf
 # Send and store cookies
 #cookies=1
+# parse a cookiefile for initial cookie data
+#cookiefile=/path/to/cookies.txt
 # User-Agent header string to send to HTTP web servers
 #useragent=Mozilla/4.0
 # Pause the given number of seconds between two subsequent connection

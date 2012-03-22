@@ -712,8 +712,10 @@ if options.warningregex is not None:
 if options.warningsizebytes is not None:
     config["warnsizebytes"] = options.warningsizebytes
 if options.cookies is not None:
-    config['storecookies'] = options.cookies
-    config['sendcookies'] = options.cookies
+    config['storecookies'] = config['sendcookies'] = options.cookies
+if options.cookiefile is not None:
+    config['cookiefile'] = options.cookiefile
+    config['storecookies'] = config['sendcookies'] = True
 if constructauth:
     config.add_auth(pattern=".+", user=_username, password=_password)
 if options.scanvirus is not None:

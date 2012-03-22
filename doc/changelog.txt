@@ -19,7 +19,7 @@ Changes:
   Closes: SF bug #3504366
 
 Features:
-- config: Allow --pause to be set in configuration file.
+- config: Allow --pause and --cookiefile to be set in configuration file.
 
 
 7.5 "Kukushka" (released 13.02.2012)
