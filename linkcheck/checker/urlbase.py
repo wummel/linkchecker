@@ -139,6 +139,7 @@ class UrlBase (object):
         self.column = column
         self.name = name
         self.encoding = url_encoding
+        self.charset = None
         if self.base_ref:
             assert not urlutil.url_needs_quoting(self.base_ref), \
                    "unquoted base reference URL %r" % self.base_ref
@@ -235,24 +236,27 @@ class UrlBase (object):
 
     def set_title_from_content (self):
         """Set title of page the URL refers to.from page content."""
-        if self.valid:
-            try:
-                handler = linkparse.TitleFinder()
-            except tuple(ExcList):
-                return
-            parser = htmlsax.parser(handler)
-            handler.parser = parser
-            # parse
-            try:
-                parser.feed(self.get_content())
-                parser.flush()
-            except linkparse.StopParse, msg:
-                log.debug(LOG_CHECK, "Stopped parsing: %s", msg)
-            # break cyclic dependencies
-            handler.parser = None
-            parser.handler = None
-            if handler.title:
-                self.title = handler.title
+        if not self.valid:
+            return
+        try:
+            handler = linkparse.TitleFinder()
+        except tuple(ExcList):
+            return
+        parser = htmlsax.parser(handler)
+        handler.parser = parser
+        if self.charset:
+            parser.encoding = self.charset
+        # parse
+        try:
+            parser.feed(self.get_content())
+            parser.flush()
+        except linkparse.StopParse, msg:
+            log.debug(LOG_CHECK, "Stopped parsing: %s", msg)
+        # break cyclic dependencies
+        handler.parser = None
+        parser.handler = None
+        if handler.title:
+            self.title = handler.title
 
     def is_parseable (self):
         """
@@ -601,6 +605,8 @@ class UrlBase (object):
         handler = linkparse.MetaRobotsFinder()
         parser = htmlsax.parser(handler)
         handler.parser = parser
+        if self.charset:
+            parser.encoding = self.charset
         # parse
         try:
             parser.feed(self.get_content())
@@ -937,6 +943,8 @@ class UrlBase (object):
         # construct parser object
         handler = linkparse.LinkFinder(self.add_url)
         parser = htmlsax.parser(handler)
+        if self.charset:
+            parser.encoding = self.charset
         handler.parser = parser
         # parse
         try:

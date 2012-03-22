@@ -11,6 +11,9 @@ Fixes:
 - checking: Improved error message for connect errors to the ClamAV
   virus checking daemon.
 - gui: Replace configuration filename in options dialog.
+- checking: Honor the charset encoding of the Content-Type HTTP
+  header when parsing HTML.
+  Closes: SF bug #3388257
 
 Changes:
 - checking: Add real url to cache.

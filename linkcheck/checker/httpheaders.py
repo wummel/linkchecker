@@ -90,6 +90,18 @@ def get_content_type (headers):
     return ptype.strip().lower()
 
 
+def get_charset(headers):
+    """
+    Get the charset encoding from the Content-Type header value, or
+    None if not found.
+
+    @return: the content charset encoding
+    @rtype: string or None
+    """
+    from linkcheck.HtmlParser import get_ctype_charset
+    return get_ctype_charset(headers.get('Content-Type', ''))
+
+
 def get_content_encoding (headers):
     """
     Get the content encoding from the Content-Encoding header value, or

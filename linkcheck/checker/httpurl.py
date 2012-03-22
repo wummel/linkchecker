@@ -667,6 +667,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         response = self.follow_redirections(response, set_result=False)[1]
         self.headers = response.msg
         self.content_type = None
+        self.charset = headers.get_charset(self.headers)
         # Re-read size info, since the GET request result could be different
         # than a former HEAD request.
         self.add_size_info()

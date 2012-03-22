@@ -243,7 +243,7 @@ def get_ctype_charset (text):
     for param in text.lower().split(';'):
         param = param.strip()
         if param.startswith('charset='):
-            charset = param[8:]
+            charset = param[8:].strip()
             try:
                 codecs.lookup(charset)
                 return charset
