@@ -310,25 +310,16 @@ RX_DATA  [-a-zA-Z0-9_:]+
     BEGIN(S_COMMENT2);
 }
 
-<S_COMMENT2>!> {
+<S_COMMENT2>> {
     UPDATE_COLUMN;
     SETLVAL_UNICODE;
     BEGIN(INITIAL);
     RETURN(T_COMMENT);
 }
 
-<S_COMMENT2>[^!]+ {
+<S_COMMENT2>[^>] {
     UPDATE_LINE;
     APPEND_TO_TMP(yyleng);
-}
-
-<S_COMMENT2>![^>]+ {
-    UPDATE_LINE;
-    APPEND_TO_TMP(yyleng);
-}
-
-<S_COMMENT2>.|\n {
-    return T_WAIT;
 }
 
 

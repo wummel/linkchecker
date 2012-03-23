@@ -14,6 +14,9 @@ Fixes:
 - checking: Honor the charset encoding of the Content-Type HTTP
   header when parsing HTML.
   Closes: SF bug #3388257
+- checking: HTML parser detects and handles invalid comments of the
+  form "<! bla >".
+  Closes: SF bug #3509848
 
 Changes:
 - checking: Add real url to cache.
