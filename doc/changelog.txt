@@ -12,14 +12,15 @@ Fixes:
   virus checking daemon.
 - gui: Replace configuration filename in options dialog.
 - checking: Honor the charset encoding of the Content-Type HTTP
-  header when parsing HTML.
+  header when parsing HTML. Fixes characters displayed as'?'
+  for certain websites.
   Closes: SF bug #3388257
 - checking: HTML parser detects and handles invalid comments of the
   form "<! bla >".
   Closes: SF bug #3509848
 
 Changes:
-- checking: Add real url to cache.
+- checking: Add real url to cache. Improves output for cached errors.
 - checking: Specify timeout for SMTP connections. Avoids spurious
   connect errors when checking email addresses.
   Closes: SF bug #3504366
