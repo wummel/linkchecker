@@ -1,6 +1,6 @@
 Project: LinkChecker
-Version: 7.5
-Release-Focus: Major feature enhancements
+Version: 7.6
+Release-Focus: Minor bug fixes
 Hide: N
 Website-URL: http://linkchecker.sourceforge.net/
 Changelog-URL: http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker/linkchecker;a=blob;f=doc/changelog.txt;hb=HEAD
@@ -9,5 +9,6 @@ Debian-Package-URL: http://packages.debian.org/linkchecker
 GIT-Tree-URL: http://linkchecker.git.sourceforge.net/
 Windows-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.exe
 
-Support for loading and saving of project files has been added to the GUI.
-Some bugs have been fixed too.
+The --pause and --cookiefile options can now be set in the configuration
+file. Also, several checking bugs including non-ASCII HTTP header handling
+have been fixed.
