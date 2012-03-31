@@ -1,8 +1,10 @@
 linkchecker (7.6-1) unstable; urgency=low
 
   * New upstream release.
+  * Updated Standards Version to 3.9.3.
+  * Do not fail in postinst on Apache2 configuration errors.
 
- -- Bastian Kleineidam <calvin@debian.org>  Thu, 08 Mar 2012 10:05:31 +0100
+ -- Bastian Kleineidam <calvin@debian.org>  Sat, 31 Mar 2012 14:13:17 +0200
 
 linkchecker (7.5-1) unstable; urgency=low
 
