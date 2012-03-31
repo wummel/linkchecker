@@ -348,6 +348,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         # check cache again on the changed URL
         if self.aggregate.urlqueue.checked_redirect(redirected, self):
             return -1, response
+        # store cookies from redirect response
+        self.store_cookies()
         # new response data
         response.close()
         response = self._try_http_response()
@@ -481,17 +483,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 self.add_warning(unicode_safe(response.reason),
                                  tag=WARN_HTTP_EMPTY_CONTENT)
             # store cookies for valid links
-            if self.aggregate.config['storecookies']:
-                for c in self.cookies:
-                    self.add_info(_("Sent Cookie: %(cookie)s.") %
-                                  {"cookie": c.client_header_value()})
-                errors = self.aggregate.cookies.add(self.headers,
-                    self.urlparts[0], self.urlparts[1], self.urlparts[2])
-                if errors:
-                    self.add_warning(
-                      _("Could not store cookies from headers: %(error)s.") %
-                       {'error': "\n".join(errors)},
-                       tag=WARN_HTTP_COOKIE_STORE_ERROR)
+            self.store_cookies()
             if response.status >= 200:
                 self.set_result(u"%r %s" % (response.status, response.reason))
             else:
@@ -591,6 +583,20 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if response.status in httplib.responses:
             response.reason = httplib.responses[response.status]
         return response
+
+    def store_cookies (self):
+        """Save cookies from response headers."""
+        if self.aggregate.config['storecookies']:
+            for c in self.cookies:
+                self.add_info(_("Sent Cookie: %(cookie)s.") %
+                              {"cookie": c.client_header_value()})
+            errors = self.aggregate.cookies.add(self.headers,
+                self.urlparts[0], self.urlparts[1], self.urlparts[2])
+            if errors:
+                self.add_warning(
+                  _("Could not store cookies from headers: %(error)s.") %
+                   {'error': "\n".join(errors)},
+                   tag=WARN_HTTP_COOKIE_STORE_ERROR)
 
     def send_cookies (self):
         """Add cookie headers to request."""
