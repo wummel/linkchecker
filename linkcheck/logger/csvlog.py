@@ -49,8 +49,7 @@ class CSVLogger (Logger):
 
     def comment (self, s, **args):
         """Write CSV comment."""
-        self.write(u"# ")
-        self.writeln(s=s, **args)
+        self.writeln(s=self.encode(u"# %s" % s), **args)
 
     def start_output (self):
         """Write checking start info as csv comment."""
