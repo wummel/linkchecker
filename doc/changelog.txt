@@ -1,4 +1,4 @@
-7.6 "" (released xx.xx.2012)
+7.6 "Türkisch für Anfänger" (released 31.03.2012)
 
 Fixes:
 - checking: Recheck extern status on HTTP redirects even if domain
@@ -12,12 +12,18 @@ Fixes:
   virus checking daemon.
 - gui: Replace configuration filename in options dialog.
 - checking: Honor the charset encoding of the Content-Type HTTP
-  header when parsing HTML. Fixes characters displayed as'?'
-  for certain websites.
+  header when parsing HTML. Fixes characters displayed as '?'
+  for non-ISO-8859-1 websites.
   Closes: SF bug #3388257
 - checking: HTML parser detects and handles invalid comments of the
   form "<! bla >".
   Closes: SF bug #3509848
+- checking: Store cookies on redirects. Patch by Charles Jones.
+  Closes: SF bug #3513345
+- checking: Fix concatenation of multiple cookie values.
+  Patch by Charles Jones.
+- logging: Encode comments when logging CSV comments.
+  Closes: SF bug #3513415
 
 Changes:
 - checking: Add real url to cache. Improves output for cached errors.
