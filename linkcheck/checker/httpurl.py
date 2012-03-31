@@ -622,6 +622,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 self.url_connection.putheader(headername, cookievalue)
                 headervalue = ""
                 continue
+            if headervalue:
+                cookievalue = "; " + cookievalue
             if (len(headervalue) + len(cookievalue)) < max_value_len:
                 headervalue += cookievalue
             else:
