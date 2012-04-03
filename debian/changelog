@@ -1,3 +1,9 @@
+linkchecker (7.7-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Bastian Kleineidam <calvin@debian.org>  Tue, 03 Apr 2012 07:41:57 +0200
+
 linkchecker (7.6-1) unstable; urgency=low
 
   * New upstream release.
