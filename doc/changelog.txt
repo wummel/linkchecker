@@ -1,5 +1,10 @@
 7.7 "Intouchables" (released xx.xx.2012)
 
+Fixes:
+- checking: Detect invalid empty cookie values.
+  Patch by Charles Jones.
+  Closes: SF bug #3514219
+
 
 7.6 "Türkisch für Anfänger" (released 31.03.2012)
 

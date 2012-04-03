@@ -252,6 +252,8 @@ class HttpCookie (object):
                 if key.startswith("$"):
                     key = key[1:]
                 self.set_attribute(key, value)
+        if self.name is None:
+            raise CookieError("missing cookie name in %r" % text)
         self.calculate_expiration()
 
     def set_default_attributes (self, scheme, host, path):

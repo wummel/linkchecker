@@ -143,6 +143,14 @@ class TestCookies (unittest.TestCase):
         self.assertNotEqual(cookie1, cookie3)
         self.assertNotEqual(cookie2, cookie3)
 
+    def test_netscape_cookie8 (self):
+        value = ""
+        scheme = "http"
+        host = "localhost"
+        path = "/"
+        self.assertRaises(linkcheck.cookies.CookieError,
+                 linkcheck.cookies.NetscapeCookie, value, scheme, host, path)
+
     def test_rfc_cookie1 (self):
         data = (
             ("Foo", "Bar"),
