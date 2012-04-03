@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 3.4\n"
-"POT-Creation-Date: 2012-03-22 22:15+0100\n"
-"PO-Revision-Date: 2012-03-22 22:16+0100\n"
+"POT-Creation-Date: 2012-03-31 20:43+0300\n"
+"PO-Revision-Date: 2012-03-31 20:44+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "Language: \n"
@@ -447,14 +447,14 @@ msgid ""
 "Output to a file B<linkchecker-out.>I<TYPE>, B<$HOME/.linkchecker/blacklist> "
 "for B<blacklist> output, or I<FILENAME> if specified.  The I<ENCODING> "
 "specifies the output encoding, the default is that of your locale.  Valid "
-"encodings are listed at B<http://docs.python.org/library/codecs."
+"encodings are listed at B<http://docs.python.org/library/\\:codecs."
 "html#standard-encodings>."
 msgstr ""
 "Ausgabe in eine Datei namens B<linkchecker-out.>I<TYP>, B<$HOME/.linkchecker/"
 "blacklist> bei B<blacklist> Ausgabe, oder I<DATEINAME> falls angegeben. Das "
 "I<ENCODING> gibt die Ausgabekodierung an. Der Standard ist das der lokalen "
 "Spracheinstellung. Gültige Enkodierungen sind unter B<http://docs.python.org/"
-"library/codecs.html#standard-encodings> aufgelistet."
+"library/\\:codecs.html#standard-encodings> aufgelistet."
 
 # type: Plain text
 #. type: Plain text
@@ -525,15 +525,15 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:138 en/linkcheckerrc.5:195
+#: en/linkchecker.1:138
 msgid ""
 "The I<ENCODING> specifies the output encoding, the default is that of your "
-"locale. Valid encodings are listed at B<http://docs.python.org/library/"
+"locale. Valid encodings are listed at B<http://docs.python.org/library/\\:"
 "codecs.html#standard-encodings>."
 msgstr ""
 "Das I<ENCODING> gibt die Ausgabekodierung an. Der Standard ist das der "
 "lokalen Spracheinstellung. Gültige Enkodierungen sind unter B<http://docs."
-"python.org/library/codecs.html#standard-encodings> aufgelistet."
+"python.org/library/\\:codecs.html#standard-encodings> aufgelistet."
 
 # type: TP
 #. type: TP
@@ -1109,10 +1109,10 @@ msgstr "REGULÄRE AUSDRÜCKE"
 #: en/linkchecker.1:290
 msgid ""
 "LinkChecker accepts Python regular expressions.  See B<http://docs.python."
-"org/howto/regex.html> for an introduction."
+"org/\\:howto/regex.html> for an introduction."
 msgstr ""
 "LinkChecker akzeptiert Pythons reguläre Ausdrücke. Siehe B<http://docs."
-"python.org/howto/regex.html> für eine Einführung."
+"python.org/\\:howto/regex.html> für eine Einführung."
 
 # type: Plain text
 #. type: Plain text
@@ -2486,6 +2486,18 @@ msgstr "Kommandozeilenoption: B<--no-status>"
 #, no-wrap
 msgid "B<log=>I<TYPE>[B</>I<ENCODING>]"
 msgstr "B<log=>I<TYPE>[B</>I<ENCODING>]"
+
+# type: Plain text
+#. type: Plain text
+#: en/linkcheckerrc.5:195
+msgid ""
+"The I<ENCODING> specifies the output encoding, the default is that of your "
+"locale. Valid encodings are listed at B<http://docs.python.org/library/"
+"codecs.html#standard-encodings>."
+msgstr ""
+"Das I<ENCODING> gibt die Ausgabekodierung an. Der Standard ist das der "
+"lokalen Spracheinstellung. Gültige Enkodierungen sind unter B<http://docs."
+"python.org/library/codecs.html#standard-encodings> aufgelistet."
 
 # type: Plain text
 #. type: Plain text

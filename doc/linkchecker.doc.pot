@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2012-03-22 22:15+0100\n"
+"POT-Creation-Date: 2012-03-31 20:43+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -363,7 +363,7 @@ msgid ""
 "for B<blacklist> output, or I<FILENAME> if specified.  The I<ENCODING> "
 "specifies the output encoding, the default is that of your locale.  Valid "
 "encodings are listed at "
-"B<http://docs.python.org/library/codecs.html#standard-encodings>."
+"B<http://docs.python.org/library/\\:codecs.html#standard-encodings>."
 msgstr ""
 
 #. type: Plain text
@@ -415,11 +415,11 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:138 en/linkcheckerrc.5:195
+#: en/linkchecker.1:138
 msgid ""
 "The I<ENCODING> specifies the output encoding, the default is that of your "
 "locale. Valid encodings are listed at "
-"B<http://docs.python.org/library/codecs.html#standard-encodings>."
+"B<http://docs.python.org/library/\\:codecs.html#standard-encodings>."
 msgstr ""
 
 #. type: TP
@@ -860,7 +860,7 @@ msgstr ""
 #: en/linkchecker.1:290
 msgid ""
 "LinkChecker accepts Python regular expressions.  See "
-"B<http://docs.python.org/howto/regex.html> for an introduction."
+"B<http://docs.python.org/\\:howto/regex.html> for an introduction."
 msgstr ""
 
 #. type: Plain text
@@ -1950,6 +1950,14 @@ msgstr ""
 #: en/linkcheckerrc.5:185
 #, no-wrap
 msgid "B<log=>I<TYPE>[B</>I<ENCODING>]"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:195
+msgid ""
+"The I<ENCODING> specifies the output encoding, the default is that of your "
+"locale. Valid encodings are listed at "
+"B<http://docs.python.org/library/codecs.html#standard-encodings>."
 msgstr ""
 
 #. type: Plain text
