@@ -19,6 +19,7 @@ set UPX_EXE="C:\Software\upx308w\upx.exe"
 set SZ_EXE="C:\Programme\7-Zip\7z.exe"
 for /f "usebackq tokens=*" %%a in (`%PYDIR%\python.exe setup.py --version`) do set VERSION="%%a"
 set PORTDIR=LinkChecker-%VERSION%
+set LINKCHECKER_PORTABLE=0
 rd /s /q build > nul
 call %~dp0\build.bat
 rd /s /q dist > nul
