@@ -4,6 +4,8 @@ Fixes:
 - checking: Detect invalid empty cookie values.
   Patch by Charles Jones.
   Closes: SF bug #3514219
+- checking: fix cache key for URL connections on redirect
+  Closes: SF bug #3514748
 
 
 7.6 "Türkisch für Anfänger" (released 31.03.2012)

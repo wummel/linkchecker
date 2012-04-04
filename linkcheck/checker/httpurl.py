@@ -519,11 +519,11 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         Send HTTP request and get response object.
         """
         if self.proxy:
-            host = self.proxy
             scheme = self.proxytype
+            host = self.proxy
         else:
-            host = self.urlparts[1]
             scheme = self.urlparts[0]
+            host = self.urlparts[1]
         log.debug(LOG_CHECK, "Connecting to %r", host)
         # close/release a previous connection
         self.close_connection()
@@ -642,8 +642,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         @return: open HTTP(S) connection
         @rtype: httplib.HTTP(S)Connection
         """
-        _user, _password = self.get_user_password()
-        key = (scheme, self.urlparts[1], _user, _password)
+        key = self.get_connection_key(scheme, host)
         conn = self.aggregate.connections.get(key)
         if conn is not None:
             log.debug(LOG_CHECK, "reuse cached HTTP(S) connection %s", conn)
@@ -822,9 +821,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             # no connection is open
             return
         # add to cached connections
-        _user, _password = self.get_user_password()
-        key = ("http", self.urlparts[1], _user, _password)
         if self.persistent and self.url_connection.is_idle():
+            key = self.get_urlconnection_key()
             self.aggregate.connections.add(
                   key, self.url_connection, self.timeout)
         else:
@@ -834,3 +832,31 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 # ignore close errors
                 pass
         self.url_connection = None
+
+    def get_connection_key (self, scheme, host):
+        """Get unique key specifying this connection.
+        Used to reuse cached connections.
+        @param scheme: 'https' or 'http'
+        @ptype scheme: string
+        @param host: host[:port]
+        @ptype host: string
+        @return: (scheme, host, port, user, password)
+        @rtype: tuple(string, string, int, string, string)
+        """
+        host, port = urlutil.splitport(host)
+        _user, _password = self.get_user_password()
+        return (scheme, host, port, _user, _password)
+
+    def get_urlconnection_key (self):
+        """Get unique key specifying this connection.
+        Used to cache connections.
+        @return: (scheme, host, port, user, password)
+        @rtype: tuple(string, string, int, string, string)
+        """
+        host, port = self.url_connection.host, self.url_connection.port
+        if supportHttps and isinstance(self.url_connection, httplib.HTTPSConnection):
+            scheme = 'https'
+        else:
+            scheme = 'http'
+        _user, _password = self.get_user_password()
+        return (scheme, host, port, _user, _password)
