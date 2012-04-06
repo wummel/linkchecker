@@ -19,6 +19,7 @@ Depends: ${misc:Depends}, ${python:Depends}, ${shlibs:Depends}
 Provides: ${python:Provides}
 Conflicts: python-dnspython
 Suggests: apache2 | httpd,
+          libapache2-mod-wsgi,
           clamav-daemon,
           linkchecker-gui,
           python-cssutils,

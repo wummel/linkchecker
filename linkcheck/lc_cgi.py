@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2011 Bastian Kleineidam
+# Copyright (C) 2000-2012 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """
-Common CGI functions used by the CGI scripts.
+Common functions used by the CGI and WSGI scripts.
 """
 
 import sys
@@ -45,14 +45,30 @@ class LCFormError (StandardError):
     pass
 
 
+def get_response_headers():
+    return [("Content-type", "text/html"),
+            ("Cache-Control", "no-cache"),
+            ("Pragma:", "no-cache")
+           ]
+
 def startoutput (out=None):
     """Print leading HTML headers to given output stream."""
     if out is None:
         out = i18n.get_encoded_writer()
-    out.write("Content-type: text/html\r\n"
-              "Cache-Control: no-cache\r\n"
-              "Pragma: no-cache\r\n"
-              "\r\n")
+    for key, value in get_response_headers():
+        out.write("%s: %s\r\n" % (key, value))
+    out.write("\r\n")
+
+
+def formvalue (form, key):
+    field = form.get(key)
+    if field is not None and hasattr(field, 'value'):
+        # it's a CGI FormField
+        field = field.value
+    else:
+        # assume WSGI dictionary lists
+        field = field[0]
+    return field
 
 
 def checklink (out=None, form=None, env=os.environ):
@@ -68,7 +84,7 @@ def checklink (out=None, form=None, env=os.environ):
         print_error(out, why)
         return
     config = configuration.Configuration()
-    config["recursionlevel"] = int(form["level"].value)
+    config["recursionlevel"] = int(formvalue(form, "level"))
     config["logger"] = config.logger_new('html', fd=out)
     config["threads"] = 0
     if "anchors" in form:
@@ -81,7 +97,7 @@ def checklink (out=None, form=None, env=os.environ):
     # start checking
     aggregate = director.get_aggregate(config)
     get_url_from = checker.get_url_from
-    url = strformat.stripurl(form["url"].value)
+    url = strformat.stripurl(formvalue(form, "url"))
     url_data = get_url_from(url, 0, aggregate)
     try:
         add_intern_pattern(url_data, config)
@@ -96,7 +112,7 @@ def checklink (out=None, form=None, env=os.environ):
 
 def get_host_name (form):
     """Return host name of given URL."""
-    return urlparse.urlparse(form["url"].value)[1]
+    return urlparse.urlparse(formvalue(form, "url"))[1]
 
 
 def checkform (form):
@@ -105,7 +121,7 @@ def checkform (form):
     only plain strings as exception text."""
     # check lang support
     if "language" in form:
-        lang = form['language'].value
+        lang = formvalue(form, 'language')
         if lang in _supported_langs:
             locale.setlocale(locale.LC_ALL, lang_locale[lang])
             init_i18n()
@@ -113,7 +129,7 @@ def checkform (form):
             raise LCFormError(_("unsupported language"))
     # check url syntax
     if "url" in form:
-        url = form["url"].value
+        url = formvalue(form, "url")
         if not url or url == "http://":
             raise LCFormError(_("empty url was given"))
         if not urlutil.is_safe_url(url):
@@ -122,13 +138,13 @@ def checkform (form):
         raise LCFormError(_("no url was given"))
     # check recursion level
     if "level" in form:
-        level = form["level"].value
+        level = formvalue(form, "level")
         if not _is_level(level):
             raise LCFormError(_("invalid recursion level"))
     # check options
     for option in ("anchors", "errors", "intern"):
         if option in form:
-            if not form[option].value == "on":
+            if not formvalue(form, option) == "on":
                 raise LCFormError(_("invalid %s option syntax") % option)
 
 
@@ -146,7 +162,7 @@ def logit (form, env):
             _logfile.write(var+"="+env[var]+"\n")
     for key in ("level", "url", "anchors", "errors", "intern", "language"):
         if key in form:
-            _logfile.write(str(form[key])+"\n")
+            _logfile.write(str(formvalue(form, key))+"\n")
 
 
 def print_error (out, why):
