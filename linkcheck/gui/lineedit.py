@@ -172,22 +172,17 @@ class LineEdit (QtGui.QLineEdit):
 
     def addMenuEntries (self, menu):
         """Add browser bookmark actions to menu."""
-        name = _("Insert %(browser)s bookmark file")
-        if find_firefox():
-            action = menu.addAction(name % {"browser": u"Firefox"})
-            action.triggered.connect(lambda: self.setText(find_firefox()))
-        if find_chrome():
-            action = menu.addAction(name % {"browser": u"Google Chrome"})
-            action.triggered.connect(lambda: self.setText(find_chrome()))
-        if find_chromium():
-            action = menu.addAction(name % {"browser": u"Chromium"})
-            action.triggered.connect(lambda: self.setText(find_chromium()))
-        if find_opera():
-            action = menu.addAction(name % {"browser": u"Opera"})
-            action.triggered.connect(lambda: self.setText(find_opera()))
-        if find_safari():
-            action = menu.addAction(name % {"browser": u"Safari"})
-            action.triggered.connect(lambda: self.setText(find_safari()))
+        msg = _("Insert %(browser)s bookmark file")
+        for name, find_func in BROWSERS:
+            try:
+                res = find_func()
+                if res:
+                    callback = lambda: self.setText(find_func())
+                    action = menu.addAction(name % {"browser": name})
+                    action.triggered.connect(callback)
+            except Exception, msg:
+                # XXX log msg
+                pass
 
     def contextMenuEvent (self, event):
         """Handle context menu event."""
@@ -224,3 +219,11 @@ def find_safari ():
     """Return Safari bookmark filename or empty string if not found."""
     from ..bookmarks.safari import find_bookmark_file
     return find_bookmark_file()
+
+BROWSERS = (
+    (u"Firefox", find_firefox),
+    (u"Google Chrome", find_chrome),
+    (u"Chromium", find_chromium),
+    (u"Opera", find_opera),
+    (u"Safari", find_safari),
+)
