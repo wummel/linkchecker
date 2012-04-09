@@ -6,6 +6,8 @@ Fixes:
   Closes: SF bug #3514219
 - checking: Fix cache key for URL connections on redirect.
   Closes: SF bug #3514748
+- gui: Fix update check when content could not be downloaded.
+  Closes: SF bug #3515959
 
 Features:
 - cgi: Added a WSGI script to replace the CGI script.

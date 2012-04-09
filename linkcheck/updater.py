@@ -60,7 +60,7 @@ def get_online_version ():
     headers = {'Pragma': 'no-cache', 'Cache-Control': 'no-cache'}
     info, content = get_content(UPDATE_URL, addheaders=headers)
     if info is None:
-        None, _('could not download update information')
+        return None, _('could not download update information')
     version, url = None, None
     for line in content.splitlines():
         if line.startswith(VERSION_TAG):
