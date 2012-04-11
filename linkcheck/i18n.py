@@ -67,7 +67,8 @@ def init (domain, directory):
         # get supported languages
         for lang in os.listdir(directory):
             path = os.path.join(directory, lang, 'LC_MESSAGES')
-            if os.path.exists(os.path.join(path, '%s.mo' % domain)):
+            mo_file = os.path.join(path, '%s.mo' % domain)
+            if os.path.exists(mo_file):
                 supported_languages.add(lang)
     loc, encoding = get_locale()
     if loc in supported_languages:
