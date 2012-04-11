@@ -47,6 +47,8 @@ def urlsave (parent, config, urls):
     for urlitem in urls:
         do_print = True
         logger.log_filter_url(urlitem.url_data, do_print)
+    # inject the saved statistics before printing them
+    logger.stats = config['logger'].stats
     logger.end_output()
 
 
