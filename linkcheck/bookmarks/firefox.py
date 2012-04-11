@@ -48,11 +48,14 @@ def find_bookmark_file (profile="*.default"):
     Returns absolute filename if found, or empty string if no bookmark file
     could be found.
     """
-    for dirname in glob.glob(u"%s/%s" % (get_profile_dir(), profile)):
-        if os.path.isdir(dirname):
-            fname = os.path.join(dirname, "places.sqlite")
-            if os.path.isfile(fname):
-                return fname
+    try:
+        for dirname in glob.glob(u"%s/%s" % (get_profile_dir(), profile)):
+            if os.path.isdir(dirname):
+                fname = os.path.join(dirname, "places.sqlite")
+                if os.path.isfile(fname):
+                    return fname
+    except Exception:
+        pass
     return u""
 
 

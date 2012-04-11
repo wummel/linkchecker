@@ -50,11 +50,14 @@ def find_bookmark_file (profile="Default"):
     Returns absolute filename if found, or empty string if no bookmark file
     could be found.
     """
-    dirname = os.path.join(get_profile_dir(), profile)
-    if os.path.isdir(dirname):
-        fname = os.path.join(dirname, "Bookmarks")
-        if os.path.isfile(fname):
-            return fname
+    try:
+        dirname = os.path.join(get_profile_dir(), profile)
+        if os.path.isdir(dirname):
+            fname = os.path.join(dirname, "Bookmarks")
+            if os.path.isfile(fname):
+                return fname
+    except Exception:
+        pass
     return u""
 
 

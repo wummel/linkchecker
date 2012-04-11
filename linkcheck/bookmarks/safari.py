@@ -38,11 +38,14 @@ def find_bookmark_file ():
     """
     if sys.platform != 'darwin':
         return u""
-    dirname = get_profile_dir()
-    if os.path.isdir(dirname):
-        fname = os.path.join(dirname, u"Bookmarks.plist")
-        if os.path.isfile(fname):
-            return fname
+    try:
+        dirname = get_profile_dir()
+        if os.path.isdir(dirname):
+            fname = os.path.join(dirname, u"Bookmarks.plist")
+            if os.path.isfile(fname):
+                return fname
+    except Exception:
+        pass
     return u""
 
 
