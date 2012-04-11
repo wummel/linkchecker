@@ -10,6 +10,8 @@ Fixes:
   Closes: SF bug #3515959
 - i18n: Make locale domain name lowercase, fixing the .mo-file
   lookup on Unix systems.
+- checking: Fix CSV output with German locale.
+  Closes: SF bug #3516400
 
 Features:
 - cgi: Added a WSGI script to replace the CGI script.
