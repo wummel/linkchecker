@@ -142,7 +142,7 @@ def init_i18n ():
         locdir = os.environ['LOCPATH']
     else:
         locdir = os.path.join(get_install_data(), 'share', 'locale')
-    i18n.init(configdata.name, locdir)
+    i18n.init(configdata.name.lower(), locdir)
     # install translated log level names
     import logging
     logging.addLevelName(logging.CRITICAL, _('CRITICAL'))

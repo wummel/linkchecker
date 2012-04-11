@@ -8,6 +8,8 @@ Fixes:
   Closes: SF bug #3514748
 - gui: Fix update check when content could not be downloaded.
   Closes: SF bug #3515959
+- i18n: Make locale domain name lowercase, fixing the .mo-file
+  lookup on Unix systems.
 
 Features:
 - cgi: Added a WSGI script to replace the CGI script.
