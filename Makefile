@@ -62,7 +62,7 @@ MANIFEST: MANIFEST.in setup.py
 
 .PHONY: locale
 locale:
-	$(MAKE) -C po
+	$(MAKE) -C po mofiles
 
 # to build in the current directory
 .PHONY: localbuild
