@@ -24,7 +24,7 @@ from .linkchecker_ui_main import Ui_MainWindow
 from .properties import set_properties, clear_properties
 from .statistics import set_statistics, clear_statistics
 from .debug import LinkCheckerDebug
-from .logger import GuiLogger, GuiLogHandler, StatusLogger
+from .logger import SignalLogger, GuiLogHandler, StatusLogger
 from .help import HelpWindow
 from .options import LinkCheckerOptions
 from .checker import CheckerThread
@@ -226,7 +226,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         # dictionary holding overwritten values
         self.config_backup = {}
         # set standard GUI configuration values
-        self.config.logger_add("gui", GuiLogger)
+        self.config.logger_add("gui", SignalLogger)
         self.config["logger"] = self.config.logger_new('gui',
             signal=self.log_url_signal, stats=self.log_stats_signal)
         self.config["status"] = True

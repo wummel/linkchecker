@@ -176,6 +176,7 @@ doccheck:
 	  linkcheck/updater.py \
 	  linkcheck/url.py \
 	  linkcheck/winutil.py \
+	  cgi-bin/lc.wsgi \
 	  linkchecker \
 	  linkchecker-gui \
 	  *.py

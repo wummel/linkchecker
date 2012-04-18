@@ -4,7 +4,7 @@ include config/linkchecker-completion config/create.sql
 include config/linkcheckerrc
 include config/linkchecker.apache2.conf install-rpm.sh
 include linkchecker.freecode
-include cgi-bin/lc.cgi cgi-bin/README
+include cgi-bin/lc.wsgi cgi-bin/README
 include Makefile
 include debian/rules
 include debian/changelog

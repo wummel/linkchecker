@@ -32,12 +32,12 @@ class GuiLogHandler (Handler, object):
         self.signal.emit(self.format(record))
 
 
-class GuiLogger (Logger):
-    """Delegate log URLs to the UI tree widget."""
+class SignalLogger (Logger):
+    """Use Qt signals for logged URLs and statistics."""
 
     def __init__ (self, **args):
         """Store signals for URL and statistic data."""
-        super(GuiLogger, self).__init__(**args)
+        super(SignalLogger, self).__init__(**args)
         self.log_url_signal = args["signal"]
         self.log_stats_signal = args["stats"]
 

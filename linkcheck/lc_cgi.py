@@ -15,19 +15,45 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """
-Common functions used by the CGI and WSGI scripts.
+Functions used by the WSGI script.
 """
 
-import sys
+import cgi
 import os
+import threading
+from StringIO import StringIO
 import locale
 import re
 import time
 import urlparse
 import types
-from . import configuration, strformat, checker, director, i18n
-from . import add_intern_pattern, get_link_pat, init_i18n
-from . import url as urlutil
+from PyQt4 import QtCore
+from . import configuration, strformat, checker, director, \
+    add_intern_pattern, get_link_pat, init_i18n, url as urlutil
+from .logger import Logger
+
+
+def application(environ, start_response):
+    """WSGI interface: start an URL check."""
+    # the environment variable CONTENT_LENGTH may be empty or missing
+    try:
+        request_body_size = int(environ.get('CONTENT_LENGTH', 0))
+    except ValueError:
+        request_body_size = 0
+
+    # When the method is POST the query string will be sent
+    # in the HTTP request body which is passed by the WSGI server
+    # in the file like wsgi.input environment variable.
+    if request_body_size > 0:
+        request_body = environ['wsgi.input'].read(request_body_size)
+    else:
+        request_body = environ['wsgi.input'].read()
+    form = cgi.parse_qs(request_body)
+
+    status = '200 OK'
+    start_response(status, get_response_headers())
+    for output in checklink(form=form, env=environ):
+        yield output
 
 
 _logfile = None
@@ -46,46 +72,152 @@ class LCFormError (StandardError):
 
 
 def get_response_headers():
+    """Get list of response headers in key-value form."""
     return [("Content-type", "text/html"),
             ("Cache-Control", "no-cache"),
             ("Pragma:", "no-cache")
            ]
 
-def startoutput (out=None):
-    """Print leading HTML headers to given output stream."""
-    if out is None:
-        out = i18n.get_encoded_writer()
-    for key, value in get_response_headers():
-        out.write("%s: %s\r\n" % (key, value))
-    out.write("\r\n")
-
 
 def formvalue (form, key):
+    """Get value with given key from WSGI form."""
     field = form.get(key)
-    if field is not None and hasattr(field, 'value'):
-        # it's a CGI FormField
-        field = field.value
-    else:
-        # assume WSGI dictionary lists
+    if isinstance(field, list):
         field = field[0]
     return field
 
 
-def checklink (out=None, form=None, env=os.environ):
-    """Main cgi function, check the given links and print out the result."""
-    if out is None:
-        out = i18n.get_encoded_writer()
+class ThreadsafeStringIO (StringIO):
+    """Thread-safe String I/O class."""
+    def __init__(self):
+        self.buf = []
+        self.lock = threading.Lock()
+        self.closed = False
+
+    def write (self, data):
+        self.lock.acquire()
+        try:
+            if self.closed:
+                raise IOError("Write on closed I/O object")
+            self.buf.append(data)
+        finally:
+            self.lock.release()
+
+    def get_data (self):
+        self.lock.acquire()
+        try:
+            data = "".join(self.buf)
+            self.buf = []
+            return data
+        finally:
+            self.lock.release()
+
+    def close (self):
+        self.lock.acquire()
+        try:
+            self.buf = []
+            self.closed = True
+        finally:
+            self.lock.release()
+
+
+class SignalLogger (Logger):
+    """Use Qt signals for logged URLs and statistics."""
+
+    def __init__ (self, **args):
+        """Store signals for URL and statistic data."""
+        super(SignalLogger, self).__init__(**args)
+        self.log_url_signal = args["signal"]
+        self.log_stats_signal = args["stats"]
+
+    def start_fileoutput (self):
+        """Override fileoutput handling of base class."""
+        pass
+
+    def close_fileoutput (self):
+        """Override fileoutput handling of base class."""
+        pass
+
+    def log_url (self, url_data):
+        """Emit URL data which gets logged in the main window."""
+        self.log_url_signal.emit(url_data)
+
+    def end_output (self):
+        """Emit statistic data which gets logged in the main window."""
+        self.log_stats_signal.emit(self.stats)
+
+
+class DelegateLogger (QtCore.QObject):
+    """Logger using connected signals, delegating output to
+    another logger class."""
+    log_url_signal = QtCore.pyqtSignal(object)
+    log_stats_signal = QtCore.pyqtSignal(object)
+
+    def __init__ (self):
+        """Connect signals to this instance and init state."""
+        super(DelegateLogger, self).__init__()
+        self.log_url_signal.connect(self.log_url)
+        self.log_stats_signal.connect(self.log_stats)
+        self.logger = None
+        self.finished = False
+
+    def add_logger (self, logger):
+        """Delegate to given logger."""
+        self.logger = logger
+
+    def log_url (self, url_data):
+        """Delegate URL logging to internal logger."""
+        self.logger.log_url(url_data)
+
+    def log_stats (self, statistics):
+        """Delegate statistic logging to internal logger."""
+        self.logger.stats = statistics
+        self.logger.end_output()
+        self.finished = True
+
+
+def checklink (form=None, env=os.environ):
+    """Validates the CGI form and checks the given links."""
     if form is None:
         form = {}
     try:
         checkform(form)
-    except LCFormError, why:
+    except LCFormError, errmsg:
         logit(form, env)
-        print_error(out, why)
+        yield print_error(errmsg)
         return
+    delegate_logger = DelegateLogger()
+    config = get_configuration(form, delegate_logger)
+    out = ThreadsafeStringIO()
+    html_logger = config.logger_new('html', fd=out)
+    delegate_logger.add_logger(html_logger)
+    url = strformat.stripurl(formvalue(form, "url"))
+    aggregate = director.get_aggregate(config)
+    url_data = checker.get_url_from(url, 0, aggregate)
+    try:
+        add_intern_pattern(url_data, config)
+    except UnicodeError, errmsg:
+        logit({}, env)
+        yield print_error(_("URL has unparsable domain name: %s") % errmsg)
+        return
+    aggregate.urlqueue.put(url_data)
+    html_logger.start_output()
+    # check in background
+    director.check_urls(aggregate)
+    while not delegate_logger.finished:
+        yield out.get_data()
+        time.sleep(2)
+    yield out.get_data()
+    out.close()
+
+
+def get_configuration(form, logger):
+    """Initialize a CGI configuration."""
     config = configuration.Configuration()
     config["recursionlevel"] = int(formvalue(form, "level"))
-    config["logger"] = config.logger_new('html', fd=out)
+    config.logger_add("signal", SignalLogger)
+    config["logger"] = config.logger_new('signal',
+            signal=logger.log_url_signal, stats=logger.log_stats_signal)
     config["threads"] = 0
     if "anchors" in form:
         config["anchors"] = True
@@ -94,20 +226,7 @@ def checklink (out=None, form=None, env=os.environ):
     # avoid checking of local files or other nasty stuff
     pat = "!^%s$" % urlutil.safe_url_pattern
     config["externlinks"].append(get_link_pat(pat, strict=True))
-    # start checking
-    aggregate = director.get_aggregate(config)
-    get_url_from = checker.get_url_from
-    url = strformat.stripurl(formvalue(form, "url"))
-    url_data = get_url_from(url, 0, aggregate)
-    try:
-        add_intern_pattern(url_data, config)
-    except UnicodeError:
-        logit({}, env)
-        print_error(out, _("URL has unparsable domain name: %s") % \
-                    sys.exc_info()[1])
-        return
-    aggregate.urlqueue.put(url_data)
-    director.check_urls(aggregate)
+    return config
 
 
 def get_host_name (form):
@@ -165,7 +284,7 @@ def logit (form, env):
             _logfile.write(str(formvalue(form, key))+"\n")
 
 
-def print_error (out, why):
+def print_error (why):
     """Print standard error page."""
     s = _("""<html><head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -180,4 +299,5 @@ Errors are logged.
 </blockquote>
 </body>
 </html>""") % why
-    out.write(s.encode('iso-8859-1', 'ignore'))
+    return s.encode('iso-8859-1', 'ignore')
+
