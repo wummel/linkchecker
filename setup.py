@@ -434,8 +434,9 @@ def list_message_files (package, suffix=".po"):
     for fname in glob.glob("po/*" + suffix):
         # basename (without extension) is a locale name
         localename = os.path.splitext(os.path.basename(fname))[0]
+        domainname = "%s.mo" % package.lower()
         yield (fname, os.path.join(
-            "share", "locale", localename, "LC_MESSAGES", "%s.mo" % package))
+            "share", "locale", localename, "LC_MESSAGES", domainname))
 
 
 def check_manifest ():
@@ -537,7 +538,7 @@ data_files = [
          'cgi-bin/lconline/lc_cgi.html.en',
          'cgi-bin/lconline/lc_cgi.html.de',
          'cgi-bin/lconline/check.js',
-         'cgi-bin/lc.cgi',
+         'cgi-bin/lc.wsgi',
          'config/linkchecker.apache2.conf',
         ]),
 ]
