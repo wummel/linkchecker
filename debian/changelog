@@ -1,6 +1,10 @@
 linkchecker (7.7-1) unstable; urgency=low
 
   * New upstream release.
+  * Add new package linkchecker-web which provides the
+    web interface. Do not bundle it with the command line
+    client because then linkchecker would depend on web
+    servers and the PyQt libraries.
 
  -- Bastian Kleineidam <calvin@debian.org>  Tue, 03 Apr 2012 07:41:57 +0200
 

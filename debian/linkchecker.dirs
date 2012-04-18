@@ -1,6 +1,3 @@
-etc/apache2/conf.d
 etc/bash_completion.d
 etc/linkchecker
-usr/lib/cgi-bin
 usr/share/locale/de/LC_MESSAGES
-usr/share/linkchecker/lconline

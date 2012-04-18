@@ -1,0 +1,22 @@
+#!/bin/sh -e
+# postinst script for linkchecker-web
+#
+# see: dh_installdeb(1)
+
+case "$1" in
+configure|reconfigure|abort-upgrade|abort-remove|abort-deconfigure)
+    ;;
+*)
+    echo "postinst called with unknown argument \`$1'" >&2
+    exit 1
+    ;;
+esac
+
+#DEBHELPER#
+
+# reload apache configuration
+if [ "$1" = "configure" -a -x /etc/init.d/apache2 ]; then
+    invoke-rc.d apache2 reload || true
+fi
+
+exit 0

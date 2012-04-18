@@ -28,9 +28,4 @@ dpkg-maintscript-helper rm_conffile /etc/linkchecker/logging.conf 7.3 -- "$@"
 
 #DEBHELPER#
 
-# reload apache configuration
-if [ "$1" = "configure" -a -x /etc/init.d/apache2 ]; then
-    invoke-rc.d apache2 reload || true
-fi
-
 exit 0

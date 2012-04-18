@@ -21,29 +21,32 @@ override_dh_installchangelogs:
 
 
 ROOTDIR=$(CURDIR)/debian/linkchecker
-HTMLDIR=$(ROOTDIR)/usr/share/linkchecker/lconline
-CGIDIR=$(ROOTDIR)/usr/lib/cgi-bin
 LOCALEDIR=$(ROOTDIR)/usr/share/locale
 ETCDIR=$(ROOTDIR)/etc
+
+ROOTDIRWEB=$(CURDIR)/debian/linkchecker-web
+HTMLDIRWEB=$(ROOTDIRWEB)/usr/share/linkchecker/lconline
+CGIDIRWEB=$(ROOTDIRWEB)/usr/lib/cgi-bin
+ETCDIRWEB=$(ROOTDIRWEB)/etc
 
 override_dh_auto_install:
 	dh_auto_install --buildsystem python_distutils
 # install system wide configuration files in etc
 	install -m 644 config/linkcheckerrc $(ETCDIR)/linkchecker/
-# install CGI files
-	install -m 644 cgi-bin/lconline/*.html $(HTMLDIR)
-	install -m 644 cgi-bin/lconline/*.de $(HTMLDIR)
-	install -m 644 cgi-bin/lconline/*.en $(HTMLDIR)
-	install -m 644 cgi-bin/lconline/*.js $(HTMLDIR)
-	install -m 644 cgi-bin/lconline/*.css $(HTMLDIR)
-	install -m 644 cgi-bin/lconline/*.ico $(HTMLDIR)
-	install -m 755 cgi-bin/lc.wsgi $(CGIDIR)
 # install bash_completion script
 	install -m 644 config/linkchecker-completion $(ETCDIR)/bash_completion.d
 # install .mo files
-	install -m 644 build/share/locale/de/LC_MESSAGES/LinkChecker.mo $(LOCALEDIR)/de/LC_MESSAGES/
+	install -m 644 build/share/locale/de/LC_MESSAGES/linkchecker.mo $(LOCALEDIR)/de/LC_MESSAGES/
+# install CGI files in web package
+	install -m 644 cgi-bin/lconline/*.html $(HTMLDIRWEB)
+	install -m 644 cgi-bin/lconline/*.de $(HTMLDIRWEB)
+	install -m 644 cgi-bin/lconline/*.en $(HTMLDIRWEB)
+	install -m 644 cgi-bin/lconline/*.js $(HTMLDIRWEB)
+	install -m 644 cgi-bin/lconline/*.css $(HTMLDIRWEB)
+	install -m 644 cgi-bin/lconline/*.ico $(HTMLDIRWEB)
+	install -m 755 cgi-bin/lc.wsgi $(CGIDIRWEB)
 # apache configuration
-	install -m 644 config/linkchecker.apache2.conf $(ETCDIR)/apache2/conf.d/linkchecker
+	install -m 644 config/linkchecker.apache2.conf $(ETCDIRWEB)/apache2/conf.d/linkchecker
 
 # clean generated files
 override_dh_clean:

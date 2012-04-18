@@ -1,0 +1,3 @@
+etc/apache2/conf.d
+usr/lib/cgi-bin
+usr/share/linkchecker/lconline
