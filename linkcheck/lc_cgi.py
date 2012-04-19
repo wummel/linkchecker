@@ -26,7 +26,6 @@ import locale
 import re
 import time
 import urlparse
-import types
 from PyQt4 import QtCore
 from . import configuration, strformat, checker, director, \
     add_intern_pattern, get_link_pat, init_i18n, url as urlutil
@@ -56,7 +55,6 @@ def application(environ, start_response):
         yield output
 
 
-_logfile = None
 _supported_langs = ('de', 'C')
 # map language -> locale name
 lang_locale = {
@@ -176,6 +174,10 @@ class DelegateLogger (QtCore.QObject):
         self.finished = True
 
 
+def encode(s):
+    return s.encode('utf-8', 'ignore')
+
+
 def checklink (form=None, env=os.environ):
     """Validates the CGI form and checks the given links."""
     if form is None:
@@ -183,8 +185,8 @@ def checklink (form=None, env=os.environ):
     try:
         checkform(form)
     except LCFormError, errmsg:
-        logit(form, env)
-        yield print_error(errmsg)
+        log(env, errmsg)
+        yield encode(format_error(errmsg))
         return
     delegate_logger = DelegateLogger()
     config = get_configuration(form, delegate_logger)
@@ -197,17 +199,19 @@ def checklink (form=None, env=os.environ):
     try:
         add_intern_pattern(url_data, config)
     except UnicodeError, errmsg:
-        logit({}, env)
-        yield print_error(_("URL has unparsable domain name: %s") % errmsg)
+        log(env, errmsg)
+        msg = _("URL has unparsable domain name: %s") % errmsg
+        yield encode(format_error(msg))
         return
     aggregate.urlqueue.put(url_data)
     html_logger.start_output()
     # check in background
-    director.check_urls(aggregate)
+    t = threading.Thread(target=director.check_urls, args=(aggregate,))
+    t.start()
     while not delegate_logger.finished:
-        yield out.get_data()
+        yield encode(out.get_data())
         time.sleep(2)
-    yield out.get_data()
+    yield encode(out.get_data())
     out.close()
 
 
@@ -267,26 +271,23 @@ def checkform (form):
                 raise LCFormError(_("invalid %s option syntax") % option)
 
 
-def logit (form, env):
-    """Log form errors."""
-    global _logfile
-    if not _logfile:
-        return
-    elif type(_logfile) == types.StringType:
-        _logfile = file(_logfile, "a")
-    _logfile.write("\n" + strformat.strtime(time.time())+"\n")
-    for var in ("HTTP_USER_AGENT", "REMOTE_ADDR",
-                "REMOTE_HOST", "REMOTE_PORT"):
-        if var in env:
-            _logfile.write(var+"="+env[var]+"\n")
-    for key in ("level", "url", "anchors", "errors", "intern", "language"):
-        if key in form:
-            _logfile.write(str(formvalue(form, key))+"\n")
+def log (env, msg):
+    """Log message to WSGI error output."""
+    logfile = env['wsgi.errors']
+    logfile.write(strformat.strtime(time.time())+": " + msg + "\n")
 
 
-def print_error (why):
+def dump (env, form):
+    """Log environment and form."""
+    for var, value in env.items():
+        log(env, var+"="+value)
+    for key in form:
+        log(env, str(formvalue(form, key)))
+
+
+def format_error (why):
     """Print standard error page."""
-    s = _("""<html><head>
+    return _("""<html><head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>LinkChecker Online Error</title></head>
 <body text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 alink=#191c83>
@@ -298,6 +299,4 @@ contains only these characters: <code>A-Za-z0-9./_~-</code><br><br>
 Errors are logged.
 </blockquote>
 </body>
-</html>""") % why
-    return s.encode('iso-8859-1', 'ignore')
-
+</html>""") % cgi.escape(why)
