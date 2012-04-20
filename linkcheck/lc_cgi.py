@@ -208,9 +208,21 @@ def checklink (form=None, env=os.environ):
     # check in background
     t = threading.Thread(target=director.check_urls, args=(aggregate,))
     t.start()
+    # time to wait for new data
+    sleep_seconds = 2
+    # 5 minutes timeout
+    max_seconds = 300
+    # current running time
+    run_seconds = 0
     while not delegate_logger.finished:
-        yield encode(out.get_data())
-        time.sleep(2)
+        data = out.get_data()
+        yield encode(data)
+        time.sleep(sleep_seconds)
+        run_seconds += sleep_seconds
+        if run_seconds > max_seconds:
+            # XXX signal checker to stop
+            html_logger.end_output()
+            break
     yield encode(out.get_data())
     out.close()
 
@@ -274,7 +286,7 @@ def checkform (form):
 def log (env, msg):
     """Log message to WSGI error output."""
     logfile = env['wsgi.errors']
-    logfile.write(strformat.strtime(time.time())+": " + msg + "\n")
+    logfile.write(msg + "\n")
 
 
 def dump (env, form):
