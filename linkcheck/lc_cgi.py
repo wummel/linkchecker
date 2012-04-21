@@ -29,6 +29,9 @@ from . import configuration, strformat, checker, director, \
     add_intern_pattern, get_link_pat, init_i18n, url as urlutil
 from .decorators import synchronized
 
+# 5 minutes timeout for requests
+MAX_REQUEST_SECONDS = 300
+
 
 def application(environ, start_response):
     """WSGI interface: start an URL check."""
@@ -148,15 +151,13 @@ def start_check (aggregate, out):
     t.start()
     # time to wait for new data
     sleep_seconds = 2
-    # 5 minutes timeout
-    max_seconds = 300
     # current running time
     run_seconds = 0
     while not aggregate.is_finished():
         yield out.get_data()
         time.sleep(sleep_seconds)
         run_seconds += sleep_seconds
-        if run_seconds > max_seconds:
+        if run_seconds > MAX_REQUEST_SECONDS:
             director.abort(aggregate)
             break
     yield out.get_data()
