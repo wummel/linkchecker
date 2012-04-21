@@ -25,7 +25,8 @@ from ..cache import urlqueue
 from . import logger, status, checker, cleanup
 
 
-_lock = threading.Lock()
+_w3_time_lock = threading.Lock()
+_threads_lock = threading.Lock()
 
 class Aggregate (object):
     """Store thread-safe data collections for checker threads."""
@@ -41,6 +42,7 @@ class Aggregate (object):
         self.threads = []
         self.last_w3_call = 0
 
+    @synchronized(_threads_lock)
     def start_threads (self):
         """Spawn threads for URL checking and status printing."""
         if self.config["status"]:
@@ -60,6 +62,7 @@ class Aggregate (object):
         else:
             checker.check_url(self.urlqueue, self.logger)
 
+    @synchronized(_threads_lock)
     def print_active_threads (self):
         """Log all currently active threads."""
         first = True
@@ -84,10 +87,16 @@ class Aggregate (object):
         except urlqueue.Timeout:
             log.warn(LOG_CHECK, "Abort timed out")
 
+    @synchronized(_threads_lock)
     def remove_stopped_threads (self):
-        "Remove the stopped threads from the internal thread list."""
+        """Remove the stopped threads from the internal thread list."""
+        self._remove_stopped_threads()
+
+    def _remove_stopped_threads (self):
+        """Not threads-safe function to really remove stopped threads."""
         self.threads = [t for t in self.threads if t.is_alive()]
 
+    @synchronized(_threads_lock)
     def finish (self):
         """Wait for checker threads to finish."""
         assert self.urlqueue.empty()
@@ -95,7 +104,13 @@ class Aggregate (object):
             t.stop()
         self.connections.clear()
 
-    @synchronized(_lock)
+    @synchronized(_threads_lock)
+    def is_finished (self):
+        """Determine if checking is finished."""
+        self._remove_stopped_threads()
+        return self.urlqueue.empty() and not self.threads
+
+    @synchronized(_w3_time_lock)
     def check_w3_time (self):
         """Make sure the W3C validators are at most called once a second."""
         if time.time() - self.last_w3_call < 1:
