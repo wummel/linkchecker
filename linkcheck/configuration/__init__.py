@@ -398,27 +398,27 @@ class Configuration (dict):
 
 
 def get_user_config():
-    """Find user configuration file.
-    On portable installations, an internal example configfile is returned.
-    Generate user configuration file from the example configuration
-    if it does not yet exist.
+    """Get the user configuration filename.
+    If the user configuration file does not exist, copy it from the initial
+    configuration file, but only if this is not a portable installation.
     Returns path to user config file (which might not exist do to copy
-    failures)."""
-    # example config
-    exampleconf = normpath(os.path.join(get_config_dir(), "linkcheckerrc"))
+    failures or on portable systems)."""
+    # initial config (with all options explained)
+    initialconf = normpath(os.path.join(get_config_dir(), "linkcheckerrc"))
     # per user config settings
     userconf = normpath("~/.linkchecker/linkcheckerrc")
-    if os.path.isfile(exampleconf) and not os.path.exists(userconf) and \
+    if os.path.isfile(initialconf) and not os.path.exists(userconf) and \
        not Portable:
-        # copy the system configuration to the user configuration
+        # copy the initial configuration to the user configuration
         try:
             userdir = os.path.dirname(userconf)
-            if not os.path.exists(userdir):
-                os.makedirs(userdir)
-            shutil.copy(exampleconf, userconf)
-        except StandardError:
-            log.warn(LOG_CHECK, "could not copy example config from %r to %r",
-                     exampleconf, userconf, traceback=True)
+            if not os.path.isdir(userdir):
+                os.mkdir(userdir, 0700)
+            shutil.copy(initialconf, userconf)
+        except StandardError, errmsg:
+            msg = _("could not copy initial configuration file %(src)r to %(dst)r: %(errmsg)r")
+            args = dict(src=initialconf, dst=userconf, errmsg=errmsg)
+            log.warn(LOG_CHECK, msg % args)
     return userconf
 
 
