@@ -15,6 +15,10 @@ Fixes:
 - checking: Write correct statistics when saving results in the GUI.
   Closes: SF bug #3515980
 
+Changes:
+- cmdline: Remove deprecated options --check-css-w3 and
+  --check-html-w3.
+
 Features:
 - cgi: Added a WSGI script to replace the CGI script.
 

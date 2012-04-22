@@ -350,18 +350,10 @@ group.add_option("--check-css", action="store_true", dest="checkcss",
                  help=_(
 """Check syntax of CSS URLs with cssutils. If it's not installed,
 check with the W3C online validator."""))
-# XXX deprecated
-group.add_option("--check-css-w3", action="store_true", dest="checkcssw3",
-                 help=_(
-"""This option is deprecated."""))
 group.add_option("--check-html", action="store_true", dest="checkhtml",
                  help=_(
 """Check syntax of HTML URLs with HTML tidy. If it's not installed,
 check with the W3C online validator."""))
-# XXX deprecated
-group.add_option("--check-html-w3", action="store_true", dest="checkhtmlw3",
-                 help=_(
-"""This option is deprecated."""))
 group.add_option("--complete", action="store_true", dest="complete",
                  help=_("""Log all URLs, including duplicates.
 Default is to log duplicate URLs only once."""))
