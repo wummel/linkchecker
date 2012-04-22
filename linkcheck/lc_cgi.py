@@ -31,6 +31,8 @@ from .decorators import synchronized
 
 # 5 minutes timeout for requests
 MAX_REQUEST_SECONDS = 300
+# character set encoding for HTML output
+HTML_ENCODING = 'utf-8'
 
 
 def application(environ, start_response):
@@ -88,7 +90,7 @@ def formvalue (form, key):
 
 _lock = threading.Lock()
 class ThreadsafeIO (object):
-    """Thread-safe I/O class."""
+    """Thread-safe unicode I/O class."""
 
     def __init__(self):
         """Initialize buffer."""
@@ -97,24 +99,30 @@ class ThreadsafeIO (object):
 
     @synchronized(_lock)
     def write (self, data):
+        """Write given unicode data to buffer."""
+        assert isinstance(data, unicode)
         if self.closed:
             raise IOError("Write on closed I/O object")
-        self.buf.append(data)
+        if data:
+            self.buf.append(data)
 
     @synchronized(_lock)
     def get_data (self):
+        """Get bufferd unicode data."""
         data = u"".join(self.buf)
         self.buf = []
         return data
 
     @synchronized(_lock)
     def close (self):
+        """Reset buffer and close this I/O object."""
         self.buf = []
         self.closed = True
 
 
 def encode(s):
-    return s.encode('utf-8', 'ignore')
+    """Encode given string in HTML encoding."""
+    return s.encode(HTML_ENCODING, 'ignore')
 
 
 def checklink (form=None, env=os.environ):
@@ -146,6 +154,7 @@ def checklink (form=None, env=os.environ):
 
 
 def start_check (aggregate, out):
+    """Start checking in background and write encoded output to out."""
     # check in background
     t = threading.Thread(target=director.check_urls, args=(aggregate,))
     t.start()
@@ -167,7 +176,7 @@ def get_configuration(form, out):
     """Initialize a CGI configuration."""
     config = configuration.Configuration()
     config["recursionlevel"] = int(formvalue(form, "level"))
-    config["logger"] = config.logger_new('html', fd=out)
+    config["logger"] = config.logger_new('html', fd=out, encoding=HTML_ENCODING)
     config["threads"] = 2
     if "anchors" in form:
         config["anchors"] = True
@@ -233,7 +242,12 @@ def dump (env, form):
 
 
 def format_error (why):
-    """Print standard error page."""
+    """Format standard error page.
+    @param why: error message
+    @ptype why: unicode
+    @return: HTML page content
+    @rtype: unicode
+    """
     return _("""<html><head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>LinkChecker Online Error</title></head>
