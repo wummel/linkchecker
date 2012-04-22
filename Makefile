@@ -66,7 +66,7 @@ locale:
 
 # to build in the current directory
 .PHONY: localbuild
-localbuild: MANIFEST
+localbuild: MANIFEST locale
 	$(MAKE) -C doc/html
 	$(MAKE) -C linkcheck/HtmlParser
 	$(PYTHON) setup.py build
