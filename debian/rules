@@ -46,7 +46,7 @@ override_dh_auto_install:
 	install -m 644 cgi-bin/lconline/*.ico $(HTMLDIRWEB)
 	install -m 755 cgi-bin/lc.wsgi $(CGIDIRWEB)
 # apache configuration
-	install -m 644 config/linkchecker.apache2.conf $(ETCDIRWEB)/apache2/conf.d/linkchecker
+	install -m 644 config/linkchecker.apache2.conf $(ETCDIRWEB)/apache2/conf-available/linkchecker.conf
 
 # clean generated files
 override_dh_clean:

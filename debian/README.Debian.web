@@ -1,12 +1,10 @@
 Web Interface
 ==============
-The web interface can be configured with
-- executing "sudo a2enmod negotiation"
-- accessing http://localhost/lconline/
+The web interface is at http://localhost/lconline/
 
 If you want to access to web interface from other
 computers, add their IP addresses in the file
-/etc/apache2/conf.d/linkchecker
+/etc/apache2/conf-available/linkchecker.conf
 
 There is a default maximum check time of 5 minutes
 per request. After that, checking will be aborted.
