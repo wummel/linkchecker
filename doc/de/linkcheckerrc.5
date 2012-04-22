@@ -72,24 +72,16 @@ aktuelle Version von LinkChecker ist.
 Kommandozeilenoption: \fB\-\-user\-agent\fP
 .TP 
 \fBcheckhtml=\fP[\fB0\fP|\fB1\fP]
-Prüfe Syntax von HTML URLs mit lokaler Bibliothek (HTML tidy).
+Prüfe Syntax von HTML URLs mit HTML tidy. Wenn HTML tidy nicht installiert
+ist, prüfe mit dem W3C Online Validator.
 .br
 Kommandozeilenoption: \fB\-\-check\-html\fP
 .TP 
-\fBcheckhtmlw3=\fP[\fB0\fP|\fB1\fP]
-Prüfe Syntax von HTML URLs mit dem W3C Online Validator.
-.br
-Kommandozeilenoption: \fB\-\-check\-html\-w3\fP
-.TP 
 \fBcheckcss=\fP[\fB0\fP|\fB1\fP]
-Prüfe Syntax von CSS URLs mit lokaler Bibliothek (cssutils).
+Prüfe Syntax von CSS URLs mit cssutils. Wenn cssutils nicht installiert ist,
+prüfe mit dem W3C Online Validator.
 .br
 Kommandozeilenoption: \fB\-\-check\-css\fP
-.TP 
-\fBcheckcssw3=\fP[\fB0\fP|\fB1\fP]
-Prüfe Syntax von CSS URLs mit dem W3C Online Validator.
-.br
-Kommandozeilenoption: \fB\-\-check\-css\-w3\fP
 .TP 
 \fBscanvirus=\fP[\fB0\fP|\fB1\fP]
 Prüfe Inhalt von URLs auf Viren mit ClamAV.

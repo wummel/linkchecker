@@ -188,8 +188,6 @@ class Configuration (dict):
         self["timeout"] = 60
         self["checkhtml"] = False
         self["checkcss"] = False
-        self["checkhtmlw3"] = False
-        self["checkcssw3"] = False
         self["scanvirus"] = False
         self["clamavconf"] = clamav.canonical_clamav_conf()
         self["useragent"] = UserAgent

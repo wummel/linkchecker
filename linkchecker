@@ -713,11 +713,9 @@ if constructauth:
 if options.scanvirus is not None:
     config["scanvirus"] = options.scanvirus
 # boolean options for syntaxcheck
-for prefix in ("checkhtml", "checkcss"):
-    for suffix in ("", "w3"):
-        option = "%s%s" % (prefix, suffix)
-        if getattr(options, option) is not None:
-            config[option] = getattr(options, option)
+for option in ("checkhtml", "checkcss"):
+    if getattr(options, option) is not None:
+        config[option] = getattr(options, option)
 # read missing passwords
 for entry in config["authentication"]:
     if entry["password"] is None:

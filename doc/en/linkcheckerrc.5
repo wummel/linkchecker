@@ -66,24 +66,16 @@ version of LinkChecker.
 Command line option: \fB\-\-user\-agent\fP
 .TP
 \fBcheckhtml=\fP[\fB0\fP|\fB1\fP]
-Check syntax of HTML URLs with local library (HTML tidy).
+Check syntax of HTML URLs with the HTML tidy library, falling back to the
+W3C online validator if HTML tidy is not available..
 .br
 Command line option: \fB\-\-check\-html\fP
 .TP
-\fBcheckhtmlw3=\fP[\fB0\fP|\fB1\fP]
-Check syntax of HTML URLs with W3C online validator.
-.br
-Command line option: \fB\-\-check\-html\-w3\fP
-.TP
 \fBcheckcss=\fP[\fB0\fP|\fB1\fP]
-Check syntax of CSS URLs with local library (cssutils).
+Check syntax of CSS URLs with the cssutils library, falling back to the
+W3C online validator if cssutils is not available.
 .br
 Command line option: \fB\-\-check\-css\fP
-.TP
-\fBcheckcssw3=\fP[\fB0\fP|\fB1\fP]
-Check syntax of CSS URLs with W3C online validator.
-.br
-Command line option: \fB\-\-check\-css\-w3\fP
 .TP
 \fBscanvirus=\fP[\fB0\fP|\fB1\fP]
 Scan content of URLs for viruses with ClamAV.

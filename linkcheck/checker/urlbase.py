@@ -729,10 +729,6 @@ class UrlBase (object):
                 self.check_html()
             if self.aggregate.config["checkcss"] and self.is_css():
                 self.check_css()
-            if self.aggregate.config["checkhtmlw3"] and self.is_html():
-                self.check_html_w3()
-            if self.aggregate.config["checkcssw3"] and self.is_css():
-                self.check_css_w3()
             # check with clamav
             if self.aggregate.config["scanvirus"]:
                 self.scan_virus()

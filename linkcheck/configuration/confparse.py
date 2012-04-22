@@ -145,11 +145,6 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             self.config["checkhtml"] = self.getboolean(section, "checkhtml")
         if self.has_option(section, "checkcss"):
             self.config["checkcss"] = self.getboolean(section, "checkcss")
-        if self.has_option(section, "checkhtmlw3"):
-            self.config["checkhtmlw3"] = \
-               self.getboolean(section, "checkhtmlw3")
-        if self.has_option(section, "checkcssw3"):
-            self.config["checkcssw3"] = self.getboolean(section, "checkcssw3")
         if self.has_option(section, "scanvirus"):
             self.config["scanvirus"] = self.getboolean(section, "scanvirus")
         if self.has_option(section, "clamavconf"):
