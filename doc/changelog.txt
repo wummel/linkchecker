@@ -1,4 +1,4 @@
-7.7 "Intouchables" (released xx.xx.2012)
+7.7 "Intouchables" (released 22.04.2012)
 
 Fixes:
 - checking: Detect invalid empty cookie values.
