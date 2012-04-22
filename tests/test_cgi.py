@@ -30,23 +30,27 @@ class TestWsgi (unittest.TestCase):
 
     def test_form_valid_url (self):
         # Check url validity.
+        env = dict()
         form = dict(url="http://www.example.com/", level="1")
-        checkform(form)
+        checkform(form, env)
 
     def test_form_empty_url (self):
         # Check with empty url.
+        env = dict()
         form = dict(url="", level="0")
-        self.assertRaises(LCFormError, checkform, form)
+        self.assertRaises(LCFormError, checkform, form, env)
 
     def test_form_default_url (self):
         # Check with default url.
+        env = dict()
         form = dict(url="http://", level="0")
-        self.assertRaises(LCFormError, checkform, form)
+        self.assertRaises(LCFormError, checkform, form, env)
 
     def test_form_invalid_url (self):
         # Check url (in)validity.
+        env = dict()
         form = dict(url="http://www.foo bar/", level="0")
-        self.assertRaises(LCFormError, checkform, form)
+        self.assertRaises(LCFormError, checkform, form, env)
 
     def test_checklink (self):
         form = dict(url="http://www.example.com/", level="0")
