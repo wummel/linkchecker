@@ -1,3 +1,9 @@
+linkchecker (7.7-1) unstable; urgency=low
+
+  * The web interface is now in a separate package linkchecker-web.
+
+ -- Bastian Kleineidam <calvin@debian.org>  Tue, 03 Apr 2012 07:41:57 +0200
+
 linkchecker (7.0-1) unstable; urgency=low
 
   * Support for the  system configuration file located in

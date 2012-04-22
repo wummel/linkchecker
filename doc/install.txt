@@ -72,8 +72,9 @@ First, install the required software.
 10. *Optional, for GNOME proxy setting parsing:*
     Python Gtk from http://www.pygtk.org/downloads.html
 
-11. *Optional, to run the CGI web interface:*
+11. *Optional, to run the WSGI web interface:*
     Apache from http://httpd.apache.org/
+    mod_wsgi from http://code.google.com/p/modwsgi/
 
 
 Now install the application.
@@ -133,31 +134,36 @@ Manual setup for OSX systems
    anymore, I cannot fix that myself.
 
 
-(Fast)CGI web interface
+WSGI web interface
 -----------------------
-The included CGI scripts can run LinkChecker with a nice graphical web
+The included WSGI script can run LinkChecker with a nice graphical web
 interface.
 You can use and adjust the example HTML files in the lconline directory
 to run the script.
 
 1. Note that running LinkChecker requires CPU and memory resources.
-   Allowing a CGI script to execute such a program for possibly a
+   Allowing a WSGI script to execute such a program for possibly a
    large number of users might deplete those resources.
    Be sure to only allow access from trusted sites to this script.
    
-2. Copy the script lc.cgi in the CGI directory.
+2. Copy the script lc.wsgi in the WSGI directory.
 
 3. Adjust the "action=..." parameter in lconline/lc_cgi.html
-   to point to your CGI script.
+   to point to your WSGI script.
 
-4. Load the lconline/index.html file, enter an URL and click on the
+4. If you use Apache, copy config/linkchecker.apache2.conf
+   into your Apache configuration directory (eg. /etc/apache2/conf.d)
+   and enable it.
+
+5. Load the lconline/index.html file, enter an URL and click on the
    check button.
 
-5. If something goes wrong, check the following:
+6. If something goes wrong, check the following:
    
    a) look in the error log of your web server
-   b) be sure that you have enabled CGI support in your web server
-      do this by running other CGI scripts which you know are
-      working
-   c) try to run the lc.cgi script by hand
-   d) try the testit() function in the lc.cgi script
+   b) be sure that you have enabled WSGI support in your web server,
+      for example by installing mod_wsgi for Apache
+   c) be sure that you have enabled the negotiation and versioning
+      modules for Apache:
+      a2enmod version
+      a2enmod negotiation
