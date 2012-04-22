@@ -130,7 +130,7 @@ def checklink (form=None, env=os.environ):
     if form is None:
         form = {}
     try:
-        checkform(form)
+        checkform(form, env)
     except LCFormError, errmsg:
         log(env, errmsg)
         yield encode(format_error(errmsg))
@@ -193,7 +193,7 @@ def get_host_name (form):
     return urlparse.urlparse(formvalue(form, "url"))[1]
 
 
-def checkform (form):
+def checkform (form, env):
     """Check form data. throw exception on error
     Be sure to NOT print out any user-given data as HTML code, so use
     only plain strings as exception text."""
@@ -201,10 +201,15 @@ def checkform (form):
     if "language" in form:
         lang = formvalue(form, 'language')
         if lang in _supported_langs:
-            locale.setlocale(locale.LC_ALL, lang_locale[lang])
-            init_i18n()
+            localestr = lang_locale[lang]
+            try:
+                # XXX this is not thread-safe, so think of something else
+                locale.setlocale(locale.LC_ALL, localestr)
+                init_i18n()
+            except locale.Error, errmsg:
+                log(env, "could not set locale %r: %s" % (localestr, errmsg))
         else:
-            raise LCFormError(_("unsupported language"))
+            raise LCFormError(_("unsupported language %r") % lang)
     # check url syntax
     if "url" in form:
         url = formvalue(form, "url")
