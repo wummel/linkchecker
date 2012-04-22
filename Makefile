@@ -44,7 +44,7 @@ clean:
 
 .PHONY: distclean
 distclean: clean cleandeb
-	rm -rf build dist linkchecker.egg-info
+	rm -rf build dist LinkChecker.egg-info
 	rm -f _LinkChecker_configdata.py MANIFEST Packages.gz
 # clean aborted dist builds and -out files
 	rm -f linkchecker-out* linkchecker.prof
