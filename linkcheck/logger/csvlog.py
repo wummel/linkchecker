@@ -47,6 +47,10 @@ class CSVLogger (Logger):
             return sys.stdout
         return open(self.filename, "wb")
 
+    def write (self, s, **args):
+        """Write encoded string."""
+        super(CSVLogger, self).write(self.encode(s), **args)
+
     def comment (self, s, **args):
         """Write CSV comment."""
         self.writeln(s=u"# %s" % s, **args)
