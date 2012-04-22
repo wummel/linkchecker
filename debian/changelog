@@ -5,8 +5,9 @@ linkchecker (7.7-1) unstable; urgency=low
     web interface. Do not bundle it with the command line
     client because then linkchecker would depend on web
     servers and the PyQt libraries.
+  * Make linkchecker-web compatible with Apache 2.2 and 2.4.
 
- -- Bastian Kleineidam <calvin@debian.org>  Tue, 03 Apr 2012 07:41:57 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Sun, 22 Apr 2012 20:48:03 +0200
 
 linkchecker (7.6-1) unstable; urgency=low
 
