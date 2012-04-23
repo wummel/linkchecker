@@ -12,15 +12,15 @@ po4a:
 man:	$(MANFILES)
 
 $(HTMLDIR)/man1/linkchecker.1.html: en/linkchecker.1 linkchecker.1.html.diff
-	man2html -r $< | tail -n +2 | sed 's/Time:.*//g' > $@
+	man2html -r $< | tail -n +2 | sed 's/Time:.*//g' | sed 's@/:@@g' > $@
 	patch --no-backup-if-mismatch --quiet $@ linkchecker.1.html.diff
 
 $(HTMLDIR)/man5/linkcheckerrc.5.html: en/linkcheckerrc.5 linkcheckerrc.5.html.diff
-	man2html -r $< | tail -n +2 | sed 's/Time:.*//g' > $@
+	man2html -r $< | tail -n +2 | sed 's/Time:.*//g' | sed 's@/:@@g' > $@
 	patch --no-backup-if-mismatch --quiet $@ linkcheckerrc.5.html.diff
 
 $(HTMLDIR)/man1/linkchecker-gui.1.html: en/linkchecker-gui.1 linkchecker-gui.1.html.diff
-	man2html -r $< | tail -n +2 | sed 's/Time:.*//g' > $@
+	man2html -r $< | tail -n +2 | sed 's/Time:.*//g' | sed 's@/:@@g' > $@
 	patch --no-backup-if-mismatch --quiet $@ linkchecker-gui.1.html.diff
 
 .PHONY: po4a man
