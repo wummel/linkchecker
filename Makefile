@@ -1,6 +1,6 @@
 # This Makefile is only used by developers.
 PYVER:=2.7
-PYTHON:=python$(PYVER)
+PYTHON?=python$(PYVER)
 VERSION:=$(shell $(PYTHON) setup.py --version)
 PLATFORM:=$(shell $(PYTHON) -c "from distutils.util import get_platform; print get_platform()")
 FILESCHECK_URL:=http://localhost/~calvin/
@@ -86,7 +86,7 @@ upload:
 
 
 .PHONY: release
-release: distclean releasecheck dist-stamp sign_distfiles upload
+release: distclean releasecheck filescheck clean dist-stamp sign_distfiles upload
 	git tag v$(VERSION)
 	@echo "Updating LinkChecker Homepage..."
 	$(MAKE) -C doc man
