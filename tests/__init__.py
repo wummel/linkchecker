@@ -254,5 +254,12 @@ def get_file (filename=None):
         return unicode(os.path.join(directory, filename))
     return unicode(directory)
 
+
 if __name__ == '__main__':
-    print has_clamav(), has_network(), has_msgfmt(), has_posix(), has_proxy()
+    print "has clamav", has_clamav()
+    print "has network", has_network()
+    print "has msgfmt", has_msgfmt()
+    print "has POSIX", has_posix()
+    print "has proxy", has_proxy()
+    print "has PyQt", has_pyqt()
+    print "has X11", has_x11()
