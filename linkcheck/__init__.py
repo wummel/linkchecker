@@ -132,7 +132,7 @@ def get_link_pat (arg, strict=False):
     }
 
 
-def init_i18n ():
+def init_i18n (loc=None):
     """Initialize i18n with the configured locale dir. The environment
     variable LOCPATH can also specify a locale dir.
 
@@ -142,7 +142,7 @@ def init_i18n ():
         locdir = os.environ['LOCPATH']
     else:
         locdir = os.path.join(get_install_data(), 'share', 'locale')
-    i18n.init(configdata.name.lower(), locdir)
+    i18n.init(configdata.name.lower(), locdir, loc=loc)
     # install translated log level names
     import logging
     logging.addLevelName(logging.CRITICAL, _('CRITICAL'))

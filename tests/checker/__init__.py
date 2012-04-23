@@ -26,7 +26,6 @@ import linkcheck.checker
 import linkcheck.configuration
 import linkcheck.director
 import linkcheck.logger
-import linkcheck.i18n
 from .. import get_file
 
 # helper alias
@@ -141,10 +140,14 @@ class LinkCheckTest (unittest.TestCase):
     Functional test class with ability to test local files.
     """
 
+    def setUp (self):
+        """Ensure the current locale setting is the default.
+        Otherwise, warnings will get translated and will break tests."""
+        super(LinkCheckTest, self).setUp()
+        linkcheck.init_i18n(loc='C')
+
     def norm (self, url, encoding=None):
-        """
-        Helper function to norm a url.
-        """
+        """Helper function to norm a url."""
         return linkcheck.url.url_norm(url, encoding=encoding)[0]
 
     def get_attrs (self, **kwargs):

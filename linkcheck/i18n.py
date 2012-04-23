@@ -59,7 +59,7 @@ class NullTranslator (gettext.NullTranslations):
         install_builtin(self, do_unicode)
 
 
-def init (domain, directory):
+def init (domain, directory, loc=None):
     """Initialize this gettext i18n module. Searches for supported languages
     and installs the gettext translator class."""
     global default_language, default_encoding
@@ -70,7 +70,10 @@ def init (domain, directory):
             mo_file = os.path.join(path, '%s.mo' % domain)
             if os.path.exists(mo_file):
                 supported_languages.add(lang)
-    loc, encoding = get_locale()
+    if loc is None:
+        loc, encoding = get_locale()
+    else:
+        encoding = get_locale()[1]
     if loc in supported_languages:
         default_language = loc
     else:
