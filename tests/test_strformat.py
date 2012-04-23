@@ -136,7 +136,7 @@ class TestStrFormat (unittest.TestCase):
         self.assertEqual(duration(60*60*24), "24:00:00")
 
     def test_duration_long (self):
-        duration = linkcheck.strformat.strduration_long
+        duration = lambda s: linkcheck.strformat.strduration_long(s, do_translate=False)
         self.assertEqual(duration(-0.5), "-0.50 seconds")
         self.assertEqual(duration(0), "0.00 seconds")
         self.assertEqual(duration(0.9), "0.90 seconds")

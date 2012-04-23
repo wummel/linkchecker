@@ -219,8 +219,15 @@ def strduration (duration):
 
 
 # from quodlibet
-def strduration_long (duration):
+def strduration_long (duration, do_translate=True):
     """Turn a time value in seconds into x hours, x minutes, etc."""
+    if do_translate:
+        # use global translator functions
+        global _, _n
+    else:
+        # do not translate
+        _ = lambda x: x
+        _n = lambda a, b, n: a if n==1 else b
     if duration < 0:
         duration = abs(duration)
         prefix = "-"
