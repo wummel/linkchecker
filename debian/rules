@@ -29,7 +29,7 @@ HTMLDIRWEB=$(ROOTDIRWEB)/usr/share/linkchecker/lconline
 CGIDIRWEB=$(ROOTDIRWEB)/usr/lib/cgi-bin
 ETCDIRWEB=$(ROOTDIRWEB)/etc
 
-override_dh_auto_install:
+override_dh_auto_install-arch:
 	dh_auto_install --buildsystem python_distutils
 # install system wide configuration files in etc
 	install -m 644 config/linkcheckerrc $(ETCDIR)/linkchecker/
@@ -37,6 +37,8 @@ override_dh_auto_install:
 	install -m 644 config/linkchecker-completion $(ETCDIR)/bash_completion.d
 # install .mo files
 	install -m 644 build/share/locale/de/LC_MESSAGES/linkchecker.mo $(LOCALEDIR)/de/LC_MESSAGES/
+
+override_dh_auto_install-indep:
 # install CGI files in web package
 	install -m 644 cgi-bin/lconline/*.html $(HTMLDIRWEB)
 	install -m 644 cgi-bin/lconline/*.de $(HTMLDIRWEB)
