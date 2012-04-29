@@ -4,6 +4,9 @@ Changes:
 - documentation: Made the --ignore-url documentation more clear.
   Patch from Charles Jones.
   Closes: SF bug #3522351
+- installation: Report missing py2app instead of generating a
+  Distutils error.
+  Closes: SF bug #3522265
 
 
 7.7 "Intouchables" (released 22.04.2012)
