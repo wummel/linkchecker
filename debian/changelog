@@ -1,3 +1,9 @@
+linkchecker (7.8-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Bastian Kleineidam <calvin@debian.org>  Sun, 29 Apr 2012 10:32:16 +0200
+
 linkchecker (7.7-2) unstable; urgency=low
 
   * Fix FTBFS when building only architecture dependant packages.
