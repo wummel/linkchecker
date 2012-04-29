@@ -62,10 +62,17 @@ try:
     # py2exe monkey-patches the distutils.core.Distribution class
     # So we need to import it before importing the Distribution class
     import py2exe
+    has_py2exe = True
 except ImportError:
-    # ignore when py2exe is not installed
-    pass
+    # py2exe is not installed
+    has_py2exe = False
 from distutils.core import Distribution
+try:
+    import py2app
+    has_py2app = True
+except ImportError:
+    # py2app is not installed
+    has_py2app = False
 
 AppVersion = "7.8"
 AppName = "LinkChecker"
@@ -554,11 +561,15 @@ if os.name == 'posix':
                'doc/examples/check_for_x_errors.sh',
                'doc/examples/check_urls.sh']))
 if 'py2app' in sys.argv[1:]:
+    if not has_py2app:
+        raise SystemExit("py2app module could not be imported")
     # add Qt plugins which are later fixed by fix_qt_plugins_py2app()
     add_qt_plugin_files(data_files)
     # needed for Qt to load the plugins
     data_files.append(('', ['osx/qt.conf']))
 elif 'py2exe' in sys.argv[1:]:
+    if not has_py2exe:
+        raise SystemExit("py2exe module could not be imported")
     add_qt_plugin_files(data_files)
     add_msvc_files(data_files)
 
