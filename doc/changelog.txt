@@ -1,5 +1,10 @@
 7.8 "" (released xx.xx.2012)
 
+Changes:
+- documentation: Made the --ignore-url documentation more clear.
+  Patch from Charles Jones.
+  Closes: SF bug #3522351
+
 
 7.7 "Intouchables" (released 22.04.2012)
 

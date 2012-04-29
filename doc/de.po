@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 3.4\n"
-"POT-Creation-Date: 2012-04-22 17:51+0300\n"
-"PO-Revision-Date: 2012-04-22 17:52+0100\n"
+"POT-Creation-Date: 2012-04-29 10:32+0300\n"
+"PO-Revision-Date: 2012-04-29 10:32+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "Language: \n"
@@ -756,9 +756,11 @@ msgstr "B<--ignore-url=>I<REGEX>"
 # type: Plain text
 #. type: Plain text
 #: en/linkchecker.1:195
-msgid "Only check syntax of URLs matching the given regular expression."
+msgid ""
+"URLs matching the given regular expression will only have their syntax "
+"checked."
 msgstr ""
-"Prüfe lediglich die Syntax von URLs, welche dem angegebenen regulären "
+"Prüfe lediglich die Syntax von URLs welche dem angegebenen regulären "
 "Ausdruck entsprechen."
 
 # type: Plain text
