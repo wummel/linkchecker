@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2012-04-29 10:32+0300\n"
+"POT-Creation-Date: 2012-05-06 14:18+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1771,7 +1771,7 @@ msgstr ""
 #. type: Plain text
 #: en/linkcheckerrc.5:122
 msgid ""
-"Ignore the comma-separated list of warnings. See B<WARNNIGS> for the list of "
+"Ignore the comma-separated list of warnings. See B<WARNIGS> for the list of "
 "supported warnings."
 msgstr ""
 

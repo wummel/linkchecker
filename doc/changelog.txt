@@ -7,6 +7,8 @@ Changes:
 - installation: Report missing py2app instead of generating a
   Distutils error.
   Closes: SF bug #3522265
+- documentation: Fix typo in linkcheckerrc.5 manual page.
+  Closes: SF bug #3522846
 
 
 7.7 "Intouchables" (released 22.04.2012)
