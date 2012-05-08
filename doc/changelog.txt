@@ -1,5 +1,10 @@
 7.8 "" (released xx.xx.2012)
 
+Fixes:
+- checking: Always use GET for Zope servers since their HEAD support
+  is broken.
+  Closes: SF bug #3522710
+
 Changes:
 - documentation: Made the --ignore-url documentation more clear.
   Patch from Charles Jones.
