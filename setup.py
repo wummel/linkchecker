@@ -38,6 +38,7 @@ import re
 import subprocess
 import stat
 import glob
+import shutil
 try:
     # setuptools (which is needed by py2app) monkey-patches the
     # distutils.core.Command class.
@@ -74,8 +75,14 @@ except ImportError:
     # py2app is not installed
     has_py2app = False
 
+# the application version
 AppVersion = "7.8"
+# the application name
 AppName = "LinkChecker"
+
+# Microsoft Visual C++ runtime version (tested with Python 2.7.2)
+MSVCP90Version = '9.0.21022.8'
+MSVCP90Token = '1fc8b3b9a1e18e3b'
 
 # basic includes for py2exe and py2app
 py_includes = ['dns.rdtypes.IN.*', 'dns.rdtypes.ANY.*']
@@ -220,12 +227,22 @@ def fix_qt_plugins_py2app (dist_dir):
 
 
 def add_msvc_files (files):
-    """Add needed MSVC++ runtime files."""
-    dirname = "Microsoft.VC90.CRT"
+    """Add needed MSVC++ runtime files. Only Version 9.0.21022.8 is tested
+    and can be downloaded here:
+    http://www.microsoft.com/en-us/download/details.aspx?id=29
+    """
     prog_dir, architecture = get_nt_platform_vars()
-    p = r'%s\Microsoft Visual Studio 9.0\VC\redist\%s\%s\*.*'
-    args = (prog_dir, architecture, dirname)
-    files.append((dirname, glob.glob(p % args)))
+    dirname = "Microsoft.VC90.CRT"
+    version = "%s_%s_x-ww_d08d0375" % (MSVCP90Token, MSVCP90Version)
+    args = (architecture, dirname, version)
+    path = r'C:\Windows\WinSxS\%s_%s_%s\*.*' % args
+    files.append((dirname, glob.glob(path)))
+    # Copy the manifest file into the build directory and rename it
+    # because it must have the same name as the directory.
+    path = r'C:\Windows\WinSxS\Manifests\%s_%s_%s.manifest' % args
+    target = os.path.join(os.getcwd(), 'build', '%s.manifest' % dirname)
+    shutil.copy(path, target)
+    files.append((dirname, [target]))
 
 
 class MyInstallLib (install_lib, object):
@@ -327,14 +344,15 @@ manifestVersion="1.0">
     <assemblyIdentity
       type="win32"
       name="Microsoft.VC90.CRT"
-      version="9.0.30729.1"
+      version="%(msvcrtversion)s"
       processorArchitecture="*"
-      publicKeyToken="1fc8b3b9a1e18e3b">
+      publicKeyToken="%(msvcrttoken)s">
     </assemblyIdentity>
   </dependentAssembly>
 </dependency>
 </assembly>
-""" % dict(appversion=AppVersion)
+""" % dict(appversion=AppVersion, msvcrtversion=MSVCP90Version,
+msvcrttoken=MSVCP90Token)
 
 class MyDistribution (Distribution, object):
     """Custom distribution class generating config file."""
@@ -562,7 +580,7 @@ if os.name == 'posix':
                'doc/examples/check_urls.sh']))
 if 'py2app' in sys.argv[1:]:
     if not has_py2app:
-        raise SystemExit("py2app module could not be imported")
+        raise SystemExit("py2app module could not be imported.")
     # add Qt plugins which are later fixed by fix_qt_plugins_py2app()
     add_qt_plugin_files(data_files)
     # needed for Qt to load the plugins

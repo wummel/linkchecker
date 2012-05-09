@@ -4,6 +4,7 @@ Fixes:
 - checking: Always use GET for Zope servers since their HEAD support
   is broken.
   Closes: SF bug #3522710
+- installer: Install correct MSVC++ runtime DLL version for Windows.
 
 Changes:
 - documentation: Made the --ignore-url documentation more clear.
