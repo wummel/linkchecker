@@ -4,8 +4,8 @@ Fixes:
 - checking: Always use GET for Zope servers since their HEAD support
   is broken.
   Closes: SF bug #3522710
-- installer: Install correct MSVC++ runtime DLL version for Windows.
-- installer: Install missing Python modules for twill, cssutils and
+- installation: Install correct MSVC++ runtime DLL version for Windows.
+- installation: Install missing Python modules for twill, cssutils and
   HTMLTidy.
 
 Changes:
