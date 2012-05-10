@@ -304,3 +304,10 @@ def limit (s, length=72):
 def strline (s):
     """Display string representation on one line."""
     return u"`%s'" % unicode(s).replace(u"\n", u"\\n")
+
+
+def format_feature_warning (**kwargs):
+    """Format warning that a module could not be imported and that it should
+    be installed for a certain URL.
+    """
+    return _("Could not import %(module)s for %(feature)s. Install %(module)s from %(url)s to use this feature.") % kwargs
