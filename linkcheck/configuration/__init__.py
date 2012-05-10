@@ -65,7 +65,8 @@ Modules = (
     ("optcomplete", u"Optcomplete"),
     ("tidy", u"HTMLtidy"),
     ("cssutils", u"CSSutils"),
-    ("GeoIP", u"GeoIP"),
+    ("GeoIP", u"GeoIP"),   # on Unix systems
+    ("pygeoip", u"GeoIP"), # on Windows systems
     ("twill", u"Twill"),
     ("sqlite3", u"Sqlite"),
     ("gconf", u"Gconf"),
