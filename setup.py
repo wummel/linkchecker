@@ -858,6 +858,17 @@ o a command line, GUI and web interface
         "py2exe": py2exe_options,
         "py2app": py2app_options,
     },
+    # Requirements, usable with setuptools or the new Python packaging module.
+    # Commented out since they are untested and not officially supported.
+    # See also doc/install.txt for more detailed dependency documentation.
+    #extra_requires = {
+    #    "HTML syntax check": ['tidy'], # http://utidylib.berlios.de/
+    #    "CSS syntax check": ['cssutils'], # http://cthedot.de/cssutils/
+    #    "IP country info": ['GeoIP'], # http://www.maxmind.com/app/python
+    #    "Login form": ['twill'], # http://twill.idyll.org/
+    #    "GNOME proxies": ['pygtk'], # http://www.pygtk.org/downloads.html
+    #    "Bash completion": ['optcomplete'], # http://furius.ca/optcomplete/
+    #}
 )
 if sys.platform == 'darwin':
     args["app"] = ['linkchecker-gui']

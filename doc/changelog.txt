@@ -18,6 +18,10 @@ Changes:
 - documentation: Fix typo in linkcheckerrc.5 manual page.
   Closes: SF bug #3522846
 
+Features:
+- installation: Add dependency declaration documentation to setup.py.
+  Closes: SF bug #3524757
+
 
 7.7 "Intouchables" (released 22.04.2012)
 
