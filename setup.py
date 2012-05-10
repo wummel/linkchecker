@@ -86,7 +86,10 @@ MSVCP90Version = '9.0.21022.8'
 MSVCP90Token = '1fc8b3b9a1e18e3b'
 
 # basic includes for py2exe and py2app
-py_includes = ['dns.rdtypes.IN.*', 'dns.rdtypes.ANY.*']
+py_includes = ['dns.rdtypes.IN.*', 'dns.rdtypes.ANY.*',
+    'twill.extensions.*', 'twill.extensions.match_parse.*',
+    'twill.other_packages.*', 'twill.other_packages._mechanize_dist.*',
+    'cssutils.scripts.*']
 # basic excludes for py2exe and py2app
 py_excludes = ['doctest', 'unittest', 'optcomplete', 'Tkinter',
     'PyQt4.QtDesigner', 'PyQt4.QtNetwork', 'PyQt4.QtOpenGL',
@@ -225,6 +228,15 @@ def fix_qt_plugins_py2app (dist_dir):
                 newpath = '@executable_path/../Frameworks/%s' % libpath
                 args = ['install_name_tool', '-change', oldpath, newpath, library]
                 subprocess.check_call(args)
+
+def add_tidy_files (files):
+    """Add C tidy library used with ctypes."""
+    libname = "cygtidy"
+    libver = "0-99-0"
+    lib = "%s-%s.dll" % (libname, libver)
+    import tidy
+    filename = os.path.join(os.path.dirname(tidy.__file__), lib)
+    files.append(('', [filename]))
 
 
 def add_msvc_files (files):
@@ -591,6 +603,7 @@ elif 'py2exe' in sys.argv[1:]:
         raise SystemExit("py2exe module could not be imported")
     add_qt_plugin_files(data_files)
     add_msvc_files(data_files)
+    add_tidy_files(data_files)
 
 
 class InnoScript:

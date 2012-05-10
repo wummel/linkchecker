@@ -5,6 +5,8 @@ Fixes:
   is broken.
   Closes: SF bug #3522710
 - installer: Install correct MSVC++ runtime DLL version for Windows.
+- installer: Install missing Python modules for twill, cssutils and
+  HTMLTidy.
 
 Changes:
 - documentation: Made the --ignore-url documentation more clear.
