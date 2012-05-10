@@ -467,7 +467,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         data = self.get_cache_data()
         data["warnings"] = [
-            x for x in self.warnings if x[0] != "http-moved-permanent"]
+            x for x in self.warnings if x[0] != WARN_HTTP_MOVED_PERMANENT]
         data["info"] = self.info
         return data
 

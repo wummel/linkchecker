@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2006-2011 Bastian Kleineidam
+# Copyright (C) 2006-2012 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,8 +26,8 @@ class Logger (object):
 
     def __init__ (self, config):
         """Initialize basic logging variables."""
-        self.logs = [config['logger']]
-        self.logs.extend(config['fileoutput'])
+        self.loggers = [config['logger']]
+        self.loggers.extend(config['fileoutput'])
         self.ignorewarnings = config["ignorewarnings"]
         self.verbose = config["verbose"]
         self.complete = config["complete"]
@@ -37,14 +37,14 @@ class Logger (object):
         """
         Start output of all configured loggers.
         """
-        for logger in self.logs:
+        for logger in self.loggers:
             logger.start_output()
 
     def end_log_output (self):
         """
         End output of all configured loggers.
         """
-        for logger in self.logs:
+        for logger in self.loggers:
             logger.end_output()
 
     def do_print (self, url_data):
@@ -71,11 +71,11 @@ class Logger (object):
         # Only send a transport object to the loggers, not the complete
         # object instance.
         transport = url_data.to_wire()
-        for log in self.logs:
+        for log in self.loggers:
             log.log_filter_url(transport, do_print)
 
     @synchronized(_lock)
     def log_internal_error (self):
         """Document that an internal error occurred."""
-        for logger in self.logs:
+        for logger in self.loggers:
             logger.log_internal_error()
