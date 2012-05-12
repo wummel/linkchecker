@@ -766,8 +766,8 @@ class MyRegister (register, object):
 args = dict(
     name = AppName,
     version = AppVersion,
-    description = "check websites and HTML documents for broken links",
-    keywords = "link,url,site,checking,crawling,verification",
+    description = "check links in web documents or full websites",
+    keywords = "link,url,site,checking,crawling,verification,validation",
     author = myname,
     author_email = myemail,
     maintainer = myname,
