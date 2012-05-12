@@ -1,5 +1,5 @@
 Project: LinkChecker
-Version: 7.7
+Version: 7.8
 Release-Focus: Minor bugfixes
 Hide: N
 Website-URL: http://linkchecker.sourceforge.net/
@@ -9,5 +9,5 @@ Debian-Package-URL: http://packages.debian.org/linkchecker
 GIT-Tree-URL: http://linkchecker.git.sourceforge.net/
 Windows-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.exe
 
-The CGI script has been replaced with a faster WSGI script.
-Several checking bugs have also been fixed.
+A workaround for buggy Zope HTTP servers has been added.
+The Windows installer bundles now the correct Visual C++ DLLs.

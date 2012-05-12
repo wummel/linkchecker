@@ -1,4 +1,4 @@
-7.8 "" (released xx.xx.2012)
+7.8 "Gangster Exchange" (released 12.5.2012)
 
 Fixes:
 - checking: Always use GET for Zope servers since their HEAD support
