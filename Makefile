@@ -86,7 +86,7 @@ upload:
 
 
 .PHONY: release
-release: distclean releasecheck filescheck clean dist-stamp sign_distfiles upload
+release: distclean releasecheck clean dist-stamp filescheck sign_distfiles upload
 	git tag v$(VERSION)
 	@echo "Updating LinkChecker Homepage..."
 	$(MAKE) -C doc man
