@@ -86,7 +86,7 @@ upload:
 
 
 .PHONY: release
-release: distclean releasecheck clean dist-stamp filescheck sign_distfiles upload
+release: distclean releasecheck filescheck clean dist-stamp sign_distfiles upload
 	git tag v$(VERSION)
 	@echo "Updating LinkChecker Homepage..."
 	$(MAKE) -C doc man
@@ -181,7 +181,7 @@ doccheck:
 	  linkchecker-gui \
 	  *.py
 
-filescheck:
+filescheck: localbuild
 	for out in text html gml sql csv xml gxml dot; do \
 	  ./linkchecker -o$$out -F$$out --complete -r1 -C $(FILESCHECK_URL) || exit 1; \
 	done
