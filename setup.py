@@ -736,11 +736,11 @@ try:
             # Fix install names for Qt plugin libraries.
             fix_qt_plugins_py2app(dist_dir)
             # Generate .dmg image
-            imgPath = os.path.join(dist_dir, "LinkChecker-%s.dmg" % AppVersion)
-            tmpImgPath = os.path.join(dist_dir, "LinkChecker.tmp.dmg")
+            imgPath = os.path.join(dist_dir, "%s-%s.dmg" % (AppName, AppVersion))
+            tmpImgPath = os.path.join(dist_dir, "%s.tmp.dmg" % AppName)
             print "*** generating temporary DMG image ***"
-            args = ['hdiutil', 'create', '-srcfolder', dist_dir,
-                    '-volname', 'LinkChecker', '-format', 'UDZO', tmpImgPath]
+            args = ['hdiutil', 'create', '-srcfolder', dist_dir, '-fs', 'HFSX',
+                    '-volname', AppName, '-format', 'UDZO', tmpImgPath]
             subprocess.check_call(args)
             print "*** generating final DMG image ***"
             args = ['hdiutil', 'convert', tmpImgPath, '-format', 'UDZO',
