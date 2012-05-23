@@ -181,11 +181,26 @@ def has_changed (filename):
     return mtime > _mtime_cache[key]
 
 
-mimedb = mimetypes.MimeTypes(strict=False)
-# For Opera bookmark files (opera6.adr)
-mimedb.add_type('text/plain', '.adr', strict=False)
-# To recognize PHP files as HTML with content check.
-mimedb.add_type('text/plain', '.php', strict=False)
+mimedb = None
+
+def init_mimedb():
+    global mimedb
+    try:
+        mimedb = mimetypes.MimeTypes(strict=False)
+    except StandardError, msg:
+        log_error("could not initialize MIME database: %s" % msg)
+        return
+    # For Opera bookmark files (opera6.adr)
+    add_mimetype(mimedb, 'text/plain', '.adr')
+    # To recognize PHP files as HTML with content check.
+    add_mimetype(mimedb, 'text/plain', '.php')
+
+
+def add_mimetype(mimedb, mimetype, extension):
+    """Add or replace a mimetype to be used with the given extension."""
+    # If extension is already a common type, strict=True must be used.
+    strict = extension in mimedb.types_map[True]
+    mimedb.add_type(mimetype, extension, strict=strict)
 
 
 # if file extension lookup was unsuccessful, look at the content
@@ -199,7 +214,9 @@ PARSE_CONTENTS = {
 def guess_mimetype (filename, read=None):
     """Return MIME type of file, or 'application/octet-stream' if it could
     not be determined."""
-    mime, encoding = mimedb.guess_type(filename, strict=False)
+    mime, encoding = None, None
+    if mimedb:
+        mime, encoding = mimedb.guess_type(filename, strict=False)
     basename = os.path.basename(filename)
     # Special case for Safari Bookmark files
     if not mime and basename == 'Bookmarks.plist':
@@ -253,3 +270,4 @@ def is_writable(filename):
         return os.path.isdir(parentdir) and os.access(parentdir, os.W_OK)
     return os.path.isfile(filename) and os.access(filename, os.W_OK)
 
+init_mimedb()

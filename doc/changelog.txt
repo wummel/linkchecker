@@ -1,3 +1,10 @@
+7.9 "" (released xx.xx.2012)
+
+Fixes:
+- checking: Catch any errors initializing the MIME database.
+  Closes: SF bug #3528450
+
+
 7.8 "Gangster Exchange" (released 12.5.2012)
 
 Fixes:
