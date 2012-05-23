@@ -112,10 +112,17 @@ dist-stamp: changelog
 	$(MAKE) dist
 	touch $@
 
-# Build OSX installer
+# Build OSX installer with py2app
 .PHONY: app
 app: distclean localbuild chmod
 	$(PYTHON) setup.py py2app $(PY2APPOPTS)
+
+# Build RPM installer with cx_Freeze
+.PHONY: rpm
+rpm:
+	$(MAKE) -C doc/html
+	$(MAKE) -C linkcheck/HtmlParser
+	$(PYTHON) setup.py bdist_rpm
 
 # The check programs used here are mostly local scripts on my private system.
 # So for other developers there is no need to execute this target.

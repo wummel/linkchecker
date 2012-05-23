@@ -21,6 +21,7 @@ Setup file for the distuils module.
 It includes the following features:
 - py2exe support (including InnoScript installer generation)
 - py2app support (including DMG package generation)
+- cx_Freeze support
 - Qt plugin installation for py2exe and py2app
 - Microsoft Visual C++ DLL installation for py2exe
 - creation and installation of configuration file with installation data
@@ -48,12 +49,15 @@ try:
 except ImportError:
     # ignore when setuptools is not installed
     pass
-from distutils.core import setup, Extension
+try:
+    from cx_Freeze import setup, Executable
+except ImportError:
+    from distutils.core import setup
+from distutils.core import Extension
 from distutils.command.install_lib import install_lib
 from distutils.command.build_ext import build_ext
 from distutils.command.sdist import sdist
 from distutils.command.clean import clean
-from distutils.command.build import build
 from distutils.command.install_data import install_data
 from distutils.command.register import register
 from distutils.dir_util import remove_tree
@@ -68,7 +72,13 @@ try:
 except ImportError:
     # py2exe is not installed
     has_py2exe = False
-from distutils.core import Distribution
+try:
+    from cx_Freeze.dist import Distribution, build, install_exe
+    executables = [Executable("linkchecker"), Executable("linkchecker-gui")]
+except ImportError:
+    from distutils.core import Distribution
+    from distutils.command.build import build
+    executables = None
 try:
     import py2app
     has_py2app = True
@@ -117,6 +127,14 @@ py2app_options = dict(
     iconfile='doc/html/favicon.icns',
     plist={'CFBundleIconFile': 'favicon.icns'},
     argv_emulation=True,
+)
+# cx_Freeze for Linux RPM packaging
+cx_includes = [x[:-2] for x in py_includes]
+cxfreeze_options = dict(
+    packages=["encodings"],
+    excludes=py_excludes,
+    includes=cx_includes + ['sip', 'PyQt4',
+      'PyQt4.QtCore', 'PyQt4.QtGui', 'PyQt4.QtSql'],
 )
 
 
@@ -303,12 +321,15 @@ class MyInstallLib (install_lib, object):
                     self.install_lib = val
             data.append("%s = %r" % (attr, cnormpath(val)))
         self.distribution.create_conf_file(data, directory=self.install_lib)
+        return self.get_conf_output()
+
+    def get_conf_output (self):
         return self.distribution.get_conf_filename(self.install_lib)
 
     def get_outputs (self):
         """Add the generated config file to the list of outputs."""
         outs = super(MyInstallLib, self).get_outputs()
-        outs.append(self.distribution.get_conf_filename(self.install_lib))
+        outs.append(self.get_conf_output())
         return outs
 
 
@@ -604,6 +625,13 @@ elif 'py2exe' in sys.argv[1:]:
     add_qt_plugin_files(data_files)
     add_msvc_files(data_files)
     add_tidy_files(data_files)
+elif executables:
+    class MyInstallExe (install_exe, object):
+        def run (self):
+            super(MyInstallExe, self).run()
+            cmd_obj = self.distribution.get_command_obj("install_lib")
+            cmd_obj.ensure_finalized()
+            self.outfiles.append(cmd_obj.get_conf_output()+"c")
 
 
 class InnoScript:
@@ -857,6 +885,7 @@ o a command line, GUI and web interface
     options = {
         "py2exe": py2exe_options,
         "py2app": py2app_options,
+        "build_exe": cxfreeze_options,
     },
     # Requirements, usable with setuptools or the new Python packaging module.
     # Commented out since they are untested and not officially supported.
@@ -872,5 +901,7 @@ o a command line, GUI and web interface
 )
 if sys.platform == 'darwin':
     args["app"] = ['linkchecker-gui']
-
+if executables:
+    args["executables"] = executables
+    args["cmdclass"]["install_exe"] = MyInstallExe
 setup(**args)

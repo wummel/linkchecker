@@ -4,6 +4,9 @@ Fixes:
 - checking: Catch any errors initializing the MIME database.
   Closes: SF bug #3528450
 
+Features:
+- installation: Support RPM building with cx_Freeze.
+
 
 7.8 "Gangster Exchange" (released 12.5.2012)
 
