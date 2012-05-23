@@ -1,6 +1,7 @@
 linkchecker (7.9-1) UNRELEASED; urgency=low
 
   * New upstream release.
+  * Add missing dependency on python-qt4-sql for linkchecker-gui.
 
  -- Bastian Kleineidam <calvin@debian.org>  Wed, 23 May 2012 06:55:45 +0200
 

@@ -74,6 +74,7 @@ Architecture: all
 Depends: libqt4-sql-sqlite,
          linkchecker,
          python-qt4 (>= 4.5),
+         python-qt4-sql,
          ${misc:Depends},
          ${python:Depends}
 Recommends: python-qscintilla2
