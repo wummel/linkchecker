@@ -95,7 +95,7 @@ py_excludes = ['doctest', 'unittest', 'optcomplete', 'Tkinter',
     'PyQt4.QtDesigner', 'PyQt4.QtNetwork', 'PyQt4.QtOpenGL',
     'PyQt4.QtScript', 'PyQt4.QtTest', 'PyQt4.QtWebKit', 'PyQt4.QtXml',
     'PyQt4.phonon']
-# py2exe options for windows .exe packaging
+# py2exe options for Windows packaging
 py2exe_options = dict(
     packages=["encodings"],
     excludes=py_excludes + ['win32com.gen_py'],
@@ -229,6 +229,7 @@ def fix_qt_plugins_py2app (dist_dir):
                 args = ['install_name_tool', '-change', oldpath, newpath, library]
                 subprocess.check_call(args)
 
+
 def add_tidy_files (files):
     """Add C tidy library used with ctypes."""
     libname = "cygtidy"
@@ -348,7 +349,7 @@ app_manifest = """
 manifestVersion="1.0">
 <assemblyIdentity
     type="win32"
-    name="LinkChecker"
+    name="%(appname)s"
     version="%(appversion)s.0.0"
     processorArchitecture="*"
 />
@@ -364,8 +365,8 @@ manifestVersion="1.0">
   </dependentAssembly>
 </dependency>
 </assembly>
-""" % dict(appversion=AppVersion, msvcrtversion=MSVCP90Version,
-msvcrttoken=MSVCP90Token)
+""" % dict(appversion=AppVersion, appname=AppName,
+           msvcrtversion=MSVCP90Version, msvcrttoken=MSVCP90Token)
 
 class MyDistribution (Distribution, object):
     """Custom distribution class generating config file."""
@@ -407,7 +408,7 @@ class MyDistribution (Distribution, object):
                      "maintainer", "maintainer_email", "url",
                      "license", "description", "long_description",
                      "keywords", "platforms", "fullname", "contact",
-                     "contact_email", "fullname")
+                     "contact_email")
         for name in metanames:
             method = "get_" + name
             val = getattr(self.metadata, method)()
@@ -415,7 +416,6 @@ class MyDistribution (Distribution, object):
                 val = unicode(val)
             cmd = "%s = %r" % (name, val)
             data.append(cmd)
-        data.append('appname = "LinkChecker"')
         data.append('release_date = "%s"' % get_release_date())
         data.append('portable = %s' % get_portable())
         # write the config file
