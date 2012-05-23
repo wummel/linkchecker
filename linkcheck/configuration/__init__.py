@@ -33,7 +33,7 @@ from ..decorators import memoized
 
 Version = configdata.version
 ReleaseDate = configdata.release_date
-AppName = configdata.appname
+AppName = configdata.name
 App = AppName+u" "+Version
 Author = configdata.author
 HtmlAuthor = Author.replace(u' ', u'&nbsp;')
