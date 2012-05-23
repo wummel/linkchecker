@@ -27,6 +27,7 @@ import mimetypes
 import tempfile
 from distutils.spawn import find_executable
 
+from . import log, LOG_CHECK
 
 def write_file (filename, content, backup=False, callback=None):
     """Overwrite a possibly existing file with new content. Do this
@@ -188,7 +189,7 @@ def init_mimedb():
     try:
         mimedb = mimetypes.MimeTypes(strict=False)
     except StandardError, msg:
-        log_error("could not initialize MIME database: %s" % msg)
+        log.error(LOG_CHECK, "could not initialize MIME database: %s" % msg)
         return
     # For Opera bookmark files (opera6.adr)
     add_mimetype(mimedb, 'text/plain', '.adr')
