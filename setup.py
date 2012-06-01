@@ -324,6 +324,7 @@ class MyInstallLib (install_lib, object):
         return self.get_conf_output()
 
     def get_conf_output (self):
+        """Get name of configuration file."""
         return self.distribution.get_conf_filename(self.install_lib)
 
     def get_outputs (self):
@@ -627,7 +628,9 @@ elif 'py2exe' in sys.argv[1:]:
     add_tidy_files(data_files)
 elif executables:
     class MyInstallExe (install_exe, object):
+        """Install cx_Freeze executables."""
         def run (self):
+            """Add generated configuration to output files."""
             super(MyInstallExe, self).run()
             cmd_obj = self.distribution.get_command_obj("install_lib")
             cmd_obj.ensure_finalized()

@@ -185,6 +185,7 @@ def has_changed (filename):
 mimedb = None
 
 def init_mimedb():
+    """Initialize the local MIME database."""
     global mimedb
     try:
         mimedb = mimetypes.MimeTypes(strict=False)
