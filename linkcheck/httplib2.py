@@ -757,7 +757,11 @@ class HTTPConnection:
             line = response.fp.readline(_MAXLINE + 1)
             if len(line) > _MAXLINE:
                 raise LineTooLong("header line")
-            if line == '\r\n': break
+            if not line:
+                # for sites which EOF without sending trailer
+                break
+            if line == '\r\n':
+                break
 
     def connect(self):
         """Connect to the host and port specified in __init__."""
@@ -1028,7 +1032,7 @@ class HTTPConnection:
 
         self.putrequest(method, url, **skips)
 
-        if body and ('content-length' not in header_names):
+        if body is not None and 'content-length' not in header_names:
             self._set_content_length(body)
         for hdr, value in headers.iteritems():
             self.putheader(hdr, value)
