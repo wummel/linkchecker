@@ -4,3 +4,4 @@ usr/share/linkchecker/lccollection.qhc
 usr/share/linkchecker/lcdoc.qch
 usr/share/man/de/man1/linkchecker-gui.1
 usr/share/man/man1/linkchecker-gui.1
+usr/share/applications/linkchecker-gui.desktop

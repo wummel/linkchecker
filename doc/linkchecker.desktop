@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=LinkChecker Commandline
+GenericName=URL validator
+GenericName[de]=URL Validator
+Version=1.0
+Type=Application
+Exec=linkchecker
+Terminal=True
+Categories=Network;WebDevelopment
+Icon=logo48x48

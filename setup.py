@@ -613,6 +613,8 @@ if os.name == 'posix':
                'doc/examples/check_blacklist.sh',
                'doc/examples/check_for_x_errors.sh',
                'doc/examples/check_urls.sh']))
+    data_files.append(('share/applications', ['doc/linkchecker.desktop']))
+    data_files.append(('share/applications', ['doc/linkchecker-gui.desktop']))
 if 'py2app' in sys.argv[1:]:
     if not has_py2app:
         raise SystemExit("py2app module could not be imported.")
