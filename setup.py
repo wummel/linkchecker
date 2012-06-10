@@ -41,6 +41,11 @@ import subprocess
 import stat
 import glob
 import shutil
+
+# if a frozen Unix application should be built with cx_Freeze
+do_freeze = int(os.environ.get('LINKCHECKER_FREEZE', '0'))
+
+# import Distutils stuff
 try:
     # setuptools (which is needed by py2app) monkey-patches the
     # distutils.core.Command class.
@@ -49,9 +54,9 @@ try:
 except ImportError:
     # ignore when setuptools is not installed
     pass
-try:
+if do_freeze:
     from cx_Freeze import setup, Executable
-except ImportError:
+else:
     from distutils.core import setup
 from distutils.core import Extension
 from distutils.command.install_lib import install_lib
@@ -72,10 +77,10 @@ try:
 except ImportError:
     # py2exe is not installed
     has_py2exe = False
-try:
+if do_freeze:
     from cx_Freeze.dist import Distribution, build, install_exe
     executables = [Executable("linkchecker"), Executable("linkchecker-gui")]
-except ImportError:
+else:
     from distutils.core import Distribution
     from distutils.command.build import build
     executables = None
@@ -628,7 +633,7 @@ elif 'py2exe' in sys.argv[1:]:
     add_qt_plugin_files(data_files)
     add_msvc_files(data_files)
     add_tidy_files(data_files)
-elif executables:
+elif do_freeze:
     class MyInstallExe (install_exe, object):
         """Install cx_Freeze executables."""
         def run (self):
