@@ -244,11 +244,11 @@ def guess_mimetype (filename, read=None):
     return mime.strip().lower()
 
 
-def get_temp_file (**kwargs):
+def get_temp_file (mode='r', **kwargs):
     """Return tuple (open file object, filename) pointing to a temporary
     file."""
     fd, filename = tempfile.mkstemp(**kwargs)
-    return os.fdopen(fd), filename
+    return os.fdopen(fd, mode), filename
 
 
 def is_tty (fp):
