@@ -233,42 +233,47 @@ def idna_encode (host):
 
 def url_fix_host (urlparts):
     """Unquote and fix hostname. Returns is_idn."""
-    urlparts[1], is_idn = idna_encode(urllib.unquote(urlparts[1]).lower())
+    if not urlparts[1]:
+        urlparts[2] = urllib.unquote(urlparts[2])
+        return False
+    userpass, netloc = urllib.splituser(urlparts[1])
+    if userpass:
+        userpass = urllib.unquote(userpass)
+    netloc, is_idn = idna_encode(urllib.unquote(netloc).lower())
     # a leading backslash in path causes urlsplit() to add the
     # path components up to the first slash to host
     # try to find this case...
-    i = urlparts[1].find("\\")
+    i = netloc.find("\\")
     if i != -1:
         # ...and fix it by prepending the misplaced components to the path
-        comps = urlparts[1][i:] # note: still has leading backslash
+        comps = netloc[i:] # note: still has leading backslash
         if not urlparts[2] or urlparts[2] == '/':
             urlparts[2] = comps
         else:
             urlparts[2] = "%s%s" % (comps, urllib.unquote(urlparts[2]))
-        urlparts[1] = urlparts[1][:i]
+        netloc = netloc[:i]
     else:
         # a leading ? in path causes urlsplit() to add the query to the
         # host name
-        i = urlparts[1].find("?")
+        i = netloc.find("?")
         if i != -1:
-            urlparts[1], urlparts[3] = urlparts[1].split('?', 1)
+            netloc, urlparts[3] = netloc.split('?', 1)
         # path
         urlparts[2] = urllib.unquote(urlparts[2])
-    if urlparts[1]:
-        userpass, host = urllib.splituser(urlparts[1])
-        if userpass:
-            # append AT for easy concatenation
-            userpass += "@"
-        else:
-            userpass = ""
-        if urlparts[0] in default_ports:
-            dport = default_ports[urlparts[0]]
-            host, port = splitport(host, port=dport)
-            if host.endswith("."):
-                host = host[:-1]
-            if port != dport:
-                host = "%s:%d" % (host, port)
-        urlparts[1] = userpass+host
+    if userpass:
+        # append AT for easy concatenation
+        userpass += "@"
+    else:
+        userpass = ""
+    if urlparts[0] in default_ports:
+        dport = default_ports[urlparts[0]]
+        host, port = splitport(netloc, port=dport)
+        if host.endswith("."):
+            host = host[:-1]
+        if port != dport:
+            host = "%s:%d" % (host, port)
+        netloc = host
+    urlparts[1] = userpass+netloc
     return is_idn
 
 

@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2011 Bastian Kleineidam
+# Copyright (C) 2000-2012 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@ Handle FTP links.
 """
 
 import ftplib
-import urllib
 from cStringIO import StringIO
 
 from .. import log, LOG_CHECK, LinkCheckerError, fileutil
@@ -71,34 +70,24 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         self.files = []
         return None
 
-    def get_user_password (self):
-        """
-        Get credentials to use for login.
-        """
-        if self.userinfo:
-            return urllib.splitpasswd(self.userinfo)
-        return super(FtpUrl, self).get_user_password()
-
     def login (self):
         """
         Log into ftp server and check the welcome message.
         """
         # ready to connect
         _user, _password = self.get_user_password()
-        host = self.urlparts[1]
-        key = ("ftp", host, _user, _password)
+        key = ("ftp", self.host, self.port, _user, _password)
         conn = self.aggregate.connections.get(key)
         if conn is not None and conn.sock is not None:
             # reuse cached FTP connection
             self.url_connection = conn
             return
-        self.aggregate.connections.wait_for_host(host)
+        self.aggregate.connections.wait_for_host(self.host)
         try:
             self.url_connection = ftplib.FTP()
             if log.is_debug(LOG_CHECK):
                 self.url_connection.set_debuglevel(1)
-            host, port = proxysupport.parse_host_port(host)
-            self.url_connection.connect(host, port)
+            self.url_connection.connect(self.host, self.port)
             if _user is None:
                 self.url_connection.login()
             elif _password is None:

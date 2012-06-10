@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2004-2010 Bastian Kleineidam
+# Copyright (C) 2004-2012 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -30,6 +30,16 @@ class TestFtp (FtpServerTest):
             # ftp two slashes
             self.start_server()
             url = u"ftp://%s:%d/" % (self.host, self.port)
+            resultlines = [
+              u"url %s" % url,
+              u"cache key %s" % url,
+              u"real url %s" % url,
+              u"valid",
+            ]
+            # ftp use/password
+            user = "anonymous"
+            passwd = "Ftp"
+            url = u"ftp://%s:%s@%s:%d/" % (user, passwd, self.host, self.port)
             resultlines = [
               u"url %s" % url,
               u"cache key %s" % url,

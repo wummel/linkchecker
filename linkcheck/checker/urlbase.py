@@ -929,6 +929,9 @@ class UrlBase (object):
         """Get tuple (user, password) from configured authentication.
         Both user and password can be None.
         """
+        if self.userinfo:
+            # URL itself has authentication info
+            return urllib.splitpasswd(self.userinfo)
         return self.aggregate.config.get_user_password(self.url)
 
     def parse_html (self):

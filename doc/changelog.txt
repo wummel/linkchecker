@@ -4,6 +4,8 @@ Fixes:
 - checking: Catch any errors initializing the MIME database.
   Closes: SF bug #3528450
 - checking: Fix writing temporary files.
+- checking: Properly handle URLs with user/password information.
+  Closes: SF bug #3529812
 
 Changes:
 - checking: Ignore URLs from local PHP files with execution
@@ -17,7 +19,8 @@ Changes:
 Features:
 - installation: Support RPM building with cx_Freeze.
 - installation: Added .desktop files for POSIX systems.
-- checking: Allow writing of a memory dump file.
+- checking: Allow writing of a memory dump file to debug memory
+  problems.
 
 
 7.8 "Gangster Exchange" (released 12.5.2012)

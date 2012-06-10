@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2009 Bastian Kleineidam
+# Copyright (C) 2000-2012 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@ Handle telnet: links.
 """
 
 import telnetlib
-import urllib
 from . import urlbase
 from .. import log, LOG_CHECK
 
@@ -38,11 +37,8 @@ class TelnetUrl (urlbase.UrlBase):
         # default port
         if self.port is None:
             self.port = 23
-        # split user/pass
-        if self.userinfo:
-            self.user, self.password = urllib.splitpasswd(self.userinfo)
-        else:
-            self.user, self.password = self.get_user_password()
+        # set user/pass
+        self.user, self.password = self.get_user_password()
 
     def local_check (self):
         """

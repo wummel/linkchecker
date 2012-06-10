@@ -132,6 +132,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         # set the proxy, so a 407 status after this is an error
         self.set_proxy(self.aggregate.config["proxy"].get(self.scheme))
+        self.construct_auth()
         # check robots.txt
         if not self.allows_robots(self.url):
             # remove all previously stored results
@@ -249,11 +250,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                        tag=WARN_HTTP_AUTH_UNKNOWN)
                     return
                 if not self.auth:
-                    _user, _password = self.get_user_password()
-                    self.auth = "Basic " + \
-                        httputil.encode_base64("%s:%s" % (_user, _password))
-                    log.debug(LOG_CHECK,
-                        "Authentication %s/%s", _user, _password)
+                    self.construct_auth()
                     continue
             if (self.headers and self.method == "HEAD" and
                 self.method_get_allowed):
@@ -274,6 +271,18 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         self.method = "GET"
         self.aliases = []
         self.fallback_get = True
+
+    def construct_auth (self):
+        """Construct HTTP Basic authentication credentials if there
+        is user/password information available. Does not overwrite if
+        credentials have already been constructed."""
+        if self.auth:
+            return
+        _user, _password = self.get_user_password()
+        if _user is not None and _password is not None:
+            credentials = httputil.encode_base64("%s:%s" % (_user, _password))
+            self.auth = "Basic " + credentials
+            log.debug(LOG_CHECK, "Using basic authentication")
 
     def get_content_type (self):
         """Return content MIME type or empty string."""
@@ -308,6 +317,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         self.add_info(_("Redirected to `%(url)s'.") % {'url': newurl})
         # norm base url - can raise UnicodeError from url.idna_encode()
         redirected, is_idn = urlbase.url_norm(newurl)
+        # XXX recalculate authentication information when available
         log.debug(LOG_CHECK, "Norm redirected to %r", redirected)
         urlparts = strformat.url_unicode_split(redirected)
         if not self.check_redirection_scheme(redirected, urlparts, set_result):
@@ -354,6 +364,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
 
     def check_redirection_domain (self, redirected, urlparts, set_result, response):
         """Return True if redirection domain is ok, else False."""
+        # XXX does not support user:pass@netloc format
         if urlparts[1] != self.urlparts[1]:
             # URL domain changed
             if self.recursion_level == 0 and urlparts[0] in ('http', 'https'):
@@ -524,11 +535,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                                        skip_accept_encoding=True)
         # be sure to use the original host as header even for proxies
         self.url_connection.putheader("Host", self.urlparts[1])
-        # userinfo is from http://user@pass:host/
-        if self.userinfo:
-            self.url_connection.putheader("Authorization", self.userinfo)
-        # auth is the -u and -p configuration options
-        elif self.auth:
+        if self.auth:
+            # HTTP authorization
             self.url_connection.putheader("Authorization", self.auth)
         if self.proxyauth:
             self.url_connection.putheader("Proxy-Authorization",

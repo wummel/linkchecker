@@ -372,13 +372,13 @@ class TestUrl (unittest.TestCase):
 
     def test_norm_with_auth (self):
         # Test norming of URLs with authentication tokens.
-        url = "telnet://user@www.example.org"
+        url = "telnet://User@www.example.org"
         nurl = url
         self.urlnormtest(url, nurl)
-        url = "telnet://user:pass@www.example.org"
+        url = "telnet://User:Pass@www.example.org"
         nurl = url
         self.urlnormtest(url, nurl)
-        url = "http://user:pass@www.example.org/"
+        url = "http://User:Pass@www.example.org/"
         nurl = url
         self.urlnormtest(url, nurl)
 
