@@ -56,6 +56,11 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             raise LinkCheckerError(
               _("Error parsing configuration: %s") % unicode(msg))
 
+    def read_boolean_option(self, section, option):
+        """Read a boolean option."""
+        if self.has_option(section, option):
+            self.config[option] = self.getboolean(section, option)
+
     def read_output_config (self):
         """Read configuration options in section "output"."""
         section = "output"
@@ -68,8 +73,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                     val = self.get(key, 'parts')
                     parts = [f.strip().lower() for f in val.split(',')]
                     self.config[key]['parts'] = parts
-        if self.has_option(section, "warnings"):
-            self.config["warnings"] = self.getboolean(section, "warnings")
+        self.read_boolean_option(section, "warnings")
         if self.has_option(section, "verbose"):
             if self.getboolean(section, "verbose"):
                 self.config["verbose"] = True
@@ -87,8 +91,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             val = self.get(section, "debug")
             parts = [f.strip().lower() for f in val.split(',')]
             self.config.set_debug(parts)
-        if self.has_option(section, "status"):
-            self.config["status"] = self.getboolean(section, "status")
+        self.read_boolean_option(section, "status")
         if self.has_option(section, "log"):
             val = self.get(section, "log").strip().lower()
             self.config['output'] = val
@@ -115,8 +118,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                 raise LinkCheckerError(
                     _("invalid negative value for timeout: %d\n") % num)
             self.config['timeout'] = num
-        if self.has_option(section, "anchors"):
-            self.config["anchors"] = self.getboolean(section, "anchors")
+        self.read_boolean_option(section, "anchors")
         if self.has_option(section, "recursionlevel"):
             num = self.getint(section, "recursionlevel")
             self.config["recursionlevel"] = num
@@ -141,14 +143,10 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
 
     def read_check_options (self, section):
         """Read check* options."""
-        if self.has_option(section, "checkhtml"):
-            self.config["checkhtml"] = self.getboolean(section, "checkhtml")
-        if self.has_option(section, "checkcss"):
-            self.config["checkcss"] = self.getboolean(section, "checkcss")
-        if self.has_option(section, "scanvirus"):
-            self.config["scanvirus"] = self.getboolean(section, "scanvirus")
-        if self.has_option(section, "clamavconf"):
-            self.config["clamavconf"] = self.getboolean(section, "clamavconf")
+        self.read_boolean_option(section, "checkhtml")
+        self.read_boolean_option(section, "checkcss")
+        self.read_boolean_option(section, "scanvirus")
+        self.read_boolean_option(section, "clamavconf")
         if self.has_option(section, "cookies"):
             self.config["sendcookies"] = self.config["storecookies"] = \
                 self.getboolean(section, "cookies")
