@@ -1056,11 +1056,12 @@ class UrlBase (object):
     def get_temp_filename (self):
         """Get temporary filename for content to parse."""
         # store content in temporary file
-        fd, filename = fileutil.get_temp_file(suffix='.doc', prefix='lc_')
+        fd, filename = fileutil.get_temp_file(mode='wb', suffix='.doc', prefix='lc_')
         try:
             fd.write(self.get_content())
         finally:
             fd.close()
+        return filename
 
     def serialized (self):
         """

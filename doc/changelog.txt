@@ -3,6 +3,7 @@
 Fixes:
 - checking: Catch any errors initializing the MIME database.
   Closes: SF bug #3528450
+- checking: Fix writing temporary files.
 
 Features:
 - installation: Support RPM building with cx_Freeze.
