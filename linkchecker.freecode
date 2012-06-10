@@ -1,5 +1,5 @@
 Project: LinkChecker
-Version: 7.8
+Version: 7.9
 Release-Focus: Minor bugfixes
 Hide: N
 Website-URL: http://linkchecker.sourceforge.net/
@@ -9,5 +9,4 @@ Debian-Package-URL: http://packages.debian.org/linkchecker
 GIT-Tree-URL: http://linkchecker.git.sourceforge.net/
 Windows-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.exe
 
-A workaround for buggy Zope HTTP servers has been added.
-The Windows installer bundles now the correct Visual C++ DLLs.
+Several checking bugs have been fixed.
