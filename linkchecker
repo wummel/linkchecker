@@ -799,7 +799,7 @@ if config["debugmemory"]:
         message = _(u"The memory dump has been written to `%(filename)s'.")
         log.info(LOG_CMDLINE, message % dict(filename=filename))
     else:
-        log.warn(LOG_CMDLINE, memoryutil.MemoryDebugMsg)
+        log.warn(LOG_CMDLINE, linkcheck.memoryutil.MemoryDebugMsg)
 
 stats = config['logger'].stats
 # on internal errors, exit with status 2
