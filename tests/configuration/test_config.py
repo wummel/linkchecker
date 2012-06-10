@@ -51,6 +51,7 @@ class TestConfig (unittest.TestCase):
         self.assertEqual(config["cookiefile"], "blablabla")
         self.assertEqual(config["useragent"], "Example/0.0")
         self.assertEqual(config["wait"], 99)
+        self.assertEqual(config["debugmemory"], 1)
         # filtering section
         patterns = [x["pattern"].pattern for x in config["externlinks"]]
         for prefix in ("ignore_", "nofollow_"):
