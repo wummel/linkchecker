@@ -263,19 +263,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                     log.debug(LOG_CHECK,
                         "Authentication %s/%s", _user, _password)
                     continue
-            elif response.status >= 400:
-                # Retry with GET, but do not set fallback_get flag.
-                # This ensures that sites that do not properly support HEAD
-                # requests do not give false errors.
-                if self.method == "HEAD" and self.method_get_allowed:
-                    # The squid proxy reports valid 200 instead of 404 due to
-                    # garbage sent from the server at the start of the GET
-                    # request. See http://www.aldec.com/Products
-                    if u'squid' not in self.getheader('Via', u'').lower():
-                        self.method = "GET"
-                        self.aliases = []
-                        continue
-            elif self.headers and self.method == "HEAD" and self.method_get_allowed:
+            if (self.headers and self.method == "HEAD" and
+                self.method_get_allowed):
                 # test for HEAD support
                 mime = self.get_content_type()
                 poweredby = self.getheader('X-Powered-By', u'')
@@ -283,7 +272,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 if (poweredby.startswith('Zope') or server.startswith('Zope')
                  or ('ASP.NET' in poweredby and 'Microsoft-IIS' in server)):
                     # Zope or IIS server could not get Content-Type with HEAD
-                    # see http://intermapper.com.dev4.silvertech.net/bogus.aspx
+                    # http://intermapper.com.dev4.silvertech.net/bogus.aspx
                     self.method = "GET"
                     self.aliases = []
                     self.fallback_get = True
