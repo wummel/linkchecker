@@ -50,7 +50,7 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
         if not has_module("meliae"):
             self.debugmemory.setEnabled(False)
             from ..memoryutil import MemoryDebugMsg
-            self.debugmemory.setTooltip(MemoryDebugMsg)
+            self.debugmemory.setToolTip(MemoryDebugMsg)
         self.warninglines.setPlainText(u"")
         self.ignorelines.setPlainText(u"")
 
