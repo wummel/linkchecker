@@ -902,6 +902,7 @@ o a command line, GUI and web interface
     #    "Login form": ['twill'], # http://twill.idyll.org/
     #    "GNOME proxies": ['pygtk'], # http://www.pygtk.org/downloads.html
     #    "Bash completion": ['optcomplete'], # http://furius.ca/optcomplete/
+    #    "Memory debugging": ['meliae'], # https://launchpad.net/meliae
     #}
 )
 if sys.platform == 'darwin':
