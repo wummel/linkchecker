@@ -952,9 +952,12 @@ class UrlBase (object):
         handler.parser = None
         parser.handler = None
 
-    def add_url (self, url, line, column, name, base):
+    def add_url (self, url, line=0, column=0, name=u"", base=None):
         """Queue URL data for checking."""
-        base_ref = urlutil.url_norm(base)[0]
+        if base:
+            base_ref = urlutil.url_norm(base)[0]
+        else:
+            base_ref = None
         url_data = get_url_from(url, self.recursion_level+1, self.aggregate,
             parent_url=self.url, base_ref=base_ref, line=line, column=column,
             name=name, parent_content_type=self.content_type)
@@ -965,27 +968,21 @@ class UrlBase (object):
         log.debug(LOG_CHECK, "Parsing Opera bookmarks %s", self)
         from ..bookmarks.opera import parse_bookmark_data
         for url, name, lineno in parse_bookmark_data(self.get_content()):
-            url_data = get_url_from(url, self.recursion_level+1,
-               self.aggregate, parent_url=self.url, line=lineno, name=name)
-            self.aggregate.urlqueue.put(url_data)
+            self.add_url(url, line=lineno, name=name)
 
     def parse_chromium (self):
         """Parse a Chromium or Google Chrome bookmark file."""
         log.debug(LOG_CHECK, "Parsing Chromium bookmarks %s", self)
         from ..bookmarks.chromium import parse_bookmark_data
         for url, name in parse_bookmark_data(self.get_content()):
-            url_data = get_url_from(url, self.recursion_level+1,
-               self.aggregate, parent_url=self.url, name=name)
-            self.aggregate.urlqueue.put(url_data)
+            self.add_url(url, name=name)
 
     def parse_safari (self):
         """Parse a Safari bookmark file."""
         log.debug(LOG_CHECK, "Parsing Safari bookmarks %s", self)
         from ..bookmarks.safari import parse_bookmark_data
         for url, name in parse_bookmark_data(self.get_content()):
-            url_data = get_url_from(url, self.recursion_level+1,
-               self.aggregate, parent_url=self.url, name=name)
-            self.aggregate.urlqueue.put(url_data)
+            self.add_url(url, name=name)
 
     def parse_text (self):
         """Parse a text file with one url per line; comment and blank
@@ -997,10 +994,7 @@ class UrlBase (object):
             line = line.strip()
             if not line or line.startswith('#'):
                 continue
-            url_data = get_url_from(line,
-                              self.recursion_level+1, self.aggregate,
-                              parent_url=self.url, line=lineno)
-            self.aggregate.urlqueue.put(url_data)
+            self.add_url(line, line=lineno)
 
     def parse_css (self):
         """
@@ -1015,20 +1009,14 @@ class UrlBase (object):
             for mo in linkfinder(line):
                 column = mo.start("url")
                 url = strformat.unquote(mo.group("url").strip())
-                url_data = get_url_from(url,
-                             self.recursion_level+1, self.aggregate,
-                             parent_url=self.url, line=lineno, column=column)
-                self.aggregate.urlqueue.put(url_data)
+                self.add_url(url, line=lineno, column=column)
 
     def parse_swf (self):
         """Parse a SWF file for URLs."""
         linkfinder = linkparse.swf_url_re.finditer
         for mo in linkfinder(self.get_content()):
             url = mo.group()
-            url_data = get_url_from(url,
-                         self.recursion_level+1, self.aggregate,
-                         parent_url=self.url)
-            self.aggregate.urlqueue.put(url_data)
+            self.add_url(url)
 
     def parse_word (self):
         """Parse a word file for hyperlinks."""
@@ -1042,10 +1030,7 @@ class UrlBase (object):
                 doc = winutil.open_wordfile(app, filename)
                 try:
                     for link in doc.Hyperlinks:
-                        url_data = get_url_from(link.Address,
-                                 self.recursion_level+1, self.aggregate,
-                                 parent_url=self.url, name=link.TextToDisplay)
-                        self.aggregate.urlqueue.put(url_data)
+                        self.add_url(link.Address, name=link.TextToDisplay)
                 finally:
                     winutil.close_wordfile(doc)
             finally:
