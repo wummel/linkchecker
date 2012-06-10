@@ -182,18 +182,14 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 # some servers send empty HEAD replies
                 if self.method == "HEAD" and self.method_get_allowed:
                     log.debug(LOG_CHECK, "Bad status line %r: falling back to GET", msg)
-                    self.method = "GET"
-                    self.aliases = []
-                    self.fallback_get = True
+                    self.fallback_to_get()
                     continue
                 raise
             except socket.error, msg:
                 # some servers reset the connection on HEAD requests
                 if self.method == "HEAD" and self.method_get_allowed and \
                    msg[0] == errno.ECONNRESET:
-                    self.method = "GET"
-                    self.aliases = []
-                    self.fallback_get = True
+                    self.fallback_to_get()
                     continue
                 raise
             if response.reason:
@@ -225,9 +221,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 # some servers send empty HEAD replies
                 if self.method == "HEAD" and self.method_get_allowed:
                     log.debug(LOG_CHECK, "Bad status line %r: falling back to GET", msg)
-                    self.method = "GET"
-                    self.aliases = []
-                    self.fallback_get = True
+                    self.fallback_to_get()
                     continue
                 raise
             if tries == -1:
@@ -238,9 +232,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             if tries >= self.max_redirects:
                 if self.method == "HEAD" and self.method_get_allowed:
                     # Microsoft servers tend to recurse HEAD requests
-                    self.method = "GET"
-                    self.aliases = []
-                    self.fallback_get = True
+                    self.fallback_to_get()
                     continue
                 self.set_result(_("more than %d redirections, aborting") %
                                 self.max_redirects, valid=False)
@@ -273,12 +265,16 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                  or ('ASP.NET' in poweredby and 'Microsoft-IIS' in server)):
                     # Zope or IIS server could not get Content-Type with HEAD
                     # http://intermapper.com.dev4.silvertech.net/bogus.aspx
-                    self.method = "GET"
-                    self.aliases = []
-                    self.fallback_get = True
+                    self.fallback_to_get()
                     continue
             break
         return response
+
+    def fallback_to_get(self):
+        """Set method to GET and set fallback flag."""
+        self.method = "GET"
+        self.aliases = []
+        self.fallback_get = True
 
     def get_content_type (self):
         """Return content MIME type or empty string."""
