@@ -57,9 +57,8 @@ class TestRobotParser (unittest.TestCase):
                                      'http://www.lycos.com/search'), True)
 
     @need_network
-    def test_password_robots (self):
-        # whole site is password-protected.
-        self.rp.set_url('http://mueblesmoraleda.com/robots.txt')
+    def test_disallowed_robots (self):
+        self.rp.set_url('http://google.com/robots.txt')
         self.rp.read()
         self.check(self.rp.can_fetch("*",
-                                     "http://mueblesmoraleda.com/"), False)
+                                     "http://google.com/search"), False)
