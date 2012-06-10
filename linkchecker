@@ -44,6 +44,7 @@ from linkcheck.director import console, check_urls, get_aggregate
 has_optcomplete = linkcheck.fileutil.has_module("optcomplete")
 has_profile = linkcheck.fileutil.has_module("profile")
 has_pstats = linkcheck.fileutil.has_module("pstats")
+has_meliae = linkcheck.fileutil.has_module("meliae")
 
 # default profiling filename
 _profile = "linkchecker.prof"
@@ -790,6 +791,15 @@ if do_profile:
     profile.run("check_urls(aggregate)", _profile)
 else:
     check_urls(aggregate)
+if config["debugmemory"]:
+    import linkcheck.memoryutil
+    if has_meliae:
+        log.info(LOG_CMDLINE, _(u"Dumping memory statistics..."))
+        filename = linkcheck.memoryutil.write_memory_dump()
+        message = _(u"The memory dump has been written to `%(filename)s'.")
+        log.info(LOG_CMDLINE, message % dict(filename=filename))
+    else:
+        log.warn(LOG_CMDLINE, memoryutil.MemoryDebugMsg)
 
 stats = config['logger'].stats
 # on internal errors, exit with status 2

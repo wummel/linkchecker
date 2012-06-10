@@ -192,6 +192,7 @@ class Configuration (dict):
         self["scanvirus"] = False
         self["clamavconf"] = clamav.canonical_clamav_conf()
         self["useragent"] = UserAgent
+        self["debugmemory"] = False
         from ..logger import Loggers
         self.loggers = dict(**Loggers)
 

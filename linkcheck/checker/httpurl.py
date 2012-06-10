@@ -258,7 +258,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             if (self.headers and self.method == "HEAD" and
                 self.method_get_allowed):
                 # test for HEAD support
-                mime = self.get_content_type()
                 poweredby = self.getheader('X-Powered-By', u'')
                 server = self.getheader('Server', u'')
                 if (poweredby.startswith('Zope') or server.startswith('Zope')

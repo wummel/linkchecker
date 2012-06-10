@@ -153,6 +153,13 @@
 # Pause the given number of seconds between two subsequent connection
 # requests to the same host.
 #pause=0
+# When checking finishes, write a memory dump to a temporary file.
+# The memory dump is written both when checking finishes normally
+# and when checking gets canceled.
+# The memory dump only works if the python-meliae package is installed.
+# Otherwise a warning is printed to install it.
+#debugmemory=0
+
 
 ##################### filtering options ##########################
 [filtering]

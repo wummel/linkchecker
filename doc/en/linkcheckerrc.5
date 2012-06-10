@@ -103,6 +103,16 @@ Pause the given number of seconds between two subsequent connection
 requests to the same host.
 .br
 Command line option: \fB\-\-pause\fP
+.TP
+\fBdebugmemory=\fP[\fB0\fP|\fB1\fP]
+When checking finishes, write a memory dump to a temporary file.
+The memory dump is written both when checking finishes normally
+and when checking gets canceled.
+.br
+The memory dump only works if the python-meliae package is installed.
+Otherwise a warning is printed to install it.
+.br
+Command line option: none
 .SS \fB[filtering]\fP
 .TP
 \fBignore=\fP\fIREGEX\fP (MULTILINE)

@@ -8,6 +8,7 @@ Fixes:
 Features:
 - installation: Support RPM building with cx_Freeze.
 - installation: Added .desktop files for POSIX systems.
+- checking: Allow writing of a memory dump file.
 
 
 7.8 "Gangster Exchange" (released 12.5.2012)

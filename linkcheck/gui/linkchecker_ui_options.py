@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/options.ui'
 #
-# Created: Thu Mar 15 21:43:48 2012
+# Created: Sun Jun 10 11:51:42 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -60,6 +60,14 @@ class Ui_Options(object):
         self.debug.setText(_fromUtf8(""))
         self.debug.setObjectName(_fromUtf8("debug"))
         self.formLayout.setWidget(2, QtGui.QFormLayout.FieldRole, self.debug)
+        self.label_7 = QtGui.QLabel(self.widget)
+        self.label_7.setToolTip(_fromUtf8(""))
+        self.label_7.setObjectName(_fromUtf8("label_7"))
+        self.formLayout.setWidget(3, QtGui.QFormLayout.LabelRole, self.label_7)
+        self.debugmemory = QtGui.QCheckBox(self.widget)
+        self.debugmemory.setText(_fromUtf8(""))
+        self.debugmemory.setObjectName(_fromUtf8("debugmemory"))
+        self.formLayout.setWidget(3, QtGui.QFormLayout.FieldRole, self.debugmemory)
         self.verticalLayout.addWidget(self.widget)
         spacerItem = QtGui.QSpacerItem(20, 10, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
@@ -135,6 +143,7 @@ class Ui_Options(object):
         self.label_2.setText(_("Verbose output"))
         self.verbose.setToolTip(_("Log all checked URLs once. Default is to log only errors and warnings."))
         self.label_4.setText(_("Debug"))
+        self.label_7.setText(_("Debug memory usage"))
         self.label_5.setText(_("Warn when one of these strings are found (one per line):"))
         self.label_6.setText(_("Ignore URLs matching one of these patterns (one per line):"))
         self.groupBox.setTitle(_("Configuration file"))

@@ -147,6 +147,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         self.read_boolean_option(section, "checkcss")
         self.read_boolean_option(section, "scanvirus")
         self.read_boolean_option(section, "clamavconf")
+        self.read_boolean_option(section, "debugmemory")
         if self.has_option(section, "cookies"):
             self.config["sendcookies"] = self.config["storecookies"] = \
                 self.getboolean(section, "cookies")

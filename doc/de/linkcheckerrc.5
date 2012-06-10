@@ -109,6 +109,17 @@ Pausiere die angegebene Anzahl von Sekunden zwischen zwei aufeinander
 folgenden Verbindungen zum demselben Rechner.
 .br
 Kommandozeilenoption: \fB\-\-pause\fP
+.TP 
+\fBdebugmemory=\fP[\fB0\fP|\fB1\fP]
+Schreibe einen Speicherabzug in eine temporäre Datei wenn die Prüfung
+endet. Der Speicherabzug wird sowohl beim normalen Beenden der Prüfung als
+auch wenn die Prüfung abgebrochen wird geschrieben.
+.br
+Der Speicherabzug funktioniert nur falls das Paket python\-meliae installiert
+ist. Andernfalls wird eine Warnung angezeigt mit dem Hinweis dieses Paket zu
+installieren.
+.br
+Kommandozeilenoption: keine
 .SS [filtering]
 .TP 
 \fBignore=\fP\fIREGEX\fP (MULTILINE)

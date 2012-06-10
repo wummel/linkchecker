@@ -182,6 +182,8 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         def set_idle ():
             """Set application status to idle."""
             self.status = Status.idle
+            if self.config["debugmemory"]:
+                self.dump_memory()
             self.set_statusmsg(_("Check finished."))
             self.controlButton.clicked.disconnect(self.checker.cancel)
         self.checker.finished.connect(set_idle)
@@ -253,6 +255,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.config["threads"] = 1
         else:
             self.config.reset_loglevel()
+        self.config["debugmemory"] = data["debugmemory"]
         if data["warninglines"]:
             lines = data["warninglines"].splitlines()
             ro = re.compile(warninglines2regex(lines))
@@ -426,6 +429,17 @@ Version 2 or later.
             self.cancel()
         else:
             raise ValueError("Invalid application status %r" % self.status)
+
+    def dump_memory (self):
+        """Dump memory to temporary file and inform user with a modal
+        dialog where the file is."""
+        from .. import memoryutil
+        self.set_statusmsg(_(u"Dumping memory statistics..."))
+        filename = memoryutil.write_memory_dump()
+        title = _(u"LinkChecker memory dump written")
+        message = _(u"The memory dump has been written to `%(filename)s'.")
+        attrs = dict(filename=filename)
+        QtGui.QMessageBox.information(self, title, message % attrs)
 
     def get_url (self):
         """Return URL to check from the urlinput widget."""
