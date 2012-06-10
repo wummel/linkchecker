@@ -195,7 +195,7 @@ def init_mimedb():
     # For Opera bookmark files (opera6.adr)
     add_mimetype(mimedb, 'text/plain', '.adr')
     # To recognize PHP files as HTML with content check.
-    add_mimetype(mimedb, 'text/plain', '.php')
+    add_mimetype(mimedb, 'application/x-httpd-php', '.php')
 
 
 def add_mimetype(mimedb, mimetype, extension):

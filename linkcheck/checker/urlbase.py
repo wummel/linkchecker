@@ -957,7 +957,7 @@ class UrlBase (object):
         base_ref = urlutil.url_norm(base)[0]
         url_data = get_url_from(url, self.recursion_level+1, self.aggregate,
             parent_url=self.url, base_ref=base_ref, line=line, column=column,
-            name=name)
+            name=name, parent_content_type=self.content_type)
         self.aggregate.urlqueue.put(url_data)
 
     def parse_opera (self):

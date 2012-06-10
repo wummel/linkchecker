@@ -50,7 +50,7 @@ def absolute_url (base_url, base_ref, parent_url):
 
 def get_url_from (base_url, recursion_level, aggregate,
                   parent_url=None, base_ref=None, line=0, column=0,
-                  name=u""):
+                  name=u"", parent_content_type=None):
     """
     Get url data from given base data.
 
@@ -86,7 +86,12 @@ def get_url_from (base_url, recursion_level, aggregate,
     if not (url or name):
         # use filename as base url, with slash as path seperator
         name = base_url.replace("\\", "/")
-    klass = get_urlclass_from(url)
+    if parent_content_type == 'application/x-httpd-php' and \
+       '<?' in base_url and url.startswith('file:'):
+        # ignore URLs from local PHP files with execution directives
+        klass = ignoreurl.IgnoreUrl
+    else:
+        klass = get_urlclass_from(url)
     return klass(base_url, recursion_level, aggregate,
                  parent_url=parent_url, base_ref=base_ref,
                  line=line, column=column, name=name)
@@ -157,4 +162,4 @@ class StoringHandler (logging.Handler):
 
 # all the URL classes
 from . import (fileurl, unknownurl, ftpurl, httpurl,
-    httpsurl, mailtourl, telneturl, nntpurl)
+    httpsurl, mailtourl, telneturl, nntpurl, ignoreurl)
