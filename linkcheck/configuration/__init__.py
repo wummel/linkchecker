@@ -193,6 +193,7 @@ class Configuration (dict):
         self["clamavconf"] = clamav.canonical_clamav_conf()
         self["useragent"] = UserAgent
         self["debugmemory"] = False
+        self["localwebroot"] = None
         from ..logger import Loggers
         self.loggers = dict(**Loggers)
 

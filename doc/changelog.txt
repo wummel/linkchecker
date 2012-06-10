@@ -10,6 +10,9 @@ Changes:
   directives of the form "<? ?>".
   Prevents false errors when checking local PHP files.
   Closes: SF bug #3532763
+- checking: Allow configuration of local webroot directory to
+  enable checking of local HTML files with absolute URLs.
+  Closes: SF bug #3533203
 
 Features:
 - installation: Support RPM building with cx_Freeze.

@@ -159,6 +159,15 @@
 # The memory dump only works if the python-meliae package is installed.
 # Otherwise a warning is printed to install it.
 #debugmemory=0
+# When checking absolute URLs inside local files, the given root directory
+# is used as base URL.
+# Note that the given directory must have URL syntax, so it must use a slash
+# to join directories instead of a backslash.
+# And the given directory must end with a slash.
+# Unix example:
+#localwebroot=/var/www/
+# Windows example:
+#localwebroot=/C|/public_html/
 
 
 ##################### filtering options ##########################

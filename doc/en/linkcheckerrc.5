@@ -113,6 +113,16 @@ The memory dump only works if the python-meliae package is installed.
 Otherwise a warning is printed to install it.
 .br
 Command line option: none
+.TP
+\fBlocalwebroot=\fP\fISTRING\fP
+When checking absolute URLs inside local files, the given root directory
+is used as base URL.
+.br
+Note that the given directory must have URL syntax, so it must use a slash
+to join directories instead of a backslash.
+And the given directory must end with a slash.
+.br
+Command line option: none
 .SS \fB[filtering]\fP
 .TP
 \fBignore=\fP\fIREGEX\fP (MULTILINE)
