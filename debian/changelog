@@ -1,9 +1,11 @@
-linkchecker (7.9-1) UNRELEASED; urgency=low
+linkchecker (7.9-1) unstable; urgency=low
 
-  * New upstream release.
+  * New upstream release (Closes: #674996)
   * Add missing dependency on python-qt4-sql for linkchecker-gui.
+  * Standards version 3.9.3.1
+  * Suggest python-meliae for memory debugging.
 
- -- Bastian Kleineidam <calvin@debian.org>  Wed, 23 May 2012 06:55:45 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Mon, 11 Jun 2012 07:17:23 +0200
 
 linkchecker (7.8-1) unstable; urgency=low
 
