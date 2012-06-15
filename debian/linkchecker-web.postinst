@@ -24,8 +24,6 @@ if [ "$1" = "configure" ]; then
     apache2_invoke enconf $CONF
   elif dpkg-query -f '${Version}' -W 'apache2.2-common' >/dev/null 2>&1; then
     # apache 2.2
-    # the configuration uses <IfVersion>
-    a2enmod -q version
     # the web interface uses content negotiation
     a2enmod -q negotiation
     [ -d /etc/apache2/conf.d/ ] && [ ! -L /etc/apache2/conf.d/$CONF.conf ] && ln -s ../conf-available/$CONF.conf /etc/apache2/conf.d/$CONF.conf

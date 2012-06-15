@@ -1,3 +1,9 @@
+linkchecker (7.9-2) unstable; urgency=low
+
+  * Fix postinstallation script of linkchecker-web. (Closes: #677163)
+
+ -- Bastian Kleineidam <calvin@debian.org>  Tue, 12 Jun 2012 07:33:19 +0200
+
 linkchecker (7.9-1) unstable; urgency=low
 
   * New upstream release (Closes: #674996)
