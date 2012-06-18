@@ -46,7 +46,10 @@ or query is requested. All redirections are followed, and
 if user/password is given it will be used as authorization
 when necessary.
 Permanently moved pages (status code 301) issue a warning.
-All final HTTP status codes other than 2xx are errors.</p></li>
+All final HTTP status codes other than 2xx are errors.</p>
+
+<p>For HTTPS links, the SSL certificate is checked against the
+given hostname. If it does not match, a warnings is printed.</p></li>
 <li><p>Local files (<code>file:</code>)</p>
 
 <p>A regular, readable file that can be opened is valid. A readable

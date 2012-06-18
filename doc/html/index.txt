@@ -22,6 +22,9 @@ checking. All connection check types are described below.
   when necessary.
   Permanently moved pages (status code 301) issue a warning.
   All final HTTP status codes other than 2xx are errors.
+  
+  For HTTPS links, the SSL certificate is checked against the
+  given hostname. If it does not match, a warnings is printed.
 
 - Local files (``file:``)
   

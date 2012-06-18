@@ -1195,10 +1195,16 @@ else:
         default_port = HTTPS_PORT
 
         def __init__(self, host, port=None, key_file=None, cert_file=None,
-                     strict=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
+                     strict=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT,
+                     ca_certs=None):
             HTTPConnection.__init__(self, host, port, strict, timeout)
             self.key_file = key_file
             self.cert_file = cert_file
+            self.ca_certs = ca_certs
+            if self.ca_certs:
+                self.cert_reqs = ssl.CERT_REQUIRED
+            else:
+                self.cert_reqs = ssl.CERT_NONE
 
         def connect(self):
             "Connect to a host on a given (SSL) port."
@@ -1207,7 +1213,9 @@ else:
             if self._tunnel_host:
                 self.sock = sock
                 self._tunnel()
-            self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file)
+            self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file,
+                                        cert_reqs=self.cert_reqs,
+                                        ca_certs=self.ca_certs)
 
     __all__.append("HTTPSConnection")
 

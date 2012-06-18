@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2011 Bastian Kleineidam
+# Copyright (C) 2000-2012 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -91,6 +91,7 @@ WARN_HTTP_COOKIE_STORE_ERROR = "http-cookie-store-error"
 WARN_HTTP_DECOMPRESS_ERROR = "http-decompress-error"
 WARN_HTTP_UNSUPPORTED_ENCODING = "http-unsupported-encoding"
 WARN_HTTP_AUTH_UNKNOWN = "http-auth-unknonwn"
+WARN_HTTPS_CERTIFICATE = "https-certificate-error"
 WARN_IGNORE_URL = "ignore-url"
 WARN_MAIL_NO_MX_HOST = "mail-no-mx-host"
 WARN_MAIL_UNVERIFIED_ADDRESS = "mail-unverified-address"
@@ -128,6 +129,7 @@ Warnings = {
         _("The URL content is encoded with an unknown encoding."),
     WARN_HTTP_AUTH_UNKNOWN:
         _("Unsupported HTTP authentication method."),
+    WARN_HTTPS_CERTIFICATE: _("The SSL certificate had an error."),
     WARN_IGNORE_URL: _("The URL has been ignored."),
     WARN_MAIL_NO_MX_HOST: _("The mail MX host could not be found."),
     WARN_MAIL_UNVERIFIED_ADDRESS:

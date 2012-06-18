@@ -90,6 +90,32 @@ def get_modules_info ():
     return lines
 
 
+def get_share_file (devel_dir, filename):
+    """Return a filename in the share directory.
+    @param devel_dir: directory to search when developing
+    @ptype devel_dir: string
+    @param filename: filename to search for
+    @ptype filename: string
+    @return: the found filename or None
+    @rtype: string or None
+    """
+    paths = [
+        # when developing
+        devel_dir,
+        # when running under py2exe
+        os.path.join(os.path.dirname(os.path.abspath(sys.executable)),
+                     "share", "linkchecker"),
+        # after installing as a package
+        configdata.config_dir,
+    ]
+    for path in paths:
+        fullpath = os.path.join(path, filename)
+        if os.path.isfile(fullpath):
+            return fullpath
+    # not found
+    return None
+
+
 # dynamic options
 class Configuration (dict):
     """

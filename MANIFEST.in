@@ -2,6 +2,7 @@ include README.txt doc/install.txt COPYING doc/upgrading.txt
 include MANIFEST.in doc/changelog.txt
 include config/linkchecker-completion config/create.sql
 include config/linkcheckerrc
+include config/ca-certificates.crt
 include config/linkchecker.apache2.conf install-rpm.sh
 include linkchecker.freecode
 include cgi-bin/lc.wsgi cgi-bin/README

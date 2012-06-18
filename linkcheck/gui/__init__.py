@@ -161,19 +161,8 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
     def get_qhcpath (self):
         """Helper function to search for the QHC help file in different
         locations."""
-        paths = [
-            # when developing
-            os.path.join(configuration.configdata.install_data, "doc", "html"),
-            # when running under py2exe
-            os.path.join(os.path.dirname(os.path.abspath(sys.executable)), "share", "linkchecker"),
-            # after installing as a package
-            configuration.configdata.config_dir,
-        ]
-        for path in paths:
-            qhcfile = os.path.join(path, "lccollection.qhc")
-            if os.path.isfile(qhcfile):
-                break
-        return qhcfile
+        devel_dir = os.path.join(configuration.configdata.install_data, "doc", "html")
+        return configuration.get_share_file(devel_dir, 'lccollection.qhc')
 
     def connect_widgets (self):
         """Connect widget signals. Some signals use the AutoConnect feature.

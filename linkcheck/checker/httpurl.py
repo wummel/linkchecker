@@ -20,6 +20,7 @@ Handle http links.
 
 import urlparse
 import urllib
+import os
 import re
 import errno
 import zlib
@@ -27,7 +28,8 @@ import socket
 from cStringIO import StringIO
 
 from .. import (log, LOG_CHECK, gzip2 as gzip, strformat, url as urlutil,
-    httplib2 as httplib, LinkCheckerError, get_link_pat, httputil)
+    httplib2 as httplib, LinkCheckerError, get_link_pat, httputil,
+    configuration)
 from . import (internpaturl, proxysupport, httpheaders as headers, urlbase,
     get_url_from)
 # import warnings
@@ -643,7 +645,9 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if scheme == "http":
             h = httplib.HTTPConnection(host)
         elif scheme == "https" and supportHttps:
-            h = httplib.HTTPSConnection(host)
+            devel_dir = os.path.join(configuration.configdata.install_data, "config")
+            ca_certs = configuration.get_share_file(devel_dir, 'ca-certificates.crt')
+            h = httplib.HTTPSConnection(host, ca_certs=ca_certs)
         else:
             msg = _("Unsupported HTTP url scheme `%(scheme)s'") % {"scheme": scheme}
             raise LinkCheckerError(msg)

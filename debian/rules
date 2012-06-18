@@ -31,8 +31,6 @@ ETCDIRWEB=$(ROOTDIRWEB)/etc
 
 override_dh_auto_install-arch:
 	dh_auto_install --buildsystem python_distutils
-# install system wide configuration files in etc
-	install -m 644 config/linkcheckerrc $(ETCDIR)/linkchecker/
 # install bash_completion script
 	install -m 644 config/linkchecker-completion $(ETCDIR)/bash_completion.d
 # install .mo files

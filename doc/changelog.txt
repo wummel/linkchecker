@@ -1,5 +1,8 @@
 8.0 "" (released xx.xx.2012)
 
+Features:
+- checking: Verify SSL certificates for HTTPS connections.
+
 
 7.9 "The Dark Knight" (released 10.6.2012)
 
