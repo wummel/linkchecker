@@ -70,6 +70,7 @@ Modules = (
     ("twill", u"Twill"),
     ("sqlite3", u"Sqlite"),
     ("gconf", u"Gconf"),
+    ("meliae", u"Meliae"),
 )
 
 def get_modules_info ():
