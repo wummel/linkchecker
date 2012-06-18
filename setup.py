@@ -92,7 +92,7 @@ except ImportError:
     has_py2app = False
 
 # the application version
-AppVersion = "7.9"
+AppVersion = "8.0"
 # the application name
 AppName = "LinkChecker"
 
@@ -594,7 +594,7 @@ myemail = "calvin@users.sourceforge.net"
 
 data_files = [
     ('share/linkchecker',
-        ['config/linkcheckerrc',
+        ['config/linkcheckerrc', 'config/ca-certificates.crt',
         'doc/html/lccollection.qhc', 'doc/html/lcdoc.qch']),
     ('share/linkchecker/examples',
         ['cgi-bin/lconline/leer.html.en',

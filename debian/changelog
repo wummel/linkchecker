@@ -1,3 +1,9 @@
+linkchecker (8.0-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+
+ -- Bastian Kleineidam <calvin@debian.org>  Mon, 18 Jun 2012 22:23:23 +0200
+
 linkchecker (7.9-2) unstable; urgency=low
 
   * Fix postinstallation script of linkchecker-web. (Closes: #677163)

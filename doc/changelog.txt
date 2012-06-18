@@ -1,3 +1,6 @@
+8.0 "" (released xx.xx.2012)
+
+
 7.9 "The Dark Knight" (released 10.6.2012)
 
 Fixes:
