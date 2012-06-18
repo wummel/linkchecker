@@ -34,7 +34,7 @@ pointing outside of the domain are also checked for validity.</p>
 
 <h2>Performed checks</h2>
 
-<p>All URLs have to pass a preliminary syntax test. Minor quoting
+<p>All URLs have to pass a preliminary syntax test.
 After the syntax check passes, the URL is queued for connection
 checking. All connection check types are described below.</p>
 
@@ -45,7 +45,7 @@ checking. All connection check types are described below.</p>
 or query is requested. All redirections are followed, and
 if user/password is given it will be used as authorization
 when necessary.
-Permanently moved pages issue a warning.
+Permanently moved pages (status code 301) issue a warning.
 All final HTTP status codes other than 2xx are errors.</p></li>
 <li><p>Local files (<code>file:</code>)</p>
 
@@ -59,11 +59,11 @@ checked.</p></li>
 <li><p>Mail links (<code>mailto:</code>)</p>
 
 <p>A mailto: link resolves to a list of email addresses.
-If one address fails the whole list will fail.
-For each mail address the following things are checked:</p>
+If one email address fails the whole list will fail.
+For each email address the following things are checked:</p>
 
 <ol>
-<li>Check the adress syntax, both the part before and after
+<li>Check the address syntax, both the part before and after
 the @ sign.</li>
 <li>Look up the MX DNS records. If no MX record is found,
 print an error.</li>
@@ -129,6 +129,7 @@ prominent of them are JavaScript links.</p>
 <li><code>service:</code>   (service location)</li>
 <li><code>shttp:</code>     (secure HTTP)</li>
 <li><code>sip:</code>       (session initiation protocol)</li>
+<li><code>skype:</code>     (Skype)</li>
 <li><code>steam:</code>     (Steam browser protocol)</li>
 <li><code>tel:</code>       (telephone)</li>
 <li><code>tip:</code>       (Transaction Internet Protocol)</li>
@@ -148,11 +149,12 @@ conditions. The conditions are checked in this order:</p>
 <ol>
 <li>The URL must be valid.</li>
 <li>The URL must be parseable. This currently includes HTML files,
-Opera bookmarks files, directories and on Windows systems MS Word
-files if Word is installed on your system. If a file type cannot
-be determined (for example it does not have a common HTML file
-extension, and the content does not look like HTML), it is assumed
-to be non-parseable.</li>
+Bookmarks files (Opera, Chrome or Safari), directories and on
+Windows systems MS Word files if Word and the Pywin32 module
+is installed on your system.
+If a file type cannot be determined (for example it does not have
+a common HTML file extension, and the content does not look like
+HTML), it is assumed to be non-parseable.</li>
 <li>The URL content must be retrievable. This is usually the case
 except for example mailto: or unknown URL types.</li>
 <li>The maximum recursion level must not be exceeded. It is configured
@@ -182,7 +184,7 @@ checking or filtering.</p>
 <li><code>~/.linkchecker/linkcheckerrc</code></li>
 </ul>
 
-<p>On Windows the user configuration file is at</p>
+<p>On Windows systems the user configuration file is at</p>
 
 <ul>
 <li><code>%HOMEPATH%\.linkchecker\linkcheckerrc</code></li>

@@ -10,7 +10,7 @@ pointing outside of the domain are also checked for validity.
 
 ## Performed checks
 
-All URLs have to pass a preliminary syntax test. Minor quoting
+All URLs have to pass a preliminary syntax test.
 After the syntax check passes, the URL is queued for connection
 checking. All connection check types are described below.
 
@@ -20,7 +20,7 @@ checking. All connection check types are described below.
   or query is requested. All redirections are followed, and
   if user/password is given it will be used as authorization
   when necessary.
-  Permanently moved pages issue a warning.
+  Permanently moved pages (status code 301) issue a warning.
   All final HTTP status codes other than 2xx are errors.
 
 - Local files (``file:``)
@@ -36,10 +36,10 @@ checking. All connection check types are described below.
 - Mail links (``mailto:``)
   
   A mailto: link resolves to a list of email addresses.
-  If one address fails the whole list will fail.
-  For each mail address the following things are checked:
+  If one email address fails the whole list will fail.
+  For each email address the following things are checked:
   
-  1. Check the adress syntax, both the part before and after
+  1. Check the address syntax, both the part before and after
      the @ sign.
   2. Look up the MX DNS records. If no MX record is found,
      print an error.
@@ -105,6 +105,7 @@ checking. All connection check types are described below.
   - ``service:``   (service location)
   - ``shttp:``     (secure HTTP)
   - ``sip:``       (session initiation protocol)
+  - ``skype:``     (Skype)
   - ``steam:``     (Steam browser protocol)
   - ``tel:``       (telephone)
   - ``tip:``       (Transaction Internet Protocol)
@@ -122,11 +123,12 @@ conditions. The conditions are checked in this order:
 
 1. The URL must be valid.
 2. The URL must be parseable. This currently includes HTML files,
-   Opera bookmarks files, directories and on Windows systems MS Word
-   files if Word is installed on your system. If a file type cannot
-   be determined (for example it does not have a common HTML file
-   extension, and the content does not look like HTML), it is assumed
-   to be non-parseable.
+   Bookmarks files (Opera, Chrome or Safari), directories and on
+   Windows systems MS Word files if Word and the Pywin32 module
+   is installed on your system.
+   If a file type cannot be determined (for example it does not have
+   a common HTML file extension, and the content does not look like
+   HTML), it is assumed to be non-parseable.
 3. The URL content must be retrievable. This is usually the case
    except for example mailto: or unknown URL types.
 4. The maximum recursion level must not be exceeded. It is configured
@@ -154,6 +156,6 @@ On Unix or OS X systems the user configuration file is at
 
 - ``~/.linkchecker/linkcheckerrc``
 
-On Windows the user configuration file is at
+On Windows systems the user configuration file is at
 
 - ``%HOMEPATH%\.linkchecker\linkcheckerrc``
