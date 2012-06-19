@@ -2,6 +2,7 @@
 
 Features:
 - checking: Verify SSL certificates for HTTPS connections.
+- cmdline: Added Nagios plugin script.
 
 
 7.9 "The Dark Knight" (released 10.6.2012)
