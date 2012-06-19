@@ -347,6 +347,8 @@ class Logger (object):
                      {'url': configuration.Url})
         self.comment(_("Write comments and bugs to %(url)s") %
                      {'url': configuration.SupportUrl})
+        self.comment(_("Support this project at %(url)s") %
+                     {'url': configuration.DonateUrl})
         self.check_date()
 
     def write_outro (self):
