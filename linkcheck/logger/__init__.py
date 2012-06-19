@@ -23,7 +23,7 @@ import os
 import datetime
 import time
 import codecs
-from ..decorators import notimplemented
+import abc
 from .. import log, LOG_CHECK, strformat, dummy, configuration, i18n
 
 _ = lambda x: x
@@ -154,6 +154,7 @@ class Logger (object):
     * log_url(url_data)
         Log a checked URL. Called by log_filter_url if do_print is True.
     """
+    __metaclass__ = abc.ABCMeta
 
     def __init__ (self, **args):
         """
@@ -356,14 +357,14 @@ class Logger (object):
              {"time": strformat.strtime(self.stoptime),
               "duration": strformat.strduration_long(duration)})
 
-    @notimplemented
+    @abc.abstractmethod
     def log_url (self, url_data):
         """
         Log a new url with this logger.
         """
         pass
 
-    @notimplemented
+    @abc.abstractmethod
     def end_output (self):
         """
         End of output, used for cleanup (eg output buffer flushing).
