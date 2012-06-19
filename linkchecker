@@ -237,6 +237,7 @@ def has_encoding (encoding):
 
 # instantiate option parser and configure options
 class MyOptionParser (LCOptionParser):
+    """Option parser for LinkChecker commandline client."""
 
     def get_usage (self):
         """Return translated usage text."""
