@@ -6,7 +6,7 @@ PLATFORM:=$(shell $(PYTHON) -c "from distutils.util import get_platform; print g
 FILESCHECK_URL:=http://localhost/~calvin/
 PYTHONSRC:=${HOME}/src/cpython-hg/Lib
 #PYTHONSRC:=/usr/lib/$(PYTHON)
-PY_FILES_DIRS:=linkcheck tests *.py linkchecker linkchecker-gui cgi-bin config doc
+PY_FILES_DIRS:=linkcheck tests *.py linkchecker linkchecker-nagios linkchecker-gui cgi-bin config doc
 TESTS ?= tests/
 # set test options, eg. to "--nologcapture"
 TESTOPTS=
@@ -186,6 +186,7 @@ doccheck:
 	  cgi-bin/lc.wsgi \
 	  linkchecker \
 	  linkchecker-gui \
+	  linkchecker-nagios \
 	  *.py
 
 filescheck: localbuild
@@ -252,7 +253,7 @@ gui:
 
 .PHONY: count
 count:
-	@sloccount linkchecker linkchecker-gui linkcheck | grep "Total Physical Source Lines of Code"
+	@sloccount linkchecker linkchecker-gui linkchecker-nagios linkcheck | grep "Total Physical Source Lines of Code"
 
 # run eclipse ide
 .PHONY: ide

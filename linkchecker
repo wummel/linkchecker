@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python -u
 # -*- coding: iso-8859-1 -*-
 # Copyright (C) 2000-2012 Bastian Kleineidam
 #
@@ -33,6 +33,8 @@ import linkcheck
 # override optparse gettext method with the one from linkcheck.init_i18n()
 optparse._ = _
 # now import the rest of the linkchecker gang
+from linkcheck.cmdline import print_version, print_usage, LCOptionParser, \
+  aggregate_url
 from linkcheck import log, LOG_CMDLINE, i18n, strformat
 import linkcheck.checker
 import linkcheck.configuration
@@ -195,19 +197,6 @@ file entry:
            for tag, desc in sorted(linkcheck.checker.const.Warnings.items())])
 
 
-def print_version ():
-    """Print the program version and exit."""
-    console.print_version()
-    sys.exit(0)
-
-
-def print_usage (msg):
-    """Print a program msg text to stderr and exit."""
-    print >> console.stderr, _("Error: %(msg)s") % {"msg": msg}
-    print >> console.stderr, _("Execute 'linkchecker -h' for help")
-    sys.exit(1)
-
-
 def viewprof ():
     """Print profiling data and exit."""
     if not has_pstats:
@@ -246,62 +235,8 @@ def has_encoding (encoding):
     except LookupError:
         return False
 
-
-class LCHelpFormatter (optparse.IndentedHelpFormatter, object):
-    """Help formatter indenting paragraph-wise."""
-
-    def __init__ (self):
-        """Set current console width for this formatter."""
-        width = linkcheck.ansicolor.get_columns(sys.stdout)
-        super(LCHelpFormatter, self).__init__(width=width)
-
-    def format_option (self, option):
-        """Customized help display with indentation."""
-        # The help for each option consists of two parts:
-        #   * the opt strings and metavars
-        #     eg. ("-x", or "-fFILENAME, --file=FILENAME")
-        #   * the user-supplied help string
-        #     eg. ("turn on expert mode", "read data from FILENAME")
-
-        # If possible, we write both of these on the same line:
-        #   -x      turn on expert mode
-
-        # But if the opt string list is too long, we put the help
-        # string on a second line, indented to the same column it would
-        # start in if it fit on the first line.
-        #   -fFILENAME, --file=FILENAME
-        #           read data from FILENAME
-        result = []
-        opts = self.option_strings[option]
-        opt_width = self.help_position - self.current_indent - 2
-        if len(opts) > opt_width:
-            opts = "%*s%s\n" % (self.current_indent, "", opts)
-            indent_first = self.help_position
-        else:                       # start help on same line as opts
-            opts = "%*s%-*s  " % (self.current_indent, "", opt_width, opts)
-            indent_first = 0
-        result.append(opts)
-        if option.help:
-            text = strformat.wrap(option.help, self.help_width)
-            help_lines = text.splitlines()
-            result.append("%*s%s\n" % (indent_first, "", help_lines[0]))
-            result.extend(["%*s%s\n" % (self.help_position, "", line)
-                           for line in help_lines[1:]])
-        elif opts[-1] != "\n":
-            result.append("\n")
-        return "".join(result)
-
-
-class LCOptionParser (optparse.OptionParser, object):
-    """Option parser with custom help text layout."""
-
-    def __init__ (self):
-        """Initializing using our own help formatter class."""
-        super(LCOptionParser, self).__init__(formatter=LCHelpFormatter())
-
-    def error (self, msg):
-        """Print usage info and given message."""
-        print_usage(msg)
+# instantiate option parser and configure options
+class MyOptionParser (LCOptionParser):
 
     def get_usage (self):
         """Return translated usage text."""
@@ -312,15 +247,10 @@ class LCOptionParser (optparse.OptionParser, object):
         s = u"%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" % (self.format_help(),
                  Examples, LoggerTypes, RegularExpressions, CookieFormat,
                  ProxySupport, Notes, Retval, Warnings)
-        s = console.encode(s)
-        if linkcheck.fileutil.is_tty(sys.stdout):
-            strformat.paginate(s)
-        else:
-            print s
-        sys.exit(0)
+        self.print_help_msg(s)
 
 # instantiate option parser and configure options
-optparser = LCOptionParser()
+optparser = MyOptionParser()
 
 # build a config object for this check session
 config = linkcheck.configuration.Configuration()
@@ -522,26 +452,6 @@ if has_optcomplete:
                 for f in os.listdir(os.path.expanduser(listdir))
                 if f.startswith(lhs)]
     optcomplete.autocomplete(optparser, arg_completer=FileCompleter)
-
-
-def aggregate_url (aggregate, config, url):
-    """Append given commandline URL to input queue."""
-    get_url_from = linkcheck.checker.get_url_from
-    if url.lower().startswith("www."):
-        # syntactic sugar
-        url = "http://%s" % url
-    elif url.lower().startswith("ftp."):
-        # syntactic sugar
-        url = "ftp://%s" % url
-    url_data = get_url_from(url, 0, aggregate)
-    try:
-        linkcheck.add_intern_pattern(url_data, config)
-    except UnicodeError:
-        log.error(LOG_CMDLINE,
-            _("URL has unparsable domain name: %(domain)s") %
-            {"domain": sys.exc_info()[1]})
-        sys.exit(1)
-    aggregate.urlqueue.put(url_data)
 
 
 def read_stdin_urls ():

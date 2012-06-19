@@ -29,6 +29,9 @@ It includes the following features:
 - automatic MANIFEST.in check
 - automatic generation of .mo locale files
 - automatic permission setting on POSIX systems for installed files
+
+Because of all the features, this script is nasty and big.
+Change it very careful.
 """
 
 import sys
@@ -581,7 +584,7 @@ library_dirs = []
 # libraries
 libraries = []
 # scripts
-scripts = ['linkchecker', 'linkchecker-gui']
+scripts = ['linkchecker', 'linkchecker-gui', 'linkchecker-nagios']
 
 if os.name == 'nt':
     # windows does not have unistd.h
