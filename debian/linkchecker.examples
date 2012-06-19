@@ -5,3 +5,4 @@ doc/examples/linkcheckerrc_loginurl
 doc/examples/filter_xml_output.py
 doc/robots.txt.example
 config/create.sql
+linkchecker-nagios
