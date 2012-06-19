@@ -330,9 +330,9 @@ group = optparse.OptionGroup(optparser, _("General options"))
 group.add_option("-f", "--config", type="string", dest="configfile",
                  metavar="FILENAME",
                  help=_(
-"""Use FILENAME as configuration file. Per default LinkChecker first
-searches /etc/linkchecker/linkcheckerrc and then ~/.linkchecker/linkcheckerrc
-(under Windows <path-to-program>\\linkcheckerrc)."""))
+"""Use FILENAME as configuration file. Per default LinkChecker uses
+~/.linkchecker/linkcheckerrc (under Windows
+%HOMEPATH%\\.linkchecker\\linkcheckerrc)."""))
 group.add_option("-t", "--threads", type="int", dest="threads",
                  metavar="NUMBER",
                  help=_(
