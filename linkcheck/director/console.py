@@ -121,13 +121,32 @@ def print_locale_info (out=stderr):
         print_env_info(key, out=out)
     print >> out, _("Default locale:"), i18n.get_locale()
 
-
+# Environment variables influencing the interpreter execution
+# See python(1) man page.
+PYTHON_ENV_VARS = (
+    'PYTHONHOME',
+    'PYTHONPATH',
+    'PYTHONSTARTUP',
+    'PYTHONY2K',
+    'PYTHONOPTIMIZE',
+    'PYTHONDEBUG',
+    'PYTHONDONTWRITEBYTECODE',
+    'PYTHONINSPECT',
+    'PYTHONIOENCODING',
+    'PYTHONNOUSERSITE',
+    'PYTHONUNBUFFERED',
+    'PYTHONVERBOSE',
+    'PYTHONWARNINGS',
+    'PYTHONHASHSEED',
+)
 def print_app_info (out=stderr):
     """Print system and application info (output defaults to stderr)."""
     print >> out, _("System info:")
     print >> out, configuration.App
     print >> out, _("Python %(version)s on %(platform)s") % \
                     {"version": sys.version, "platform": sys.platform}
+    for key in PYTHON_ENV_VARS:
+        print_env_info(key, out=out)
     for line in configuration.get_modules_info():
         print >> out, line
     stime = strformat.strtime(time.time())
