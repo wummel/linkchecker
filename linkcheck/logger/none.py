@@ -43,6 +43,10 @@ class NoneLogger (Logger):
         """
         pass
 
+    def log_url (self, url_data):
+        """Do nothing."""
+        pass
+
     def end_output (self):
         """
         Do nothing.
