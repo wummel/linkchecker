@@ -123,6 +123,16 @@ to join directories instead of a backslash.
 And the given directory must end with a slash.
 .br
 Command line option: none
+.TP
+\fBwarnsslcertdaysvalid=\fP\fINUMBER\fP
+Check that SSL certificates are at least the given number of days valid.
+The number must not be negative.
+If the number of days is zero a warning is printed only for certificates
+that are already expired.
+.br
+The default number of days is 14.
+.br
+Command line option: none
 .SS \fB[filtering]\fP
 .TP
 \fBignore=\fP\fIREGEX\fP (MULTILINE)

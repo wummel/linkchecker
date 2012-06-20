@@ -61,6 +61,17 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         if self.has_option(section, option):
             self.config[option] = self.getboolean(section, option)
 
+    def read_int_option (self, section, option, key=None, allownegative=False):
+        """Read an integer option."""
+        if self.has_option(section, option):
+            num = self.getint(section, option)
+            if not allownegative and num < 0:
+                raise LinkCheckerError(
+                    _("invalid negative value for %s: %d\n") % (option, num))
+            if key is None:
+                key = option
+            self.config[key] = num
+
     def read_output_config (self):
         """Read configuration options in section "output"."""
         section = "output"
@@ -112,12 +123,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         if self.has_option(section, "threads"):
             num = self.getint(section, "threads")
             self.config['threads'] = max(0, num)
-        if self.has_option(section, "timeout"):
-            num = self.getint(section, "timeout")
-            if num < 0:
-                raise LinkCheckerError(
-                    _("invalid negative value for timeout: %d\n") % num)
-            self.config['timeout'] = num
+        self.read_int_option(section, "timeout")
         self.read_boolean_option(section, "anchors")
         if self.has_option(section, "recursionlevel"):
             num = self.getint(section, "recursionlevel")
@@ -133,12 +139,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             self.config["nntpserver"] = self.get(section, "nntpserver")
         if self.has_option(section, "useragent"):
             self.config["useragent"] = self.get(section, "useragent")
-        if self.has_option(section, "pause"):
-            num = self.getint(section, "pause")
-            if num < 0:
-                raise LinkCheckerError(
-                    _("invalid negative value for pause: %d\n") % num)
-            self.config["wait"] = num
+        self.read_int_option(section, "pause", key="wait")
         self.read_check_options(section)
 
     def read_check_options (self, section):
@@ -155,6 +156,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             self.config['cookiefile'] = self.get(section, 'cookiefile')
         if self.has_option(section, "localwebroot"):
             self.config['localwebroot'] = self.get(section, 'localwebroot')
+        self.read_int_option(section, "warnsslcertdaysvalid")
 
     def read_authentication_config (self):
         """Read configuration options in section "authentication"."""

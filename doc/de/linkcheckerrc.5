@@ -131,6 +131,15 @@ Aneinanderfügen von Verzeichnissen benutzen. Und das angegebene Verzeichnis
 muss mit einem Schrägstrich enden.
 .br
 Kommandozeilenoption: keine
+.TP 
+\fBwarnsslcertdaysvalid=\fP\fINUMBER\fP
+Prüfe ob SSL\-Zertifikate mindestens die angegebene Anzahl an Tagen gültig
+sind. Die Anzahl darf nicht negativ sein. Falls die Anzahl Null ist wird
+eine Warnung nur für Zertifikate ausgegeben, die schon abgelaufen sind.
+.br
+The Standardanzahl an Tagen ist 14.
+.br
+Kommandozeilenoption: keine
 .SS [filtering]
 .TP 
 \fBignore=\fP\fIREGEX\fP (MULTILINE)

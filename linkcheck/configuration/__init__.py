@@ -221,6 +221,7 @@ class Configuration (dict):
         self["useragent"] = UserAgent
         self["debugmemory"] = False
         self["localwebroot"] = None
+        self["warnsslcertdaysvalid"] = 14
         from ..logger import Loggers
         self.loggers = dict(**Loggers)
 

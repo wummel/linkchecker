@@ -1,7 +1,8 @@
 8.0 "" (released xx.xx.2012)
 
 Features:
-- checking: Verify SSL certificates for HTTPS connections.
+- checking: Verify SSL certificates for HTTPS connections. Both the
+  hostname and the expiration date are checked.
 - cmdline: Added Nagios plugin script.
 
 

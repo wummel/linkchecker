@@ -168,6 +168,12 @@
 #localwebroot=/var/www/
 # Windows example:
 #localwebroot=/C|/public_html/
+# Check that SSL certificates are at least the given number of days valid.
+# The number must not be negative.
+# If the number of days is zero a warning is printed only for certificates
+# that are already expired.
+# The default number of days is 14.
+#sslcertwarndays=14
 
 
 ##################### filtering options ##########################

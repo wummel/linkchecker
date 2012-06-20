@@ -17,9 +17,10 @@
 """
 Handle https links.
 """
-
+import time
 from . import httpurl
 from .const import WARN_HTTPS_CERTIFICATE
+from .. import log, LOG_CHECK, strformat
 
 
 class HttpsUrl (httpurl.HttpUrl):
@@ -47,6 +48,7 @@ class HttpsUrl (httpurl.HttpUrl):
         OpenSSL already checked the SSL notBefore and notAfter dates.
         """
         cert = ssl_sock.getpeercert()
+        log.debug(LOG_CHECK, "Got SSL certificate %s", cert)
         if not cert:
             msg = _('empty or no certificate found')
             self.add_ssl_warning(ssl_sock, msg)
@@ -56,6 +58,11 @@ class HttpsUrl (httpurl.HttpUrl):
         else:
             msg = _('certificate did not include "subject" information')
             self.add_ssl_warning(ssl_sock, msg)
+        if 'notAfter' in cert:
+            self.check_ssl_valid_date(ssl_sock, cert)
+        else:
+            msg = _('certificate did not include "notAfter" information')
+            self.add_ssl_warning(ssl_sock, msg)
 
     def check_ssl_hostname(self, ssl_sock, cert, host):
         """Check the hostname against the certificate according to
@@ -64,6 +71,26 @@ class HttpsUrl (httpurl.HttpUrl):
         try:
             match_hostname(cert, host)
         except CertificateError, msg:
+            self.add_ssl_warning(ssl_sock, msg)
+
+    def check_ssl_valid_date(self, ssl_sock, cert):
+        """Check if the certificate is still valid, or if configured check
+        if it's at least a number of days valid.
+        """
+        import ssl
+        checkDaysValid = self.aggregate.config["warnsslcertdaysvalid"]
+        notAfter = ssl.cert_time_to_seconds(cert['notAfter'])
+        curTime = time.time()
+        # Calculate seconds until certifcate expires. Can be negative if
+        # the certificate is already expired.
+        secondsValid = notAfter - curTime
+        if secondsValid < 0:
+            msg = _('certficate is expired on %s') % cert['notAfter']
+            self.add_ssl_warning(ssl_sock, msg)
+        elif checkDaysValid > 0 and \
+              secondsValid < (checkDaysValid * strformat.SECONDS_PER_DAY):
+            strSecondsValid = strformat.str_duration_long(secondsValid)
+            msg = _('certificate is only %s valid') % strSecondsValid
             self.add_ssl_warning(ssl_sock, msg)
 
     def add_ssl_warning(self, ssl_sock, msg):
