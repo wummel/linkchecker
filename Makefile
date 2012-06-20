@@ -189,11 +189,13 @@ doccheck:
 	  linkchecker-nagios \
 	  *.py
 
+.PHONY: filescheck
 filescheck: localbuild
 	for out in text html gml sql csv xml gxml dot; do \
 	  ./linkchecker -o$$out -F$$out --complete -r1 -C $(FILESCHECK_URL) || exit 1; \
 	done
 
+.PHONY: update-copyright
 update-copyright:
 	update-copyright --holder="Bastian Kleineidam"
 
