@@ -105,7 +105,9 @@ def notimplemented (func):
     """Raises a NotImplementedError if the function is called."""
     def newfunc (*args, **kwargs):
         """Raise NotImplementedError"""
-        raise NotImplementedError("%s not implemented" % func.__name__)
+        co = func.func_code
+        attrs = (co.co_name, co.co_filename, co.co_firstlineno)
+        raise NotImplementedError("function %s at %s:%d is not implemented" % attrs)
     return update_func_meta(newfunc, func)
 
 
