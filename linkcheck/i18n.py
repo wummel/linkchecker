@@ -134,7 +134,11 @@ def get_locale ():
     """Search the default platform locale and norm it.
     @returns (locale, encoding)
     @rtype (string, string)"""
-    loc, encoding = locale.getdefaultlocale()
+    try:
+        loc, encoding = locale.getdefaultlocale()
+    except ValueError, msg:
+        print >>sys.stderr, "Error getting default locale:", msg
+        loc, encoding = None, None
     if loc is None:
         loc = "C"
     else:
