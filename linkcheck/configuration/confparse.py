@@ -120,21 +120,16 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
     def read_checking_config (self):
         """Read configuration options in section "checking"."""
         section = "checking"
-        if self.has_option(section, "threads"):
-            num = self.getint(section, "threads")
-            self.config['threads'] = max(0, num)
+        self.read_int_option(section, "threads", allownegative=True)
+        self.config['threads'] = max(0, self.config['threads'])
         self.read_int_option(section, "timeout")
         self.read_boolean_option(section, "anchors")
-        if self.has_option(section, "recursionlevel"):
-            num = self.getint(section, "recursionlevel")
-            self.config["recursionlevel"] = num
+        self.read_int_option(section, "recursionlevel", allownegative=True)
         if self.has_option(section, "warningregex"):
             val = self.get(section, "warningregex")
             if val:
                 self.config["warningregex"] = re.compile(val)
-        if self.has_option(section, "warnsizebytes"):
-            val = self.get(section, "warnsizebytes")
-            self.config["warnsizebytes"] = int(val)
+        self.read_int_option(section, "warnsizebytes")
         if self.has_option(section, "nntpserver"):
             self.config["nntpserver"] = self.get(section, "nntpserver")
         if self.has_option(section, "useragent"):
