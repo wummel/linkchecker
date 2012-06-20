@@ -248,7 +248,7 @@ class MyOptionParser (LCOptionParser):
         s = u"%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" % (self.format_help(),
                  Examples, LoggerTypes, RegularExpressions, CookieFormat,
                  ProxySupport, Notes, Retval, Warnings)
-        self.print_help_msg(s)
+        self.print_help_msg(s, file)
 
 # instantiate option parser and configure options
 optparser = MyOptionParser()
