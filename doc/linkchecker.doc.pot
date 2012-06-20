@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2012-06-20 19:24+0300\n"
+"POT-Creation-Date: 2012-06-20 20:13+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1446,7 +1446,7 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:542 en/linkcheckerrc.5:548 en/linkchecker-gui.1:16
+#: en/linkchecker.1:542 en/linkcheckerrc.5:551 en/linkchecker-gui.1:16
 #, no-wrap
 msgid "SEE ALSO"
 msgstr ""
@@ -1457,24 +1457,24 @@ msgid "B<linkcheckerrc>(5)"
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:545 en/linkcheckerrc.5:551 en/linkchecker-gui.1:19
+#: en/linkchecker.1:545 en/linkcheckerrc.5:554 en/linkchecker-gui.1:19
 #, no-wrap
 msgid "AUTHOR"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:547 en/linkcheckerrc.5:553 en/linkchecker-gui.1:21
+#: en/linkchecker.1:547 en/linkcheckerrc.5:556 en/linkchecker-gui.1:21
 msgid "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:548 en/linkcheckerrc.5:554 en/linkchecker-gui.1:22
+#: en/linkchecker.1:548 en/linkcheckerrc.5:557 en/linkchecker-gui.1:22
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:549 en/linkcheckerrc.5:555
+#: en/linkchecker.1:549 en/linkcheckerrc.5:558
 msgid "Copyright \\(co 2000-2012 Bastian Kleineidam"
 msgstr ""
 
@@ -2672,170 +2672,181 @@ msgstr ""
 #. type: TP
 #: en/linkcheckerrc.5:502
 #, no-wrap
-msgid "B<ignore-url>"
+msgid "B<https-certificate-error>"
 msgstr ""
 
 #. type: Plain text
 #: en/linkcheckerrc.5:505
-msgid "The URL has been ignored."
+msgid "The SSL certificate is invalid or expired."
 msgstr ""
 
 #. type: TP
 #: en/linkcheckerrc.5:505
+#, no-wrap
+msgid "B<ignore-url>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:508
+msgid "The URL has been ignored."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:508
 #, no-wrap
 msgid "B<mail-no-connection>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:508
+#: en/linkcheckerrc.5:511
 msgid "No connection to a MX host could be established."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:508
+#: en/linkcheckerrc.5:511
 #, no-wrap
 msgid "B<mail-no-mx-host>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:511
+#: en/linkcheckerrc.5:514
 msgid "The mail MX host could not be found."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:511
+#: en/linkcheckerrc.5:514
 #, no-wrap
 msgid "B<mail-unverified-address>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:514
+#: en/linkcheckerrc.5:517
 msgid "The mailto: address could not be verified."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:514
+#: en/linkcheckerrc.5:517
 #, no-wrap
 msgid "B<nntp-no-newsgroup>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:517
+#: en/linkcheckerrc.5:520
 msgid "The NNTP newsgroup could not be found."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:517
+#: en/linkcheckerrc.5:520
 #, no-wrap
 msgid "B<nntp-no-server>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:520
+#: en/linkcheckerrc.5:523
 msgid "No NNTP server was found."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:520
+#: en/linkcheckerrc.5:523
 #, no-wrap
 msgid "B<url-anchor-not-found>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:523
+#: en/linkcheckerrc.5:526
 msgid "URL anchor was not found."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:523
+#: en/linkcheckerrc.5:526
 #, no-wrap
 msgid "B<url-content-size-unequal>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:526
+#: en/linkcheckerrc.5:529
 msgid "The URL content size and download size are unequal."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:526
+#: en/linkcheckerrc.5:529
 #, no-wrap
 msgid "B<url-content-size-zero>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:529
+#: en/linkcheckerrc.5:532
 msgid "The URL content size is zero."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:529
+#: en/linkcheckerrc.5:532
 #, no-wrap
 msgid "B<url-content-too-large>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:532
+#: en/linkcheckerrc.5:535
 msgid "The URL content size is too large."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:532
+#: en/linkcheckerrc.5:535
 #, no-wrap
 msgid "B<url-effective-url>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:535
+#: en/linkcheckerrc.5:538
 msgid "The effective URL is different from the original."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:535
+#: en/linkcheckerrc.5:538
 #, no-wrap
 msgid "B<url-error-getting-content>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:538
+#: en/linkcheckerrc.5:541
 msgid "Could not get the content of the URL."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:538
+#: en/linkcheckerrc.5:541
 #, no-wrap
 msgid "B<url-obfuscated-ip>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:541
+#: en/linkcheckerrc.5:544
 msgid "The IP is obfuscated."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:541
+#: en/linkcheckerrc.5:544
 #, no-wrap
 msgid "B<url-warnregex-found>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:544
+#: en/linkcheckerrc.5:547
 msgid "The warning regular expression was found in the URL contents."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:544
+#: en/linkcheckerrc.5:547
 #, no-wrap
 msgid "B<url-whitespace>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:547
+#: en/linkcheckerrc.5:550
 msgid "The URL contains leading or trailing whitespace."
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:550
+#: en/linkcheckerrc.5:553
 msgid "linkchecker(1)"
 msgstr ""
 

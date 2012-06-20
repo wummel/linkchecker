@@ -129,7 +129,7 @@ Warnings = {
         _("The URL content is encoded with an unknown encoding."),
     WARN_HTTP_AUTH_UNKNOWN:
         _("Unsupported HTTP authentication method."),
-    WARN_HTTPS_CERTIFICATE: _("The SSL certificate had an error."),
+    WARN_HTTPS_CERTIFICATE: _("The SSL certificate is invalid or expired."),
     WARN_IGNORE_URL: _("The URL has been ignored."),
     WARN_MAIL_NO_MX_HOST: _("The mail MX host could not be found."),
     WARN_MAIL_UNVERIFIED_ADDRESS:
