@@ -19,7 +19,8 @@ Utility functions suitable for command line clients.
 """
 import sys
 import optparse
-from . import fileutil, ansicolor, strformat, add_intern_pattern, checker
+from . import fileutil, ansicolor, strformat, add_intern_pattern, checker, \
+    log, LOG_CMDLINE
 from .director import console
 from .decorators import notimplemented
 
