@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2004-2011 Bastian Kleineidam
+# Copyright (C) 2004-2012 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,11 +15,10 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """
-Test file parsing.
+Test bookmark file parsing.
 """
 from . import LinkCheckTest
-from .. import need_network
-#, need_biplist
+from .. import need_network, need_biplib
 import os
 
 
@@ -49,6 +48,7 @@ class TestBookmarks (LinkCheckTest):
         self.file_test(os.path.join("plist_xml", "Bookmarks.plist"))
 
     @need_network
+    @need_biplib
     def test_safari_bookmarks_binary (self):
         # Safari bookmark file parsing (for binary plist files)
         self.file_test(os.path.join("plist_binary", "Bookmarks.plist"))
