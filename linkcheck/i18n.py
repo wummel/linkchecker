@@ -136,8 +136,8 @@ def get_locale ():
     @rtype (string, string)"""
     try:
         loc, encoding = locale.getdefaultlocale()
-    except ValueError, msg:
-        print >>sys.stderr, "Error getting default locale:", msg
+    except ValueError:
+        # locale configuration is broken - ignore that
         loc, encoding = None, None
     if loc is None:
         loc = "C"
