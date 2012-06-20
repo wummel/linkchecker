@@ -22,6 +22,10 @@
 Various string utility functions. Note that these functions are not
 necessarily optimised for large strings, so use with care.
 """
+# some handy time constants
+SECONDS_PER_MINUTE = 60
+SECONDS_PER_HOUR = 60 * SECONDS_PER_MINUTE
+SECONDS_PER_DAY = 24 * SECONDS_PER_HOUR
 
 import re
 import textwrap
@@ -209,13 +213,15 @@ def strduration (duration):
     else:
         prefix = ""
     duration = math.ceil(duration)
-    if duration >= 3600: # 1 hour
+    if duration >= SECONDS_PER_HOUR: # 1 hour
         # time, in hours:minutes:seconds
-        return "%s%02d:%02d:%02d" % (prefix, duration // 3600,
-                                   (duration % 3600) // 60, duration % 60)
+        return "%s%02d:%02d:%02d" % (prefix, duration // SECONDS_PER_HOUR,
+                                   (duration % SECONDS_PER_HOUR) // SECONDS_PER_MINUTE,
+                                    duration % SECONDS_PER_MINUTE)
     else:
         # time, in minutes:seconds
-        return "%s%02d:%02d" % (prefix, duration // 60, duration % 60)
+        return "%s%02d:%02d" % (prefix, duration // SECONDS_PER_MINUTE,
+                                 duration % SECONDS_PER_MINUTE)
 
 
 # from quodlibet
@@ -272,7 +278,7 @@ def strtimezone ():
         zone = time.altzone
     else:
         zone = time.timezone
-    return "%+04d" % (-zone//3600)
+    return "%+04d" % (-zone//SECONDS_PER_HOUR)
 
 
 def stripurl(s):
