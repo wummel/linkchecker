@@ -18,7 +18,7 @@
 Test bookmark file parsing.
 """
 from . import LinkCheckTest
-from .. import need_network, need_biplib
+from .. import need_network, need_biplist
 import os
 
 
@@ -48,7 +48,7 @@ class TestBookmarks (LinkCheckTest):
         self.file_test(os.path.join("plist_xml", "Bookmarks.plist"))
 
     @need_network
-    @need_biplib
+    @need_biplist
     def test_safari_bookmarks_binary (self):
         # Safari bookmark file parsing (for binary plist files)
         self.file_test(os.path.join("plist_binary", "Bookmarks.plist"))

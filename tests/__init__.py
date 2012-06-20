@@ -157,15 +157,15 @@ need_pyftpdlib = _need_func(has_pyftpdlib, "pyftpdlib")
 
 
 @memoized
-def has_biplib ():
-    """Test if biplib is available."""
+def has_biplist ():
+    """Test if biplist is available."""
     try:
-        import biplib
+        import biplist
         return True
     except ImportError:
         return False
 
-need_biplib = _need_func(has_biplib, "biplib")
+need_biplist = _need_func(has_biplist, "biplist")
 
 
 @memoized
