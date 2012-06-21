@@ -40,6 +40,7 @@ if not (hasattr(sys, 'version_info') or
     raise SystemExit("This program requires Python 2.7 or later.")
 import os
 import re
+import codecs
 import subprocess
 import stat
 import glob
@@ -677,7 +678,7 @@ class InnoScript:
         self.pathname = pathname
         self.distfilebase = "%s-%s" % (self.name, self.version)
         self.distfile = self.distfilebase + ".exe"
-        with open(self.pathname, "w") as fd:
+        with codecs.open(self.pathname, "w", 'utf-8-sig', 'strict') as fd:
             self.write_inno_script(fd)
 
     def write_inno_script (self, fd):
@@ -697,6 +698,7 @@ class InnoScript:
         # Customize some messages
         print >> fd, "[Messages]"
         print >> fd, "ConfirmUninstall=Are you sure you want to remove %1? Note that user-specific configuration files of %1 are not removed."
+        print >> fd, "BeveledLabel=42"
         print >> fd
         # List of source files
         files = self.windows_exe_files + \
