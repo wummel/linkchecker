@@ -692,6 +692,11 @@ class InnoScript:
         print >> fd, "OutputBaseFilename=%s" % self.distfilebase
         print >> fd, "OutputDir=.."
         print >> fd, "SetupIconFile=%s" % self.icon
+        print >> fd, "UninstallDisplayIcon=%s" % self.icon
+        print >> fd
+        # Customize some messages
+        print >> fd, "[Messages]"
+        print >> fd, "ConfirmUninstall=Are you sure you want to remove %1? Note that user-specific configuration files of %1 are not removed."
         print >> fd
         # List of source files
         files = self.windows_exe_files + \
@@ -702,6 +707,7 @@ class InnoScript:
         print >> fd, '[Files]'
         for path in files:
             print >> fd, r'Source: "%s"; DestDir: "{app}\%s"; Flags: ignoreversion' % (path, os.path.dirname(path))
+        print >> fd
         # Set icon filename
         print >> fd, '[Icons]'
         for path in self.windows_exe_files:
