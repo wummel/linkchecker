@@ -59,6 +59,9 @@ class ProjectParser (confparse.LCConfigParser):
         option = "debug"
         if self.has_option(section, option):
              data[option] = self.getboolean(section, option)
+        option = "debugmemory"
+        if self.has_option(section, option):
+             data[option] = self.getboolean(section, option)
         option = "verbose"
         if self.has_option(section, option):
              data[option] = self.getboolean(section, option)

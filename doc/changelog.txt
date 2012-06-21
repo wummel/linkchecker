@@ -5,6 +5,9 @@ Features:
   hostname and the expiration date are checked.
 - cmdline: Added Nagios plugin script.
 
+Fixes:
+- gui: Fix saving of the debugmemory option.
+
 
 7.9 "The Dark Knight" (released 10.6.2012)
 

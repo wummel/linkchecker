@@ -85,10 +85,10 @@ class Settings (object):
 
     def read_options (self):
         """Return stored GUI options."""
-        data = dict(debug=None, verbose=None, recursionlevel=None,
-            warninglines=None, ignorelines=None)
+        data = dict(debug=None, debugmemory=None, verbose=None,
+            recursionlevel=None, warninglines=None, ignorelines=None)
         self.settings.beginGroup('output')
-        for key in ("debug", "verbose"):
+        for key in ("debug", "debugmemory", "verbose"):
             if self.settings.contains(key):
                 data[key] = self.settings.value(key).toBool()
         self.settings.endGroup()
@@ -116,7 +116,7 @@ class Settings (object):
     def save_options (self, data):
         """Save GUI options."""
         self.settings.beginGroup('output')
-        for key in ("debug", "verbose"):
+        for key in ("debug", "debugmemory", "verbose"):
             self.settings.setValue(key, QtCore.QVariant(data[key]))
         self.settings.endGroup()
         self.settings.beginGroup('checking')
