@@ -79,7 +79,12 @@ class HttpsUrl (httpurl.HttpUrl):
         """
         import ssl
         checkDaysValid = self.aggregate.config["warnsslcertdaysvalid"]
-        notAfter = ssl.cert_time_to_seconds(cert['notAfter'])
+        try:
+            notAfter = ssl.cert_time_to_seconds(cert['notAfter'])
+        except ValueError, msg:
+            msg = _('invalid certficate "notAfter" value %r') % cert['notAfter']
+            self.add_ssl_warning(ssl_sock, msg)
+            return
         curTime = time.time()
         # Calculate seconds until certifcate expires. Can be negative if
         # the certificate is already expired.
@@ -96,7 +101,7 @@ class HttpsUrl (httpurl.HttpUrl):
     def add_ssl_warning(self, ssl_sock, msg):
         """Add a warning message about an SSL certificate error."""
         cipher_name, ssl_protocol, secret_bits = ssl_sock.cipher()
-        err = _(u"SSL warning: %(msg)s. Cipher %(cipher)s, %(protocol)s %s")
+        err = _(u"SSL warning: %(msg)s. Cipher %(cipher)s, %(protocol)s.")
         attrs = dict(msg=msg, cipher=cipher_name, protocol=ssl_protocol)
         self.add_warning(err % attrs, tag=WARN_HTTPS_CERTIFICATE)
 
