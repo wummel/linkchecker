@@ -15,7 +15,7 @@ Vcs-Browser: http://linkchecker.git.sourceforge.net/
 
 Package: linkchecker
 Architecture: any
-Depends: ${misc:Depends}, ${python:Depends}, ${shlibs:Depends}
+Depends: ${misc:Depends}, ${python:Depends}, ${shlibs:Depends}, python (>= 2.7.2)
 Provides: ${python:Provides}
 Conflicts: python-dnspython
 Suggests: clamav-daemon,

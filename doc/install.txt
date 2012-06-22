@@ -37,7 +37,7 @@ First, install the required software.
    template from the source files, you will need xgettext with Python
    support. This is available in gettext >= 0.12.
 
-2. Python >= 2.7 from http://www.python.org/
+2. Python >= 2.7.2 from http://www.python.org/
    
    Be sure to also have installed the included distutils module.
    On most distributions, the distutils module is included in

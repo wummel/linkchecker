@@ -32,53 +32,6 @@ for scheme in ('ldap', 'irc'):
     if scheme not in urlparse.uses_netloc:
         urlparse.uses_netloc.append(scheme)
 
-if sys.version_info[0] > 2 or sys.version_info[1] > 6:
-    # Fix Python regression; see http://bugs.python.org/issue11467
-    def urlsplit_26(url, scheme='', allow_fragments=True):
-        """Parse a URL into 5 components:
-        <scheme>://<netloc>/<path>?<query>#<fragment>
-        Return a 5-tuple: (scheme, netloc, path, query, fragment).
-        Note that we don't break the components up in smaller bits
-        (e.g. netloc is a single string) and we don't expand % escapes."""
-        allow_fragments = bool(allow_fragments)
-        key = url, scheme, allow_fragments, type(url), type(scheme)
-        cached = urlparse._parse_cache.get(key, None)
-        if cached:
-            return cached
-        if len(urlparse._parse_cache) >= urlparse.MAX_CACHE_SIZE: # avoid runaway growth
-            urlparse.clear_cache()
-        netloc = query = fragment = ''
-        i = url.find(':')
-        if i > 0:
-            if url[:i] == 'http': # optimize the common case
-                scheme = url[:i].lower()
-                url = url[i+1:]
-                if url[:2] == '//':
-                    netloc, url = urlparse._splitnetloc(url, 2)
-                if allow_fragments and '#' in url:
-                    url, fragment = url.split('#', 1)
-                if '?' in url:
-                    url, query = url.split('?', 1)
-                v = urlparse.SplitResult(scheme, netloc, url, query, fragment)
-                urlparse._parse_cache[key] = v
-                return v
-            for c in url[:i]:
-                if c not in urlparse.scheme_chars:
-                    break
-            else:
-                scheme, url = url[:i].lower(), url[i+1:]
-        if url[:2] == '//':
-            netloc, url = urlparse._splitnetloc(url, 2)
-        if allow_fragments and scheme in urlparse.uses_fragment and '#' in url:
-            url, fragment = url.split('#', 1)
-        if scheme in urlparse.uses_query and '?' in url:
-            url, query = url.split('?', 1)
-        v = urlparse.SplitResult(scheme, netloc, url, query, fragment)
-        urlparse._parse_cache[key] = v
-        return v
-
-    urlparse.urlsplit = urlsplit_26
-
 # The character set to encode non-ASCII characters in a URL. See also
 # http://tools.ietf.org/html/rfc2396#section-2.1
 # Note that the encoding is not really specified, but most browsers

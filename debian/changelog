@@ -1,6 +1,7 @@
 linkchecker (8.0-1) UNRELEASED; urgency=low
 
   * New upstream release.
+  * Require Python >= 2.7.2
 
  -- Bastian Kleineidam <calvin@debian.org>  Mon, 18 Jun 2012 22:23:23 +0200
 

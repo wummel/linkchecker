@@ -5,6 +5,9 @@ Features:
   hostname and the expiration date are checked.
 - cmdline: Added Nagios plugin script.
 
+Changes:
+- dependencies: Python >= 2.7.2 is now required
+
 Fixes:
 - gui: Fix saving of the debugmemory option.
 

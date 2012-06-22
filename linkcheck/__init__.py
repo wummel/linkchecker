@@ -20,9 +20,11 @@ Main function module for link checking.
 
 # imports and checks
 import sys
+# Needs Python >= 2.7 because we use dictionary based logging config
+# Needs Python >= 2.7.2 which fixed http://bugs.python.org/issue11467
 if not (hasattr(sys, 'version_info') or
-        sys.version_info < (2, 7, 0, 'final', 0)):
-    raise SystemExit("This program requires Python 2.7 or later.")
+        sys.version_info < (2, 7, 2, 'final', 0)):
+    raise SystemExit("This program requires Python 2.7.2 or later.")
 import os
 import re
 

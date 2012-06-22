@@ -9,7 +9,7 @@ Requirements
 On Mac OS X systems, using MacPorts, Fink or homebrew for software
 installation is recommended.
 
-- Install Python >= 2.7 from http://www.python.org/
+- Install Python >= 2.7.2 from http://www.python.org/
 
 - Qt4 SDK development tools from http://qt.nokia.com/downloads
   The binary "qcollectiongenerator" is used to generate the

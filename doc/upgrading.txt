@@ -1,6 +1,10 @@
 Upgrading
 =========
 
+Migrating from 7.9 to 8.0
+-------------------------
+Python 2.7.2 or newer is required (Python 3.x is not supported though).
+
 Migrating from 7.6 to 7.7
 -------------------------
 The deprecated options --check-html-w3 and --check-css-w3
