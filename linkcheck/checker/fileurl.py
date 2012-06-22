@@ -81,7 +81,9 @@ def is_absolute_path (path):
     with a drive letter. On all other systems absolute paths start with
     a slash."""
     if os.name == 'nt':
-        return re.search(r"^[a-zA-Z]:", path)
+        if re.search(r"^[a-zA-Z]:", path):
+            return True
+        path = path.replace("\\", "/")
     return path.startswith("/")
 
 
