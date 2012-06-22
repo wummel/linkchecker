@@ -91,14 +91,17 @@ def get_url_from (base_url, recursion_level, aggregate,
         # ignore URLs from local PHP files with execution directives
         klass = ignoreurl.IgnoreUrl
     else:
-        klass = get_urlclass_from(url)
+        assume_local_file = recursion_level == 0
+        klass = get_urlclass_from(url, assume_local_file=assume_local_file)
     return klass(base_url, recursion_level, aggregate,
                  parent_url=parent_url, base_ref=base_ref,
                  line=line, column=column, name=name)
 
 
-def get_urlclass_from (url):
-    """Return checker class for given URL."""
+def get_urlclass_from (url, assume_local_file=False):
+    """Return checker class for given URL. If URL does not start
+    with a URL scheme and assume_local_file is True, assume that
+    the given URL is a local file."""
     if url.startswith("http:"):
         klass = httpurl.HttpUrl
     elif url.startswith("ftp:"):
@@ -114,11 +117,11 @@ def get_urlclass_from (url):
     elif url.startswith(("nntp:", "news:", "snews:")):
         klass = nntpurl.NntpUrl
     elif unknownurl.is_unknown_url(url):
-        # unknown url
         klass = unknownurl.UnknownUrl
-    else:
-        # assume local file
+    elif assume_local_file:
         klass = fileurl.FileUrl
+    else:
+        klass = unknownurl.UnknownUrl
     return klass
 
 
