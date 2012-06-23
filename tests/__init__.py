@@ -105,6 +105,14 @@ need_posix = _need_func(has_posix, "POSIX system")
 
 
 @memoized
+def has_windows ():
+    """Test if this is a Windows system."""
+    return os.name == "nt"
+
+need_windows = _need_func(has_windows, "Windows system")
+
+
+@memoized
 def has_linux ():
     """Test if this is a Linux system."""
     return sys.platform.startswith("linux")
