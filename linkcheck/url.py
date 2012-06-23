@@ -19,7 +19,6 @@ Functions for parsing and matching URL strings.
 """
 
 import re
-import sys
 import os
 import urlparse
 import urllib
