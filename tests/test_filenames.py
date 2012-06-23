@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2004-2010 Bastian Kleineidam
+# Copyright (C) 2004-2012 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ Test filename routines.
 import unittest
 import os
 from linkcheck.checker.fileurl import get_nt_filename
+from . import need_windows
 
 
 class TestFilenames (unittest.TestCase):
@@ -28,11 +29,16 @@ class TestFilenames (unittest.TestCase):
     Test filename routines.
     """
 
+    @need_windows
     def test_nt_filename (self):
         path = os.getcwd()
         realpath = get_nt_filename(path)
         self.assertEqual(path, realpath)
-        if os.name == 'nt':
-            path = 'c:\\'
-            realpath = get_nt_filename(path)
-            self.assertEqual(path, realpath)
+        path = 'c:\\'
+        realpath = get_nt_filename(path)
+        self.assertEqual(path, realpath)
+        # Only works on my computer.
+        # Is there a Windows UNC share that is always available for tests?
+        path = '\\Vboxsrv\share\msg.txt'
+        realpath = get_nt_filename(path)
+        self.assertEqual(path, realpath)

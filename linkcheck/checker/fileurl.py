@@ -55,12 +55,13 @@ def prepare_urlpath_for_nt (path):
 
 def get_nt_filename (path):
     """Return case sensitive filename for NT path."""
-    head, tail = os.path.split(path)
+    unc, rest = os.path.splitunc(path)
+    head, tail = os.path.split(rest)
     if not tail:
         return path
-    for fname in os.listdir(head):
+    for fname in os.listdir(unc+head):
         if fname.lower() == tail.lower():
-            return os.path.join(get_nt_filename(head), fname)
+            return os.path.join(get_nt_filename(unc+head), fname)
     log.error(LOG_CHECK, "could not find %r in %r", tail, head)
     return path
 
