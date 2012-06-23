@@ -45,13 +45,13 @@ from .const import (WARN_URL_EFFECTIVE_URL,
 # helper alias
 unicode_safe = strformat.unicode_safe
 
-def urljoin (parent, url, scheme):
+def urljoin (parent, url):
     """
     If url is relative, join parent and url. Else leave url as-is.
 
     @return joined url
     """
-    if url.startswith(scheme+":"):
+    if urlutil.url_is_absolute(url):
         return url
     return urlparse.urljoin(parent, url)
 
@@ -403,18 +403,17 @@ class UrlBase (object):
             # use base reference as parent url
             if ":" not in self.base_ref:
                 # some websites have a relative base reference
-                self.base_ref = urljoin(self.parent_url, self.base_ref,
-                                        self.scheme)
-            self.url = urljoin(self.base_ref, base_url, self.scheme)
+                self.base_ref = urljoin(self.parent_url, self.base_ref)
+            self.url = urljoin(self.base_ref, base_url)
         elif self.parent_url:
             # strip the parent url query and anchor
             urlparts = list(urlparse.urlsplit(self.parent_url))
             urlparts[4] = ""
             parent_url = urlparse.urlunsplit(urlparts)
-            self.url = urljoin(parent_url, base_url, self.scheme)
+            self.url = urljoin(parent_url, base_url)
         else:
             self.url = base_url
-        # note: urljoin can unnorm the url path, so norm it again
+        # urljoin can unnorm the url path, so norm it again
         urlparts = list(urlparse.urlsplit(self.url))
         if urlparts[2]:
             urlparts[2] = urlutil.collapse_segments(urlparts[2])
