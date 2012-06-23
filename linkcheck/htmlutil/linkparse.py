@@ -53,7 +53,7 @@ LinkTags = {
     'layer':    [u'background', u'src'],
     'link':     [u'href'],
     'meta':     [u'content', u'href'],
-    'object':   [u'classid', u'data', u'archive', u'usemap'],
+    'object':   [u'classid', u'data', u'archive', u'usemap', u'codebase'],
     'q':        [u'cite'],
     'script':   [u'src'],
     'source':   [u'src'], # HTML5
