@@ -198,7 +198,7 @@ class LinkFinder (TagFinder):
             name = self.get_link_name(tag, attrs, attr)
             # possible codebase
             base = u''
-            if tag in ('applet', 'object'):
+            if tag  == 'applet':
                 base = unquote(attrs.get_true('codebase', u''))
             if not base:
                 base = self.base_ref

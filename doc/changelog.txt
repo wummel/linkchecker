@@ -10,6 +10,7 @@ Changes:
 
 Fixes:
 - gui: Fix saving of the debugmemory option.
+- checking: Do not use <object codebase="..."> attribute as parent URL.
 
 
 7.9 "The Dark Knight" (released 10.6.2012)
