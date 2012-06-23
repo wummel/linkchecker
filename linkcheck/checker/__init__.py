@@ -22,7 +22,7 @@ import os
 import cgi
 import logging
 import urllib
-from .. import strformat, url as urlutil
+from .. import strformat, url as urlutil, log, LOG_CHECK
 
 MAX_FILESIZE = 1024*1024*10 # 10MB
 
@@ -93,6 +93,7 @@ def get_url_from (base_url, recursion_level, aggregate,
     else:
         assume_local_file = recursion_level == 0
         klass = get_urlclass_from(url, assume_local_file=assume_local_file)
+    log.debug(LOG_CHECK, "%s handles url %s", klass.__name__, base_url)
     return klass(base_url, recursion_level, aggregate,
                  parent_url=parent_url, base_ref=base_ref,
                  line=line, column=column, name=name)
