@@ -52,8 +52,7 @@ class TestUrlBuild (unittest.TestCase):
     def test_urljoin (self):
         parent_url = "http://localhost:8001/test"
         base_url = ";param=value"
-        scheme = 'http'
-        res = linkcheck.checker.urlbase.urljoin(parent_url, base_url, scheme)
+        res = linkcheck.checker.urlbase.urljoin(parent_url, base_url)
         self.assertEqual(res, 'http://localhost:8001/;param=value')
 
     def test_urljoin_file (self):
