@@ -698,7 +698,7 @@ class InnoScript:
         # Customize some messages
         print >> fd, "[Messages]"
         print >> fd, "ConfirmUninstall=Are you sure you want to remove %1? Note that user-specific configuration files of %1 are not removed."
-        print >> fd, "BeveledLabel=42"
+        print >> fd, "BeveledLabel=DON'T PANIC"
         print >> fd
         # List of source files
         files = self.windows_exe_files + \

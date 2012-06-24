@@ -1,5 +1,4 @@
-include README.txt doc/install.txt COPYING doc/upgrading.txt
-include MANIFEST.in doc/changelog.txt
+include README.txt COPYING MANIFEST.in
 include config/linkchecker-completion config/create.sql
 include config/linkcheckerrc
 include config/ca-certificates.crt
@@ -44,7 +43,7 @@ include linkcheck/gui/rc/*.png
 include linkcheck/gui/rc/*.qrc
 include linkcheck/gui/ui/*.ui
 include po/*.po po/*.pot po/Makefile po/msgfmt.py
-include doc/*.example
+include doc/*.example doc/*.txt doc/*.tmpl
 include doc/html/*.ico
 include doc/html/*.html
 include doc/html/*.txt

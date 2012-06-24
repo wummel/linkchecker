@@ -1,0 +1,29 @@
+{APPNAME} Downloads
+======================
+
+{APPNAME} {VERSION} is available for download for Windows systems,
+Unix systems and in source format.
+
+The `.asc` are GPG signatures that you can use to verify the download.
+For example download the `.asc` file in the same directory as the
+`.tar.bz2` file and run `gpg --verify {APPNAME}-{VERSION}.tar.bz2`
+
+The GPG key used to sign these packages is 32EC6F3E. It can be
+downloaded with `gpg --keyserver wwwkeys.pgp.net --recv-keys 32EC6F3E`.
+
+Files
+------
+
+* {APPNAME}-{VERSION}.exe
+  The Windows installer. If you run Windows, use this. The installer is
+  signed with a local certificate signature.
+* {APPNAME}-{VERSION}-portable.zip
+  The portable Windows installer. Use this, if you want to run {APPNAME}
+  from a USB stick or external hard drive.
+* {APPNAME}-{VERSION}.tar.bz2
+  The source code. See `doc/install.txt` for compilation and installation
+  instructions.
+
+Changelog for this release
+---------------------------
+

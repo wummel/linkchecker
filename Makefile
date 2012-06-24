@@ -1,11 +1,13 @@
 # This Makefile is only used by developers.
 PYVER:=2.7
 PYTHON?=python$(PYVER)
+APPNAME:=LinkChecker
 VERSION:=$(shell $(PYTHON) setup.py --version)
 PLATFORM:=$(shell $(PYTHON) -c "from distutils.util import get_platform; print get_platform()")
 FILESCHECK_URL:=http://localhost/~calvin/
 PYTHONSRC:=${HOME}/src/cpython-hg/Lib
 #PYTHONSRC:=/usr/lib/$(PYTHON)
+SF_FILEPATH=/home/frs/project/l/li/linkchecker
 PY_FILES_DIRS:=linkcheck tests *.py linkchecker linkchecker-nagios linkchecker-gui cgi-bin config doc
 TESTS ?= tests/
 # set test options, eg. to "--nologcapture"
@@ -44,11 +46,11 @@ clean:
 
 .PHONY: distclean
 distclean: clean cleandeb
-	rm -rf build dist LinkChecker.egg-info
-	rm -f _LinkChecker_configdata.py MANIFEST Packages.gz
+	rm -rf build dist $(APPNAME).egg-info
+	rm -f _$(APPNAME)_configdata.py MANIFEST Packages.gz
 # clean aborted dist builds and -out files
 	rm -f linkchecker-out* linkchecker.prof
-	rm -rf LinkChecker-$(VERSION)
+	rm -rf $(APPNAME)-$(VERSION)
 	rm -rf coverage dist-stamp python-build-stamp*
 
 .PHONY: cleandeb
@@ -77,18 +79,28 @@ localbuild: MANIFEST locale
 deb_orig:
 	if [ ! -e $(DEB_ORIG_TARGET) ]; then \
 	  $(MAKE) dist-stamp && \
-	  cp dist/LinkChecker-$(VERSION).tar.bz2 $(DEB_ORIG_TARGET); \
+	  cp dist/$(APPNAME)-$(VERSION).tar.bz2 $(DEB_ORIG_TARGET); \
 	fi
 
 .PHONY: upload
-upload:
-	rsync -avP -e ssh dist/* calvin,linkchecker@frs.sourceforge.net:/home/frs/project/l/li/linkchecker/$(VERSION)/
+upload: dist/README.md
+	rsync -avP -e ssh dist/* calvin,linkchecker@frs.sourceforge.net:$(SF_FILEPATH)/$(VERSION)/
 
+.PHONY: login
+login:
+# login to SSH shell
+	ssh -t sf-linkchecker create
+
+dist/README.md: doc/README-Download.md.tmpl doc/changelog.txt
+# copying readme for sourceforge downloads
+	sed -e 's/{APPNAME}/$(APPNAME)/g' -e 's/{VERSION}/$(VERSION)/g' $< > $@
+# append changelog
+	awk '/released/ {c++}; c==2 {exit}; {print "    " $$0}' doc/changelog.txt >> $@
 
 .PHONY: release
 release: distclean releasecheck filescheck clean dist-stamp sign_distfiles upload
 	git tag v$(VERSION)
-	@echo "Updating LinkChecker Homepage..."
+	@echo "Updating $(APPNAME) Homepage..."
 	$(MAKE) -C doc man
 	sed -i -e "s/version = '.*'/version = '$(VERSION)'/" ~/public_html/linkchecker.sf.net/source/conf.py
 	$(MAKE) -C ~/public_html/linkchecker.sf.net update upload
