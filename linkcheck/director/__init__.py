@@ -166,7 +166,7 @@ def check_url (aggregate):
         except urlqueue.Timeout:
             # Cleanup threads every 30 seconds
             aggregate.remove_stopped_threads()
-            if not aggregate.threads:
+            if not any(aggregate.get_check_threads()):
                 break
 
 

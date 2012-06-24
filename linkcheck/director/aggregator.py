@@ -54,7 +54,7 @@ class Aggregate (object):
         t.start()
         self.threads.append(t)
         num = self.config["threads"]
-        if num >= 1:
+        if num > 0:
             for dummy in range(num):
                 t = checker.Checker(self.urlqueue, self.logger)
                 t.start()
@@ -66,13 +66,23 @@ class Aggregate (object):
     def print_active_threads (self):
         """Log all currently active threads."""
         first = True
+        for name in self._get_check_threads():
+            if first:
+                log.info(LOG_CHECK, _("These URLs are still active:"))
+                first = False
+            log.info(LOG_CHECK, name[12:])
+
+    @synchronized(_threads_lock)
+    def get_check_threads(self):
+        """Return iterator of checker threads."""
+        return self._get_check_threads()
+
+    def _get_check_threads(self):
+        """Return iterator of checker threads (non-synchronized method)."""
         for t in self.threads:
             name = t.getName()
             if name.startswith("CheckThread-"):
-                if first:
-                    log.info(LOG_CHECK, _("These URLs are still active:"))
-                    first = False
-                log.info(LOG_CHECK, name[12:])
+                yield name
 
     def cancel (self):
         """Empty the URL queue."""
@@ -99,7 +109,9 @@ class Aggregate (object):
     @synchronized(_threads_lock)
     def finish (self):
         """Wait for checker threads to finish."""
-        assert self.urlqueue.empty()
+        if not self.urlqueue.empty():
+            # This happens when all checker threads died.
+            self.cancel()
         for t in self.threads:
             t.stop()
         self.connections.clear()
