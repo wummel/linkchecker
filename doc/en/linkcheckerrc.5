@@ -3,24 +3,14 @@
 linkcheckerrc - configuration file for LinkChecker
 .
 .SH DESCRIPTION
-\fBlinkcheckerrc\fP is the default configuration file LinkChecker.
+\fBlinkcheckerrc\fP is the configuration file for LinkChecker.
 The file is written in an INI-style format.
-.
+.br
+The default file location is \fB~/.linkchecker/linkcheckerrc\fP on Unix,
+\fB%HOMEPATH%\\.linkchecker\\linkcheckerrc\fP on Windows systems.
 .SH SETTINGS
 
 .SS \fB[checking]\fP
-.TP
-\fBthreads=\fP\fINUMBER\fP
-Generate no more than the given number of threads. Default number
-of threads is 10. To disable threading specify a non-positive number.
-.br
-Command line option: \fB\-\-threads\fP
-.TP
-\fBtimeout=\fP\fINUMBER\fP
-Set the timeout for connection attempts in seconds. The default timeout
-is 60 seconds.
-.br
-Command line option: \fB\-\-timeout\fP
 .TP
 \fBanchors=\fP[\fB0\fP|\fB1\fP]
 Check HTTP anchor references. Default is not to check anchors.
@@ -28,42 +18,11 @@ This option enables logging of the warning \fBurl\-anchor\-not\-found\fP.
 .br
 Command line option: \fB\-\-anchors\fP
 .TP
-\fBrecursionlevel=\fP\fINUMBER\fP
-Check recursively all links up to given depth.
-A negative depth will enable infinite recursion.
-Default depth is infinite.
+\fBcheckcss=\fP[\fB0\fP|\fB1\fP]
+Check syntax of CSS URLs with the cssutils library, falling back to the
+W3C online validator if cssutils is not available.
 .br
-Command line option: \fB\-\-recursion\-level\fP
-.TP
-\fBwarningregex=\fP=\fIREGEX\fP
-Define a regular expression which prints a warning if it matches any
-content of the checked link.
-This applies only to valid pages, so we can get their content.
-.br
-Use this to check for pages that contain some form of error, for example
-"This page has moved" or "Oracle Application Server error".
-.br
-Command line option: \fB\-\-warning\-regex\fP
-.TP
-\fBwarnsizebytes=\fP\fINUMBER\fP
-Print a warning if content size info is available and exceeds the given
-number of \fIbytes\fP.
-.br
-Command line option: \fB\-\-warning\-size\-bytes\fP
-.TP
-\fBnntpserver=\fP\fISTRING\fP
-Specify an NNTP server for \fBnews:\fP links. Default is the
-environment variable \fBNNTP_SERVER\fP. If no host is given,
-only the syntax of the link is checked.
-.br
-Command line option: \fB\-\-nntp\-server\fP
-.TP
-\fBuseragent=\fP\fISTRING\fP
-Specify the User-Agent string to send to the HTTP server, for example
-"Mozilla/4.0". The default is "LinkChecker/X.Y" where X.Y is the current
-version of LinkChecker.
-.br
-Command line option: \fB\-\-user\-agent\fP
+Command line option: \fB\-\-check\-css\fP
 .TP
 \fBcheckhtml=\fP[\fB0\fP|\fB1\fP]
 Check syntax of HTML URLs with the HTML tidy library, falling back to the
@@ -71,26 +30,10 @@ W3C online validator if HTML tidy is not available..
 .br
 Command line option: \fB\-\-check\-html\fP
 .TP
-\fBcheckcss=\fP[\fB0\fP|\fB1\fP]
-Check syntax of CSS URLs with the cssutils library, falling back to the
-W3C online validator if cssutils is not available.
-.br
-Command line option: \fB\-\-check\-css\fP
-.TP
-\fBscanvirus=\fP[\fB0\fP|\fB1\fP]
-Scan content of URLs for viruses with ClamAV.
-.br
-Command line option: \fB\-\-scan\-virus\fP
-.TP
 \fBclamavconf=\fP\fIfilename\fP
 Filename of \fBclamd.conf\fP config file.
 .br
 Command line option: none
-.TP
-\fBcookies=\fP[\fB0\fP|\fB1\fP]
-Accept and send HTTP cookies.
-.br
-Command line option: \fB\-\-cookies\fP
 .TP
 \fBcookiefile=\fP\fIfilename\fP
 Read a file with initial cookie data. The cookie data
@@ -98,11 +41,10 @@ format is explained in linkchecker(1).
 .br
 Command line option: \fB\-\-cookiefile\fP
 .TP
-\fBpause=\fP\fINUMBER\fP
-Pause the given number of seconds between two subsequent connection
-requests to the same host.
+\fBcookies=\fP[\fB0\fP|\fB1\fP]
+Accept and send HTTP cookies.
 .br
-Command line option: \fB\-\-pause\fP
+Command line option: \fB\-\-cookies\fP
 .TP
 \fBdebugmemory=\fP[\fB0\fP|\fB1\fP]
 When checking finishes, write a memory dump to a temporary file.
@@ -124,6 +66,66 @@ And the given directory must end with a slash.
 .br
 Command line option: none
 .TP
+\fBnntpserver=\fP\fISTRING\fP
+Specify an NNTP server for \fBnews:\fP links. Default is the
+environment variable \fBNNTP_SERVER\fP. If no host is given,
+only the syntax of the link is checked.
+.br
+Command line option: \fB\-\-nntp\-server\fP
+.TP
+\fBpause=\fP\fINUMBER\fP
+Pause the given number of seconds between two subsequent connection
+requests to the same host.
+.br
+Command line option: \fB\-\-pause\fP
+.TP
+\fBrecursionlevel=\fP\fINUMBER\fP
+Check recursively all links up to given depth.
+A negative depth will enable infinite recursion.
+Default depth is infinite.
+.br
+Command line option: \fB\-\-recursion\-level\fP
+.TP
+\fBscanvirus=\fP[\fB0\fP|\fB1\fP]
+Scan content of URLs for viruses with ClamAV.
+.br
+Command line option: \fB\-\-scan\-virus\fP
+.TP
+\fBthreads=\fP\fINUMBER\fP
+Generate no more than the given number of threads. Default number
+of threads is 10. To disable threading specify a non-positive number.
+.br
+Command line option: \fB\-\-threads\fP
+.TP
+\fBtimeout=\fP\fINUMBER\fP
+Set the timeout for connection attempts in seconds. The default timeout
+is 60 seconds.
+.br
+Command line option: \fB\-\-timeout\fP
+.TP
+\fBuseragent=\fP\fISTRING\fP
+Specify the User-Agent string to send to the HTTP server, for example
+"Mozilla/4.0". The default is "LinkChecker/X.Y" where X.Y is the current
+version of LinkChecker.
+.br
+Command line option: \fB\-\-user\-agent\fP
+.TP
+\fBwarningregex=\fP=\fIREGEX\fP
+Define a regular expression which prints a warning if it matches any
+content of the checked link.
+This applies only to valid pages, so we can get their content.
+.br
+Use this to check for pages that contain some form of error, for example
+"This page has moved" or "Oracle Application Server error".
+.br
+Command line option: \fB\-\-warning\-regex\fP
+.TP
+\fBwarnsizebytes=\fP\fINUMBER\fP
+Print a warning if content size info is available and exceeds the given
+number of \fIbytes\fP.
+.br
+Command line option: \fB\-\-warning\-size\-bytes\fP
+.TP
 \fBwarnsslcertdaysvalid=\fP\fINUMBER\fP
 Check that SSL certificates are at least the given number of days valid.
 The number must not be negative.
@@ -140,12 +142,6 @@ Only check syntax of URLs matching the given regular expressions.
 .br
 Command line option: \fB\-\-ignore\-url\fP
 .TP
-\fBnofollow=\fP\fIREGEX\fP (MULTILINE)
-Check but do not recurse into URLs matching the given regular
-expressions.
-.br
-Command line option: \fB\-\-no\-follow\-url\fP
-.TP
 \fBignorewarnings=\fP\fINAME\fP[\fB,\fP\fINAME\fP...]
 Ignore the comma-separated list of warnings. See
 \fBWARNIGS\fP for the list of supported warnings.
@@ -157,6 +153,12 @@ Regular expression to add more URLs recognized as internal links.
 Default is that URLs given on the command line are internal.
 .br
 Command line option: none
+.TP
+\fBnofollow=\fP\fIREGEX\fP (MULTILINE)
+Check but do not recurse into URLs matching the given regular
+expressions.
+.br
+Command line option: \fB\-\-no\-follow\-url\fP
 .SS \fB[authentication]\fP
 .TP
 \fBentry=\fP\fIREGEX\fP \fIUSER\fP [\fIPASS\fP] (MULTILINE)
@@ -192,6 +194,12 @@ Optionally any additional CGI name/value pairs. Note that the default
 values are submitted automatically.
 .SS \fB[output]\fP
 .TP
+\fBcomplete=\fP[\fB0\fP|\fB1\fP]
+If set log all checked URLs, even duplicates. Default is to log
+duplicate URLs only once.
+.br
+Command line option: \fB\-\-complete\fP
+.TP
 \fBdebug=\fP\fISTRING\fP[\fB,\fP\fISTRING\fP...]
 Print debugging output for the given loggers.
 Available loggers are \fBcmdline\fP, \fBchecking\fP,
@@ -199,45 +207,6 @@ Available loggers are \fBcmdline\fP, \fBchecking\fP,
 Specifying \fBall\fP is an alias for specifying all available loggers.
 .br
 Command line option: \fB\-\-debug\fP
-.TP
-\fBstatus=\fP[\fB0\fP|\fB1\fP]
-Control printing check status messages. Default is 1.
-.br
-Command line option: \fB\-\-no\-status\fP
-.TP
-\fBlog=\fP\fITYPE\fP[\fB/\fP\fIENCODING\fP]
-Specify output type as \fBtext\fP, \fBhtml\fP, \fBsql\fP,
-\fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBnone\fP or \fBblacklist\fP.
-Default type is \fBtext\fP. The various output types are documented
-below.
-.br
-The \fIENCODING\fP specifies the output encoding, the default is
-that of your locale. Valid encodings are listed at
-\fBhttp://docs.python.org/library/codecs.html#standard-encodings\fP.
-.br
-Command line option: \fB\-\-output\fP
-.TP
-\fBverbose=\fP[\fB0\fP|\fB1\fP]
-If set log all checked URLs once. Default is to log only errors and warnings.
-.br
-Command line option: \fB\-\-verbose\fP
-.TP
-\fBcomplete=\fP[\fB0\fP|\fB1\fP]
-If set log all checked URLs, even duplicates. Default is to log
-duplicate URLs only once.
-.br
-Command line option: \fB\-\-complete\fP
-.TP
-\fBwarnings=\fP[\fB0\fP|\fB1\fP]
-If set log warnings. Default is to log warnings.
-.br
-Command line option: \fB\-\-no\-warnings\fP
-.TP
-\fBquiet=\fP[\fB0\fP|\fB1\fP]
-If set, operate quiet. An alias for \fBlog=none\fP.
-This is only useful with \fBfileoutput\fP.
-.br
-Command line option: \fB\-\-verbose\fP
 .TP
 \fBfileoutput=\fP\fITYPE\fP[\fB,\fP\fITYPE\fP...]
 Output to a files \fBlinkchecker\-out.\fP\fITYPE\fP,
@@ -251,6 +220,39 @@ below. Note that you can suppress all console output
 with \fBoutput=none\fP.
 .br
 Command line option: \fB\-\-file\-output\fP
+.TP
+\fBlog=\fP\fITYPE\fP[\fB/\fP\fIENCODING\fP]
+Specify output type as \fBtext\fP, \fBhtml\fP, \fBsql\fP,
+\fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBnone\fP or \fBblacklist\fP.
+Default type is \fBtext\fP. The various output types are documented
+below.
+.br
+The \fIENCODING\fP specifies the output encoding, the default is
+that of your locale. Valid encodings are listed at
+\fBhttp://docs.python.org/library/codecs.html#standard-encodings\fP.
+.br
+Command line option: \fB\-\-output\fP
+.TP
+\fBquiet=\fP[\fB0\fP|\fB1\fP]
+If set, operate quiet. An alias for \fBlog=none\fP.
+This is only useful with \fBfileoutput\fP.
+.br
+Command line option: \fB\-\-verbose\fP
+.TP
+\fBstatus=\fP[\fB0\fP|\fB1\fP]
+Control printing check status messages. Default is 1.
+.br
+Command line option: \fB\-\-no\-status\fP
+.TP
+\fBverbose=\fP[\fB0\fP|\fB1\fP]
+If set log all checked URLs once. Default is to log only errors and warnings.
+.br
+Command line option: \fB\-\-verbose\fP
+.TP
+\fBwarnings=\fP[\fB0\fP|\fB1\fP]
+If set log warnings. Default is to log warnings.
+.br
+Command line option: \fB\-\-no\-warnings\fP
 .SS \fB[text]\fP
 .TP
 \fBfilename=\fP\fISTRING\fP

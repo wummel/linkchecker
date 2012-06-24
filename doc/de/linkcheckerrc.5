@@ -8,25 +8,14 @@
 linkcheckerrc \- Konfigurationsdatei für LinkChecker
 .
 .SH BESCHREIBUNG
-\fBlinkcheckerrc\fP ist die Standardkonfigurationsdatei von LinkChecker. Die
-Datei ist in einem INI\-Format geschrieben.
-.
+\fBlinkcheckerrc\fP ist die Konfigurationsdatei für LinkChecker. Die Datei ist
+in einem INI\-Format geschrieben.
+.br
+Die Standarddatei ist \fB~/.linkchecker/linkcheckerrc\fP unter Unix\-,
+\fB%HOMEPATH%\e.linkchecker\elinkcheckerrc\fP unter Windows\-Systemen.
 .SH EIGENSCHAFTEN
 
 .SS [checking]
-.TP 
-\fBthreads=\fP\fINUMBER\fP
-Generiere nicht mehr als die angegebene Anzahl von Threads. Standard Anzahl
-von Threads ist 10. Um Threads zu deaktivieren, geben Sie eine nicht
-positive Nummer an.
-.br
-Kommandozeilenoption: \fB\-\-threads\fP
-.TP 
-\fBtimeout=\fP\fINUMMER\fP
-Setze den Timeout für TCP\-Verbindungen in Sekunden. Der Standard Timeout ist
-60 Sekunden.
-.br
-Kommandozeilenoption: \fB\-\-timeout\fP
 .TP 
 \fBanchors=\fP[\fB0\fP|\fB1\fP]
 Prüfe HTTP Ankerverweise. Standard ist, Ankerverweise nicht zu prüfen. Diese
@@ -34,42 +23,11 @@ Option aktiviert die Ausgabe der Warnung \fBurl\-anchor\-not\-found\fP.
 .br
 Kommandozeilenoption: \fB\-\-anchors\fP
 .TP 
-\fBrecursionlevel=\fP\fINUMBER\fP
-Prüfe rekursiv alle URLs bis zu der angegebenen Tiefe. Eine negative Tiefe
-bewirkt unendliche Rekursion. Standard Tiefe ist unendlich.
+\fBcheckcss=\fP[\fB0\fP|\fB1\fP]
+Prüfe Syntax von CSS URLs mit cssutils. Wenn cssutils nicht installiert ist,
+prüfe mit dem W3C Online Validator.
 .br
-Kommandozeilenoption: \fB\-\-recursion\-level\fP
-.TP 
-\fBwarningregex=\fP=\fIREGEX\fP
-Definieren Sie einen regulären Ausdruck der eine Warnung ausgibt falls er
-auf den Inhalt einer geprüften URL zutrifft. Dies gilt nur für gültige
-Seiten deren Inhalt wir bekommen können.
-.br
-Benutzen Sie dies, um nach Seiten zu suchen, welche bestimmte Fehler
-enthalten, zum Beispiel "Diese Seite wurde entfernt" oder "Oracle
-Applikationsfehler".
-.br
-Kommandozeilenoption: \fB\-\-warning\-regex\fP
-.TP 
-\fBwarnsizebytes=\fP\fINUMBER\fP
-Gebe eine Warnung aus, wenn die Inhaltsgröße bekannt ist und die angegebene
-Anzahl von Bytes übersteigt.
-.br
-Kommandozeilenoption: \fB\-\-warning\-size\-bytes\fP
-.TP 
-\fBnntpserver=\fP\fISTRING\fP
-Gibt ein NNTP Rechner für \fBnews:\fP Links. Standard ist die Umgebungsvariable
-\fBNNTP_SERVER\fP. Falls kein Rechner angegeben ist, wird lediglich auf
-korrekte Syntax des Links geprüft.
-.br
-Kommandozeilenoption: \fB\-\-nntp\-server\fP
-.TP 
-\fBuseragent=\fP\fISTRING\fP
-Gibt den User\-Agent an, der zu HTTP\-Servern geschickt wird,
-z.B. "Mozilla/4.0". Der Standard ist "LinkChecker/X.Y", wobei X.Y die
-aktuelle Version von LinkChecker ist.
-.br
-Kommandozeilenoption: \fB\-\-user\-agent\fP
+Kommandozeilenoption: \fB\-\-check\-css\fP
 .TP 
 \fBcheckhtml=\fP[\fB0\fP|\fB1\fP]
 Prüfe Syntax von HTML URLs mit HTML tidy. Wenn HTML tidy nicht installiert
@@ -77,26 +35,10 @@ ist, prüfe mit dem W3C Online Validator.
 .br
 Kommandozeilenoption: \fB\-\-check\-html\fP
 .TP 
-\fBcheckcss=\fP[\fB0\fP|\fB1\fP]
-Prüfe Syntax von CSS URLs mit cssutils. Wenn cssutils nicht installiert ist,
-prüfe mit dem W3C Online Validator.
-.br
-Kommandozeilenoption: \fB\-\-check\-css\fP
-.TP 
-\fBscanvirus=\fP[\fB0\fP|\fB1\fP]
-Prüfe Inhalt von URLs auf Viren mit ClamAV.
-.br
-Kommandozeilenoption: \fB\-\-scan\-virus\fP
-.TP 
 \fBclamavconf=\fP\fIDateiname\fP
 Dateiname von \fBclamd.conf\fP Konfigurationsdatei.
 .br
 Kommandozeilenoption: keine
-.TP 
-\fBcookies=\fP[\fB0\fP|\fB1\fP]
-Akzeptiere und sende HTTP cookies.
-.br
-Kommandozeilenoption: \fB\-\-cookies\fP
 .TP 
 \fBcookiefile=\fP\fIDateiname\fP
 Lese eine Datei mit Cookie\-Daten. Das Cookie Datenformat wird in
@@ -104,11 +46,10 @@ linkchecker(1) erklärt.
 .br
 Kommandozeilenoption: \fB\-\-cookiefile\fP
 .TP 
-\fBpause=\fP\fINUMBER\fP
-Pausiere die angegebene Anzahl von Sekunden zwischen zwei aufeinander
-folgenden Verbindungen zum demselben Rechner.
+\fBcookies=\fP[\fB0\fP|\fB1\fP]
+Akzeptiere und sende HTTP cookies.
 .br
-Kommandozeilenoption: \fB\-\-pause\fP
+Kommandozeilenoption: \fB\-\-cookies\fP
 .TP 
 \fBdebugmemory=\fP[\fB0\fP|\fB1\fP]
 Schreibe einen Speicherabzug in eine temporäre Datei wenn die Prüfung
@@ -132,6 +73,67 @@ muss mit einem Schrägstrich enden.
 .br
 Kommandozeilenoption: keine
 .TP 
+\fBnntpserver=\fP\fISTRING\fP
+Gibt ein NNTP Rechner für \fBnews:\fP Links. Standard ist die Umgebungsvariable
+\fBNNTP_SERVER\fP. Falls kein Rechner angegeben ist, wird lediglich auf
+korrekte Syntax des Links geprüft.
+.br
+Kommandozeilenoption: \fB\-\-nntp\-server\fP
+.TP 
+\fBpause=\fP\fINUMBER\fP
+Pausiere die angegebene Anzahl von Sekunden zwischen zwei aufeinander
+folgenden Verbindungen zum demselben Rechner.
+.br
+Kommandozeilenoption: \fB\-\-pause\fP
+.TP 
+\fBrecursionlevel=\fP\fINUMBER\fP
+Prüfe rekursiv alle URLs bis zu der angegebenen Tiefe. Eine negative Tiefe
+bewirkt unendliche Rekursion. Standard Tiefe ist unendlich.
+.br
+Kommandozeilenoption: \fB\-\-recursion\-level\fP
+.TP 
+\fBscanvirus=\fP[\fB0\fP|\fB1\fP]
+Prüfe Inhalt von URLs auf Viren mit ClamAV.
+.br
+Kommandozeilenoption: \fB\-\-scan\-virus\fP
+.TP 
+\fBthreads=\fP\fINUMBER\fP
+Generiere nicht mehr als die angegebene Anzahl von Threads. Standard Anzahl
+von Threads ist 10. Um Threads zu deaktivieren, geben Sie eine nicht
+positive Nummer an.
+.br
+Kommandozeilenoption: \fB\-\-threads\fP
+.TP 
+\fBtimeout=\fP\fINUMMER\fP
+Setze den Timeout für TCP\-Verbindungen in Sekunden. Der Standard Timeout ist
+60 Sekunden.
+.br
+Kommandozeilenoption: \fB\-\-timeout\fP
+.TP 
+\fBuseragent=\fP\fISTRING\fP
+Gibt den User\-Agent an, der zu HTTP\-Servern geschickt wird,
+z.B. "Mozilla/4.0". Der Standard ist "LinkChecker/X.Y", wobei X.Y die
+aktuelle Version von LinkChecker ist.
+.br
+Kommandozeilenoption: \fB\-\-user\-agent\fP
+.TP 
+\fBwarningregex=\fP=\fIREGEX\fP
+Definieren Sie einen regulären Ausdruck der eine Warnung ausgibt falls er
+auf den Inhalt einer geprüften URL zutrifft. Dies gilt nur für gültige
+Seiten deren Inhalt wir bekommen können.
+.br
+Benutzen Sie dies, um nach Seiten zu suchen, welche bestimmte Fehler
+enthalten, zum Beispiel "Diese Seite wurde entfernt" oder "Oracle
+Applikationsfehler".
+.br
+Kommandozeilenoption: \fB\-\-warning\-regex\fP
+.TP 
+\fBwarnsizebytes=\fP\fINUMBER\fP
+Gebe eine Warnung aus, wenn die Inhaltsgröße bekannt ist und die angegebene
+Anzahl von Bytes übersteigt.
+.br
+Kommandozeilenoption: \fB\-\-warning\-size\-bytes\fP
+.TP 
 \fBwarnsslcertdaysvalid=\fP\fINUMBER\fP
 Prüfe ob SSL\-Zertifikate mindestens die angegebene Anzahl an Tagen gültig
 sind. Die Anzahl darf nicht negativ sein. Falls die Anzahl Null ist wird
@@ -148,12 +150,6 @@ Ausdruck entsprechen.
 .br
 Kommandozeilenoption: \fB\-\-ignore\-url\fP
 .TP 
-\fBnofollow=\fP\fIREGEX\fP (MULTILINE)
-Prüfe URLs die auf den regulären Ausdruck zutreffen, aber führe keine
-Rekursion durch.
-.br
-Kommandozeilenoption: \fB\-\-no\-follow\-url\fP
-.TP 
 \fBignorewarnings=\fP\fINAME\fP[\fB,\fP\fINAME\fP...]
 Ignoriere die kommagetrennte Liste von Warnungen. Siehe \fBWARNUNGEN\fP für die
 Liste von erkannten Warnungen.
@@ -165,6 +161,12 @@ Regulärer Ausdruck, um mehr URLs als interne Verknüpfungen
 hinzuzufügen. Standard ist dass URLs der Kommandozeile als intern gelten.
 .br
 Kommandozeilenoption: keine
+.TP 
+\fBnofollow=\fP\fIREGEX\fP (MULTILINE)
+Prüfe URLs die auf den regulären Ausdruck zutreffen, aber führe keine
+Rekursion durch.
+.br
+Kommandozeilenoption: \fB\-\-no\-follow\-url\fP
 .SS [authentication]
 .TP 
 \fBentry=\fP\fIREGEX\fP \fIBENUTZER\fP [\fIPASSWORT\fP] (MULTILINE)
@@ -200,6 +202,12 @@ Optional zusätzliche CGI Namen/Werte\-Paare. Die Default\-Werte werden
 automatisch übermittelt.
 .SS [output]
 .TP 
+\fBcomplete=\fP[\fB0\fP|\fB1\fP]
+Falls gesetzt, gebe alle geprüften URLs aus, sogar Duplikate. Standard ist
+es, URLs nur einmal auszugeben.
+.br
+Kommandozeilenoption: \fB\-\-complete\fP
+.TP 
 \fBdebug=\fP\fISTRING\fP[\fB,\fP\fISTRING\fP...]
 Gebe Testmeldungen aus für den angegebenen Logger. Verfügbare Logger sind
 \fBcmdline\fP, \fBchecking\fP,\fBcache\fP, \fBgui\fP, \fBdns\fP, \fBthread\fP und \fBall\fP. Die
@@ -207,10 +215,16 @@ Angabe \fBall\fP ist ein Synonym für alle verfügbaren Logger.
 .br
 [output]
 .TP 
-\fBstatus=\fP[\fB0\fP|\fB1\fP]
-Kontrolle der Statusmeldungen. Standard ist 1.
+\fBfileoutput=\fP\fITYPE\fP[\fB,\fP\fITYPE\fP...]
+Ausgabe in Datei \fBlinkchecker\-out.\fP\fITYPE\fP, \fB$HOME/.linkchecker/blacklist\fP
+für \fBblacklist\fP Ausgabe.
 .br
-Kommandozeilenoption: \fB\-\-no\-status\fP
+Gültige Ausgabearten sind \fBtext\fP, \fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP, \fBdot\fP,
+\fBxml\fP, \fBnone\fP oder \fBblacklist\fP Standard ist keine Dateiausgabe. Die
+verschiedenen Ausgabearten sind unten dokumentiert. Bemerke, dass man alle
+Konsolenausgaben mit \fBoutput=none\fP unterdrücken kann.
+.br
+Kommandozeilenoption: \fB\-\-file\-output\fP
 .TP 
 \fBlog=\fP\fITYPE\fP[\fB/\fP\fIENCODING\fP]
 Gib Ausgabetyp als \fBtext\fP, \fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP,
@@ -224,40 +238,28 @@ aufgelistet.
 .br
 Kommandozeilenoption: \fB\-\-output\fP
 .TP 
-\fBverbose=\fP[\fB0\fP|\fB1\fP]
-Falls gesetzt, gebe alle geprüften URLs einmal aus. Standard ist es, nur
-fehlerhafte URLs und Warnungen auszugeben.
-.br
-Kommandozeilenoption: \fB\-\-verbose\fP
-.TP 
-\fBcomplete=\fP[\fB0\fP|\fB1\fP]
-Falls gesetzt, gebe alle geprüften URLs aus, sogar Duplikate. Standard ist
-es, URLs nur einmal auszugeben.
-.br
-Kommandozeilenoption: \fB\-\-complete\fP
-.TP 
-\fBwarnings=\fP[\fB0\fP|\fB1\fP]
-Falls gesetzt, gebe keine Warnungen aus. Standard ist die Ausgabe von
-Warnungen.
-.br
-Kommandozeilenoption: \fB\-\-no\-warnings\fP
-.TP 
 \fBquiet=\fP[\fB0\fP|\fB1\fP]
 Falls gesetzt, erfolgt keine Ausgabe. Ein Alias für \fBlog=none\fP. Dies ist
 nur in Verbindung mit \fBfileoutput\fP nützlich.
 .br
 Kommandozeilenoption: \fB\-\-verbose\fP
 .TP 
-\fBfileoutput=\fP\fITYPE\fP[\fB,\fP\fITYPE\fP...]
-Ausgabe in Datei \fBlinkchecker\-out.\fP\fITYPE\fP, \fB$HOME/.linkchecker/blacklist\fP
-für \fBblacklist\fP Ausgabe.
+\fBstatus=\fP[\fB0\fP|\fB1\fP]
+Kontrolle der Statusmeldungen. Standard ist 1.
 .br
-Gültige Ausgabearten sind \fBtext\fP, \fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP, \fBdot\fP,
-\fBxml\fP, \fBnone\fP oder \fBblacklist\fP Standard ist keine Dateiausgabe. Die
-verschiedenen Ausgabearten sind unten dokumentiert. Bemerke, dass man alle
-Konsolenausgaben mit \fBoutput=none\fP unterdrücken kann.
+Kommandozeilenoption: \fB\-\-no\-status\fP
+.TP 
+\fBverbose=\fP[\fB0\fP|\fB1\fP]
+Falls gesetzt, gebe alle geprüften URLs einmal aus. Standard ist es, nur
+fehlerhafte URLs und Warnungen auszugeben.
 .br
-Kommandozeilenoption: \fB\-\-file\-output\fP
+Kommandozeilenoption: \fB\-\-verbose\fP
+.TP 
+\fBwarnings=\fP[\fB0\fP|\fB1\fP]
+Falls gesetzt, gebe keine Warnungen aus. Standard ist die Ausgabe von
+Warnungen.
+.br
+Kommandozeilenoption: \fB\-\-no\-warnings\fP
 .SS [text]
 .TP 
 \fBfilename=\fP\fISTRING\fP
