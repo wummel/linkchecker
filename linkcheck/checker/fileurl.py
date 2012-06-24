@@ -25,7 +25,7 @@ import urllib
 import urllib2
 
 from . import urlbase, get_index_html, get_url_from
-from .. import log, LOG_CHECK, fileutil, LinkCheckerError
+from .. import log, LOG_CHECK, fileutil, LinkCheckerError, url as urlutil
 from ..bookmarks import firefox
 from .const import WARN_FILE_MISSING_SLASH, WARN_FILE_SYSTEM_PATH
 
@@ -137,7 +137,7 @@ class FileUrl (urlbase.UrlBase):
             urlparts = list(urlparse.urlsplit(base_url))
             # ignore query part for filesystem urls
             urlparts[3] = ''
-            self.base_url = urlparse.urlunsplit(urlparts)
+            self.base_url = urlutil.urlunsplit(urlparts)
         super(FileUrl, self).build_url()
         # ignore query and fragment url parts for filesystem urls
         self.urlparts[3] = self.urlparts[4] = ''
@@ -145,7 +145,7 @@ class FileUrl (urlbase.UrlBase):
             self.add_warning(_("Added trailing slash to directory."),
                            tag=WARN_FILE_MISSING_SLASH)
             self.urlparts[2] += '/'
-        self.url = urlparse.urlunsplit(self.urlparts)
+        self.url = urlutil.urlunsplit(self.urlparts)
 
     def add_size_info (self):
         """Get size of file content from filename path."""

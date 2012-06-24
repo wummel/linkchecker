@@ -12,6 +12,7 @@ Fixes:
 - gui: Fix saving of the debugmemory option.
 - checking: Do not handle <object codebase="..."> attribute as parent
   URL but as normal URL to be checked.
+- checking: Fix UNC path handling on Windows.
 
 
 7.9 "The Dark Knight" (released 10.6.2012)

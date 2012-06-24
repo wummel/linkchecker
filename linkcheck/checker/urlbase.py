@@ -355,7 +355,7 @@ class UrlBase (object):
         """
         # remove anchor from content cache key since we assume
         # URLs with different anchors to have the same content
-        self.cache_content_key = urlparse.urlunsplit(self.urlparts[:4]+[u''])
+        self.cache_content_key = urlutil.urlunsplit(self.urlparts[:4]+[u''])
         assert isinstance(self.cache_content_key, unicode), self
         log.debug(LOG_CACHE, "Content cache key %r", self.cache_content_key)
         # construct cache key
@@ -380,7 +380,7 @@ class UrlBase (object):
         try:
             self.build_url()
             # check url warnings
-            effectiveurl = urlparse.urlunsplit(self.urlparts)
+            effectiveurl = urlutil.urlunsplit(self.urlparts)
             if self.url != effectiveurl:
                 self.add_warning(_("Effective URL %(url)r.") %
                                  {"url": effectiveurl},
@@ -409,7 +409,7 @@ class UrlBase (object):
             # strip the parent url query and anchor
             urlparts = list(urlparse.urlsplit(self.parent_url))
             urlparts[4] = ""
-            parent_url = urlparse.urlunsplit(urlparts)
+            parent_url = urlutil.urlunsplit(urlparts)
             self.url = urljoin(parent_url, base_url)
         else:
             self.url = base_url
@@ -417,11 +417,11 @@ class UrlBase (object):
         urlparts = list(urlparse.urlsplit(self.url))
         if urlparts[2]:
             urlparts[2] = urlutil.collapse_segments(urlparts[2])
-        self.url = urlparse.urlunsplit(urlparts)
+        self.url = urlutil.urlunsplit(urlparts)
         # split into (modifiable) list
         self.urlparts = strformat.url_unicode_split(self.url)
         # and unsplit again
-        self.url = urlparse.urlunsplit(self.urlparts)
+        self.url = urlutil.urlunsplit(self.urlparts)
         # check userinfo@host:port syntax
         self.userinfo, host = urllib.splituser(self.urlparts[1])
         # set host lowercase

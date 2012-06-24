@@ -269,6 +269,19 @@ def url_parse_query (query, encoding=None):
     return ''.join(l) + append
 
 
+def urlunsplit (urlparts):
+    """Same as urlparse.urlunsplit but with extra UNC path handling
+    for Windows OS."""
+    res = urlparse.urlunsplit(urlparts)
+    if os.name == 'nt' and urlparts[0] == 'file' and '|' not in urlparts[2]:
+        # UNC paths must have 4 slashes: 'file:////server/path'
+        # Depending on the path in urlparts[2], urlparse.urlunsplit()
+        # left only two or three slashes. This is fixed below
+        repl = 'file://' if urlparts[2].startswith('//') else 'file:/'
+        res = res.replace('file:', repl)
+    return res
+
+
 def url_norm (url, encoding=None):
     """Normalize the given URL which must be quoted. Supports unicode
     hostnames (IDNA encoding) according to RFC 3490.
@@ -315,7 +328,7 @@ def url_norm (url, encoding=None):
     urlparts[1] = url_quote_part(urlparts[1], safechars='@:', encoding=encoding) # host
     urlparts[2] = url_quote_part(urlparts[2], safechars=_nopathquote_chars, encoding=encoding) # path
     urlparts[4] = url_quote_part(urlparts[4], encoding=encoding) # anchor
-    res = urlparse.urlunsplit(urlparts)
+    res = urlunsplit(urlparts)
     if url.endswith('#') and not urlparts[4]:
         # re-append trailing empty fragment
         res += '#'
@@ -384,7 +397,7 @@ def url_quote (url):
             l.append("%s%s" % (k, sep))
     urlparts[3] = ''.join(l)
     urlparts[4] = url_quote_part(urlparts[4]) # anchor
-    return urlparse.urlunsplit(urlparts)
+    return urlunsplit(urlparts)
 
 
 def url_quote_part (s, safechars='/', encoding=None):

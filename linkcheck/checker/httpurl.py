@@ -161,7 +161,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                             "a GET request was used instead.") %
                             {"name": server})
         # redirections might have changed the URL
-        self.url = urlparse.urlunsplit(self.urlparts)
+        self.url = urlutil.urlunsplit(self.urlparts)
         # check response
         if response:
             self.check_response(response)
@@ -305,7 +305,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             num, response = self.follow_redirection(response, set_result, redirected)
             if num == -1:
                 return num, response
-            redirected = urlparse.urlunsplit(self.urlparts)
+            redirected = urlutil.urlunsplit(self.urlparts)
             tries += num
         return tries, response
 
@@ -528,10 +528,10 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         # http://tools.ietf.org/html/rfc2616#section-3.2.2
         anchor = ''
         if self.proxy:
-            path = urlparse.urlunsplit((self.urlparts[0], self.urlparts[1],
+            path = urlutil.urlunsplit((self.urlparts[0], self.urlparts[1],
                                  self.urlparts[2], self.urlparts[3], anchor))
         else:
-            path = urlparse.urlunsplit(('', '', self.urlparts[2],
+            path = urlutil.urlunsplit(('', '', self.urlparts[2],
                                         self.urlparts[3], anchor))
         self.url_connection.putrequest(self.method, path, skip_host=True,
                                        skip_accept_encoding=True)
