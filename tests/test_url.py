@@ -17,7 +17,7 @@
 """
 Test url routines.
 """
-from . import need_network
+from . import need_network, need_posix, need_windows
 import unittest
 import os
 import re
@@ -382,16 +382,19 @@ class TestUrl (unittest.TestCase):
         nurl = url
         self.urlnormtest(url, nurl)
 
+    @need_posix
     def test_norm_file1 (self):
         url = "file:///a/b.txt"
         nurl = url
         self.urlnormtest(url, nurl)
 
+    @need_windows
     def test_norm_file2 (self):
-        url = "file://C|/a/b.txt"
-        nurl = "file://c%7C/a/b.txt"
+        url = "file:///C|/a/b.txt"
+        nurl = url
         self.urlnormtest(url, nurl)
 
+    @need_posix
     def test_norm_file_unicode (self):
         url = u"file:///a/b.txt"
         nurl = url
