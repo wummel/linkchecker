@@ -50,4 +50,5 @@ def print_memory_dump(filename, out=sys.stdout):
     """
     from meliae import loader
     om = loader.load(filename)
+    om.collapse_instance_dicts()
     print >>out, om.summarize()

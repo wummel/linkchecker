@@ -7,6 +7,7 @@ Features:
 
 Changes:
 - dependencies: Python >= 2.7.2 is now required
+- gui: Display debug output text with fixed-width font.
 
 Fixes:
 - gui: Fix saving of the debugmemory option.

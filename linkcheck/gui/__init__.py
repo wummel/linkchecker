@@ -23,7 +23,7 @@ from PyQt4 import QtCore, QtGui
 from .linkchecker_ui_main import Ui_MainWindow
 from .properties import set_properties, clear_properties
 from .statistics import set_statistics, clear_statistics
-from .debug import LinkCheckerDebug
+from .debug import LinkCheckerDebug, LinkCheckerDebugMemory
 from .logger import SignalLogger, GuiLogHandler, StatusLogger
 from .help import HelpWindow
 from .options import LinkCheckerOptions
@@ -37,7 +37,7 @@ from .settings import Settings
 from .recentdocs import RecentDocumentModel
 from .projects import openproject, saveproject, loadproject, ProjectExt
 from .. import configuration, checker, director, add_intern_pattern, \
-    strformat, fileutil, LinkCheckerError, get_link_pat
+    strformat, fileutil, LinkCheckerError, get_link_pat, memoryutil
 from ..containers import enum
 from .. import url as urlutil
 from ..checker import httpheaders
@@ -98,6 +98,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         # init subdialogs
         self.options = LinkCheckerOptions(parent=self)
         self.debug = LinkCheckerDebug(parent=self)
+        self.debugmemory = LinkCheckerDebugMemory(parent=self)
         self.checker = CheckerThread(parent=self)
         self.contextmenu = ContextMenu(parent=self)
         self.editor = EditorWindow(parent=self)
@@ -303,6 +304,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         elif status == Status.checking:
             self.treeView.setSortingEnabled(False)
             self.debug.reset()
+            self.debugmemory.reset()
             self.set_statusmsg(u"Checking site...")
             # disable commands
             self.menubar.setEnabled(False)
@@ -422,13 +424,22 @@ Version 2 or later.
     def dump_memory (self):
         """Dump memory to temporary file and inform user with a modal
         dialog where the file is."""
-        from .. import memoryutil
         self.set_statusmsg(_(u"Dumping memory statistics..."))
         filename = memoryutil.write_memory_dump()
         title = _(u"LinkChecker memory dump written")
-        message = _(u"The memory dump has been written to `%(filename)s'.")
+        message = _(u"The memory dump has been written to `%(filename)s'. Do you want to display a summary?")
         attrs = dict(filename=filename)
-        QtGui.QMessageBox.information(self, title, message % attrs)
+        res = QtGui.QMessageBox.question(self, title, message % attrs)
+        if res == QtGui.QMessageBox.Ok:
+            self.show_memory(filename)
+
+    def show_memory(self, filename):
+        """Show memory usage summary."""
+        from cStringIO import StringIO
+        out = StringIO()
+        memoryutil.print_memory_dump(filename, out=out)
+        self.debugmemory.setText(out.getvalue())
+        self.debugmemory.show()
 
     def get_url (self):
         """Return URL to check from the urlinput widget."""
