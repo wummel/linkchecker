@@ -29,6 +29,12 @@ else
   NOSETESTS:=$(shell which nosetests)
   CHMODMINUSMINUS:=--
 endif
+# Nose options:
+# - do not show output of successful tests
+# - be verbose
+# - only run test_* methods
+NOSEOPTS:=--logging-clear-handlers -v -m '^test_.*'
+
 
 .PHONY: all
 all:
@@ -229,7 +235,7 @@ sign_distfiles:
 
 .PHONY: test
 test:	localbuild
-	$(PYTHON) $(NOSETESTS) -v -m "^test_.*" $(TESTOPTS) $(TESTS)
+	$(PYTHON) $(NOSETESTS) $(NOSEOPTS) $(TESTOPTS) $(TESTS)
 
 .PHONY: pyflakes
 pyflakes:
