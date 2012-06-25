@@ -429,7 +429,9 @@ Version 2 or later.
         title = _(u"LinkChecker memory dump written")
         message = _(u"The memory dump has been written to `%(filename)s'. Do you want to display a summary?")
         attrs = dict(filename=filename)
-        res = QtGui.QMessageBox.question(self, title, message % attrs)
+        res = QtGui.QMessageBox.question(self, title, message % attrs,
+            buttons=QtGui.QMessageBox.Cancel|QtGui.QMessageBox.Ok,
+            defaultButton=QtGui.QMessageBox.Cancel)
         if res == QtGui.QMessageBox.Ok:
             self.show_memory(filename)
 
