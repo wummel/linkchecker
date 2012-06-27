@@ -8,7 +8,7 @@ url #broken2
 cache key file://%(curdir)s/%(datadir)s/anchor.html
 real url file://%(curdir)s/%(datadir)s/anchor.html
 name Bla4
-warning Anchor `broken2' not found. Available anchors: `myid'.
+warning Anchor `broken2' not found. Available anchors: `myid:'.
 valid
 
 url anchor.html (cached)
@@ -21,16 +21,16 @@ url #broken
 cache key file://%(curdir)s/%(datadir)s/anchor.html
 real url file://%(curdir)s/%(datadir)s/anchor.html
 name Bla3
-warning Anchor `broken' not found. Available anchors: `myid'.
+warning Anchor `broken' not found. Available anchors: `myid:'.
 valid
 
-url #myid (cached)
+url #myid%%3A (cached)
 cache key file://%(curdir)s/%(datadir)s/anchor.html
 real url file://%(curdir)s/%(datadir)s/anchor.html
 name Bla2
 valid
 
-url #myid (cached)
+url #myid%%3A (cached)
 cache key file://%(curdir)s/%(datadir)s/anchor.html
 real url file://%(curdir)s/%(datadir)s/anchor.html
 name Bla

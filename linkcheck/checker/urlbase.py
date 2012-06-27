@@ -647,7 +647,8 @@ class UrlBase (object):
                 self.valid and self.is_html()):
             return
         log.debug(LOG_CHECK, "checking anchor %r in %s", self.anchor, self.anchors)
-        if any(x for x in self.anchors if x[0] == self.anchor):
+        enc = lambda anchor: urlutil.url_quote_part(anchor, encoding=self.encoding)
+        if any(x for x in self.anchors if enc(x[0]) == self.anchor):
             return
         anchornames = sorted(set(u"`%s'" % x[0] for x in self.anchors))
         anchors = u", ".join(anchornames)
