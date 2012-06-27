@@ -25,12 +25,19 @@ from .const import WARN_IGNORE_URL
 ignored_schemes = r"""^(
 acap        # application configuration access protocol
 |afs        # Andrew File System global file names
+|chrome     # Mozilla specific
 |cid        # content identifier
+|clsid      # Microsoft specific
 |data       # data
 |dav        # dav
 |fax        # fax
+|feed       # RSS or Atom feeds
+|find       # Mozilla specific
+|gopher     # Gopher
 |imap       # internet message access protocol
 |ircs?      # internet relay chat
+|isbn       # ISBN (int. book numbers)
+|javascript # JavaScript
 |ldap       # Lightweight Directory Access Protocol
 |mailserver # Access to data available from mail servers
 |mid        # message identifier
@@ -46,6 +53,7 @@ acap        # application configuration access protocol
 |service    # service location
 |shttp      # secure HTTP
 |sip        # session initiation protocol
+|skype      # Skype
 |steam      # Steam browser protocol
 |tel        # telephone
 |tip        # Transaction Internet Protocol
@@ -54,13 +62,6 @@ acap        # application configuration access protocol
 |wais       # Wide Area Information Servers
 |z39\.50r   # Z39.50 Retrieval
 |z39\.50s   # Z39.50 Session
-|chrome     # Mozilla specific
-|find       # Mozilla specific
-|clsid      # Microsoft specific
-|javascript # JavaScript
-|gopher     # Gopher
-|isbn       # ISBN (int. book numbers)
-|skype      # Skype
 ):"""
 
 ignored_schemes_re = re.compile(ignored_schemes, re.VERBOSE)

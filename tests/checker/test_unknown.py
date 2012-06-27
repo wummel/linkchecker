@@ -68,3 +68,25 @@ class TestUnknown (LinkCheckTest):
             u"valid",
         ]
         self.direct(url, resultlines)
+
+    def test_feed (self):
+        url = u"feed:https://example.com/entries.atom"
+        nurl = self.norm(url)
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % nurl,
+            u"warning Feed URL ignored.",
+            u"valid",
+        ]
+        self.direct(url, resultlines)
+        url = u"feed://example.com/entries.atom"
+        nurl = self.norm(url)
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % nurl,
+            u"warning Feed URL ignored.",
+            u"valid",
+        ]
+        self.direct(url, resultlines)
