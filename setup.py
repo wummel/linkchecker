@@ -134,7 +134,10 @@ py2app_options = dict(
     strip=True,
     optimize=2,
     iconfile='doc/html/favicon.icns',
-    plist={'CFBundleIconFile': 'favicon.icns'},
+    plist={
+        'CFBundleIdentifier': 'org.pythonmac.%s' % AppName,
+        'CFBundleIconFile': 'favicon.icns',
+    },
     argv_emulation=True,
 )
 # cx_Freeze for Linux RPM packaging
@@ -255,6 +258,29 @@ def fix_qt_plugins_py2app (dist_dir):
                 newpath = '@executable_path/../Frameworks/%s' % libpath
                 args = ['install_name_tool', '-change', oldpath, newpath, library]
                 subprocess.check_call(args)
+
+
+def generate_dmg_image (dist_dir):
+    """Generate .dmg image."""
+    imgPath = os.path.join(dist_dir, "%s-%s.dmg" % (AppName, AppVersion))
+    tmpImgPath = os.path.join(dist_dir, "%s.tmp.dmg" % AppName)
+    print "*** generating temporary DMG image ***"
+    args = ['hdiutil', 'create', '-srcfolder', dist_dir, '-fs', 'HFSX',
+            '-volname', AppName, '-format', 'UDZO', tmpImgPath]
+    subprocess.check_call(args)
+    print "*** generating final DMG image ***"
+    args = ['hdiutil', 'convert', tmpImgPath, '-format', 'UDZO',
+            '-imagekey', 'zlib-level=9', '-o', imgPath]
+    subprocess.check_call(args)
+    os.remove(tmpImgPath)
+
+
+def sign_the_code (dist_dir):
+    """Sign the OSX application code."""
+    app_dir = os.path.join(dist_dir, "%s.app" % AppName)
+    args = ['codesign', '-s', myname, '-v', app_dir]
+    print "*** signing the application code ***"
+    subprocess.check_call(args)
 
 
 def add_tidy_files (files):
@@ -781,21 +807,11 @@ try:
             """Generate py2app installer."""
             # First, let py2app do it's work.
             py2app_build.run(self)
-            dist_dir = self.dist_dir
             # Fix install names for Qt plugin libraries.
-            fix_qt_plugins_py2app(dist_dir)
-            # Generate .dmg image
-            imgPath = os.path.join(dist_dir, "%s-%s.dmg" % (AppName, AppVersion))
-            tmpImgPath = os.path.join(dist_dir, "%s.tmp.dmg" % AppName)
-            print "*** generating temporary DMG image ***"
-            args = ['hdiutil', 'create', '-srcfolder', dist_dir, '-fs', 'HFSX',
-                    '-volname', AppName, '-format', 'UDZO', tmpImgPath]
-            subprocess.check_call(args)
-            print "*** generating final DMG image ***"
-            args = ['hdiutil', 'convert', tmpImgPath, '-format', 'UDZO',
-                    '-imagekey', 'zlib-level=9', '-o', imgPath]
-            subprocess.check_call(args)
-            os.remove(tmpImgPath)
+            fix_qt_plugins_py2app(self.dist_dir)
+            sign_the_code(self.dist_dir)
+            generate_dmg_image(self.dist_dir)
+
 except ImportError:
     class MyPy2app:
         """Dummy py2app class."""
