@@ -309,8 +309,7 @@ def url_norm (url, encoding=None):
     is_idn = url_fix_host(urlparts)
     # query
     urlparts[3] = url_parse_query(urlparts[3], encoding=encoding)
-    is_hierarchical = urlparts[0] not in urlparse.non_hierarchical
-    if is_hierarchical:
+    if urlparts[0] in urlparse.uses_relative:
         # URL has a hierarchical path we should norm
         if not urlparts[2]:
             # Empty path is allowed if both query and fragment are also empty.
