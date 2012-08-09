@@ -1,0 +1,15 @@
+Porting status of dependent Python packages
+============================================
+
+Date: 08.08.2012
+
+OK   Python
+OK   Qt/PyQt
+OK   cssutils from http://cthedot.de/cssutils/
+OK   mod_wsgi from http://code.google.com/p/modwsgi/
+TODO optcomplete from http://furius.ca/optcomplete/
+TODO HTML tidy from http://utidylib.berlios.de/
+TODO GeoIP from http://www.maxmind.com/app/python
+TODO Twill from http://twill.idyll.org/
+TODO Python Sqlite from https://code.google.com/p/pysqlite/
+TODO Python Gtk from http://www.pygtk.org/downloads.html
