@@ -682,7 +682,7 @@ if do_profile:
             question = _("""Overwrite profiling file %(file)r?
 Press Ctrl-C to cancel, RETURN to continue.""") % {"file": _profile}
             try:
-                raw_input(question)
+                raw_input(question.encode(i18n.default_encoding, 'replace'))
             except KeyboardInterrupt:
                 print >> sys.stderr
                 print >> sys.stderr, _("Canceled.")
