@@ -44,7 +44,7 @@ import linkcheck.ansicolor
 from linkcheck.director import console, check_urls, get_aggregate
 # optional modules
 has_optcomplete = linkcheck.fileutil.has_module("optcomplete")
-has_profile = linkcheck.fileutil.has_module("profile")
+has_profile = linkcheck.fileutil.has_module("cProfile")
 has_pstats = linkcheck.fileutil.has_module("pstats")
 has_meliae = linkcheck.fileutil.has_module("meliae")
 
@@ -329,9 +329,7 @@ Valid encodings are listed at """ \
 """http://docs.python.org/lib/standard-encodings.html.""") % \
 {'loggertypes': linkcheck.logger.LoggerKeys})
 group.add_option("--profile", action="store_true", dest="profile",
-                 help=_(
-"""Write profiling data into a file named %s in the
-current working directory. See also --viewprof.""") % _profile)
+                 help=optparse.SUPPRESS_HELP)
 group.add_option("-q", "--quiet", action="store_true", dest="quiet",
                  help=_(
 """Quiet operation, an alias for '-o none'.
@@ -345,8 +343,7 @@ group.add_option("-v", "--verbose", action="store_true", dest="verbose",
                  help=_(
 """Log all URLs. Default is to log only errors and warnings."""))
 group.add_option("--viewprof", action="store_true", dest="viewprof",
-                 help=_(
-"""Print out previously generated profiling data. See also --profile."""))
+                 help=optparse.SUPPRESS_HELP)
 group.add_option("-W", "--warning-regex", type="string", dest="warningregex",
                  metavar="REGEX",
                  help=_(
@@ -692,14 +689,14 @@ Press Ctrl-C to cancel, RETURN to continue.""") % {"file": _profile}
                 sys.exit(1)
     else:
         log.warn(LOG_CMDLINE,
-                   _("The `profile' Python module is not installed,"
+                   _("The `cProfile' Python module is not installed,"
                      " therefore the --profile option is disabled."))
         do_profile = False
 
 # finally, start checking
 if do_profile:
-    import profile
-    profile.run("check_urls(aggregate)", _profile)
+    import cProfile
+    cProfile.run("check_urls(aggregate)", _profile)
 else:
     check_urls(aggregate)
 if config["debugmemory"]:
