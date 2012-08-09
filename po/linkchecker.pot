@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2012-06-20 20:13+0200\n"
+"POT-Creation-Date: 2012-08-09 20:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ../linkcheck/director/aggregator.py:73
+#: ../linkcheck/director/aggregator.py:71
 msgid "These URLs are still active:"
 msgstr ""
 
@@ -80,7 +80,7 @@ msgstr ""
 msgid "System info:"
 msgstr ""
 
-#: ../linkcheck/director/console.py:146 ../linkchecker:479
+#: ../linkcheck/director/console.py:146 ../linkchecker:476
 #, python-format
 msgid "Python %(version)s on %(platform)s"
 msgstr ""
@@ -263,7 +263,7 @@ msgid "URL lengths: min=%(min)d, max=%(max)d, avg=%(avg)d."
 msgstr ""
 
 #: ../linkcheck/logger/html.py:262 ../linkcheck/logger/text.py:251
-msgid "No statistics available since zero URLs were checked."
+msgid "No statistics available since no URLs were checked."
 msgstr ""
 
 #: ../linkcheck/logger/html.py:268 ../linkcheck/logger/text.py:199
@@ -448,16 +448,16 @@ msgstr ""
 msgid "Host is empty"
 msgstr ""
 
-#: ../linkcheck/checker/unknownurl.py:78 ../linkcheck/checker/urlbase.py:495
+#: ../linkcheck/checker/unknownurl.py:79 ../linkcheck/checker/urlbase.py:494
 msgid "Outside of domain filter, checked only syntax."
 msgstr ""
 
-#: ../linkcheck/checker/unknownurl.py:80
+#: ../linkcheck/checker/unknownurl.py:81
 #, python-format
 msgid "%(scheme)s URL ignored."
 msgstr ""
 
-#: ../linkcheck/checker/unknownurl.py:84
+#: ../linkcheck/checker/unknownurl.py:85
 msgid "URL is unrecognized or has invalid syntax"
 msgstr ""
 
@@ -722,31 +722,31 @@ msgstr ""
 msgid "Effective URL %(url)r."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:438
+#: ../linkcheck/checker/urlbase.py:437
 #, python-format
 msgid "URL has invalid port %(port)r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:453
+#: ../linkcheck/checker/urlbase.py:452
 #, python-format
 msgid "URL %(url)s has obfuscated IP address %(ip)s"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:480
+#: ../linkcheck/checker/urlbase.py:479
 #, python-format
 msgid "URL is located in %(country)s."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:508
+#: ../linkcheck/checker/urlbase.py:507
 msgid "Hostname not found"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:511
+#: ../linkcheck/checker/urlbase.py:510
 #, python-format
 msgid "Bad HTTP response %(line)r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:524
+#: ../linkcheck/checker/urlbase.py:523
 #, python-format
 msgid "could not get content: %(msg)r"
 msgstr ""
@@ -761,7 +761,7 @@ msgstr ""
 msgid "Available anchors: %(anchors)s."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:711 ../linkcheck/checker/fileurl.py:190
+#: ../linkcheck/checker/urlbase.py:711 ../linkcheck/checker/fileurl.py:193
 #: ../linkcheck/checker/httpurl.py:678
 msgid "File size too large"
 msgstr ""
@@ -851,18 +851,24 @@ msgstr ""
 msgid "certificate did not include \"notAfter\" information"
 msgstr ""
 
-#: ../linkcheck/checker/httpsurl.py:88
+#: ../linkcheck/checker/httpsurl.py:85
 #, python-format
-msgid "certficate is expired on %s"
+msgid "invalid certficate \"notAfter\" value %r"
 msgstr ""
 
 #: ../linkcheck/checker/httpsurl.py:93
 #, python-format
+msgid "certficate is expired on %s"
+msgstr ""
+
+#: ../linkcheck/checker/httpsurl.py:98
+#, python-format
 msgid "certificate is only %s valid"
 msgstr ""
 
-#: ../linkcheck/checker/httpsurl.py:99
-msgid "SSL warning: %(msg)s. Cipher %(cipher)s, %(protocol)s %s"
+#: ../linkcheck/checker/httpsurl.py:104
+#, python-format
+msgid "SSL warning: %(msg)s. Cipher %(cipher)s, %(protocol)s."
 msgstr ""
 
 #: ../linkcheck/checker/ftpurl.py:99
@@ -882,15 +888,15 @@ msgstr ""
 msgid "FTP file size too large"
 msgstr ""
 
-#: ../linkcheck/checker/fileurl.py:142
+#: ../linkcheck/checker/fileurl.py:145
 msgid "Added trailing slash to directory."
 msgstr ""
 
-#: ../linkcheck/checker/fileurl.py:163
+#: ../linkcheck/checker/fileurl.py:166
 msgid "directory"
 msgstr ""
 
-#: ../linkcheck/checker/fileurl.py:180
+#: ../linkcheck/checker/fileurl.py:183
 #, python-format
 msgid ""
 "The URL path %(path)r is not the same as the system path %(realpath)r. You "
@@ -1031,35 +1037,35 @@ msgstr ""
 msgid "NNTP server too busy; tried more than %d times."
 msgstr ""
 
-#: ../linkcheck/__init__.py:148
+#: ../linkcheck/__init__.py:150
 msgid "CRITICAL"
 msgstr ""
 
-#: ../linkcheck/__init__.py:149
+#: ../linkcheck/__init__.py:151
 msgid "ERROR"
 msgstr ""
 
-#: ../linkcheck/__init__.py:150
+#: ../linkcheck/__init__.py:152
 msgid "WARN"
 msgstr ""
 
-#: ../linkcheck/__init__.py:151
+#: ../linkcheck/__init__.py:153
 msgid "WARNING"
 msgstr ""
 
-#: ../linkcheck/__init__.py:152
+#: ../linkcheck/__init__.py:154
 msgid "INFO"
 msgstr ""
 
-#: ../linkcheck/__init__.py:153
+#: ../linkcheck/__init__.py:155
 msgid "DEBUG"
 msgstr ""
 
-#: ../linkcheck/__init__.py:154
+#: ../linkcheck/__init__.py:156
 msgid "NOTSET"
 msgstr ""
 
-#: ../linkcheck/__init__.py:165
+#: ../linkcheck/__init__.py:167
 msgid "Running as root user; dropping privileges by changing user to nobody."
 msgstr ""
 
@@ -1409,28 +1415,28 @@ msgstr ""
 msgid "&Save"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:158 ../linkcheck/gui/__init__.py:486
+#: ../linkcheck/gui/__init__.py:159 ../linkcheck/gui/__init__.py:499
 msgid "Ready."
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:176
+#: ../linkcheck/gui/__init__.py:177
 msgid "Check finished."
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:286
+#: ../linkcheck/gui/__init__.py:287
 msgid "Start"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:311
+#: ../linkcheck/gui/__init__.py:313
 msgid "Stop"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:359
+#: ../linkcheck/gui/__init__.py:361
 #, python-format
 msgid "About %(appname)s"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:360
+#: ../linkcheck/gui/__init__.py:362
 #, python-format
 msgid ""
 "<qt><center>\n"
@@ -1447,49 +1453,51 @@ msgid ""
 "</center></qt>"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:410
+#: ../linkcheck/gui/__init__.py:412
 msgid "Closing pending connections..."
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:426 ../linkchecker:708
+#: ../linkcheck/gui/__init__.py:427 ../linkchecker:705
 msgid "Dumping memory statistics..."
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:428
+#: ../linkcheck/gui/__init__.py:429
 msgid "LinkChecker memory dump written"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:429 ../linkchecker:710
+#: ../linkcheck/gui/__init__.py:430
 #, python-format
-msgid "The memory dump has been written to `%(filename)s'."
+msgid ""
+"The memory dump has been written to `%(filename)s'. Do you want to display a "
+"summary?"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:455
+#: ../linkcheck/gui/__init__.py:468
 msgid "Error, empty URL"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:457
+#: ../linkcheck/gui/__init__.py:470
 #, python-format
 msgid "Checking '%s'."
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:463
+#: ../linkcheck/gui/__init__.py:476
 #, python-format
 msgid "Error, invalid URL `%s'."
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:483
+#: ../linkcheck/gui/__init__.py:496
 #, python-format
 msgid "%d URL selected."
 msgid_plural "%d URLs selected"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/gui/__init__.py:564
+#: ../linkcheck/gui/__init__.py:577
 msgid "LinkChecker internal error"
 msgstr ""
 
-#: ../linkcheck/gui/linkchecker_ui_options.py:138 ../linkchecker:372
+#: ../linkcheck/gui/linkchecker_ui_options.py:138 ../linkchecker:369
 msgid "Checking options"
 msgstr ""
 
@@ -1556,43 +1564,43 @@ msgstr ""
 msgid "LinkChecker project (*%(ext)s)"
 msgstr ""
 
-#: ../linkcheck/gui/projects.py:120
+#: ../linkcheck/gui/projects.py:123
 msgid "Save LinkChecker project"
 msgstr ""
 
-#: ../linkcheck/gui/projects.py:126
+#: ../linkcheck/gui/projects.py:129
 msgid "Canceled saving a project file."
 msgstr ""
 
-#: ../linkcheck/gui/projects.py:130
+#: ../linkcheck/gui/projects.py:133
 #, python-format
 msgid "Could not write project file %(filename)s."
 msgstr ""
 
-#: ../linkcheck/gui/projects.py:146
+#: ../linkcheck/gui/projects.py:149
 #, python-format
 msgid "Project file %(filename)s saved successfully."
 msgstr ""
 
-#: ../linkcheck/gui/projects.py:176
+#: ../linkcheck/gui/projects.py:179
 msgid "Open LinkChecker project"
 msgstr ""
 
-#: ../linkcheck/gui/projects.py:182
+#: ../linkcheck/gui/projects.py:185
 msgid "Canceled opening a project file."
 msgstr ""
 
-#: ../linkcheck/gui/projects.py:184
+#: ../linkcheck/gui/projects.py:187
 #, python-format
 msgid "Could not read project file %(filename)s."
 msgstr ""
 
-#: ../linkcheck/gui/projects.py:194
+#: ../linkcheck/gui/projects.py:197
 #, python-format
 msgid "Could not load project %(filename)s: %(err)s"
 msgstr ""
 
-#: ../linkcheck/gui/projects.py:204
+#: ../linkcheck/gui/projects.py:207
 #, python-format
 msgid "Project file %(filename)s loaded successfully."
 msgstr ""
@@ -1984,36 +1992,25 @@ msgid ""
 "html."
 msgstr ""
 
-#: ../linkchecker:333
-#, python-format
-msgid ""
-"Write profiling data into a file named %s in the\n"
-"current working directory. See also --viewprof."
-msgstr ""
-
-#: ../linkchecker:337
+#: ../linkchecker:335
 msgid ""
 "Quiet operation, an alias for '-o none'.\n"
 "This is only useful with -F."
 msgstr ""
 
-#: ../linkchecker:341
+#: ../linkchecker:339
 msgid "Scan content of URLs with ClamAV virus scanner."
 msgstr ""
 
-#: ../linkchecker:343
+#: ../linkchecker:341
 msgid "Print tracing information."
 msgstr ""
 
-#: ../linkchecker:346
+#: ../linkchecker:344
 msgid "Log all URLs. Default is to log only errors and warnings."
 msgstr ""
 
-#: ../linkchecker:349
-msgid "Print out previously generated profiling data. See also --profile."
-msgstr ""
-
-#: ../linkchecker:353
+#: ../linkchecker:350
 msgid ""
 "Define a regular expression which prints a warning if it matches\n"
 "any content of the checked link. This applies only to valid pages,\n"
@@ -2027,19 +2024,19 @@ msgid ""
 "for example \"(This page has moved|Oracle Application error)\"."
 msgstr ""
 
-#: ../linkchecker:366
+#: ../linkchecker:363
 msgid ""
 "Print a warning if content size info is available and exceeds the\n"
 "given number of bytes."
 msgstr ""
 
-#: ../linkchecker:375
+#: ../linkchecker:372
 msgid ""
 "Check HTTP anchor references. Default is not to check anchors.\n"
 "This option enables logging of the warning 'url-anchor-not-found'."
 msgstr ""
 
-#: ../linkchecker:379
+#: ../linkchecker:376
 msgid ""
 "Accept and send HTTP cookies according to RFC 2109. Only cookies\n"
 "which are sent back to the originating server are accepted.\n"
@@ -2047,144 +2044,149 @@ msgid ""
 "information."
 msgstr ""
 
-#: ../linkchecker:386
+#: ../linkchecker:383
 msgid ""
 "Read a file with initial cookie data. The cookie data format is\n"
 "explained below."
 msgstr ""
 
-#: ../linkchecker:391
+#: ../linkchecker:388
 msgid ""
 "Only check syntax of URLs matching the given regular expression.\n"
 " This option can be given multiple times."
 msgstr ""
 
-#: ../linkchecker:396
+#: ../linkchecker:393
 msgid ""
 "Check but do not recurse into URLs matching the given regular\n"
 "expression. This option can be given multiple times."
 msgstr ""
 
-#: ../linkchecker:401
+#: ../linkchecker:398
 msgid ""
 "Specify an NNTP server for 'news:...' links. Default is the\n"
 "environment variable NNTP_SERVER. If no host is given,\n"
 "only the syntax of the link is checked."
 msgstr ""
 
-#: ../linkchecker:407
+#: ../linkchecker:404
 msgid ""
 "Read a password from console and use it for HTTP and FTP authorization.\n"
 "For FTP the default password is 'anonymous@'. For HTTP there is\n"
 "no default password. See also -u."
 msgstr ""
 
-#: ../linkchecker:413
+#: ../linkchecker:410
 msgid ""
 "Pause the given number of seconds between two subsequent connection\n"
 "requests to the same host. Default is no pause between requests."
 msgstr ""
 
-#: ../linkchecker:418
+#: ../linkchecker:415
 msgid ""
 "Check recursively all links up to given depth. A negative depth\n"
 "will enable infinite recursion. Default depth is infinite."
 msgstr ""
 
-#: ../linkchecker:423
+#: ../linkchecker:420
 #, python-format
 msgid ""
 "Set the timeout for connection attempts in seconds. The default\n"
 "timeout is %d seconds."
 msgstr ""
 
-#: ../linkchecker:428
+#: ../linkchecker:425
 msgid ""
 "Try the given username for HTTP and FTP authorization.\n"
 "For FTP the default username is 'anonymous'. For HTTP there is\n"
 "no default username. See also -p."
 msgstr ""
 
-#: ../linkchecker:434
+#: ../linkchecker:431
 msgid ""
 "Specify the User-Agent string to send to the HTTP server, for example\n"
 "\"Mozilla/4.0\". The default is \"LinkChecker/X.Y\" where X.Y is the current\n"
 "version of LinkChecker."
 msgstr ""
 
-#: ../linkchecker:477
+#: ../linkchecker:474
 #, python-format
 msgid "Invalid debug level %(level)r"
 msgstr ""
 
-#: ../linkchecker:490
+#: ../linkchecker:487
 #, python-format
 msgid "Unreadable config file: %r"
 msgstr ""
 
-#: ../linkchecker:498
+#: ../linkchecker:495
 msgid "Running with python -O disables debugging."
 msgstr ""
 
-#: ../linkchecker:520 ../linkchecker:551
+#: ../linkchecker:517 ../linkchecker:548
 #, python-format
 msgid "Unknown logger type %(type)r in %(output)r for option %(option)s"
 msgstr ""
 
-#: ../linkchecker:524 ../linkchecker:557
+#: ../linkchecker:521 ../linkchecker:554
 #, python-format
 msgid "Unknown encoding %(encoding)r in %(output)r for option %(option)s"
 msgstr ""
 
-#: ../linkchecker:569
+#: ../linkchecker:566
 #, python-format
 msgid "Enter LinkChecker HTTP/FTP password for user %(user)s:"
 msgstr ""
 
-#: ../linkchecker:572
+#: ../linkchecker:569
 msgid "Enter LinkChecker HTTP/FTP password:"
 msgstr ""
 
-#: ../linkchecker:579 ../linkchecker:597
+#: ../linkchecker:576 ../linkchecker:594
 #, python-format
 msgid "Illegal argument %(arg)r for option %(option)s"
 msgstr ""
 
-#: ../linkchecker:636
+#: ../linkchecker:633
 #, python-format
 msgid "Enter LinkChecker password for user %(user)s at %(strpattern)s:"
 msgstr ""
 
-#: ../linkchecker:653
+#: ../linkchecker:650
 msgid ""
 "Using DOT or GML loggers without --complete output gives an incomplete "
 "sitemap graph."
 msgstr ""
 
-#: ../linkchecker:666
+#: ../linkchecker:663
 #, python-format
 msgid "Could not parse cookie file: %s"
 msgstr ""
 
-#: ../linkchecker:680
+#: ../linkchecker:677
 msgid "no files or URLs given"
 msgstr ""
 
-#: ../linkchecker:685
+#: ../linkchecker:682
 #, python-format
 msgid ""
 "Overwrite profiling file %(file)r?\n"
 "Press Ctrl-C to cancel, RETURN to continue."
 msgstr ""
 
-#: ../linkchecker:691
+#: ../linkchecker:688
 msgid "Canceled."
 msgstr ""
 
-#: ../linkchecker:695
+#: ../linkchecker:692
 msgid ""
-"The `profile' Python module is not installed, therefore the --profile option "
+"The `cProfile' Python module is not installed, therefore the --profile option "
 "is disabled."
+msgstr ""
+
+#: ../linkchecker:707
+#, python-format
+msgid "The memory dump has been written to `%(filename)s'."
 msgstr ""
 
 #: /usr/lib/python2.7/optparse.py:140

@@ -248,7 +248,7 @@ class TextLogger (Logger):
                          max=self.stats.max_url_length,
                          avg=self.stats.avg_url_length))
         else:
-            self.writeln(_("No statistics available since zero URLs were checked."))
+            self.writeln(_("No statistics available since no URLs were checked."))
 
     def end_output (self):
         """Write end of output info, and flush all output buffers."""
