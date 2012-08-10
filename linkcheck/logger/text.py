@@ -62,8 +62,10 @@ class TextLogger (Logger):
 
     def start_fileoutput (self):
         """Needed to make file descriptor color aware."""
+        init_color = self.fd is None
         super(TextLogger, self).start_fileoutput()
-        self.fd = ansicolor.Colorizer(self.fd)
+        if init_color:
+            self.fd = ansicolor.Colorizer(self.fd)
 
     def start_output (self):
         """Write generic start checking info."""
