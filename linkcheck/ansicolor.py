@@ -15,8 +15,8 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """
-ANSI Color definitions and functions. For Windows systems, WConio is
-required.
+ANSI Color definitions and functions. For Windows systems, the colorama module
+uses ctypes and Windows DLLs to generate colored output.
 
 From Term::ANSIColor, applies also to this module:
 
@@ -54,16 +54,14 @@ ISO 6429 is available from ISO for a charge; the author of this module does
 not own a copy of it. Since the source material for ISO 6429 was ECMA-048
 and the latter is available for free, there seems little reason to obtain
 the ISO standard.
-
-WConio module: http://newcenturycomputers.net/projects/wconio.html
 """
 
 import os
 import logging
 import types
 from .fileutil import has_module, is_tty
+from . import colorama
 
-has_wconio = has_module("WConio")
 has_curses = has_module("curses")
 
 # Color constants
@@ -114,8 +112,9 @@ Purple = 'Purple'
 Cyan = 'Cyna'
 White = 'White'
 
+InverseColors = (Black, Red, Green, Yellow, Blue, Purple, Cyan, White)
 
-# Color numbers; capitalized colors are inverse
+# Ansi color numbers; capitalized colors are inverse
 AnsiColor = {
     None:    '0',
     default: '0',
@@ -137,6 +136,28 @@ AnsiColor = {
     White:   '47',
 }
 
+# Windows color numbers; capitalized colors are used as background
+WinColor = {
+    None:    None,
+    default: colorama.GREY,
+    black:   colorama.BLACK,
+    red:     colorama.RED,
+    green:   colorama.GREEN,
+    yellow:  colorama.YELLOW,
+    blue:    colorama.BLUE,
+    purple:  colorama.MAGENTA,
+    cyan:    colorama.CYAN,
+    white:   colorama.WHITE,
+    Black:   colorama.BLACK,
+    Red:     colorama.RED,
+    Green:   colorama.GREEN,
+    Yellow:  colorama.YELLOW,
+    Blue:    colorama.BLUE,
+    Purple:  colorama.MAGENTA,
+    Cyan:    colorama.CYAN,
+    White:   colorama.WHITE,
+}
+
 # pc speaker beep escape code
 Beep = "\007"
 
@@ -153,6 +174,22 @@ def esc_ansicolor (color):
 AnsiReset = esc_ansicolor(default)
 
 
+def get_win_color(color):
+    """Convert a named color definition to Windows console color foreground,
+    background and style numbers."""
+    foreground = background = style = None
+    control = ''
+    if ";" in color:
+        control, color = color.split(";", 1)
+        if control == bold:
+            style = colorama.BRIGHT
+    if color in InverseColors:
+        background = WinColor[color]
+    else:
+        foreground = WinColor.get(color)
+    return foreground, background, style
+
+
 def has_colors (fp):
     """Test if given file is an ANSI color enabled tty."""
     # The isatty() function ensures that we do not colorize
@@ -160,11 +197,7 @@ def has_colors (fp):
     if not is_tty(fp):
         return False
     if os.name == 'nt':
-        # On Win9x system, ANSI.SYS would also work. But this
-        # requires manually adding it to config.sys, which is
-        # unlikely someone will do just to run this software on
-        # an old system.
-        return has_wconio
+        return True
     elif has_curses:
         import curses
         try:
@@ -182,15 +215,8 @@ def get_columns (fp):
     """Return number of columns for given file."""
     if not is_tty(fp):
         return 80
-    if has_wconio:
-        # gettextinfo() returns a tuple
-        # - left, top, right, bottom: window coordinates
-        # - textattr, normattr: current attributes
-        # - videomode: current video mode
-        # - height, width: screen size
-        # - curx, cury: current cursor position
-        # return the width:
-        return WConio.gettextinfo()[8]
+    if os.name == 'nt':
+        return colorama.get_console_size().X
     if has_curses:
         import curses
         try:
@@ -201,15 +227,12 @@ def get_columns (fp):
     return 80
 
 
-def _write_color_nt (fp, text, color):
-    """Assumes WConio has been imported at module level."""
-    oldcolor = WConio.gettextinfo()[4]
-    oldtextcolor = oldcolor & 0x000F
-    if ";" in color:
-        color = color.split(";", 1)[1]
-    WConio.textcolor(WConioColor.get(color, oldtextcolor))
+def _write_color_colorama (fp, text, color):
+    foreground, background, style = get_win_color(color)
+    colorama.set_console(foreground=foreground, background=background,
+      style=style)
     fp.write(text)
-    WConio.textattr(oldcolor)
+    colorama.reset_console()
 
 
 def _write_color_ansi (fp, text, color):
@@ -219,29 +242,8 @@ def _write_color_ansi (fp, text, color):
     fp.write(AnsiReset)
 
 
-if os.name == 'nt' and has_wconio:
-    import WConio
-    WConioColor = {
-        None: WConio.LIGHTGREY,
-        default: WConio.LIGHTGREY,
-        black: WConio.BLACK,
-        red: WConio.RED,
-        green: WConio.GREEN,
-        yellow: WConio.YELLOW,
-        blue: WConio.BLUE,
-        purple: WConio.MAGENTA,
-        cyan: WConio.CYAN,
-        white: WConio.WHITE,
-        Black: WConio.BLACK,
-        Red: WConio.RED,
-        Green: WConio.GREEN,
-        Yellow: WConio.YELLOW,
-        Blue: WConio.BLUE,
-        Purple: WConio.MAGENTA,
-        Cyan: WConio.CYAN,
-        White: WConio.WHITE,
-    }
-    write_color = _write_color_nt
+if os.name == 'nt':
+    write_color = _write_color_colorama
 else:
     write_color = _write_color_ansi
 
