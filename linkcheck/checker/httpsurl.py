@@ -44,9 +44,12 @@ class HttpsUrl (httpurl.HttpUrl):
         return h
 
     def check_ssl_certificate(self, ssl_sock, host):
-        """Run all SSl certificate checks that have not yet been done.
+        """Run all SSL certificate checks that have not yet been done.
         OpenSSL already checked the SSL notBefore and notAfter dates.
         """
+        if not hasattr(ssl_sock, "getpeercert"):
+            # the URL was a HTTPS -> HTTP redirect
+            return
         cert = ssl_sock.getpeercert()
         log.debug(LOG_CHECK, "Got SSL certificate %s", cert)
         if not cert:
