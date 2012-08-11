@@ -90,26 +90,6 @@ def SetConsoleTextAttribute(stream_id, attrs):
     handle = handles[stream_id]
     return windll.kernel32.SetConsoleTextAttribute(handle, attrs)
 
-def FillConsoleOutputCharacter(stream_id, char, length, start):
-    handle = handles[stream_id]
-    char = TCHAR(char)
-    length = DWORD(length)
-    num_written = DWORD(0)
-    # Note that this is hard-coded for ANSI (vs wide) bytes.
-    success = windll.kernel32.FillConsoleOutputCharacterA(
-        handle, char, length, start, byref(num_written))
-    return num_written.value
-
-def FillConsoleOutputAttribute(stream_id, attr, length, start):
-    ''' FillConsoleOutputAttribute( hConsole, csbi.wAttributes, dwConSize, coordScreen, &cCharsWritten )'''
-    handle = handles[stream_id]
-    attribute = WORD(attr)
-    length = DWORD(length)
-    num_written = DWORD(0)
-    # Note that this is hard-coded for ANSI (vs wide) bytes.
-    return windll.kernel32.FillConsoleOutputAttribute(
-        handle, attribute, length, start, byref(num_written))
-
 
 # from wincon.h
 BLACK   = 0
