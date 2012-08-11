@@ -147,7 +147,7 @@ WinColor = {
     blue:    colorama.BLUE,
     purple:  colorama.MAGENTA,
     cyan:    colorama.CYAN,
-    white:   colorama.WHITE,
+    white:   colorama.GREY,
     Black:   colorama.BLACK,
     Red:     colorama.RED,
     Green:   colorama.GREEN,
@@ -155,7 +155,7 @@ WinColor = {
     Blue:    colorama.BLUE,
     Purple:  colorama.MAGENTA,
     Cyan:    colorama.CYAN,
-    White:   colorama.WHITE,
+    White:   colorama.GREY,
 }
 
 # pc speaker beep escape code
@@ -244,6 +244,7 @@ def _write_color_ansi (fp, text, color):
 
 if os.name == 'nt':
     write_color = _write_color_colorama
+    colorama.init()
 else:
     write_color = _write_color_ansi
 
