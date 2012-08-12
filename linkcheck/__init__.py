@@ -107,6 +107,7 @@ def add_intern_pattern (url_data, config):
     if pat:
         log.debug(LOG_CHECK, "Add intern pattern %r", pat)
         config['internlinks'].append(get_link_pat(pat))
+        url_data.set_extern(url_data.url)
 
 
 def get_link_pat (arg, strict=False):
