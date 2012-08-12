@@ -60,7 +60,8 @@ import os
 import logging
 import types
 from .fileutil import has_module, is_tty
-from . import colorama
+if os.name == 'nt':
+    from . import colorama
 
 has_curses = has_module("curses")
 
@@ -136,27 +137,28 @@ AnsiColor = {
     White:   '47',
 }
 
-# Windows color numbers; capitalized colors are used as background
-WinColor = {
-    None:    None,
-    default: colorama.GREY,
-    black:   colorama.BLACK,
-    red:     colorama.RED,
-    green:   colorama.GREEN,
-    yellow:  colorama.YELLOW,
-    blue:    colorama.BLUE,
-    purple:  colorama.MAGENTA,
-    cyan:    colorama.CYAN,
-    white:   colorama.GREY,
-    Black:   colorama.BLACK,
-    Red:     colorama.RED,
-    Green:   colorama.GREEN,
-    Yellow:  colorama.YELLOW,
-    Blue:    colorama.BLUE,
-    Purple:  colorama.MAGENTA,
-    Cyan:    colorama.CYAN,
-    White:   colorama.GREY,
-}
+if os.name == 'nt':
+    # Windows color numbers; capitalized colors are used as background
+    WinColor = {
+        None:    None,
+        default: colorama.GREY,
+        black:   colorama.BLACK,
+        red:     colorama.RED,
+        green:   colorama.GREEN,
+        yellow:  colorama.YELLOW,
+        blue:    colorama.BLUE,
+        purple:  colorama.MAGENTA,
+        cyan:    colorama.CYAN,
+        white:   colorama.GREY,
+        Black:   colorama.BLACK,
+        Red:     colorama.RED,
+        Green:   colorama.GREEN,
+        Yellow:  colorama.YELLOW,
+        Blue:    colorama.BLUE,
+        Purple:  colorama.MAGENTA,
+        Cyan:    colorama.CYAN,
+        White:   colorama.GREY,
+    }
 
 # pc speaker beep escape code
 Beep = "\007"
