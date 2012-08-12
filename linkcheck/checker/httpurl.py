@@ -319,7 +319,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         self.add_info(_("Redirected to `%(url)s'.") % {'url': newurl})
         # norm base url - can raise UnicodeError from url.idna_encode()
         redirected, is_idn = urlbase.url_norm(newurl)
-        # XXX recalculate authentication information when available
         log.debug(LOG_CHECK, "Norm redirected to %r", redirected)
         urlparts = strformat.url_unicode_split(redirected)
         if not self.check_redirection_scheme(redirected, urlparts, set_result):
@@ -336,8 +335,11 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             return -1, response
         # remember redirected url as alias
         self.aliases.append(redirected)
+        if self.anchor:
+            urlparts[4] = self.anchor
         # note: urlparts has to be a list
         self.urlparts = urlparts
+        self.build_url_parts()
         if set_result:
             self.check301status(response)
         # check cache again on the changed URL
@@ -516,14 +518,15 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         if self.proxy:
             scheme = self.proxytype
-            host = self.proxy
+            host, port = urllib.splitport(self.proxy)
         else:
-            scheme = self.urlparts[0]
-            host = self.urlparts[1]
+            scheme = self.scheme
+            host = self.host
+            port = self.port
         log.debug(LOG_CHECK, "Connecting to %r", host)
         # close/release a previous connection
         self.close_connection()
-        self.url_connection = self.get_http_object(host, scheme)
+        self.url_connection = self.get_http_object(scheme, host, port)
         # the anchor fragment is not part of a HTTP URL, see
         # http://tools.ietf.org/html/rfc2616#section-3.2.2
         anchor = ''
@@ -553,7 +556,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if self.aggregate.config['sendcookies']:
             self.send_cookies()
         self.url_connection.endheaders()
-        response = self.url_connection.getresponse(True)
+        buffering = True
+        response = self.url_connection.getresponse(buffering)
         self.timeout = headers.http_timeout(response)
         self.headers = response.msg
         self.content_type = None
@@ -624,7 +628,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if headervalue:
             self.url_connection.putheader(headername, headervalue)
 
-    def get_http_object (self, host, scheme):
+    def get_http_object (self, scheme, host, port):
         """
         Open a HTTP connection.
 
@@ -635,7 +639,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         @return: open HTTP(S) connection
         @rtype: httplib.HTTP(S)Connection
         """
-        key = self.get_connection_key(scheme, host)
+        key = self.get_connection_key(scheme, host, port)
         conn = self.aggregate.connections.get(key)
         if conn is not None:
             log.debug(LOG_CHECK, "reuse cached HTTP(S) connection %s", conn)
@@ -643,11 +647,12 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             return conn
         self.aggregate.connections.wait_for_host(host)
         if scheme == "http":
-            h = httplib.HTTPConnection(host)
+            strict = True
+            h = httplib.HTTPConnection(host, port, strict)
         elif scheme == "https" and supportHttps:
             devel_dir = os.path.join(configuration.configdata.install_data, "config")
             ca_certs = configuration.get_share_file(devel_dir, 'ca-certificates.crt')
-            h = httplib.HTTPSConnection(host, ca_certs=ca_certs)
+            h = httplib.HTTPSConnection(host, port, ca_certs=ca_certs)
         else:
             msg = _("Unsupported HTTP url scheme `%(scheme)s'") % {"scheme": scheme}
             raise LinkCheckerError(msg)
@@ -828,7 +833,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 pass
         self.url_connection = None
 
-    def get_connection_key (self, scheme, host):
+    def get_connection_key (self, scheme, host, port):
         """Get unique key specifying this connection.
         Used to reuse cached connections.
         @param scheme: 'https' or 'http'
@@ -838,7 +843,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         @return: (scheme, host, port, user, password)
         @rtype: tuple(string, string, int, string, string)
         """
-        host, port = urlutil.splitport(host)
         _user, _password = self.get_user_password()
         return (scheme, host, port, _user, _password)
 
