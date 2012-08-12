@@ -39,43 +39,43 @@ error
 url http://www.example.com/
 cache key http://www.example.com/
 real url http://www.iana.org/domains/example/
-name ok
+name ok example
 info Redirected to `http://www.iana.org/domains/example/'.
 valid
 
 url http:/www.example.com/
-cache key http:///www.example.com/
+cache key None
 real url http:///www.example.com/
-name one slash
+name one slash example
 error
 
-url http:www.example.com/ (cached)
-cache key http:///www.example.com/
+url http:www.example.com/
+cache key None
 real url http:///www.example.com/
-name no slash
+name no slash example
 error
 
 url //www.example.com/ (cached)
 cache key http://www.example.com/
 real url http://www.iana.org/domains/example/
-name no scheme
+name no scheme example
 info Redirected to `http://www.iana.org/domains/example/'.
 valid
 
 url http://
-cache key http://
+cache key None
 real url http://
 name no url
 error
 
 url http:/
-cache key http:///
+cache key None
 real url http:///
 name no url, one slash
 error
 
-url http: (cached)
-cache key http://
+url http:
+cache key None
 real url http://
 name no url, no slash
 error
@@ -89,7 +89,7 @@ error
 url http://slashdot.org/
 cache key http://slashdot.org/
 real url http://slashdot.org/
-name unquoted
+name unquoted slashdot
 valid
 
 url HtTP://WwW.ExaMple.cOm/ (cached)
@@ -140,6 +140,6 @@ valid
 url http://www.example.com/ (cached)
 cache key http://www.example.com/
 real url http://www.iana.org/domains/example/
-name no beginning quote
+name no beginning quote example
 info Redirected to `http://www.iana.org/domains/example/'.
 valid
