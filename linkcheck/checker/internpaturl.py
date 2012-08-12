@@ -26,8 +26,8 @@ def get_intern_pattern (url):
     """Return intern pattern for given URL. Redirections to the same
     domain with or without "www." prepended are allowed."""
     parts = strformat.url_unicode_split(url)
-    scheme = parts[0]
-    domain = parts[1]
+    scheme = parts[0].lower()
+    domain = parts[1].lower()
     domain, is_idn = urlutil.idna_encode(domain)
     # allow redirection www.example.com -> example.com and vice versa
     if domain.startswith('www.'):
