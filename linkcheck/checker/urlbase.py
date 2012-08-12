@@ -45,6 +45,9 @@ from .const import (WARN_URL_EFFECTIVE_URL,
 # helper alias
 unicode_safe = strformat.unicode_safe
 
+# schemes that are invalid with an empty hostname
+scheme_requires_host = ("ftp", "http", "mailto", "news", "nntp", "telnet")
+
 def urljoin (parent, url):
     """
     If url is relative, join parent and url. Else leave url as-is.
@@ -161,8 +164,8 @@ class UrlBase (object):
         self.url = None
         # a splitted version of url for convenience
         self.urlparts = None
-        # the anchor part of url
-        self.anchor = None
+        # the scheme, host, port and anchor part of url
+        self.scheme = self.host = self.port = self.anchor = None
         # list of parsed anchors
         self.anchors = []
         # the result message string and flag
@@ -388,8 +391,9 @@ class UrlBase (object):
                 self.url = effectiveurl
         except tuple(ExcSyntaxList), msg:
             self.set_result(unicode_safe(msg), valid=False)
-            return
-        self.set_cache_keys()
+        else:
+            self.set_cache_keys()
+            self.set_extern(self.url)
 
     def build_url (self):
         """
@@ -422,6 +426,12 @@ class UrlBase (object):
         self.urlparts = strformat.url_unicode_split(self.url)
         # and unsplit again
         self.url = urlutil.urlunsplit(self.urlparts)
+        self.build_url_parts()
+
+    def build_url_parts (self):
+        """Set userinfo, host, port and anchor from self.urlparts.
+        Also checks for obfuscated IP addresses.
+        """
         # check userinfo@host:port syntax
         self.userinfo, host = urllib.splituser(self.urlparts[1])
         # set host lowercase
@@ -437,13 +447,14 @@ class UrlBase (object):
                 raise LinkCheckerError(_("URL has invalid port %(port)r") %
                     {"port": str(self.port)})
             self.port = int(self.port)
-        self.check_obfuscated_ip()
+        if self.scheme in scheme_requires_host:
+            if not self.host:
+                raise LinkCheckerError(_("URL has empty hostname"))
+            self.check_obfuscated_ip()
 
     def check_obfuscated_ip (self):
         """Warn if host of this URL is obfuscated IP address."""
         # check if self.host can be an IP address
-        if self.scheme not in ("ftp", "http", "mailto", "news", "nntp", "telnet"):
-            return
         # check for obfuscated IP address
         if iputil.is_obfuscated_ip(self.host):
             ips = iputil.resolve_host(self.host)
@@ -489,11 +500,8 @@ class UrlBase (object):
         log.debug(LOG_CHECK, "Checking %s", self)
         # start time for check
         check_start = time.time()
-        self.set_extern(self.url)
-        if self.extern[0] and self.extern[1]:
-            self.add_info(_("Outside of domain filter, checked only syntax."))
-            return
-
+        # strict extern URLs should not be checked
+        assert not self.extern[1], 'checking strict extern URL'
         # check connection
         log.debug(LOG_CHECK, "checking connection")
         try:
@@ -964,7 +972,9 @@ class UrlBase (object):
         url_data = get_url_from(url, self.recursion_level+1, self.aggregate,
             parent_url=self.url, base_ref=base_ref, line=line, column=column,
             name=name, parent_content_type=self.content_type)
-        self.aggregate.urlqueue.put(url_data)
+        if url_data.has_result or not url_data.extern[1]:
+            # Only queue URLs which have a result or are not strict extern.
+            self.aggregate.urlqueue.put(url_data)
 
     def parse_opera (self):
         """Parse an opera bookmark file."""

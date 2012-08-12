@@ -11,6 +11,8 @@ Changes:
 - dependencies: Python >= 2.7.2 is now required
 - gui: Display debug output text with fixed-width font.
 - checking: Ignore feed: URLs.
+- checking: --ignore-url now really ignores the URLs instead
+  of checking only the syntax.
 
 Fixes:
 - gui: Fix saving of the debugmemory option.

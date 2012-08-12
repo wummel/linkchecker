@@ -37,9 +37,9 @@ class HttpsUrl (httpurl.HttpUrl):
         else:
             self.add_info(_("%s URL ignored.") % self.scheme.capitalize())
 
-    def get_http_object (self, host, scheme):
+    def get_http_object (self, scheme, host, port):
         """Open a HTTP connection and check the SSL certificate."""
-        h = super(HttpsUrl, self).get_http_object(host, scheme)
+        h = super(HttpsUrl, self).get_http_object(scheme, host, port)
         self.check_ssl_certificate(h.sock, host)
         return h
 
