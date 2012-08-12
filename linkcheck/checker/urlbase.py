@@ -46,7 +46,7 @@ from .const import (WARN_URL_EFFECTIVE_URL,
 unicode_safe = strformat.unicode_safe
 
 # schemes that are invalid with an empty hostname
-scheme_requires_host = ("ftp", "http", "mailto", "news", "nntp", "telnet")
+scheme_requires_host = ("ftp", "http", "telnet")
 
 def urljoin (parent, url):
     """
