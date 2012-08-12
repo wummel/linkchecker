@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
 "POT-Creation-Date: 2012-08-12 11:16+0200\n"
-"PO-Revision-Date: 2012-08-12 11:17+0100\n"
+"PO-Revision-Date: 2012-08-12 14:47+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "Language: \n"
@@ -30,15 +30,15 @@ msgstr[1] "%2d URLs aktiv"
 #, python-format
 msgid "%5d URL queued"
 msgid_plural "%5d URLs queued"
-msgstr[0] "%5d URL überprüft"
-msgstr[1] "%5d URLs überprüft"
+msgstr[0] "%5d URL zu prüfen"
+msgstr[1] "%5d URLs zu prüfen"
 
 #: ../linkcheck/director/console.py:52
 #, python-format
 msgid "%4d URL checked"
 msgid_plural "%4d URLs checked"
-msgstr[0] "%4d Verknüpfung überprüft"
-msgstr[1] "%4d Verknüpfungen überprüft"
+msgstr[0] "%4d URL überprüft"
+msgstr[1] "%4d URLs überprüft"
 
 #: ../linkcheck/director/console.py:54
 #, python-format
