@@ -132,7 +132,7 @@ valid
 
 url http://example.org/foo/ #a=1,2,3
 cache key http://example.org/foo/%%20
-real url http://www.iana.org/domains/example/
+real url http://www.iana.org/domains/example/#a%%3D1%%2C2%%2C3
 info Redirected to `http://www.iana.org/domains/example/'.
 warning Anchor `a%%3D1%%2C2%%2C3' not found. Available anchors: `body', `body-container', `footer', `footer-beta-feedback', `footer-frame', `header', `header-frame', `header-logo', `header-nav', `iana-footer-first', `iana-footer-icann'.
 valid
