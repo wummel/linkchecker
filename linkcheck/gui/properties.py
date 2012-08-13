@@ -21,9 +21,9 @@ from .. import strformat
 
 def set_properties (widget, data):
     """Write URL data values into widget text fields."""
-    if data.url:
-        widget.prop_url.setText(u'<a href="%(url)s">%(url)s</a>' % \
-                              dict(url=data.url))
+    if data.base_url and data.url:
+        widget.prop_url.setText(u'<a href="%(url)s">%(base_url)s</a>' % \
+                              dict(url=data.url, base_url=data.base_url))
     else:
         widget.prop_url.setText(u"")
     widget.prop_name.setText(data.name)

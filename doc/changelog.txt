@@ -10,6 +10,8 @@ Features:
 Changes:
 - dependencies: Python >= 2.7.2 is now required
 - gui: Display debug output text with fixed-width font.
+- gui: Display the real name in the URL properties.
+  Closes: SF bug #3542976
 - checking: Ignore feed: URLs.
 - checking: --ignore-url now really ignores the URLs instead
   of checking only the syntax.
