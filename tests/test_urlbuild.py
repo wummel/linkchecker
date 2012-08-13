@@ -41,13 +41,13 @@ class TestUrlBuild (unittest.TestCase):
 
     def test_http_build (self):
         parent_url = "http://localhost:8001/tests/checker/data/http.html"
-        base_url = "http://"
+        base_url = "http://foo"
         recursion_level = 0
         aggregate = get_test_aggregate()
         o = linkcheck.checker.httpurl.HttpUrl(base_url, recursion_level,
                aggregate, parent_url=parent_url)
         o.build_url()
-        self.assertEqual(o.url, 'http://')
+        self.assertEqual(o.url, 'http://foo')
 
     def test_urljoin (self):
         parent_url = "http://localhost:8001/test"

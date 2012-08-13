@@ -71,7 +71,7 @@ class TestUnknown (LinkCheckTest):
 
     def test_feed (self):
         url = u"feed:https://example.com/entries.atom"
-        nurl = self.norm(url)
+        nurl = u"feed:https%3A/example.com/entries.atom"
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % nurl,

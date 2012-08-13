@@ -28,7 +28,7 @@ class TestTelnet (LinkCheckTest):
         nurl = self.norm(url)
         resultlines = [
             u"url %s" % url,
-            u"cache key %s" % nurl,
+            u"cache key None",
             u"real url %s" % nurl,
             u"error",
         ]
