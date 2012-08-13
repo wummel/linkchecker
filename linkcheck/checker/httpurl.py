@@ -240,6 +240,12 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 self.set_result(_("more than %d redirections, aborting") %
                                 self.max_redirects, valid=False)
                 return response
+            # test unallowed method
+            if (response.status == 405 and self.method == "HEAD" and
+                self.method_get_allowed):
+                log.debug(LOG_CHECK, "Method HEAD unallowed, falling back to GET")
+                self.fallback_to_get()
+                continue
             # user authentication
             if response.status == 401:
                 authenticate = self.getheader('WWW-Authenticate')
