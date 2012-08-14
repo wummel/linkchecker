@@ -55,3 +55,7 @@ override_dh_clean:
 # do not run test suite when building
 override_dh_auto_test:
 
+# use xz for debian binary package compression
+override_dh_builddeb:
+	dh_builddeb -- -Zxz
+
