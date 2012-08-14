@@ -183,6 +183,8 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.error_signal.connect(self.internal_error)
         self.options.editor.saved.connect(self.read_config)
         self.log_status_signal.connect(self.log_status)
+        self.prop_url.linkHovered.connect(self.hover_link)
+        self.prop_parenturl.linkHovered.connect(self.hover_link)
 
     def init_shortcuts (self):
         """Configure application shortcuts."""
@@ -561,6 +563,10 @@ Version 2 or later.
             self.label_status.setToolTip(msg)
             msg = msg[:27]+u"..."
         self.label_status.setText(msg)
+
+    def hover_link (self, link):
+        """Show given link in status bar."""
+        self.statusBar.showMessage(link)
 
     def log_status (self, checked, in_progress, queued, duration):
         """Update number of checked, active and queued URLs."""
