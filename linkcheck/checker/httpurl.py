@@ -65,8 +65,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         super(HttpUrl, self).reset()
         self.max_redirects = 5
         self.has301status = False
-        # flag if check had to fallback from HEAD to GET method
-        self.fallback_get = False
         # flag if connection is persistent
         self.persistent = False
         # URLs seen through 301/302 redirections
@@ -146,20 +144,17 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         self.method = "HEAD"
         # check for amazon server quirk
         if _is_amazon(self.urlparts[1]):
-            self.add_info(_("Amazon servers block HTTP HEAD requests."))
             if self.method_get_allowed:
-                self.add_info(_("Using GET method for Amazon server."))
                 self.method = "GET"
+            else:
+                # XXX make this a warning instead
+                self.add_info(_("Amazon servers block HTTP HEAD requests."))
         # check the http connection
         response = self.check_http_connection()
         if self.headers and "Server" in self.headers:
             server = self.getheader('Server')
         else:
             server = _("unknown")
-        if self.fallback_get:
-            self.add_info(_("Server `%(name)s' did not support HEAD request; "
-                            "a GET request was used instead.") %
-                            {"name": server})
         # redirections might have changed the URL
         self.url = urlutil.urlunsplit(self.urlparts)
         # check response
@@ -177,6 +172,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         response = None
         while True:
+            # XXX refactor this
             if response is not None:
                 response.close()
             try:
@@ -240,12 +236,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 self.set_result(_("more than %d redirections, aborting") %
                                 self.max_redirects, valid=False)
                 return response
-            # test unallowed method
-            if (response.status == 405 and self.method == "HEAD" and
-                self.method_get_allowed):
-                log.debug(LOG_CHECK, "Method HEAD unallowed, falling back to GET")
-                self.fallback_to_get()
-                continue
             # user authentication
             if response.status == 401:
                 authenticate = self.getheader('WWW-Authenticate')
@@ -260,9 +250,20 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 if not self.auth:
                     self.construct_auth()
                     continue
-            if (self.headers and self.method == "HEAD" and
-                self.method_get_allowed):
-                # test for HEAD support
+            # check for fallback
+            if self.method == "HEAD" and self.method_get_allowed:
+                # 405 method unallowed
+                if response.status == 405:
+                    log.debug(LOG_CHECK, "Method HEAD unallowed, falling back to GET")
+                    self.fallback_to_get()
+                    continue
+                # Some sites do not support HEAD requests, for example
+                # youtube sends a 404 with HEAD, 200 with GET. Doh.
+                if response.status >= 400:
+                    log.debug(LOG_CHECK, "Method HEAD error, falling back to GET")
+                    self.fallback_to_get()
+                    continue
+                # Other sites send 200 with HEAD, but 404 with GET. Bummer.
                 poweredby = self.getheader('X-Powered-By', u'')
                 server = self.getheader('Server', u'')
                 if (poweredby.startswith('Zope') or server.startswith('Zope')
@@ -275,10 +276,9 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         return response
 
     def fallback_to_get(self):
-        """Set method to GET and set fallback flag."""
+        """Set method to GET and clear aliases."""
         self.method = "GET"
         self.aliases = []
-        self.fallback_get = True
 
     def construct_auth (self):
         """Construct HTTP Basic authentication credentials if there
