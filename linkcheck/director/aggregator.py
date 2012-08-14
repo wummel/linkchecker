@@ -92,10 +92,12 @@ class Aggregate (object):
         """Print still-active URLs and empty the URL queue."""
         self.print_active_threads()
         self.cancel()
+        timneout = self.config["timeout"]
         try:
-            self.urlqueue.join(timeout=self.config["timeout"])
+            self.urlqueue.join(timeout=timeout)
         except urlqueue.Timeout:
-            log.warn(LOG_CHECK, "Abort timed out")
+            log.warn(LOG_CHECK, "Abort timed out after %d seconds, stopping application." % timeout)
+            raise KeyboardInterrupt()
 
     @synchronized(_threads_lock)
     def remove_stopped_threads (self):
