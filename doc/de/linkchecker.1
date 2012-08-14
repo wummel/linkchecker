@@ -49,8 +49,7 @@ Beachten Sie dass dies die komplette Domäne überprüft, welche aus mehreren
 tausend URLs bestehen kann. Benutzen Sie die Option \fB\-r\fP, um die
 Rekursionstiefe zu beschränken.
 .br
-Keine Verbindungen zu \fBmailto:\fP Rechnern, nur die URL Syntax wird geprüft. Alle
-anderen Verknüpfungen werden wie üblich geprüft:
+Prüfe keine \fBmailto:\fP URLs. Alle anderen Verknüpfungen werden wie üblich geprüft:
   \fBlinkchecker \-\-ignore\-url=^mailto: mysite.example.org\fP
 .br
 Überprüfung einer lokalen HTML Datei unter Unix:
@@ -196,8 +195,8 @@ Lese eine Datei mit Cookie\-Daten. Das Cookie Datenformat wird weiter unten
 erklärt.
 .TP 
 \fB\-\-ignore\-url=\fP\fIREGEX\fP
-Prüfe lediglich die Syntax von URLs welche dem angegebenen regulären
-Ausdruck entsprechen.
+URLs welche dem angegebenen regulären Ausdruck entsprechen werden ignoriert
+und nicht geprüft.
 .br
 Diese Option kann mehrmals angegeben werden.
 .br
@@ -410,11 +409,11 @@ Für FTP\-Links wird Folgendes geprüft:
   
   Versuche, zu dem angegebenen NNTP\-Rechner eine Verbindung aufzubaucne. Falls eine Nachrichtengruppe oder ein bestimmter Artikel angegeben ist, wird versucht, diese Gruppe oder diesen Artikel vom Rechner anzufragen.
 
-\- Ignorierte Links (\*(lqjavascript:\*(lq, etc.)
+\- Nicht unterstützte Links (\*(lqjavascript:\*(lq, etc.)
   
-  Ein ignorierte Link wird nur eine Warnung ausgeben. Weitere Prüfungen werden nicht gemacht.
+  Ein nicht unterstützter Link wird nur eine Warnung ausgeben. Weitere Prüfungen werden nicht durchgeführt.
   
-  Dies ist eine komplette Liste von erkannten, aber ingorierten Links. Die bekanntesten von ihnen dürften JavaScript\-Links sein.
+  Dies ist eine komplette Liste von erkannten, aber nicht unterstützten Links. Die bekanntesten davon dürften JavaScript\-Links sein.
   
   \- \*(lqacap:\*(lq      (application configuration access protocol)
   \- \*(lqafs:\*(lq       (Andrew File System global file names)
@@ -482,7 +481,7 @@ diald), wird es dies tun wenn Sie Links prüfen, die nicht auf Ihren lokalen
 Rechner verweisen Benutzen Sie die Option \fB\-\-ignore\-url\fP, um dies zu
 verhindern.
 
-Javascript Links werden zur Zeit ignoriert.
+Javascript Links werden nicht unterstützt.
 
 Wenn Ihr System keine Threads unterstützt, deaktiviert diese LinkChecker
 automatisch.

@@ -40,8 +40,7 @@ URL pointing outside of the domain:
 Beware that this checks the whole site which can have thousands of URLs.
 Use the \fB\-r\fP option to restrict the recursion depth.
 .br
-Don't connect to \fBmailto:\fP hosts, only check their URL syntax. All other
-links are checked as usual:
+Don't check \fBmailto:\fP URLs. All other links are checked as usual:
   \fBlinkchecker \-\-ignore\-url=^mailto: mysite.example.org\fP
 .br
 Checking a local HTML file on Unix:
@@ -183,7 +182,7 @@ Read a file with initial cookie data. The cookie data
 format is explained below.
 .TP
 \fB\-\-ignore\-url=\fP\fIREGEX\fP
-URLs matching the given regular expression will only have their syntax checked.
+URLs matching the given regular expression will be ignored and not checked.
 .br
 This option can be given multiple times.
 .br
@@ -397,12 +396,12 @@ FTP links (\fBftp:\fP)
   We try to connect to the given NNTP server. If a news group or
   article is specified, try to request it from the server.
 
-- Ignored links (``javascript:``, etc.)
+- Unsupported links (``javascript:``, etc.)
   
-  An ignored link will only print a warning. No further checking
+  An unsupported link will only print a warning. No further checking
   will be made.
   
-  Here is a complete list of recognized, but ignored links. The most
+  Here is a complete list of recognized, but unsupported links. The most
   prominent of them should be JavaScript links.
   
   - ``acap:``      (application configuration access protocol)
@@ -481,7 +480,7 @@ connection to the internet (e.g. with diald), it will connect when
 checking links not pointing to your local host.
 Use the \fB\-\-ignore\-url\fP option to prevent this.
 
-Javascript links are currently ignored.
+Javascript links are not supported.
 
 If your platform does not support threading, LinkChecker disables it
 automatically.
