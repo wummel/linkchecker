@@ -121,7 +121,8 @@ chmod:
 
 .PHONY: dist
 dist: locale MANIFEST chmod
-	$(PYTHON) setup.py sdist --formats=bztar
+	$(PYTHON) setup.py sdist --formats=tar
+	xz dist/$(APPNAME)-$(VERSION).tar
 # no rpm buildable with bdist_rpm, presumable due to this bug:
 # https://bugzilla.redhat.com/show_bug.cgi?id=236535
 # too uninvolved to fix it
