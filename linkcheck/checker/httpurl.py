@@ -151,10 +151,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 self.add_info(_("Amazon servers block HTTP HEAD requests."))
         # check the http connection
         response = self.check_http_connection()
-        if self.headers and "Server" in self.headers:
-            server = self.getheader('Server')
-        else:
-            server = _("unknown")
         # redirections might have changed the URL
         self.url = urlutil.urlunsplit(self.urlparts)
         # check response
@@ -808,6 +804,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             self.parse_swf()
         elif ctype == "application/msword":
             self.parse_word()
+        elif ctype == "text/vnd.wap.wml":
+            self.parse_wml()
 
     def get_robots_txt_url (self):
         """

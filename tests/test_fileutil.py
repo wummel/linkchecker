@@ -47,3 +47,4 @@ class TestFileutil (unittest.TestCase):
         self.mime_test(filename, "application/x-plist+safari")
         filename = os.path.join("plist_xml", "Bookmarks.plist")
         self.mime_test(filename, "application/x-plist+safari")
+        self.mime_test("test.wml", "text/vnd.wap.wml")

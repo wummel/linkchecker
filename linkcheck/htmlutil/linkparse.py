@@ -67,6 +67,20 @@ LinkTags = {
     None:       [u'style'],
 }
 
+# HTML anchor tags
+AnchorTags = {
+    'a': [u'name'],
+    None: [u'id'],
+}
+
+# WML tags
+WmlTags = {
+    'a':   [u'href'],
+    'go':  [u'href'],
+    'img': [u'src'],
+}
+
+
 # matcher for <meta http-equiv=refresh> tags
 refresh_re = re.compile(ur"(?i)^\d+;\s*url=(?P<url>.+)$")
 _quoted_pat = ur"('[^']+'|\"[^\"]+\"|[^\)\s]+)"

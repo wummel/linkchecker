@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2004-2011 Bastian Kleineidam
+# Copyright (C) 2004-2012 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -46,6 +46,9 @@ class TestFile (LinkCheckTest):
 
     def test_html (self):
         self.file_test("file.html")
+
+    def test_wml (self):
+        self.file_test("file.wml")
 
     def test_text (self):
         self.file_test("file.txt")

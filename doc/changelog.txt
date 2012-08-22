@@ -5,6 +5,8 @@ Features:
   hostname and the expiration date are checked.
 - checking: Always compare encoded anchor names.
   Closes: SF bug #3538365
+- checking: Support WML sites.
+  Closes: SF bug #3553175
 - cmdline: Added Nagios plugin script.
 
 Changes:

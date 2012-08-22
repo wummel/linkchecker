@@ -1,0 +1,16 @@
+url file://%(curdir)s/%(datadir)s/file.wml
+cache key file://%(curdir)s/%(datadir)s/file.wml
+real url file://%(curdir)s/%(datadir)s/file.wml
+name %(datadir)s/file.wml
+valid
+
+url file.html
+cache key file://%(curdir)s/%(datadir)s/file.html
+real url file://%(curdir)s/%(datadir)s/file.html
+name Test1
+valid
+
+url error.gif
+cache key file://%(curdir)s/%(datadir)s/error.gif
+real url file://%(curdir)s/%(datadir)s/error.gif
+error

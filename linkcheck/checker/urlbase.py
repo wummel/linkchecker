@@ -99,6 +99,7 @@ class UrlBase (object):
         "text/plain+opera": "opera",
         "text/plain+chromium": "chromium",
         "application/x-plist+safari": "safari",
+        "text/vnd.wap.wml": "wml",
     }
 
     # Set maximum file size for downloaded files in bytes.
@@ -629,9 +630,17 @@ class UrlBase (object):
         """Store anchors for this URL. Precondition: this URL is
         an HTML resource."""
         log.debug(LOG_CHECK, "Getting HTML anchors %s", self)
-        handler = linkparse.LinkFinder(self.add_anchor,
-                                   tags={'a': [u'name'], None: [u'id']})
+        self.find_links(self.add_anchor, tags=linkparse.AnchorTags)
+
+    def find_links (self, callback, tags=None):
+        """Parse into content and search for URLs to check.
+        Found URLs are added to the URL queue.
+        """
+        # construct parser object
+        handler = linkparse.LinkFinder(callback, tags=tags)
         parser = htmlsax.parser(handler)
+        if self.charset:
+            parser.encoding = self.charset
         handler.parser = parser
         # parse
         try:
@@ -947,21 +956,7 @@ class UrlBase (object):
         Found URLs are added to the URL queue.
         """
         log.debug(LOG_CHECK, "Parsing HTML %s", self)
-        # construct parser object
-        handler = linkparse.LinkFinder(self.add_url)
-        parser = htmlsax.parser(handler)
-        if self.charset:
-            parser.encoding = self.charset
-        handler.parser = parser
-        # parse
-        try:
-            parser.feed(self.get_content())
-            parser.flush()
-        except linkparse.StopParse, msg:
-            log.debug(LOG_CHECK, "Stopped parsing: %s", msg)
-        # break cyclic dependencies
-        handler.parser = None
-        parser.handler = None
+        self.find_links(self.add_url)
 
     def add_url (self, url, line=0, column=0, name=u"", base=None):
         """Queue URL data for checking."""
@@ -1050,6 +1045,13 @@ class UrlBase (object):
                 winutil.close_word_app(app)
         except winutil.Error, msg:
             log.warn(LOG_CHECK, "Error parsing word file: %s", msg)
+
+    def parse_wml (self):
+        """Parse into WML content and search for URLs to check.
+        Found URLs are added to the URL queue.
+        """
+        log.debug(LOG_CHECK, "Parsing WML %s", self)
+        self.find_links(self.add_url, tags=linkparse.WmlTags)
 
     def get_temp_filename (self):
         """Get temporary filename for content to parse."""
