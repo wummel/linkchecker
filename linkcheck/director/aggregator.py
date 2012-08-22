@@ -92,7 +92,7 @@ class Aggregate (object):
         """Print still-active URLs and empty the URL queue."""
         self.print_active_threads()
         self.cancel()
-        timneout = self.config["timeout"]
+        timeout = self.config["timeout"]
         try:
             self.urlqueue.join(timeout=timeout)
         except urlqueue.Timeout:
