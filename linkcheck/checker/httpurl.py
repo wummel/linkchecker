@@ -319,6 +319,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         urlparts = strformat.url_unicode_split(redirected)
         if not self.check_redirection_scheme(redirected, urlparts, set_result):
             return -1, response
+        if not self.check_redirection_newscheme(redirected, urlparts, set_result):
+            return -1, response
         if not self.check_redirection_domain(redirected, urlparts,
                                              set_result, response):
             return -1, response
@@ -327,8 +329,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         num = self.check_redirection_recursion(redirected, set_result)
         if num != 0:
             return num, response
-        if not self.check_redirection_newscheme (redirected, urlparts, set_result):
-            return -1, response
         # remember redirected url as alias
         self.aliases.append(redirected)
         if self.anchor:
@@ -352,7 +352,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """Return True if redirection scheme is ok, else False."""
         if urlparts[0] in ('ftp', 'http', 'https'):
             return True
-        # in case of changed scheme make new URL object
         # For security reasons do not allow redirects to protocols
         # other than HTTP, HTTPS or FTP.
         if set_result:
@@ -416,25 +415,31 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
 
     def check_redirection_newscheme (self, redirected, urlparts, set_result):
         """Check for HTTP(S)/FTP redirection. Return True for HTTP(S)
-        redirection, False for FTP."""
-        if urlparts[0] in ('http', 'https'):
-            return True
-        # ftp scheme
-        assert urlparts[0] == 'ftp', 'Invalid redirection %r' % redirected
-        newobj = get_url_from(
+        redirection with same scheme, else False."""
+        if urlparts[0] == 'ftp':
+            msg = ("Redirection to URL `%(newurl)s' is not allowed.") % \
+                  {'newurl': redirected}
+            if set_result:
+                self.set_result(msg)
+                return False
+            raise LinkCheckerError(msg)
+        if urlparts[0] != self.urlparts[0]:
+            # changed scheme
+            newobj = get_url_from(
                   redirected, self.recursion_level, self.aggregate,
                   parent_url=self.parent_url, base_ref=self.base_ref,
                   line=self.line, column=self.column, name=self.name)
-        if set_result:
-            self.add_warning(
-             _("Redirection to URL `%(newurl)s' with different scheme"
-               " found; the original URL was `%(url)s'.") %
-             {"url": self.url, "newurl": newobj.url},
-             tag=WARN_HTTP_WRONG_REDIRECT)
-            self.set_result(u"syntax OK")
-        # append new object to queue
-        self.aggregate.urlqueue.put(newobj)
-        return False
+            msg = _("Redirection to URL `%(newurl)s' with different scheme"
+                   " found; the original URL was `%(url)s'.") % \
+                 {"url": self.url, "newurl": newobj.url}
+            if set_result:
+                self.add_warning(msg, tag=WARN_HTTP_WRONG_REDIRECT)
+                self.set_result(u"syntax OK")
+                # append new object to queue
+                self.aggregate.urlqueue.put(newobj)
+                return False
+            raise LinkCheckerError(msg)
+        return True
 
     def check301status (self, response):
         """If response page has been permanently moved add a warning."""
