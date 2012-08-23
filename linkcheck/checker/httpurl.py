@@ -222,20 +222,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 self.set_result(_("more than %d redirections, aborting") %
                                 self.max_redirects, valid=False)
                 return response
-            # user authentication
-            if response.status == 401:
-                authenticate = self.getheader('WWW-Authenticate')
-                if not authenticate or not authenticate.startswith("Basic"):
-                    # LinkChecker only supports Basic authorization
-                    args = {"auth": authenticate}
-                    self.add_warning(
-                       _("Unsupported HTTP authentication `%(auth)s', " \
-                         "only `Basic' authentication is supported.") % args,
-                       tag=WARN_HTTP_AUTH_UNKNOWN)
-                    return
-                if not self.auth:
-                    self.construct_auth()
-                    continue
             # check for fallback
             if self.method == "HEAD" and self.method_get_allowed:
                 # 405 method unallowed
@@ -257,6 +243,24 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                     # Zope or IIS server could not get Content-Type with HEAD
                     # http://intermapper.com.dev4.silvertech.net/bogus.aspx
                     self.fallback_to_get()
+                    continue
+            # user authentication
+            if response.status == 401:
+                authenticate = self.getheader('WWW-Authenticate')
+                if authenticate is None:
+                    self.set_result(_("unauthorized access is missing WWW-Authenticate header"),
+                                    valid=False)
+                    return
+                if not authenticate.startswith("Basic"):
+                    # LinkChecker only supports Basic authorization
+                    args = {"auth": authenticate}
+                    self.add_warning(
+                       _("Unsupported HTTP authentication `%(auth)s', " \
+                         "only `Basic' authentication is supported.") % args,
+                       tag=WARN_HTTP_AUTH_UNKNOWN)
+                    return
+                if not self.auth:
+                    self.construct_auth()
                     continue
             break
         return response
