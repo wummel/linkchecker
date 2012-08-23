@@ -56,6 +56,11 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             raise LinkCheckerError(
               _("Error parsing configuration: %s") % unicode(msg))
 
+    def read_string_option (self, section, option):
+        """Read a sring option."""
+        if self.has_option(section, option):
+            self.config[option] = self.get(section, option)
+
     def read_boolean_option(self, section, option):
         """Read a boolean option."""
         if self.has_option(section, option):
@@ -130,10 +135,8 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             if val:
                 self.config["warningregex"] = re.compile(val)
         self.read_int_option(section, "warnsizebytes")
-        if self.has_option(section, "nntpserver"):
-            self.config["nntpserver"] = self.get(section, "nntpserver")
-        if self.has_option(section, "useragent"):
-            self.config["useragent"] = self.get(section, "useragent")
+        self.read_string_option(section, "nntpserver")
+        self.read_string_option(section, "useragent")
         self.read_int_option(section, "pause", key="wait")
         self.read_check_options(section)
 
@@ -147,10 +150,8 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         if self.has_option(section, "cookies"):
             self.config["sendcookies"] = self.config["storecookies"] = \
                 self.getboolean(section, "cookies")
-        if self.has_option(section, "cookiefile"):
-            self.config['cookiefile'] = self.get(section, 'cookiefile')
-        if self.has_option(section, "localwebroot"):
-            self.config['localwebroot'] = self.get(section, 'localwebroot')
+        self.read_string_option(section, "cookiefile")
+        self.read_string_option(section, "localwebroot")
         self.read_int_option(section, "warnsslcertdaysvalid")
 
     def read_authentication_config (self):
@@ -176,9 +177,8 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                   "HTTP and HTTPS URLs are supported.") % val)
             self.config["loginurl"] = val
             self.config["storecookies"] = self.config["sendcookies"] = True
-        for key in ("loginuserfield", "loginpasswordfield"):
-            if self.has_option(section, key):
-                self.config[key] = self.get(section, key)
+        self.read_string_option(section, "loginuserfield")
+        self.read_string_option(section, "loginpasswordfield")
         # read login extra fields
         if self.has_option(section, "loginextrafields"):
             for val in read_multiline(self.get(section, "loginextrafields")):
