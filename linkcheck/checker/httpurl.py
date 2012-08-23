@@ -49,9 +49,6 @@ supportHttps = hasattr(httplib, "HTTPSConnection")
 
 _supported_encodings = ('gzip', 'x-gzip', 'deflate')
 
-# Amazon blocks all HEAD requests
-_is_amazon = re.compile(r'^www\.amazon\.(com|de|ca|fr|co\.(uk|jp))').search
-
 
 class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
     """
@@ -142,13 +139,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             self.method_get_allowed = False
         # first try with HEAD
         self.method = "HEAD"
-        # check for amazon server quirk
-        if _is_amazon(self.urlparts[1]):
-            if self.method_get_allowed:
-                self.method = "GET"
-            else:
-                # XXX make this a warning instead
-                self.add_info(_("Amazon servers block HTTP HEAD requests."))
         # check the http connection
         response = self.check_http_connection()
         # redirections might have changed the URL
