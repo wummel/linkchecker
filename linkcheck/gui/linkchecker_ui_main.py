@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Fri Mar 16 21:23:10 2012
-#      by: PyQt4 UI code generator 4.9.1
+# Created: Fri Aug 24 00:07:11 2012
+#      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -154,6 +154,7 @@ class Ui_MainWindow(object):
         self.prop_url.setText(_fromUtf8(""))
         self.prop_url.setTextFormat(QtCore.Qt.RichText)
         self.prop_url.setOpenExternalLinks(True)
+        self.prop_url.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.prop_url.setObjectName(_fromUtf8("prop_url"))
         self.formLayout.setWidget(0, QtGui.QFormLayout.FieldRole, self.prop_url)
         self.label_3 = QtGui.QLabel(self.frame)
@@ -170,6 +171,7 @@ class Ui_MainWindow(object):
         self.prop_name.setFrameShadow(QtGui.QFrame.Sunken)
         self.prop_name.setText(_fromUtf8(""))
         self.prop_name.setTextFormat(QtCore.Qt.PlainText)
+        self.prop_name.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.prop_name.setObjectName(_fromUtf8("prop_name"))
         self.formLayout.setWidget(1, QtGui.QFormLayout.FieldRole, self.prop_name)
         self.label_4 = QtGui.QLabel(self.frame)
@@ -187,6 +189,7 @@ class Ui_MainWindow(object):
         self.prop_parenturl.setText(_fromUtf8(""))
         self.prop_parenturl.setTextFormat(QtCore.Qt.RichText)
         self.prop_parenturl.setOpenExternalLinks(True)
+        self.prop_parenturl.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.prop_parenturl.setObjectName(_fromUtf8("prop_parenturl"))
         self.formLayout.setWidget(2, QtGui.QFormLayout.FieldRole, self.prop_parenturl)
         self.label_5 = QtGui.QLabel(self.frame)
@@ -204,6 +207,7 @@ class Ui_MainWindow(object):
         self.prop_base.setText(_fromUtf8(""))
         self.prop_base.setTextFormat(QtCore.Qt.RichText)
         self.prop_base.setOpenExternalLinks(False)
+        self.prop_base.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.prop_base.setObjectName(_fromUtf8("prop_base"))
         self.formLayout.setWidget(3, QtGui.QFormLayout.FieldRole, self.prop_base)
         self.label_7 = QtGui.QLabel(self.frame)
@@ -220,6 +224,7 @@ class Ui_MainWindow(object):
         self.prop_checktime.setFrameShadow(QtGui.QFrame.Sunken)
         self.prop_checktime.setText(_fromUtf8(""))
         self.prop_checktime.setTextFormat(QtCore.Qt.PlainText)
+        self.prop_checktime.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.prop_checktime.setObjectName(_fromUtf8("prop_checktime"))
         self.formLayout.setWidget(4, QtGui.QFormLayout.FieldRole, self.prop_checktime)
         self.label_8 = QtGui.QLabel(self.frame)
@@ -236,6 +241,7 @@ class Ui_MainWindow(object):
         self.prop_dltime.setFrameShadow(QtGui.QFrame.Sunken)
         self.prop_dltime.setText(_fromUtf8(""))
         self.prop_dltime.setTextFormat(QtCore.Qt.PlainText)
+        self.prop_dltime.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.prop_dltime.setObjectName(_fromUtf8("prop_dltime"))
         self.formLayout.setWidget(5, QtGui.QFormLayout.FieldRole, self.prop_dltime)
         self.label_9 = QtGui.QLabel(self.frame)
@@ -252,6 +258,7 @@ class Ui_MainWindow(object):
         self.prop_size.setFrameShadow(QtGui.QFrame.Sunken)
         self.prop_size.setText(_fromUtf8(""))
         self.prop_size.setTextFormat(QtCore.Qt.PlainText)
+        self.prop_size.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.prop_size.setObjectName(_fromUtf8("prop_size"))
         self.formLayout.setWidget(6, QtGui.QFormLayout.FieldRole, self.prop_size)
         self.label_10 = QtGui.QLabel(self.frame)
@@ -269,6 +276,7 @@ class Ui_MainWindow(object):
         self.prop_info.setText(_fromUtf8(""))
         self.prop_info.setTextFormat(QtCore.Qt.PlainText)
         self.prop_info.setWordWrap(True)
+        self.prop_info.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.prop_info.setObjectName(_fromUtf8("prop_info"))
         self.formLayout.setWidget(7, QtGui.QFormLayout.FieldRole, self.prop_info)
         self.label_11 = QtGui.QLabel(self.frame)
@@ -287,6 +295,7 @@ class Ui_MainWindow(object):
         self.prop_warning.setTextFormat(QtCore.Qt.PlainText)
         self.prop_warning.setScaledContents(True)
         self.prop_warning.setWordWrap(True)
+        self.prop_warning.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.prop_warning.setObjectName(_fromUtf8("prop_warning"))
         self.formLayout.setWidget(8, QtGui.QFormLayout.FieldRole, self.prop_warning)
         self.label_12 = QtGui.QLabel(self.frame)
@@ -303,6 +312,7 @@ class Ui_MainWindow(object):
         self.prop_result.setFrameShadow(QtGui.QFrame.Sunken)
         self.prop_result.setText(_fromUtf8(""))
         self.prop_result.setTextFormat(QtCore.Qt.PlainText)
+        self.prop_result.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.prop_result.setObjectName(_fromUtf8("prop_result"))
         self.formLayout.setWidget(9, QtGui.QFormLayout.FieldRole, self.prop_result)
         self.horizontalLayout_2.addWidget(self.frame)

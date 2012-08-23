@@ -318,6 +318,9 @@
               <property name="openExternalLinks">
                <bool>true</bool>
               </property>
+              <property name="textInteractionFlags">
+               <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+              </property>
              </widget>
             </item>
             <item row="1" column="0">
@@ -352,6 +355,9 @@
               </property>
               <property name="textFormat">
                <enum>Qt::PlainText</enum>
+              </property>
+              <property name="textInteractionFlags">
+               <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
               </property>
              </widget>
             </item>
@@ -391,6 +397,9 @@
               <property name="openExternalLinks">
                <bool>true</bool>
               </property>
+              <property name="textInteractionFlags">
+               <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+              </property>
              </widget>
             </item>
             <item row="3" column="0">
@@ -429,6 +438,9 @@
               <property name="openExternalLinks">
                <bool>false</bool>
               </property>
+              <property name="textInteractionFlags">
+               <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+              </property>
              </widget>
             </item>
             <item row="4" column="0">
@@ -463,6 +475,9 @@
               </property>
               <property name="textFormat">
                <enum>Qt::PlainText</enum>
+              </property>
+              <property name="textInteractionFlags">
+               <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
               </property>
              </widget>
             </item>
@@ -499,6 +514,9 @@
               <property name="textFormat">
                <enum>Qt::PlainText</enum>
               </property>
+              <property name="textInteractionFlags">
+               <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+              </property>
              </widget>
             </item>
             <item row="6" column="0">
@@ -533,6 +551,9 @@
               </property>
               <property name="textFormat">
                <enum>Qt::PlainText</enum>
+              </property>
+              <property name="textInteractionFlags">
+               <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
               </property>
              </widget>
             </item>
@@ -571,6 +592,9 @@
               </property>
               <property name="wordWrap">
                <bool>true</bool>
+              </property>
+              <property name="textInteractionFlags">
+               <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
               </property>
              </widget>
             </item>
@@ -613,6 +637,9 @@
               <property name="wordWrap">
                <bool>true</bool>
               </property>
+              <property name="textInteractionFlags">
+               <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+              </property>
              </widget>
             </item>
             <item row="9" column="0">
@@ -647,6 +674,9 @@
               </property>
               <property name="textFormat">
                <enum>Qt::PlainText</enum>
+              </property>
+              <property name="textInteractionFlags">
+               <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
               </property>
              </widget>
             </item>

@@ -14,6 +14,8 @@ Changes:
 - gui: Display debug output text with fixed-width font.
 - gui: Display the real name in the URL properties.
   Closes: SF bug #3542976
+- gui: Make URL properties selectable with the mouse.
+  Closes: SF bug #3561129
 - checking: Ignore feed: URLs.
 - checking: --ignore-url now really ignores the URLs instead
   of checking only the syntax.
