@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2012-08-23 16:10+0200\n"
+"POT-Creation-Date: 2012-08-23 23:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -766,7 +766,7 @@ msgid "Available anchors: %(anchors)s."
 msgstr ""
 
 #: ../linkcheck/checker/urlbase.py:728 ../linkcheck/checker/fileurl.py:193
-#: ../linkcheck/checker/httpurl.py:679
+#: ../linkcheck/checker/httpurl.py:676
 msgid "File size too large"
 msgstr ""
 
@@ -907,98 +907,111 @@ msgid ""
 "should always use the system path in URLs."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:137
+#: ../linkcheck/checker/httpurl.py:136
 msgid "Access denied by robots.txt, skipping content checks."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:190
+#: ../linkcheck/checker/httpurl.py:189
 #, python-format
 msgid "Enforced proxy `%(name)s'."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:195
+#: ../linkcheck/checker/httpurl.py:194
 #, python-format
 msgid "Enforced proxy `%(name)s' ignored, aborting."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:222
+#: ../linkcheck/checker/httpurl.py:221
 #, python-format
 msgid "more than %d redirections, aborting"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:251
+#: ../linkcheck/checker/httpurl.py:250
 msgid "unauthorized access is missing WWW-Authenticate header"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:258
+#: ../linkcheck/checker/httpurl.py:257
 #, python-format
 msgid ""
 "Unsupported HTTP authentication `%(auth)s', only `Basic' authentication is "
 "supported."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:315
+#: ../linkcheck/checker/httpurl.py:314
 #, python-format
 msgid "Redirected to `%(url)s'."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:360
+#: ../linkcheck/checker/httpurl.py:358
 #, python-format
 msgid "Redirection to url `%(newurl)s' is not allowed."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:382
+#: ../linkcheck/checker/httpurl.py:360 ../linkcheck/checker/httpurl.py:395
+#: ../linkcheck/checker/httpurl.py:429
+msgid "syntax OK"
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:380
 msgid "The redirected URL is outside of the domain filter, checked only syntax."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:395
+#: ../linkcheck/checker/httpurl.py:382
+msgid "filtered"
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:393
 msgid "Access to redirected URL denied by robots.txt, checked only syntax."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:413
+#: ../linkcheck/checker/httpurl.py:411
 #, python-format
 msgid ""
 "recursive redirection encountered:\n"
 " %(urls)s"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:430
+#: ../linkcheck/checker/httpurl.py:424
 #, python-format
 msgid ""
 "Redirection to URL `%(newurl)s' with different scheme found; the original URL "
 "was `%(url)s'."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:442
+#: ../linkcheck/checker/httpurl.py:439
 msgid "HTTP 301 (moved permanent) encountered: you should update this link."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:487
+#: ../linkcheck/checker/httpurl.py:481
+msgid "OK"
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:484
 #, python-format
 msgid "Last modified %(date)s."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:584
+#: ../linkcheck/checker/httpurl.py:581
 #, python-format
 msgid "Sent Cookie: %(cookie)s."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:590
+#: ../linkcheck/checker/httpurl.py:587
 #, python-format
 msgid "Could not store cookies from headers: %(error)s."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:653
+#: ../linkcheck/checker/httpurl.py:650
 #, python-format
 msgid "Unsupported HTTP url scheme `%(scheme)s'"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:699
+#: ../linkcheck/checker/httpurl.py:696
 #, python-format
 msgid "Decompress error %(err)s"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:715
+#: ../linkcheck/checker/httpurl.py:712
 #, python-format
 msgid "Unsupported content encoding `%(encoding)s'."
 msgstr ""

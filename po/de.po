@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2012-08-23 16:10+0200\n"
-"PO-Revision-Date: 2012-08-23 16:12+0100\n"
+"POT-Creation-Date: 2012-08-23 23:58+0200\n"
+"PO-Revision-Date: 2012-08-23 23:59+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "Language: \n"
@@ -797,7 +797,7 @@ msgstr "Verfügbare Anker: %(anchors)s."
 
 #: ../linkcheck/checker/urlbase.py:728
 #: ../linkcheck/checker/fileurl.py:193
-#: ../linkcheck/checker/httpurl.py:679
+#: ../linkcheck/checker/httpurl.py:676
 msgid "File size too large"
 msgstr "Dateigröße ist zu groß"
 
@@ -937,53 +937,63 @@ msgstr "Verzeichnis"
 msgid "The URL path %(path)r is not the same as the system path %(realpath)r. You should always use the system path in URLs."
 msgstr "Der URL Pfad %(path)r ist nicht derselbe wie der Systempfad %(realpath)r. Sie sollten immer den Systempfad in URLs benutzen."
 
-#: ../linkcheck/checker/httpurl.py:137
+#: ../linkcheck/checker/httpurl.py:136
 msgid "Access denied by robots.txt, skipping content checks."
 msgstr "Zugriff verweigert durch robots.txt; lasse das Prüfen des URL Inhalts aus."
 
-#: ../linkcheck/checker/httpurl.py:190
+#: ../linkcheck/checker/httpurl.py:189
 #, python-format
 msgid "Enforced proxy `%(name)s'."
 msgstr "Erzwungener Proxy `%(name)s'."
 
-#: ../linkcheck/checker/httpurl.py:195
+#: ../linkcheck/checker/httpurl.py:194
 #, python-format
 msgid "Enforced proxy `%(name)s' ignored, aborting."
 msgstr "Erzwungener Proxy `%(name)s' wurde ignoriert, breche ab."
 
-#: ../linkcheck/checker/httpurl.py:222
+#: ../linkcheck/checker/httpurl.py:221
 #, python-format
 msgid "more than %d redirections, aborting"
 msgstr "mehr als %d Weiterleitungen, breche ab"
 
-#: ../linkcheck/checker/httpurl.py:251
+#: ../linkcheck/checker/httpurl.py:250
 msgid "unauthorized access is missing WWW-Authenticate header"
 msgstr "dem nicht authorisierten Zugriff fehlt der WWW-Authenticate Header"
 
-#: ../linkcheck/checker/httpurl.py:258
+#: ../linkcheck/checker/httpurl.py:257
 #, python-format
 msgid "Unsupported HTTP authentication `%(auth)s', only `Basic' authentication is supported."
 msgstr "Nicht unterstützte HTTP Authentifizierungsmethode `%(auth)s', nur `Basic' Authentifizierung ist unterstützt."
 
-#: ../linkcheck/checker/httpurl.py:315
+#: ../linkcheck/checker/httpurl.py:314
 #, python-format
 msgid "Redirected to `%(url)s'."
 msgstr "Zu `%(url)s' umgeleitet."
 
-#: ../linkcheck/checker/httpurl.py:360
+#: ../linkcheck/checker/httpurl.py:358
 #, python-format
 msgid "Redirection to url `%(newurl)s' is not allowed."
 msgstr "Umleitung zu `%(newurl)s' ist nicht erlaubt."
 
-#: ../linkcheck/checker/httpurl.py:382
+#: ../linkcheck/checker/httpurl.py:360
+#: ../linkcheck/checker/httpurl.py:395
+#: ../linkcheck/checker/httpurl.py:429
+msgid "syntax OK"
+msgstr "Syntax OK"
+
+#: ../linkcheck/checker/httpurl.py:380
 msgid "The redirected URL is outside of the domain filter, checked only syntax."
 msgstr "Die Weiterleitungs-URL ist außerhalb des Domain Filters; prüfe lediglich Syntax."
 
-#: ../linkcheck/checker/httpurl.py:395
+#: ../linkcheck/checker/httpurl.py:382
+msgid "filtered"
+msgstr "gefiltert"
+
+#: ../linkcheck/checker/httpurl.py:393
 msgid "Access to redirected URL denied by robots.txt, checked only syntax."
 msgstr "Zugriff zur Weiterleitungs-URL verweigert durch robots.txt; prüfe lediglich Syntax."
 
-#: ../linkcheck/checker/httpurl.py:413
+#: ../linkcheck/checker/httpurl.py:411
 #, python-format
 msgid ""
 "recursive redirection encountered:\n"
@@ -992,41 +1002,45 @@ msgstr ""
 "Rekursive Weiterleitung entdeckt:\n"
 " %(urls)s"
 
-#: ../linkcheck/checker/httpurl.py:430
+#: ../linkcheck/checker/httpurl.py:424
 #, python-format
 msgid "Redirection to URL `%(newurl)s' with different scheme found; the original URL was `%(url)s'."
 msgstr "Weiterleitung zu URL `%(newurl)s' mit anderem Schema gefunden; die Original-URL war `%(url)s'."
 
-#: ../linkcheck/checker/httpurl.py:442
+#: ../linkcheck/checker/httpurl.py:439
 msgid "HTTP 301 (moved permanent) encountered: you should update this link."
 msgstr "HTTP 301 (moved permanent) gefunden: sie sollten diesen Link aktualisieren."
 
-#: ../linkcheck/checker/httpurl.py:487
+#: ../linkcheck/checker/httpurl.py:481
+msgid "OK"
+msgstr "OK"
+
+#: ../linkcheck/checker/httpurl.py:484
 #, python-format
 msgid "Last modified %(date)s."
 msgstr "Letzte Änderung %(date)s."
 
-#: ../linkcheck/checker/httpurl.py:584
+#: ../linkcheck/checker/httpurl.py:581
 #, python-format
 msgid "Sent Cookie: %(cookie)s."
 msgstr "Gesendetes Cookie: %(cookie)s."
 
-#: ../linkcheck/checker/httpurl.py:590
+#: ../linkcheck/checker/httpurl.py:587
 #, python-format
 msgid "Could not store cookies from headers: %(error)s."
 msgstr "Konnte Cookies nicht aus Kopfdaten speichern: %(error)s."
 
-#: ../linkcheck/checker/httpurl.py:653
+#: ../linkcheck/checker/httpurl.py:650
 #, python-format
 msgid "Unsupported HTTP url scheme `%(scheme)s'"
 msgstr "Nicht unterstütztes HTTP URL Schema `%(scheme)s'"
 
-#: ../linkcheck/checker/httpurl.py:699
+#: ../linkcheck/checker/httpurl.py:696
 #, python-format
 msgid "Decompress error %(err)s"
 msgstr "Entkomprimierungsfehler %(err)s"
 
-#: ../linkcheck/checker/httpurl.py:715
+#: ../linkcheck/checker/httpurl.py:712
 #, python-format
 msgid "Unsupported content encoding `%(encoding)s'."
 msgstr "Content-Encoding `%(encoding)s' wird nicht unterstützt."
@@ -2575,9 +2589,6 @@ msgstr "%s Option nimmt kein Wert"
 
 #~ msgid "Status:"
 #~ msgstr "Status:"
-
-#~ msgid "O"
-#~ msgstr "O"
 
 #~ msgid "Insert Firefox bookmark file"
 #~ msgstr "Firefox Favoritendatei einfügen"

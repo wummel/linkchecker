@@ -357,7 +357,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             self.add_warning(
               _("Redirection to url `%(newurl)s' is not allowed.") %
               {'newurl': redirected})
-            self.set_result(u"syntax OK")
+            self.set_result(_("syntax OK"))
         return False
 
     def check_redirection_domain (self, redirected, urlparts, set_result, response):
@@ -379,7 +379,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 self.check301status(response)
                 self.add_info(_("The redirected URL is outside of the domain "
                               "filter, checked only syntax."))
-                self.set_result(u"filtered")
+                self.set_result(_("filtered"))
             return False
         return True
 
@@ -392,7 +392,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             self.add_warning(
                _("Access to redirected URL denied by robots.txt, "
                  "checked only syntax."), tag=WARN_HTTP_ROBOTS_DENIED)
-            self.set_result(u"syntax OK")
+            self.set_result(_("syntax OK"))
         return False
 
     def check_redirection_recursion (self, redirected, set_result):
@@ -426,7 +426,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                  {"url": self.url, "newurl": newobj.url}
             if set_result:
                 self.add_warning(msg, tag=WARN_HTTP_WRONG_REDIRECT)
-                self.set_result(u"syntax OK")
+                self.set_result(_("syntax OK"))
                 # append new object to queue
                 self.aggregate.urlqueue.put(newobj)
                 return False
@@ -478,7 +478,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             if response.status >= 200:
                 self.set_result(u"%r %s" % (response.status, response.reason))
             else:
-                self.set_result(u"OK")
+                self.set_result(_("OK"))
         modified = self.getheader('Last-Modified', u'')
         if modified:
             self.add_info(_("Last modified %(date)s.") % {"date": modified})
