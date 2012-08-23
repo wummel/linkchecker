@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2012-08-12 11:16+0200\n"
-"PO-Revision-Date: 2012-08-12 14:47+0100\n"
+"POT-Creation-Date: 2012-08-23 16:10+0200\n"
+"PO-Revision-Date: 2012-08-23 16:12+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "Language: \n"
@@ -147,17 +147,17 @@ msgstr "konnte Rechnernamen %(host)r nicht parsen: %(msg)s"
 msgid "Error parsing configuration: %s"
 msgstr "Fehler beim Parsen der Konfiguration: %s"
 
-#: ../linkcheck/configuration/confparse.py:70
+#: ../linkcheck/configuration/confparse.py:75
 #, python-format
 msgid "invalid negative value for %s: %d\n"
 msgstr "ungültiger negativer Wert für %s: %d\n"
 
-#: ../linkcheck/configuration/confparse.py:169
+#: ../linkcheck/configuration/confparse.py:170
 #, python-format
 msgid "missing auth part in entry %(val)r"
 msgstr "fehlende Authentifizierung in entry %(val)r"
 
-#: ../linkcheck/configuration/confparse.py:175
+#: ../linkcheck/configuration/confparse.py:176
 #, python-format
 msgid "invalid login URL `%s'. Only HTTP and HTTPS URLs are supported."
 msgstr "ungültige Login URL `%s'. Nur HTTP und HTTPS URLs sind unterstützt."
@@ -734,123 +734,123 @@ msgstr "MX Mail host %(host)s gefunden"
 msgid "URL has unparsable domain name: %(name)s"
 msgstr "URL besitzt einen nicht analysierbaren Rechnernamen: %(name)s"
 
-#: ../linkcheck/checker/urlbase.py:136
+#: ../linkcheck/checker/urlbase.py:137
 #, python-format
 msgid "Leading or trailing whitespace in URL `%(url)s'."
 msgstr "Die URL %(url)s enthält Leerzeichen am Anfang oder Ende."
 
-#: ../linkcheck/checker/urlbase.py:378
+#: ../linkcheck/checker/urlbase.py:379
 msgid "URL is missing"
 msgstr "URL fehlt"
 
-#: ../linkcheck/checker/urlbase.py:381
+#: ../linkcheck/checker/urlbase.py:382
 msgid "URL is empty"
 msgstr "URL ist leer"
 
-#: ../linkcheck/checker/urlbase.py:388
+#: ../linkcheck/checker/urlbase.py:389
 #, python-format
 msgid "Effective URL %(url)r."
 msgstr "Effektive URL %(url)r."
 
-#: ../linkcheck/checker/urlbase.py:447
+#: ../linkcheck/checker/urlbase.py:448
 #, python-format
 msgid "URL has invalid port %(port)r"
 msgstr "URL hat eine ungültige Portnummer %(port)r"
 
-#: ../linkcheck/checker/urlbase.py:452
+#: ../linkcheck/checker/urlbase.py:453
 msgid "URL has empty hostname"
 msgstr "URL hat leeren Rechnernamen"
 
-#: ../linkcheck/checker/urlbase.py:463
+#: ../linkcheck/checker/urlbase.py:464
 #, python-format
 msgid "URL %(url)s has obfuscated IP address %(ip)s"
 msgstr "URL %(url)s besitzt die verschleierte IP-Adresse %(ip)s"
 
-#: ../linkcheck/checker/urlbase.py:490
+#: ../linkcheck/checker/urlbase.py:491
 #, python-format
 msgid "URL is located in %(country)s."
 msgstr "URL befindet sich in %(country)s."
 
-#: ../linkcheck/checker/urlbase.py:515
+#: ../linkcheck/checker/urlbase.py:516
 msgid "Hostname not found"
 msgstr "Rechnername nicht gefunden"
 
-#: ../linkcheck/checker/urlbase.py:518
+#: ../linkcheck/checker/urlbase.py:519
 #, python-format
 msgid "Bad HTTP response %(line)r"
 msgstr "Ungültige HTTP Antwort %(line)r"
 
-#: ../linkcheck/checker/urlbase.py:531
+#: ../linkcheck/checker/urlbase.py:532
 #, python-format
 msgid "could not get content: %(msg)r"
 msgstr "konnte Inhalt nicht parsen: %(msg)r"
 
-#: ../linkcheck/checker/urlbase.py:664
+#: ../linkcheck/checker/urlbase.py:673
 #, python-format
 msgid "Anchor `%(name)s' not found."
 msgstr "Anker `%(name)s' nicht gefunden."
 
-#: ../linkcheck/checker/urlbase.py:665
+#: ../linkcheck/checker/urlbase.py:674
 #, python-format
 msgid "Available anchors: %(anchors)s."
 msgstr "Verfügbare Anker: %(anchors)s."
 
-#: ../linkcheck/checker/urlbase.py:719
+#: ../linkcheck/checker/urlbase.py:728
 #: ../linkcheck/checker/fileurl.py:193
-#: ../linkcheck/checker/httpurl.py:683
+#: ../linkcheck/checker/httpurl.py:679
 msgid "File size too large"
 msgstr "Dateigröße ist zu groß"
 
-#: ../linkcheck/checker/urlbase.py:761
+#: ../linkcheck/checker/urlbase.py:770
 #, python-format
 msgid "Found %(match)r at line %(line)d in link contents."
 msgstr "Habe %(match)r in Zeile %(line)d im Inhalt der Verknüpfung gefunden."
 
-#: ../linkcheck/checker/urlbase.py:777
+#: ../linkcheck/checker/urlbase.py:786
 msgid "Content size is zero."
 msgstr "Größe des Inhalts ist Null."
 
-#: ../linkcheck/checker/urlbase.py:783
+#: ../linkcheck/checker/urlbase.py:792
 #, python-format
 msgid "Content size %(dlsize)s is larger than %(maxbytes)s."
 msgstr "Inhalt %(dlsize)s is größer als %(maxbytes)s."
 
-#: ../linkcheck/checker/urlbase.py:788
+#: ../linkcheck/checker/urlbase.py:797
 #, python-format
 msgid "Download size (%(dlsize)d Byte) does not equal content size (%(size)d Byte)."
 msgstr "Download Grüße (%(dlsize)d Byte) ist ungleich der Inhaltsgröße (%(size)d Byte)."
 
-#: ../linkcheck/checker/urlbase.py:809
-#: ../linkcheck/checker/urlbase.py:874
+#: ../linkcheck/checker/urlbase.py:818
+#: ../linkcheck/checker/urlbase.py:883
 msgid "valid HTML syntax"
 msgstr "gültige HTML Syntax"
 
-#: ../linkcheck/checker/urlbase.py:815
+#: ../linkcheck/checker/urlbase.py:824
 #, python-format
 msgid "tidy HTML parsing caused error: %(msg)s "
 msgstr "tidy HTML Parser verursachte Fehler: %(msg)s"
 
-#: ../linkcheck/checker/urlbase.py:837
-#: ../linkcheck/checker/urlbase.py:910
+#: ../linkcheck/checker/urlbase.py:846
+#: ../linkcheck/checker/urlbase.py:919
 msgid "valid CSS syntax"
 msgstr "gültige CSS Syntax"
 
-#: ../linkcheck/checker/urlbase.py:843
+#: ../linkcheck/checker/urlbase.py:852
 #, python-format
 msgid "cssutils parsing caused error: %(msg)s"
 msgstr "cssutils Parser verursachte Fehler: %(msg)s"
 
-#: ../linkcheck/checker/urlbase.py:852
+#: ../linkcheck/checker/urlbase.py:861
 #, python-format
 msgid "%(w3type)s validation error at line %(line)s col %(column)s: %(msg)s"
 msgstr "%(w3type)s Validierungsfehler in Zeile %(line)s Spalte %(column)s: %(msg)s"
 
-#: ../linkcheck/checker/urlbase.py:883
+#: ../linkcheck/checker/urlbase.py:892
 #, python-format
 msgid "HTML W3C validation caused error: %(msg)s "
 msgstr "HTML W3C Validierung verursachte Fehler: %(msg)s"
 
-#: ../linkcheck/checker/urlbase.py:918
+#: ../linkcheck/checker/urlbase.py:927
 #, python-format
 msgid "CSS W3C validation caused error: %(msg)s "
 msgstr "CSS W3C Validierung verursachte Fehler: %(msg)s"
@@ -937,66 +937,53 @@ msgstr "Verzeichnis"
 msgid "The URL path %(path)r is not the same as the system path %(realpath)r. You should always use the system path in URLs."
 msgstr "Der URL Pfad %(path)r ist nicht derselbe wie der Systempfad %(realpath)r. Sie sollten immer den Systempfad in URLs benutzen."
 
-#: ../linkcheck/checker/httpurl.py:142
+#: ../linkcheck/checker/httpurl.py:137
 msgid "Access denied by robots.txt, skipping content checks."
 msgstr "Zugriff verweigert durch robots.txt; lasse das Prüfen des URL Inhalts aus."
 
-#: ../linkcheck/checker/httpurl.py:149
-msgid "Amazon servers block HTTP HEAD requests."
-msgstr "Amazon Server blockieren HTTP HEAD Anfragen."
-
-#: ../linkcheck/checker/httpurl.py:151
-msgid "Using GET method for Amazon server."
-msgstr "Benutze die GET-Methode für Amazon-Server."
-
-#: ../linkcheck/checker/httpurl.py:158
-msgid "unknown"
-msgstr "unbekannt"
-
-#: ../linkcheck/checker/httpurl.py:160
-#, python-format
-msgid "Server `%(name)s' did not support HEAD request; a GET request was used instead."
-msgstr "Server `%(name)s' unterstützte keine HEAD Anfrage; eine GET Anfrage wurde stattdessen verwendet."
-
-#: ../linkcheck/checker/httpurl.py:208
+#: ../linkcheck/checker/httpurl.py:190
 #, python-format
 msgid "Enforced proxy `%(name)s'."
 msgstr "Erzwungener Proxy `%(name)s'."
 
-#: ../linkcheck/checker/httpurl.py:213
+#: ../linkcheck/checker/httpurl.py:195
 #, python-format
 msgid "Enforced proxy `%(name)s' ignored, aborting."
 msgstr "Erzwungener Proxy `%(name)s' wurde ignoriert, breche ab."
 
-#: ../linkcheck/checker/httpurl.py:240
+#: ../linkcheck/checker/httpurl.py:222
 #, python-format
 msgid "more than %d redirections, aborting"
 msgstr "mehr als %d Weiterleitungen, breche ab"
 
-#: ../linkcheck/checker/httpurl.py:250
+#: ../linkcheck/checker/httpurl.py:251
+msgid "unauthorized access is missing WWW-Authenticate header"
+msgstr "dem nicht authorisierten Zugriff fehlt der WWW-Authenticate Header"
+
+#: ../linkcheck/checker/httpurl.py:258
 #, python-format
 msgid "Unsupported HTTP authentication `%(auth)s', only `Basic' authentication is supported."
 msgstr "Nicht unterstützte HTTP Authentifizierungsmethode `%(auth)s', nur `Basic' Authentifizierung ist unterstützt."
 
-#: ../linkcheck/checker/httpurl.py:319
+#: ../linkcheck/checker/httpurl.py:315
 #, python-format
 msgid "Redirected to `%(url)s'."
 msgstr "Zu `%(url)s' umgeleitet."
 
-#: ../linkcheck/checker/httpurl.py:364
+#: ../linkcheck/checker/httpurl.py:360
 #, python-format
 msgid "Redirection to url `%(newurl)s' is not allowed."
 msgstr "Umleitung zu `%(newurl)s' ist nicht erlaubt."
 
-#: ../linkcheck/checker/httpurl.py:386
+#: ../linkcheck/checker/httpurl.py:382
 msgid "The redirected URL is outside of the domain filter, checked only syntax."
 msgstr "Die Weiterleitungs-URL ist außerhalb des Domain Filters; prüfe lediglich Syntax."
 
-#: ../linkcheck/checker/httpurl.py:399
+#: ../linkcheck/checker/httpurl.py:395
 msgid "Access to redirected URL denied by robots.txt, checked only syntax."
 msgstr "Zugriff zur Weiterleitungs-URL verweigert durch robots.txt; prüfe lediglich Syntax."
 
-#: ../linkcheck/checker/httpurl.py:417
+#: ../linkcheck/checker/httpurl.py:413
 #, python-format
 msgid ""
 "recursive redirection encountered:\n"
@@ -1005,41 +992,41 @@ msgstr ""
 "Rekursive Weiterleitung entdeckt:\n"
 " %(urls)s"
 
-#: ../linkcheck/checker/httpurl.py:434
+#: ../linkcheck/checker/httpurl.py:430
 #, python-format
 msgid "Redirection to URL `%(newurl)s' with different scheme found; the original URL was `%(url)s'."
 msgstr "Weiterleitung zu URL `%(newurl)s' mit anderem Schema gefunden; die Original-URL war `%(url)s'."
 
-#: ../linkcheck/checker/httpurl.py:446
+#: ../linkcheck/checker/httpurl.py:442
 msgid "HTTP 301 (moved permanent) encountered: you should update this link."
 msgstr "HTTP 301 (moved permanent) gefunden: sie sollten diesen Link aktualisieren."
 
-#: ../linkcheck/checker/httpurl.py:491
+#: ../linkcheck/checker/httpurl.py:487
 #, python-format
 msgid "Last modified %(date)s."
 msgstr "Letzte Änderung %(date)s."
 
-#: ../linkcheck/checker/httpurl.py:588
+#: ../linkcheck/checker/httpurl.py:584
 #, python-format
 msgid "Sent Cookie: %(cookie)s."
 msgstr "Gesendetes Cookie: %(cookie)s."
 
-#: ../linkcheck/checker/httpurl.py:594
+#: ../linkcheck/checker/httpurl.py:590
 #, python-format
 msgid "Could not store cookies from headers: %(error)s."
 msgstr "Konnte Cookies nicht aus Kopfdaten speichern: %(error)s."
 
-#: ../linkcheck/checker/httpurl.py:657
+#: ../linkcheck/checker/httpurl.py:653
 #, python-format
 msgid "Unsupported HTTP url scheme `%(scheme)s'"
 msgstr "Nicht unterstütztes HTTP URL Schema `%(scheme)s'"
 
-#: ../linkcheck/checker/httpurl.py:703
+#: ../linkcheck/checker/httpurl.py:699
 #, python-format
 msgid "Decompress error %(err)s"
 msgstr "Entkomprimierungsfehler %(err)s"
 
-#: ../linkcheck/checker/httpurl.py:719
+#: ../linkcheck/checker/httpurl.py:715
 #, python-format
 msgid "Unsupported content encoding `%(encoding)s'."
 msgstr "Content-Encoding `%(encoding)s' wird nicht unterstützt."
@@ -1442,7 +1429,7 @@ msgid "&Save"
 msgstr "&Speichern"
 
 #: ../linkcheck/gui/__init__.py:159
-#: ../linkcheck/gui/__init__.py:499
+#: ../linkcheck/gui/__init__.py:501
 msgid "Ready."
 msgstr "Bereit."
 
@@ -1450,20 +1437,20 @@ msgstr "Bereit."
 msgid "Check finished."
 msgstr "Prüfung beendet."
 
-#: ../linkcheck/gui/__init__.py:287
+#: ../linkcheck/gui/__init__.py:289
 msgid "Start"
 msgstr "Start"
 
-#: ../linkcheck/gui/__init__.py:313
+#: ../linkcheck/gui/__init__.py:315
 msgid "Stop"
 msgstr "Anhalten"
 
-#: ../linkcheck/gui/__init__.py:361
+#: ../linkcheck/gui/__init__.py:363
 #, python-format
 msgid "About %(appname)s"
 msgstr "Über %(appname)s"
 
-#: ../linkcheck/gui/__init__.py:362
+#: ../linkcheck/gui/__init__.py:364
 #, python-format
 msgid ""
 "<qt><center>\n"
@@ -1492,46 +1479,46 @@ msgstr ""
 "<a href=\"%(donateurl)s\">Spende</a> in Betracht ziehen. Vielen Dank!\n"
 "</qt>"
 
-#: ../linkcheck/gui/__init__.py:412
+#: ../linkcheck/gui/__init__.py:414
 msgid "Closing pending connections..."
 msgstr "Schließe aktuelle Verbindungen..."
 
-#: ../linkcheck/gui/__init__.py:427
+#: ../linkcheck/gui/__init__.py:429
 #: ../linkchecker:705
 msgid "Dumping memory statistics..."
 msgstr "Generiere Speicherabzug..."
 
-#: ../linkcheck/gui/__init__.py:429
+#: ../linkcheck/gui/__init__.py:431
 msgid "LinkChecker memory dump written"
 msgstr "LinkChecker Speicherabzug geschrieben"
 
-#: ../linkcheck/gui/__init__.py:430
+#: ../linkcheck/gui/__init__.py:432
 #, python-format
 msgid "The memory dump has been written to `%(filename)s'. Do you want to display a summary?"
 msgstr "Der Speicherabzug wurde in Datei `%(filename)s' geschrieben. Wollen Sie eine Übersicht anzeigen?"
 
-#: ../linkcheck/gui/__init__.py:468
+#: ../linkcheck/gui/__init__.py:470
 msgid "Error, empty URL"
 msgstr "Fehler, leere URL"
 
-#: ../linkcheck/gui/__init__.py:470
+#: ../linkcheck/gui/__init__.py:472
 #, python-format
 msgid "Checking '%s'."
 msgstr "Prüfe '%s'"
 
-#: ../linkcheck/gui/__init__.py:476
+#: ../linkcheck/gui/__init__.py:478
 #, python-format
 msgid "Error, invalid URL `%s'."
 msgstr "Fehler, ungültige URL `%s'."
 
-#: ../linkcheck/gui/__init__.py:496
+#: ../linkcheck/gui/__init__.py:498
 #, python-format
 msgid "%d URL selected."
 msgid_plural "%d URLs selected"
 msgstr[0] "%4d Verknüpfung ausgewählt"
 msgstr[1] "%4d Verknüpfungen ausgewählt"
 
-#: ../linkcheck/gui/__init__.py:577
+#: ../linkcheck/gui/__init__.py:583
 msgid "LinkChecker internal error"
 msgstr "LinkChecker interner Fehler"
 
@@ -2496,6 +2483,22 @@ msgstr "%s Option erfordert %d Argumente"
 #, python-format
 msgid "%s option does not take a value"
 msgstr "%s Option nimmt kein Wert"
+
+#~ msgid "Amazon servers block HTTP HEAD requests."
+#~ msgstr "Amazon Server blockieren HTTP HEAD Anfragen."
+
+#~ msgid "Using GET method for Amazon server."
+#~ msgstr "Benutze die GET-Methode für Amazon-Server."
+
+#~ msgid "unknown"
+#~ msgstr "unbekannt"
+
+#~ msgid ""
+#~ "Server `%(name)s' did not support HEAD request; a GET request was used "
+#~ "instead."
+#~ msgstr ""
+#~ "Server `%(name)s' unterstützte keine HEAD Anfrage; eine GET Anfrage wurde "
+#~ "stattdessen verwendet."
 
 #~ msgid ""
 #~ "Write profiling data into a file named %s in the\n"
