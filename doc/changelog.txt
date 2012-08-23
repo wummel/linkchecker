@@ -17,6 +17,8 @@ Changes:
 - checking: Ignore feed: URLs.
 - checking: --ignore-url now really ignores the URLs instead
   of checking only the syntax.
+- checking: Increase the default number of checker threads from 10 to
+  100.
 
 Fixes:
 - gui: Fix saving of the debugmemory option.

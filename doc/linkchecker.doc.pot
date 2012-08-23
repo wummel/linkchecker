@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2012-08-14 23:14+0300\n"
+"POT-Creation-Date: 2012-08-23 16:10+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -272,7 +272,7 @@ msgstr ""
 #: en/linkchecker.1:77 en/linkcheckerrc.5:97
 msgid ""
 "Generate no more than the given number of threads. Default number of threads "
-"is 10. To disable threading specify a non-positive number."
+"is 100. To disable threading specify a non-positive number."
 msgstr ""
 
 #. type: TP

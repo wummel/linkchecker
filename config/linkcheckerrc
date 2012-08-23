@@ -123,7 +123,7 @@
 ##################### checking options ##########################
 [checking]
 # number of threads
-#threads=5
+#threads=100
 # connection timeout in seconds
 #timeout=60
 # check anchors?

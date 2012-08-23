@@ -211,7 +211,7 @@ class Configuration (dict):
         self["warningregex_max"] = 5
         self["warnsizebytes"] = None
         self["nntpserver"] = os.environ.get("NNTP_SERVER", None)
-        self["threads"] = 10
+        self["threads"] = 100
         # socket timeout in seconds
         self["timeout"] = 60
         self["checkhtml"] = False
