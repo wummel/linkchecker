@@ -413,15 +413,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         return -1
 
     def check_redirection_newscheme (self, redirected, urlparts, set_result):
-        """Check for HTTP(S)/FTP redirection. Return True for HTTP(S)
+        """Check for HTTP(S)/FTP redirection. Return True for
         redirection with same scheme, else False."""
-        if urlparts[0] == 'ftp':
-            msg = ("Redirection to URL `%(newurl)s' is not allowed.") % \
-                  {'newurl': redirected}
-            if set_result:
-                self.set_result(msg)
-                return False
-            raise LinkCheckerError(msg)
         if urlparts[0] != self.urlparts[0]:
             # changed scheme
             newobj = get_url_from(
