@@ -21,7 +21,6 @@ Handle http links.
 import urlparse
 import urllib
 import os
-import re
 import errno
 import zlib
 import socket
