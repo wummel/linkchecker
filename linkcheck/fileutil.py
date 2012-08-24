@@ -196,6 +196,8 @@ def init_mimedb():
     add_mimetype(mimedb, 'text/plain', '.adr')
     # To recognize PHP files as HTML with content check.
     add_mimetype(mimedb, 'application/x-httpd-php', '.php')
+    # To recognize WML files
+    add_mimetype(mimedb, 'text/vnd.wap.wml', '.wml')
 
 
 def add_mimetype(mimedb, mimetype, extension):
