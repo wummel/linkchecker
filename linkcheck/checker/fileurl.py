@@ -243,18 +243,14 @@ class FileUrl (urlbase.UrlBase):
         return os.path.isdir(filename) and not os.path.islink(filename)
 
     def is_parseable (self):
-        """
-        Check if content is parseable for recursion.
+        """Check if content is parseable for recursion.
 
         @return: True if content is parseable
         @rtype: bool
         """
-        if self.is_directory():
-            return True
-        elif firefox.has_sqlite and firefox.extension.search(self.url):
-            return True
-        else:
-            return self.get_content_type() in self.ContentMimetypes
+        return (self.is_directory() or
+            firefox.has_sqlite and firefox.extension.search(self.url) or
+            self.get_content_type() in self.ContentMimetypes)
 
     def parse_url (self):
         """Parse file contents for new links to check."""
