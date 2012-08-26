@@ -36,7 +36,7 @@ from .const import WARN_HTTP_ROBOTS_DENIED, \
     WARN_HTTP_WRONG_REDIRECT, WARN_HTTP_MOVED_PERMANENT, \
     WARN_HTTP_EMPTY_CONTENT, WARN_HTTP_COOKIE_STORE_ERROR, \
     WARN_HTTP_DECOMPRESS_ERROR, WARN_HTTP_UNSUPPORTED_ENCODING, \
-    WARN_HTTP_AUTH_UNKNOWN
+    WARN_HTTP_AUTH_UNKNOWN, WARN_HTTP_AUTH_UNAUTHORIZED
 
 # assumed HTTP header encoding
 HEADER_ENCODING = "iso-8859-1"
@@ -221,34 +221,19 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 self.set_result(_("more than %d redirections, aborting") %
                                 self.max_redirects, valid=False)
                 return response
-            # check for fallback
-            if self.method == "HEAD" and self.method_get_allowed:
-                # 405 method unallowed
-                if response.status == 405:
-                    log.debug(LOG_CHECK, "Method HEAD unallowed, falling back to GET")
-                    self.fallback_to_get()
-                    continue
-                # Some sites do not support HEAD requests, for example
-                # youtube sends a 404 with HEAD, 200 with GET. Doh.
-                if response.status >= 400:
-                    log.debug(LOG_CHECK, "Method HEAD error, falling back to GET")
-                    self.fallback_to_get()
-                    continue
-                # Other sites send 200 with HEAD, but 404 with GET. Bummer.
-                poweredby = self.getheader('X-Powered-By', u'')
-                server = self.getheader('Server', u'')
-                if (poweredby.startswith('Zope') or server.startswith('Zope')
-                 or ('ASP.NET' in poweredby and 'Microsoft-IIS' in server)):
-                    # Zope or IIS server could not get Content-Type with HEAD
-                    # http://intermapper.com.dev4.silvertech.net/bogus.aspx
-                    self.fallback_to_get()
-                    continue
+            if self.do_fallback(response.status):
+                self.fallback_to_get()
+                continue
             # user authentication
             if response.status == 401:
                 authenticate = self.getheader('WWW-Authenticate')
                 if authenticate is None:
-                    self.set_result(_("unauthorized access is missing WWW-Authenticate header"),
-                                    valid=False)
+                    # Either the server intentionally blocked this request,
+                    # or there is a form on this page which requires
+                    # manual user/password input.
+                    # Either way, this is a warning.
+                    self.add_warning(_("Unauthorized access without HTTP authentication."),
+                       tag=WARN_HTTP_AUTH_UNAUTHORIZED)
                     return
                 if not authenticate.startswith("Basic"):
                     # LinkChecker only supports Basic authorization
@@ -263,6 +248,30 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                     continue
             break
         return response
+
+    def do_fallback(self, status):
+        """Check for fallback according to response status.
+        @param status: The HTTP response status
+        @ptype status: int
+        @return: True if checker should use GET, else False
+        @rtype: bool
+        """
+        if self.method == "HEAD" and self.method_get_allowed:
+            # Some sites do not support HEAD requests, for example
+            # youtube sends a 404 with HEAD, 200 with GET. Doh.
+            # A 405 "Method not allowed" status should also use GET.
+            if status >= 400:
+                log.debug(LOG_CHECK, "Method HEAD error %d, falling back to GET", status)
+                return True
+            # Other sites send 200 with HEAD, but 404 with GET. Bummer.
+            poweredby = self.getheader('X-Powered-By', u'')
+            server = self.getheader('Server', u'')
+            if (poweredby.startswith('Zope') or server.startswith('Zope')
+             or ('ASP.NET' in poweredby and 'Microsoft-IIS' in server)):
+                # Zope or IIS server could not get Content-Type with HEAD
+                # http://intermapper.com.dev4.silvertech.net/bogus.aspx
+                return True
+        return False
 
     def fallback_to_get(self):
         """Set method to GET and clear aliases."""
