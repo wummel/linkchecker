@@ -51,8 +51,6 @@ def main (argv=None):
     app.setApplicationName(configuration.AppName)
     app.setApplicationVersion(configuration.Version)
     app.setOrganizationName(configuration.Author)
-    if sys.platform == 'darwin':
-        app.setCursorFlashTime(0)
     QApplication.setStyle(get_app_style())
     QApplication.setPalette(QApplication.style().standardPalette())
     args = app.arguments()
