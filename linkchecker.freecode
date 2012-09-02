@@ -1,12 +1,13 @@
 Project: LinkChecker
-Version: 7.9
-Release-Focus: Minor bugfixes
+Version: 8.0
+Release-Focus: Major feature enhancements
 Hide: N
 Website-URL: http://linkchecker.sourceforge.net/
 Changelog-URL: http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker/linkchecker;a=blob;f=doc/changelog.txt;hb=HEAD
-Source-Package-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.tar.bz2
+Source-Package-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.tar.xz
 Debian-Package-URL: http://packages.debian.org/linkchecker
 GIT-Tree-URL: http://linkchecker.git.sourceforge.net/
 Windows-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.exe
 
-Several checking bugs have been fixed.
+SSL certificates for HTTPS connections are checked and verified now.
+Several checking bugs have also been fixed.

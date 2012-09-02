@@ -1,4 +1,4 @@
-8.0 "" (released xx.xx.2012)
+8.0 "Luminaris" (released 2.9.2012)
 
 Features:
 - checking: Verify SSL certificates for HTTPS connections. Both the
