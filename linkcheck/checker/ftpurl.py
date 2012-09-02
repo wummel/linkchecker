@@ -198,6 +198,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             return
         key = self.ContentMimetypes[self.get_content_type(self.get_content)]
         getattr(self, "parse_"+key)()
+        self.add_num_url_info()
 
     def get_content_type (self, read=None):
         """Return URL content type, or an empty string if content

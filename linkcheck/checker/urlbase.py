@@ -205,6 +205,8 @@ class UrlBase (object):
         self.do_check_content = True
         # MIME content type
         self.content_type = None
+        # number of URLs in page content
+        self.num_urls = 0
 
     def set_result (self, msg, valid=True, overwrite=False):
         """
@@ -941,6 +943,7 @@ class UrlBase (object):
         Default parse type is html.
         """
         self.parse_html()
+        self.add_num_url_info()
 
     def get_user_password (self):
         """Get tuple (user, password) from configured authentication.
@@ -960,6 +963,7 @@ class UrlBase (object):
 
     def add_url (self, url, line=0, column=0, name=u"", base=None):
         """Queue URL data for checking."""
+        self.num_urls += 1
         if base:
             base_ref = urlutil.url_norm(base)[0]
         else:
@@ -970,6 +974,13 @@ class UrlBase (object):
         if url_data.has_result or not url_data.extern[1]:
             # Only queue URLs which have a result or are not strict extern.
             self.aggregate.urlqueue.put(url_data)
+
+    def add_num_url_info(self):
+        """Add number of URLs parsed to info."""
+        if self.num_urls > 0:
+            attrs = {"num": self.num_urls}
+            msg = _n("%(num)d URL parsed.", "%(num)d URLs parsed.", self.num_urls)
+            self.add_info(msg % attrs)
 
     def parse_opera (self):
         """Parse an opera bookmark file."""

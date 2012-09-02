@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2012-08-26 10:48+0200\n"
+"POT-Creation-Date: 2012-09-02 19:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -713,119 +713,126 @@ msgstr ""
 msgid "Leading or trailing whitespace in URL `%(url)s'."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:379
+#: ../linkcheck/checker/urlbase.py:381
 msgid "URL is missing"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:382
+#: ../linkcheck/checker/urlbase.py:384
 msgid "URL is empty"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:389
+#: ../linkcheck/checker/urlbase.py:391
 #, python-format
 msgid "Effective URL %(url)r."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:448
+#: ../linkcheck/checker/urlbase.py:450
 #, python-format
 msgid "URL has invalid port %(port)r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:453
+#: ../linkcheck/checker/urlbase.py:455
 msgid "URL has empty hostname"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:464
+#: ../linkcheck/checker/urlbase.py:466
 #, python-format
 msgid "URL %(url)s has obfuscated IP address %(ip)s"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:491
+#: ../linkcheck/checker/urlbase.py:493
 #, python-format
 msgid "URL is located in %(country)s."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:516
+#: ../linkcheck/checker/urlbase.py:518
 msgid "Hostname not found"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:519
+#: ../linkcheck/checker/urlbase.py:521
 #, python-format
 msgid "Bad HTTP response %(line)r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:532
+#: ../linkcheck/checker/urlbase.py:534
 #, python-format
 msgid "could not get content: %(msg)r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:673
+#: ../linkcheck/checker/urlbase.py:675
 #, python-format
 msgid "Anchor `%(name)s' not found."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:674
+#: ../linkcheck/checker/urlbase.py:676
 #, python-format
 msgid "Available anchors: %(anchors)s."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:728 ../linkcheck/checker/fileurl.py:193
+#: ../linkcheck/checker/urlbase.py:730 ../linkcheck/checker/fileurl.py:193
 #: ../linkcheck/checker/httpurl.py:685
 msgid "File size too large"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:770
+#: ../linkcheck/checker/urlbase.py:772
 #, python-format
 msgid "Found %(match)r at line %(line)d in link contents."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:786
+#: ../linkcheck/checker/urlbase.py:788
 msgid "Content size is zero."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:792
+#: ../linkcheck/checker/urlbase.py:794
 #, python-format
 msgid "Content size %(dlsize)s is larger than %(maxbytes)s."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:797
+#: ../linkcheck/checker/urlbase.py:799
 #, python-format
 msgid ""
 "Download size (%(dlsize)d Byte) does not equal content size (%(size)d Byte)."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:818 ../linkcheck/checker/urlbase.py:883
+#: ../linkcheck/checker/urlbase.py:820 ../linkcheck/checker/urlbase.py:885
 msgid "valid HTML syntax"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:824
+#: ../linkcheck/checker/urlbase.py:826
 #, python-format
 msgid "tidy HTML parsing caused error: %(msg)s "
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:846 ../linkcheck/checker/urlbase.py:919
+#: ../linkcheck/checker/urlbase.py:848 ../linkcheck/checker/urlbase.py:921
 msgid "valid CSS syntax"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:852
+#: ../linkcheck/checker/urlbase.py:854
 #, python-format
 msgid "cssutils parsing caused error: %(msg)s"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:861
+#: ../linkcheck/checker/urlbase.py:863
 #, python-format
 msgid "%(w3type)s validation error at line %(line)s col %(column)s: %(msg)s"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:892
+#: ../linkcheck/checker/urlbase.py:894
 #, python-format
 msgid "HTML W3C validation caused error: %(msg)s "
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:927
+#: ../linkcheck/checker/urlbase.py:929
 #, python-format
 msgid "CSS W3C validation caused error: %(msg)s "
 msgstr ""
+
+#: ../linkcheck/checker/urlbase.py:982
+#, python-format
+msgid "%(num)d URL parsed."
+msgid_plural "%(num)d URLs parsed."
+msgstr[0] ""
+msgstr[1] ""
 
 #: ../linkcheck/checker/proxysupport.py:43
 #, python-format
@@ -892,7 +899,7 @@ msgstr ""
 msgid "Missing trailing directory slash in ftp url."
 msgstr ""
 
-#: ../linkcheck/checker/ftpurl.py:224
+#: ../linkcheck/checker/ftpurl.py:225
 msgid "FTP file size too large"
 msgstr ""
 

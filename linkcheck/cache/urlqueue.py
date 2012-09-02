@@ -54,7 +54,7 @@ class UrlQueue (object):
         self.unfinished_tasks = 0
         self.finished_tasks = 0
         self.in_progress = {}
-        self.checked = LFUCache(size=10000)
+        self.checked = LFUCache(size=100000)
         self.shutdown = False
         self.unsorted = 0
 

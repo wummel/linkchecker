@@ -84,8 +84,8 @@ def parse_bookmark_file (file):
 def parse_bookmark_json (data):
     """Parse complete JSON data for Chromium Bookmarks."""
     for entry in data["roots"].values():
-        for entry in parse_bookmark_node(entry):
-            yield entry
+        for url, name in parse_bookmark_node(entry):
+            yield url, name
 
 
 def parse_bookmark_node (node):

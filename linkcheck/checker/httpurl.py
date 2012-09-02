@@ -806,6 +806,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             self.parse_word()
         elif ctype == "text/vnd.wap.wml":
             self.parse_wml()
+        self.add_num_url_info()
 
     def get_robots_txt_url (self):
         """

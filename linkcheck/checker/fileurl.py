@@ -262,6 +262,7 @@ class FileUrl (urlbase.UrlBase):
             mime = self.get_content_type()
             key = self.ContentMimetypes[mime]
             getattr(self, "parse_"+key)()
+        self.add_num_url_info()
 
     def parse_firefox (self):
         """Parse a Firefox3 bookmark file."""
