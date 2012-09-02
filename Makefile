@@ -84,7 +84,6 @@ localbuild: MANIFEST locale
 .PHONY: deb_orig
 deb_orig:
 	if [ ! -e $(DEB_ORIG_TARGET) ]; then \
-	  $(MAKE) dist-stamp && \
 	  cp dist/$(APPNAME)-$(VERSION).tar.xz $(DEB_ORIG_TARGET); \
 	fi
 
