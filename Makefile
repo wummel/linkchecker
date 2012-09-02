@@ -15,7 +15,7 @@ TESTOPTS=
 PAGER ?= less
 # build dir for debian package
 BUILDDIR:=$(HOME)/projects/debian/official
-DEB_ORIG_TARGET:=$(BUILDDIR)/linkchecker_$(VERSION).orig.tar.bz2
+DEB_ORIG_TARGET:=$(BUILDDIR)/linkchecker_$(VERSION).orig.tar.xz
 # original dnspython repository module
 DNSPYTHON:=$(HOME)/src/dnspython-git
 # options to run the pep8 utility
@@ -85,7 +85,7 @@ localbuild: MANIFEST locale
 deb_orig:
 	if [ ! -e $(DEB_ORIG_TARGET) ]; then \
 	  $(MAKE) dist-stamp && \
-	  cp dist/$(APPNAME)-$(VERSION).tar.bz2 $(DEB_ORIG_TARGET); \
+	  cp dist/$(APPNAME)-$(VERSION).tar.xz $(DEB_ORIG_TARGET); \
 	fi
 
 .PHONY: upload
@@ -121,6 +121,7 @@ chmod:
 
 .PHONY: dist
 dist: locale MANIFEST chmod
+	rm -f dist/$(APPNAME)-$(VERSION).tar.xz
 	$(PYTHON) setup.py sdist --formats=tar
 	xz dist/$(APPNAME)-$(VERSION).tar
 # no rpm buildable with bdist_rpm, presumable due to this bug:
@@ -230,7 +231,7 @@ releasecheck: check
 
 .PHONY: sign_distfiles
 sign_distfiles:
-	for f in $(shell find dist -name *.bz2 -o -name *.exe -o -name *.zip -o -name *.dmg); do \
+	for f in $(shell find dist -name *.xz -o -name *.exe -o -name *.zip -o -name *.dmg); do \
 	  [ -f $${f}.asc ] || gpg --detach-sign --armor $$f; \
 	done
 
