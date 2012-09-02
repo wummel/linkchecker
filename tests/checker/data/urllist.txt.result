@@ -2,6 +2,7 @@ url file://%(curdir)s/%(datadir)s/urllist.txt
 cache key file://%(curdir)s/%(datadir)s/urllist.txt
 real url file://%(curdir)s/%(datadir)s/urllist.txt
 name %(datadir)s/urllist.txt
+info 4 URLs parsed.
 valid
 
 url file.html

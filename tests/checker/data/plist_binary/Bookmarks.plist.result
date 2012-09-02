@@ -2,6 +2,7 @@ url file://%(curdir)s/%(datadir)s/plist_binary/Bookmarks.plist
 cache key file://%(curdir)s/%(datadir)s/plist_binary/Bookmarks.plist
 real url file://%(curdir)s/%(datadir)s/plist_binary/Bookmarks.plist
 name %(datadir)s/plist_binary/Bookmarks.plist
+info 2 URLs parsed.
 valid
 
 url http://www.example.com/

@@ -1,6 +1,7 @@
 url http://localhost:%(port)d/%(datadir)s/redir.html
 cache key http://localhost:%(port)d/%(datadir)s/redir.html
 real url http://localhost:%(port)d/%(datadir)s/redir.html
+info 1 URL parsed.
 valid
 
 url redirect_newhost.html

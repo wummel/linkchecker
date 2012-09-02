@@ -91,12 +91,14 @@ class TestHttp (HttpServerTest):
             u"cache key %s" % nurl,
             u"real url %s" % rurl,
             u"info Redirected to `%s'." % rurl,
+            u"info 1 URL parsed.",
             u"valid",
             u"url newurl.html (cached)",
             u"cache key %s" % rurl,
             u"real url %s" % rurl,
             u"name Recursive Redirect",
             u"info Redirected to `%s'." % rurl,
+            u"info 1 URL parsed.",
             u"valid",
         ]
         self.direct(url, resultlines, recursionlevel=99)
@@ -166,6 +168,7 @@ class TestHttp (HttpServerTest):
             u"url %s" % url,
             u"cache key %s" % url,
             u"real url %s" % url,
+            u"info 1 URL parsed.",
             u"valid",
             u"url http://www.example.org/",
             u"cache key http://www.example.org/",

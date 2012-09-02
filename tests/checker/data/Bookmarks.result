@@ -2,6 +2,7 @@ url file://%(curdir)s/%(datadir)s/Bookmarks
 cache key file://%(curdir)s/%(datadir)s/Bookmarks
 real url file://%(curdir)s/%(datadir)s/Bookmarks
 name %(datadir)s/Bookmarks
+info 1 URL parsed.
 valid
 
 url http://example.com/

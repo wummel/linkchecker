@@ -1,33 +1,39 @@
 url http://localhost:%(port)d/%(datadir)s/http.html
 cache key http://localhost:%(port)d/%(datadir)s/http.html
 real url http://localhost:%(port)d/%(datadir)s/http.html
+info 23 URLs parsed.
 valid
 
 url http.html (cached)
 cache key http://localhost:%(port)d/%(datadir)s/http.html
 real url http://localhost:%(port)d/%(datadir)s/http.html
 name CSS urls
+info 23 URLs parsed.
 valid
 
 url http.html (cached)
 cache key http://localhost:%(port)d/%(datadir)s/http.html
 real url http://localhost:%(port)d/%(datadir)s/http.html
 name CSS urls
+info 23 URLs parsed.
 valid
 
 url http.html (cached)
 cache key http://localhost:%(port)d/%(datadir)s/http.html
 real url http://localhost:%(port)d/%(datadir)s/http.html
+info 23 URLs parsed.
 valid
 
 url http.html (cached)
 cache key http://localhost:%(port)d/%(datadir)s/http.html
 real url http://localhost:%(port)d/%(datadir)s/http.html
+info 23 URLs parsed.
 valid
 
 url  (cached)
 cache key http://localhost:%(port)d/%(datadir)s/http.html
 real url http://localhost:%(port)d/%(datadir)s/http.html
+info 23 URLs parsed.
 valid
 
 url http://www.garantiertnixgutt.bla/

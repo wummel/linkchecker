@@ -2,6 +2,7 @@ url file://%(curdir)s/%(datadir)s/file.php
 cache key file://%(curdir)s/%(datadir)s/file.php
 real url file://%(curdir)s/%(datadir)s/file.php
 name %(datadir)s/file.php
+info 3 URLs parsed.
 valid
 
 url anchor.html
