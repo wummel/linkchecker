@@ -230,6 +230,7 @@ def get_columns (fp):
 
 
 def _write_color_colorama (fp, text, color):
+    """Colorize text with given color."""
     foreground, background, style = get_win_color(color)
     colorama.set_console(foreground=foreground, background=background,
       style=style)
