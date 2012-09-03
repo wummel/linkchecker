@@ -222,6 +222,7 @@ class Configuration (dict):
         self["debugmemory"] = False
         self["localwebroot"] = None
         self["warnsslcertdaysvalid"] = 14
+        self["maxrunseconds"] = None
         from ..logger import Loggers
         self.loggers = dict(**Loggers)
 

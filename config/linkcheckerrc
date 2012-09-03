@@ -174,7 +174,9 @@
 # that are already expired.
 # The default number of days is 14.
 #sslcertwarndays=14
-
+# Stop checking new URLs after the given number of seconds. Same as if the
+# user hits Ctrl-C after X seconds.
+#maxrunseconds=600
 
 ##################### filtering options ##########################
 [filtering]

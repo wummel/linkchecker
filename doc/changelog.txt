@@ -1,5 +1,8 @@
 8.1 "" (release xx.xx.2012)
 
+Features:
+- checking: Allow specification of maximum checking time or maximum
+  number of checked URLs.
 
 
 8.0 "Luminaris" (released 2.9.2012)

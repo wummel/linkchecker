@@ -47,7 +47,8 @@ class Aggregate (object):
         """Spawn threads for URL checking and status printing."""
         if self.config["status"]:
             t = status.Status(self.urlqueue, self.config.status_logger,
-                self.config["status_wait_seconds"])
+                self.config["status_wait_seconds"],
+                self.config["maxrunseconds"])
             t.start()
             self.threads.append(t)
         t = cleanup.Cleanup(self.connections)

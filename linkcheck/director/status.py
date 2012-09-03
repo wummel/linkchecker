@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2006-2011 Bastian Kleineidam
+# Copyright (C) 2006-2012 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,11 +22,21 @@ from . import task
 class Status (task.LoggedCheckedTask):
     """Status thread."""
 
-    def __init__ (self, urlqueue, logger, wait_seconds):
-        """Store urlqueue object."""
+    def __init__ (self, urlqueue, logger, wait_seconds, max_duration):
+        """Initialize the status logger task.
+        @param urlqueue: the URL queue
+        @ptype urlqueue: Urlqueue
+        @param logger: the logger object to inform about status
+        @ptype logger: console.StatusLogger
+        @param wait_seconds: interval in seconds to report status
+        @ptype wait_seconds: int
+        @param max_duration: abort checking after given number of seconds
+        @ptype max_duration: int or None
+        """
         super(Status, self).__init__(logger)
         self.urlqueue = urlqueue
         self.wait_seconds = wait_seconds
+        self.max_duration = max_duration
 
     def run_checked (self):
         """Print periodic status messages."""
@@ -38,5 +48,7 @@ class Status (task.LoggedCheckedTask):
     def log_status (self):
         """Log a status message."""
         duration = time.time() - self.start_time
+        if self.max_duration is not None and duration > self.max_duration:
+            raise KeyboardInterrupt()
         checked, in_progress, queue = self.urlqueue.status()
         self.logger.log_status(checked, in_progress, queue, duration)
