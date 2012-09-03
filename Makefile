@@ -36,11 +36,9 @@ endif
 NOSEOPTS:=--logging-clear-handlers -v -m '^test_.*'
 
 
-.PHONY: all
 all:
 	@echo "Read the file doc/install.txt to see how to build and install this package."
 
-.PHONY: clean
 clean:
 	-$(PYTHON) setup.py clean --all
 	rm -f linkchecker-out.* *-stamp*
@@ -50,7 +48,6 @@ clean:
 	rm -f linkcheck/network/_network*.so
 	find . -name '*.py[co]' -exec rm -f {} \;
 
-.PHONY: distclean
 distclean: clean cleandeb
 	rm -rf build dist $(APPNAME).egg-info
 	rm -f _$(APPNAME)_configdata.py MANIFEST Packages.gz
@@ -59,7 +56,6 @@ distclean: clean cleandeb
 	rm -rf $(APPNAME)-$(VERSION)
 	rm -rf coverage dist-stamp python-build-stamp*
 
-.PHONY: cleandeb
 cleandeb:
 	rm -rf debian/linkchecker debian/tmp
 	rm -f debian/*.debhelper debian/{files,substvars}
@@ -68,12 +64,10 @@ cleandeb:
 MANIFEST: MANIFEST.in setup.py
 	$(PYTHON) setup.py sdist --manifest-only
 
-.PHONY: locale
 locale:
 	$(MAKE) -C po mofiles
 
 # to build in the current directory
-.PHONY: localbuild
 localbuild: MANIFEST locale
 	$(MAKE) -C doc/html
 	$(MAKE) -C linkcheck/HtmlParser
@@ -81,17 +75,14 @@ localbuild: MANIFEST locale
 	cp -f build/lib.$(PLATFORM)-$(PYVER)/linkcheck/HtmlParser/htmlsax*.so linkcheck/HtmlParser
 	cp -f build/lib.$(PLATFORM)-$(PYVER)/linkcheck/network/_network*.so linkcheck/network
 
-.PHONY: deb_orig
 deb_orig:
 	if [ ! -e $(DEB_ORIG_TARGET) ]; then \
 	  cp dist/$(APPNAME)-$(VERSION).tar.xz $(DEB_ORIG_TARGET); \
 	fi
 
-.PHONY: upload
 upload: dist/README.md
 	rsync -avP -e ssh dist/* calvin,linkchecker@frs.sourceforge.net:$(SF_FILEPATH)/$(VERSION)/
 
-.PHONY: login
 login:
 # login to SSH shell
 	ssh -t sf-linkchecker create
@@ -102,14 +93,12 @@ dist/README.md: doc/README-Download.md.tmpl doc/changelog.txt
 # append changelog
 	awk '/released/ {c++}; c==2 {exit}; {print "    " $$0}' doc/changelog.txt >> $@
 
-.PHONY: release
 release: distclean releasecheck filescheck clean dist-stamp sign_distfiles upload
 	git tag v$(VERSION)
 	$(MAKE) homepage
 	$(MAKE) register
 	$(MAKE) announce
 
-.PHONY: homepage
 homepage:
 	@echo "Updating $(APPNAME) Homepage..."
 	$(MAKE) -C doc man
@@ -117,24 +106,20 @@ homepage:
 	$(MAKE) -C ~/public_html/linkchecker.sf.net update upload
 	@echo "done."
 
-.PHONY: register
 register:
 	@echo "Register at Python Package Index..."
 	$(PYTHON) setup.py register
 	@echo "done."
 
-.PHONY: announce
 announce:
 	@echo "Submitting to Freecode..."
 	freecode-submit < linkchecker.freecode
 	@echo "done."
 
-.PHONY: chmod
 chmod:
 	-chmod -R a+rX,u+w,go-w $(CHMODMINUSMINUS) *
 	find . -type d -exec chmod 755 {} \;
 
-.PHONY: dist
 dist: locale MANIFEST chmod
 	rm -f dist/$(APPNAME)-$(VERSION).tar.xz
 	$(PYTHON) setup.py sdist --formats=tar
@@ -148,12 +133,10 @@ dist-stamp: changelog
 	touch $@
 
 # Build OSX installer with py2app
-.PHONY: app
 app: distclean localbuild chmod
 	$(PYTHON) setup.py py2app $(PY2APPOPTS)
 
 # Build RPM installer with cx_Freeze
-.PHONY: rpm
 rpm:
 	$(MAKE) -C doc/html
 	$(MAKE) -C linkcheck/HtmlParser
@@ -161,7 +144,6 @@ rpm:
 
 # The check programs used here are mostly local scripts on my private system.
 # So for other developers there is no need to execute this target.
-.PHONY: check
 check:
 	[ ! -d .svn ] || check-nosvneolstyle -v
 	check-copyright
@@ -224,17 +206,14 @@ doccheck:
 	  linkchecker-nagios \
 	  *.py
 
-.PHONY: filescheck
 filescheck: localbuild
 	for out in text html gml sql csv xml gxml dot; do \
 	  ./linkchecker -o$$out -F$$out --complete -r1 -C $(FILESCHECK_URL) || exit 1; \
 	done
 
-.PHONY: update-copyright
 update-copyright:
 	update-copyright --holder="Bastian Kleineidam"
 
-.PHONY: releasecheck
 releasecheck: check
 	@if egrep -i "xx\.|xxxx|\.xx" doc/changelog.txt > /dev/null; then \
 	  echo "Could not release: edit doc/changelog.txt release date"; false; \
@@ -244,29 +223,24 @@ releasecheck: check
 	fi
 	$(PYTHON) setup.py check --restructuredtext
 
-.PHONY: sign_distfiles
 sign_distfiles:
 	for f in $(shell find dist -name *.xz -o -name *.exe -o -name *.zip -o -name *.dmg); do \
 	  [ -f $${f}.asc ] || gpg --detach-sign --armor $$f; \
 	done
 
-.PHONY: test
 test:	localbuild
 	$(PYTHON) $(NOSETESTS) $(NOSEOPTS) $(TESTOPTS) $(TESTS)
 
-.PHONY: pyflakes
 pyflakes:
 	pyflakes $(PY_FILES_DIRS) 2>&1 | \
           grep -v "redefinition of unused 'linkcheck'" | \
           grep -v "undefined name '_'" | \
 	  grep -v "undefined name '_n'" | cat
 
-.PHONY: pep8
 pep8:
 	pep8 $(PEP8OPTS) $(PY_FILES_DIRS)
 
 # Compare custom Python files with the original ones from subversion.
-.PHONY: diff
 diff:
 	@for f in gzip robotparser httplib; do \
 	  echo "Comparing $${f}.py"; \
@@ -274,25 +248,25 @@ diff:
 	done
 
 # Compare dnspython files with the ones from upstream repository
-.PHONY: dnsdiff
 dnsdiff:
 	@(for d in dns tests; do \
 	  diff -BurN --exclude=*.pyc third_party/dnspython/$$d $(DNSPYTHON)/$$d; \
 	done) | $(PAGER)
 
-.PHONY: changelog
 changelog:
 	sftrack_changelog linkchecker calvin@users.sourceforge.net doc/changelog.txt $(DRYRUN)
 
-.PHONY: gui
 gui:
 	$(MAKE) -C linkcheck/gui
 
-.PHONY: count
 count:
 	@sloccount linkchecker linkchecker-gui linkchecker-nagios linkcheck | grep "Total Physical Source Lines of Code"
 
 # run eclipse ide
-.PHONY: ide
 ide:
 	eclipse -data $(CURDIR)/..
+
+.PHONY: test changelog gui count pyflakes ide login upload all clean distclean
+.PHONY: pep8 cleandeb locale localbuild deb_orig diff dnsdiff sign_distfiles
+.PHONY: filescheck update-copyright releasecheck check register announce
+.PHONY: chmod dist app rpm release homepage
