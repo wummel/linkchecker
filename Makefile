@@ -105,13 +105,29 @@ dist/README.md: doc/README-Download.md.tmpl doc/changelog.txt
 .PHONY: release
 release: distclean releasecheck filescheck clean dist-stamp sign_distfiles upload
 	git tag v$(VERSION)
+	$(MAKE) homepage
+	$(MAKE) register
+	$(MAKE) announce
+
+.PHONY: homepage
+homepage:
 	@echo "Updating $(APPNAME) Homepage..."
 	$(MAKE) -C doc man
 	sed -i -e "s/version = '.*'/version = '$(VERSION)'/" ~/public_html/linkchecker.sf.net/source/conf.py
 	$(MAKE) -C ~/public_html/linkchecker.sf.net update upload
+	@echo "done."
+
+.PHONY: register
+register:
 	@echo "Register at Python Package Index..."
 	$(PYTHON) setup.py register
+	@echo "done."
+
+.PHONY: announce
+announce:
+	@echo "Submitting to Freecode..."
 	freecode-submit < linkchecker.freecode
+	@echo "done."
 
 .PHONY: chmod
 chmod:
