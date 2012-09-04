@@ -4,6 +4,10 @@ Features:
 - checking: Allow specification of maximum checking time or maximum
   number of checked URLs.
 
+Changes:
+- distribution: Also generate .zip-file for source download.
+  Closes: SF bug #3564733
+
 
 8.0 "Luminaris" (released 2.9.2012)
 
