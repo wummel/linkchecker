@@ -5,7 +5,7 @@ Features:
   number of checked URLs.
 
 Changes:
-- distribution: Also generate .zip-file for source download.
+- doc: Mention 7-zip to extract the .tar.xz under Windows.
   Closes: SF bug #3564733
 
 

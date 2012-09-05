@@ -121,8 +121,8 @@ chmod:
 	find . -type d -exec chmod 755 {} \;
 
 dist: locale MANIFEST chmod
-	rm -f dist/$(APPNAME)-$(VERSION).tar.xz dist/$(APPNAME)-$(VERSION).zip
-	$(PYTHON) setup.py sdist --formats=zip,tar
+	rm -f dist/$(APPNAME)-$(VERSION).tar.xz
+	$(PYTHON) setup.py sdist --formats=tar
 	xz dist/$(APPNAME)-$(VERSION).tar
 # no rpm buildable with bdist_rpm, presumable due to this bug:
 # https://bugzilla.redhat.com/show_bug.cgi?id=236535
