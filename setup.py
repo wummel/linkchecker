@@ -24,14 +24,14 @@ It includes the following features:
 - cx_Freeze support
 - Qt plugin installation for py2exe and py2app
 - Microsoft Visual C++ DLL installation for py2exe
-- creation and installation of configuration file with installation data
+- creation and installation of configuration files with installation data
 - automatic detection and usage of GNU99 standard for C compiler
 - automatic MANIFEST.in check
 - automatic generation of .mo locale files
 - automatic permission setting on POSIX systems for installed files
 
 Because of all the features, this script is nasty and big.
-Change it very careful.
+Change it very carefully.
 """
 
 import sys
