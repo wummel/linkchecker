@@ -16,8 +16,8 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """Logger for aggregator instances"""
 import threading
+import thread
 from ..decorators import synchronized
-
 _lock = threading.Lock()
 
 
@@ -67,6 +67,7 @@ class Logger (object):
     @synchronized(_lock)
     def log_url (self, url_data):
         """Send new url to all configured loggers."""
+        self.check_active_loggers()
         do_print = self.do_print(url_data)
         # Only send a transport object to the loggers, not the complete
         # object instance.
@@ -79,3 +80,11 @@ class Logger (object):
         """Document that an internal error occurred."""
         for logger in self.loggers:
             logger.log_internal_error()
+
+    def check_active_loggers(self):
+        """Check if all loggers are deactivated due to I/O errors."""
+        for logger in self.loggers:
+            if logger.is_active:
+                break
+        else:
+            thread.interrupt_main()

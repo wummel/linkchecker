@@ -181,6 +181,8 @@ class Logger (object):
         self.output_encoding = encoding
         # how to handle codec errors
         self.codec_errors = "replace"
+        # Flag to see if logger is active. Can be deactivated on errors.
+        self.is_active = True
 
     def get_charset_encoding (self):
         """Translate the output encoding to a charset encoding name."""
@@ -224,6 +226,7 @@ class Logger (object):
                 "Could not open file %r for writing: %s\n"
                 "Disabling log output of %s", self.filename, msg, self)
             self.fd = dummy.Dummy()
+            self.is_active = False
         self.filename = None
 
     def create_fd (self):
@@ -299,6 +302,7 @@ class Logger (object):
                     "Disabling log output of %s", msg, self)
                 self.close_fileoutput()
                 self.fd = dummy.Dummy()
+                self.is_active = False
 
     def writeln (self, s=u"", **args):
         """
