@@ -8,6 +8,10 @@ Changes:
 - doc: Mention 7-zip to extract the .tar.xz under Windows.
   Closes: SF bug #3564733
 
+Fixes:
+- logging: Close logger properly on I/O errors.
+  Closes: SF bug #3567476
+
 
 8.0 "Luminaris" (released 2.9.2012)
 

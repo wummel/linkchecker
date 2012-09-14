@@ -239,9 +239,17 @@ class Logger (object):
         Flush and close the file output denoted by self.fd.
         """
         if self.fd is not None:
-            self.flush()
+            try:
+                self.flush()
+            except IOError:
+                # ignore flush errors
+                pass
             if self.close_fd:
-                self.fd.close()
+                try:
+                    self.fd.close()
+                except IOError:
+                    # ignore close errors
+                    pass
             self.fd = None
 
     def check_date (self):
@@ -282,7 +290,15 @@ class Logger (object):
             # Happens when aborting threads times out
             log.warn(LOG_CHECK, "writing to unitialized or closed file")
         else:
-            self.fd.write(s, **args)
+            try:
+                self.fd.write(s, **args)
+            except IOError:
+                msg = sys.exc_info()[1]
+                log.warn(LOG_CHECK,
+                    "Could not write to output file: %s\n"
+                    "Disabling log output of %s", msg, self)
+                self.close_fileoutput()
+                self.fd = dummy.Dummy()
 
     def writeln (self, s=u"", **args):
         """
