@@ -555,6 +555,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             self.aggregate.config["useragent"])
         self.url_connection.putheader("Accept-Encoding",
                                   "gzip;q=1.0, deflate;q=0.9, identity;q=0.5")
+        self.url_connection.putheader("DNT", "1")
         if self.aggregate.config['sendcookies']:
             self.send_cookies()
         self.url_connection.endheaders()
