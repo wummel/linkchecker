@@ -148,8 +148,7 @@ def check_urls (aggregate):
         abort(aggregate)
     except Exception:
         # Catching "Exception" is intentionally done. This saves the program
-        # from badly-programmed libraries that raise all kinds of strange
-        # exceptions.
+        # from libraries that raise all kinds of strange exceptions.
         console.internal_error()
         aggregate.logger.log_internal_error()
         abort(aggregate)
