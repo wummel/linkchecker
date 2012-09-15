@@ -512,7 +512,8 @@ if options.output:
         logtype, encoding = options.output.split("/", 1)
     else:
         logtype, encoding = options.output, i18n.default_encoding
-    if logtype.lower() not in linkcheck.logger.Loggers:
+    logtype = logtype.lower()
+    if logtype not in linkcheck.logger.Loggers:
         print_usage(
      _("Unknown logger type %(type)r in %(output)r for option %(option)s") % \
       {"type": logtype, "output": options.output, "option": "'-o, --output'"})
@@ -521,7 +522,8 @@ if options.output:
     _("Unknown encoding %(encoding)r in %(output)r for option %(option)s") % \
      {"encoding": encoding, "output": options.output,
       "option": "'-o, --output'"})
-    config['logger'] = config.logger_new(logtype.lower(), encoding=encoding)
+    config['output'] = logtype
+    config['logger'] = config.logger_new(logtype, encoding=encoding)
 if options.fileoutput:
     ns = {'fileoutput': 1}
     for arg in options.fileoutput:
