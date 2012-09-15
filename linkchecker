@@ -640,15 +640,6 @@ config.sanitize()
 
 log.debug(LOG_CMDLINE, "configuration: %s",
           pprint.pformat(sorted(config.items())))
-# warn about sitemap loggers and complete output
-klasses = [c.__class__ for c in [config['logger']] + config['fileoutput']]
-if (linkcheck.logger.gml.GMLLogger in klasses or \
-    linkcheck.logger.dot.DOTLogger in klasses or \
-    linkcheck.logger.gxml.GraphXMLLogger in klasses) and \
-   not config['complete']:
-    log.warn(LOG_CMDLINE,
-           _("Using DOT or GML loggers without --complete output"
-             " gives an incomplete sitemap graph."))
 
 # prepare checking queue
 aggregate = get_aggregate(config)
