@@ -238,6 +238,12 @@ class TextLogger (Logger):
         """Write check statistic info."""
         self.writeln()
         self.writeln(_("Statistics:"))
+        if self.stats.downloaded_bytes > 0:
+            self.writeln(_("Downloaded: %s") % strformat.strsize(self.stats.downloaded_bytes))
+        hitsmisses = strformat.str_cache_stats(*self.stats.robots_txt_stats)
+        self.writeln(_("Robots.txt cache: %s") % hitsmisses)
+        hitsmisses = strformat.str_cache_stats(*self.stats.addrinfo_stats)
+        self.writeln(_("DNS cache: %s") % hitsmisses)
         if len(self.stats.domains) > 1:
             self.writeln(_("Number of domains: %d") % len(self.stats.domains))
         if self.stats.number > 0:

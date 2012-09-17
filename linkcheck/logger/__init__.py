@@ -82,12 +82,20 @@ class LogStatistics (object):
         self.warnings_printed = 0
         # number of internal errors
         self.internal_errors = 0
+        # the set of checked domains
         self.domains = set()
+        # link types
         self.link_types = ContentTypes.copy()
+        # URL length statistics
         self.max_url_length = 0
         self.min_url_length = 0
         self.avg_url_length = 0.0
         self.avg_number = 0
+        # download stats
+        self.downloaded_bytes = None
+        # cache stats
+        self.robots_txt_stats = None
+        self.addrinfo_stats = None
 
     def log_url (self, url_data, do_print):
         """Log URL statistics."""
@@ -421,6 +429,12 @@ class Logger (object):
         """Indicate that an internal error occurred in the program."""
         log.warn(LOG_CHECK, "internal error occurred")
         self.stats.log_internal_error()
+
+    def add_statistics(self, robots_txt_stats, addrinfo_stats, download_stats):
+        """Add cache and download statistics."""
+        self.stats.robots_txt_stats = robots_txt_stats
+        self.stats.addrinfo_stats = addrinfo_stats
+        self.stats.downloaded_bytes = download_stats
 
 
 # the standard URL logger implementations

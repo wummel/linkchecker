@@ -25,31 +25,54 @@ from ..containers import LFUCache
 from ..decorators import synchronized
 
 _lock = get_lock("addrinfo")
-addrinfos = LFUCache(size=10000)
+
+class AddrInfo(object):
+
+    def __init__(self):
+        self.addrinfos = LFUCache(size=100)
+        self.misses = self.hits = 0
+
+    def getaddrinfo(self, host, port):
+        """Determine address information for given host and port for
+        streaming sockets (SOCK_STREAM).
+        Already cached information is used."""
+        key = u"%s:%s" % (unicode(host), unicode(port))
+        if key in self.addrinfos:
+            self.hits += 1
+            value = self.addrinfos[key]
+        else:
+            self.misses += 1
+            # check if it's an ascii host
+            if isinstance(host, unicode):
+                try:
+                    host = host.encode('ascii')
+                except UnicodeEncodeError:
+                    pass
+            try:
+                value = socket.getaddrinfo(host, port, 0, socket.SOCK_STREAM)
+            except socket.error:
+                value = sys.exc_info()[1]
+            except UnicodeError, msg:
+                args = dict(host=host, msg=str(msg))
+                value = LinkCheckerError(_("could not parse host %(host)r: %(msg)s") % args)
+            self.addrinfos[key] = value
+        if isinstance(value, Exception):
+            raise value
+        return value
+
+_addrinfo = AddrInfo()
 
 @synchronized(_lock)
-def getaddrinfo (host, port):
+def getaddrinfo(host, port):
     """Determine address information for given host and port for
     streaming sockets (SOCK_STREAM).
     Already cached information is used."""
-    key = u"%s:%s" % (unicode(host), unicode(port))
-    if key in addrinfos:
-        value = addrinfos[key]
-    else:
-        # check if it's an ascii host
-        if isinstance(host, unicode):
-            try:
-                host = host.encode('ascii')
-            except UnicodeEncodeError:
-                pass
-        try:
-            value = socket.getaddrinfo(host, port, 0, socket.SOCK_STREAM)
-        except socket.error:
-            value = sys.exc_info()[1]
-        except UnicodeError, msg:
-            args = dict(host=host, msg=str(msg))
-            value = LinkCheckerError(_("could not parse host %(host)r: %(msg)s") % args)
-        addrinfos[key] = value
-    if isinstance(value, Exception):
-        raise value
-    return value
+    return _addrinfo.getaddrinfo(host, port)
+
+@synchronized(_lock)
+def getstats():
+    """Get cache statistics.
+    @return: hits and misses
+    @rtype tuple(int, int)
+    """
+    return _addrinfo.hits, _addrinfo.misses

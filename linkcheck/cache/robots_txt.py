@@ -37,12 +37,17 @@ class RobotsTxt (object):
         """Initialize per-URL robots.txt cache."""
         # mapping {URL -> parsed robots.txt}
         self.cache = LFUCache(size=100)
+        self.hits = self.misses = 0
 
     @synchronized(_lock)
     def allows_url (self, roboturl, url, proxy, user, password, callback=None):
         """Ask robots.txt allowance."""
         useragent = str(configuration.UserAgent)
-        if roboturl not in self.cache:
+        if roboturl in self.cache:
+            self.hits += 1
+            rp = self.cache[roboturl]
+        else:
+            self.misses = 1
             rp = robotparser2.RobotFileParser(proxy=proxy, user=user,
                 password=password)
             rp.set_url(roboturl)
@@ -53,6 +58,4 @@ class RobotsTxt (object):
                 wait = rp.get_crawldelay(useragent)
                 callback(host, wait)
             self.cache[roboturl] = rp
-        else:
-            rp = self.cache[roboturl]
         return rp.can_fetch(useragent, url)

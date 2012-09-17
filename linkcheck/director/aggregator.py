@@ -21,12 +21,13 @@ import time
 import threading
 from .. import log, LOG_CHECK
 from ..decorators import synchronized
-from ..cache import urlqueue
+from ..cache import urlqueue, addrinfo
 from . import logger, status, checker, cleanup
 
 
 _w3_time_lock = threading.Lock()
 _threads_lock = threading.Lock()
+_download_lock = threading.Lock()
 
 class Aggregate (object):
     """Store thread-safe data collections for checker threads."""
@@ -41,6 +42,7 @@ class Aggregate (object):
         self.logger = logger.Logger(config)
         self.threads = []
         self.last_w3_call = 0
+        self.downloaded_bytes = 0
 
     @synchronized(_threads_lock)
     def start_threads (self):
@@ -118,6 +120,7 @@ class Aggregate (object):
         for t in self.threads:
             t.stop()
         self.connections.clear()
+        self.gather_statistics()
 
     @synchronized(_threads_lock)
     def is_finished (self):
@@ -131,3 +134,21 @@ class Aggregate (object):
         if time.time() - self.last_w3_call < 1:
             time.sleep(1)
         self.last_w3_call = time.time()
+
+    @synchronized(_download_lock)
+    def add_download_bytes(self, bytes):
+        """Add gibven bytes to number of downloaded bytes.
+        @param bytes: number of bytes downloaded
+        @ptype bytes: int
+        """
+        self.downloaded_bytes += bytes
+
+    def gather_statistics(self):
+        """Gather download and cache statistics and send them to the
+        logger.
+        """
+        robots_txt_stats = self.robots_txt.hits, self.robots_txt.misses
+        addrinfo_stats = addrinfo.getstats()
+        download_stats = self.downloaded_bytes
+        self.logger.add_statistics(robots_txt_stats, addrinfo_stats,
+          download_stats)

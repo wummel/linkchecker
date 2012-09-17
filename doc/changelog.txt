@@ -8,6 +8,7 @@ Changes:
 - doc: Mention 7-zip to extract the .tar.xz under Windows.
   Closes: SF bug #3564733
 - checking: Send a HTTP Do-Not-Track header.
+- logging: Print download and cache statistics in text output logger.
 
 Fixes:
 - logging: Close logger properly on I/O errors.

@@ -317,3 +317,17 @@ def format_feature_warning (**kwargs):
     be installed for a certain URL.
     """
     return _("Could not import %(module)s for %(feature)s. Install %(module)s from %(url)s to use this feature.") % kwargs
+
+
+def str_cache_stats(hits, misses):
+    """Format hits and misses string for cache statistics.
+    @param hits: number of hits
+    @ptype hits: int
+    @param misses: number of cache misses
+    @ptype misses: int
+    @return: string with this and misses
+    @rtype: unicode
+    """
+    strhits = _n("%d hit", "%d hits", hits) % hits
+    strmisses = _n("%d miss", "%d misses", misses) % misses
+    return u"%s, %s" % (strhits, strmisses)

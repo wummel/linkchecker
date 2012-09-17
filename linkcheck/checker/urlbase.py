@@ -292,6 +292,10 @@ class UrlBase (object):
         """
         return False
 
+    def is_local(self):
+        """Return True for local (ie. file://) URLs."""
+        return self.is_file()
+
     def add_warning (self, s, tag=None):
         """
         Add a warning string.
@@ -729,6 +733,8 @@ class UrlBase (object):
         if self.size > self.MaxFilesizeBytes:
             raise LinkCheckerError(_("File size too large"))
         data = self.url_connection.read()
+        if not self.is_local():
+            self.aggregate.add_download_bytes(len(data))
         return data, len(data)
 
     def check_content (self):
