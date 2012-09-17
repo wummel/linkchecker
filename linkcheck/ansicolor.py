@@ -194,7 +194,7 @@ def get_win_color(color):
 
 def has_colors (fp):
     """Test if given file is an ANSI color enabled tty."""
-    # The isatty() function ensures that we do not colorize
+    # The is_tty() function ensures that we do not colorize
     # redirected streams, as this is almost never what we want
     if not is_tty(fp):
         return False
@@ -203,13 +203,12 @@ def has_colors (fp):
     elif has_curses:
         import curses
         try:
-            curses.setupterm()
-            if curses.tigetnum("colors") >= 8:
-                # We have at least 8 colors - allright!
-                return True
+            curses.initscr()
+            return curses.has_colors()
         except curses.error:
-            # initialize error, eg. no terminfo database found
             return False
+        finally:
+            curses.endwin()
     return False
 
 
