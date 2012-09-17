@@ -29,6 +29,7 @@ _lock = get_lock("addrinfo")
 class AddrInfo(object):
 
     def __init__(self):
+        """Initialize address info cache and cache statistics."""
         self.addrinfos = LFUCache(size=100)
         self.misses = self.hits = 0
 
