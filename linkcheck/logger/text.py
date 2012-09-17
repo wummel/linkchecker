@@ -179,7 +179,7 @@ class TextLogger (Logger):
     def write_warning (self, url_data):
         """Write url_data.warning."""
         self.write(self.part("warning") + self.spaces("warning"))
-        warning_msgs = [x[1] for x in url_data.warnings]
+        warning_msgs = [u"[%s] %s" % x for x in url_data.warnings]
         self.writeln(self.wrap(warning_msgs, 65), color=self.colorwarning)
 
     def write_result (self, url_data):
