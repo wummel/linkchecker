@@ -8,6 +8,8 @@ Changes:
 - doc: Mention 7-zip to extract the .tar.xz under Windows.
   Closes: SF bug #3564733
 - checking: Send a HTTP Do-Not-Track header.
+- checking: Check URL length. Print error on URL longer than 2000 characters,
+  warning for longer than 255 characters.
 - logging: Print download and cache statistics in text output logger.
 - logging: Print warning tag in text output logger. Makes warning filtering
   more easy.

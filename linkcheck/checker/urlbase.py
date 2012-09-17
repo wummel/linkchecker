@@ -40,6 +40,7 @@ from .const import (WARN_URL_EFFECTIVE_URL,
     WARN_URL_ANCHOR_NOT_FOUND, WARN_URL_WARNREGEX_FOUND,
     WARN_URL_CONTENT_SIZE_TOO_LARGE, WARN_URL_CONTENT_SIZE_ZERO,
     WARN_URL_CONTENT_SIZE_UNEQUAL, WARN_URL_WHITESPACE,
+    WARN_URL_TOO_LONG, URL_MAX_LENGTH, URL_WARN_LENGTH,
     ExcList, ExcSyntaxList, ExcNoCacheList)
 
 # helper alias
@@ -389,18 +390,28 @@ class UrlBase (object):
             return
         try:
             self.build_url()
-            # check url warnings
-            effectiveurl = urlutil.urlunsplit(self.urlparts)
-            if self.url != effectiveurl:
-                self.add_warning(_("Effective URL %(url)r.") %
-                                 {"url": effectiveurl},
-                                 tag=WARN_URL_EFFECTIVE_URL)
-                self.url = effectiveurl
+            self.check_url_warnings()
         except tuple(ExcSyntaxList), msg:
             self.set_result(unicode_safe(msg), valid=False)
         else:
             self.set_cache_keys()
             self.set_extern(self.url)
+
+    def check_url_warnings(self):
+        """Check URL name and length."""
+        effectiveurl = urlutil.urlunsplit(self.urlparts)
+        if self.url != effectiveurl:
+            self.add_warning(_("Effective URL %(url)r.") %
+                             {"url": effectiveurl},
+                             tag=WARN_URL_EFFECTIVE_URL)
+            self.url = effectiveurl
+        if len(self.url) > URL_MAX_LENGTH:
+            args = dict(len=len(self.url), max=URL_MAX_LENGTH)
+            self.set_result(_("URL length %(len)d is longer than maximum of %(max)d.") % args, valid=False)
+        elif len(self.url) > URL_WARN_LENGTH:
+            args = dict(len=len(self.url), warn=URL_WARN_LENGTH)
+            self.add_warning(_("URL length %(len)d is longer than %(warn)d.") % args,
+                tag=WARN_URL_TOO_LONG)
 
     def build_url (self):
         """
