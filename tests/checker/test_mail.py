@@ -152,9 +152,14 @@ class TestMail (LinkCheckTest):
         self.mail_error(u"mailto:@")
         self.mail_error(u"mailto:@example.org")
         self.mail_error(u"mailto:a@")
-        self.mail_error(u"mailto:%s@%s" % (u"a"*60, u"b"*200))
+        url_too_long = "URL length %d is longer than 255."
+        url = u"mailto:%s@%s" % (u"a"*60, u"b"*200)
+        warning = url_too_long % len(url)
+        self.mail_error(url, warning=warning)
+        url = u"mailto:a@%s" % (u"a"*256)
+        warning = url_too_long % len(url)
+        self.mail_error(url, warning=warning)
         self.mail_error(u"mailto:%s@example.org" % (u"a"*65))
-        self.mail_error(u"mailto:a@%s" % (u"a"*256))
         self.mail_error(u'mailto:a@%s.com' % (u"a"*64))
         # local part quoted
         self.mail_error(u'mailto:"a""@example.com', cache_key=u'mailto:a')

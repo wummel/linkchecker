@@ -220,7 +220,8 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             buf = StringIO()
             def stor_data (s):
                 """Helper method storing given data"""
-                self.aggregate.add_download_bytes(len(s))
+                urls = self.aggregate.add_download_data(self.cache_content_key, s)
+                self.warn_duplicate_content(urls)
                 # limit the download size
                 if (buf.tell() + len(s)) > self.MaxFilesizeBytes:
                     raise LinkCheckerError(_("FTP file size too large"))

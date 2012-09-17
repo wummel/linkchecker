@@ -21,7 +21,7 @@ import time
 import threading
 from .. import log, LOG_CHECK
 from ..decorators import synchronized
-from ..cache import urlqueue, addrinfo
+from ..cache import urlqueue, addrinfo, content
 from . import logger, status, checker, cleanup
 
 
@@ -136,12 +136,17 @@ class Aggregate (object):
         self.last_w3_call = time.time()
 
     @synchronized(_download_lock)
-    def add_download_bytes(self, bytes):
-        """Add gibven bytes to number of downloaded bytes.
-        @param bytes: number of bytes downloaded
-        @ptype bytes: int
+    def add_download_data(self, url, data):
+        """Add given downloaded data.
+        @param url: URL which data belongs to
+        @ptype url: unicode
+        @param data: downloaded data
+        @ptype data: string
+        @return: URLs with duplicate contents
+        @rtype: list of unicode
         """
-        self.downloaded_bytes += bytes
+        self.downloaded_bytes += len(data)
+        return content.get_checksum_urls(url, data)
 
     def gather_statistics(self):
         """Gather download and cache statistics and send them to the

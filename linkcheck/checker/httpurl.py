@@ -695,7 +695,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         read_content()"""
         data = response.read()
         self._size = len(data)
-        self.aggregate.add_download_bytes(self._size)
+        urls = self.aggregate.add_download_data(self.cache_content_key, data)
+        self.warn_duplicate_content(urls)
         encoding = headers.get_content_encoding(self.headers)
         if encoding in _supported_encodings:
             try:

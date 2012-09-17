@@ -80,6 +80,7 @@ WARN_URL_EFFECTIVE_URL = "url-effective-url"
 WARN_URL_ERROR_GETTING_CONTENT = "url-error-getting-content"
 WARN_URL_ANCHOR_NOT_FOUND = "url-anchor-not-found"
 WARN_URL_WARNREGEX_FOUND = "url-warnregex-found"
+WARN_URL_CONTENT_DUPLICATE = "url-content-duplicate"
 WARN_URL_CONTENT_SIZE_TOO_LARGE = "url-content-too-large"
 WARN_URL_CONTENT_SIZE_ZERO = "url-content-size-zero"
 WARN_URL_CONTENT_SIZE_UNEQUAL = "url-content-size-unequal"
@@ -115,6 +116,7 @@ Warnings = {
     WARN_URL_ANCHOR_NOT_FOUND: _("URL anchor was not found."),
     WARN_URL_WARNREGEX_FOUND:
         _("The warning regular expression was found in the URL contents."),
+    WARN_URL_CONTENT_DUPLICATE: _("The URL content is a duplicate of another URL."),
     WARN_URL_CONTENT_SIZE_TOO_LARGE: _("The URL content size is too large."),
     WARN_URL_CONTENT_SIZE_ZERO: _("The URL content size is zero."),
     WARN_URL_CONTENT_SIZE_UNEQUAL: _("The URL content size and download size are unequal."),
