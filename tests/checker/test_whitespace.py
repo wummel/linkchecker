@@ -27,24 +27,28 @@ class TestWhitespace (LinkCheckTest):
 
     def test_leading_whitespace (self):
         # Leading whitespace
-        url = u" http://www.heise.de/"
+        url = u" http://www.example.org/"
         attrs = self.get_attrs(url=url)
-        attrs['nurl'] = self.norm(url.strip())
+        attrs['nurl'] = "http://www.iana.org/domains/example/"
+        attrs['surl'] = url.strip()
         resultlines = [
-            u"url %(nurl)s" % attrs,
-            u"cache key %(nurl)s" % attrs,
+            u"url %(surl)s" % attrs,
+            u"cache key %(surl)s" % attrs,
             u"real url %(nurl)s" % attrs,
+            u"info Redirected to `%(nurl)s'." % attrs,
             u"warning Leading or trailing whitespace in URL `%(url)s'." % attrs,
             u"valid",
         ]
         self.direct(url, resultlines)
-        url = u"\nhttp://www.heise.de/"
+        url = u"\nhttp://www.example.org/"
         attrs = self.get_attrs(url=url)
-        attrs['nurl'] = self.norm(url.strip())
+        attrs['nurl'] = "http://www.iana.org/domains/example/"
+        attrs['surl'] = url.strip()
         resultlines = [
-            u"url %(nurl)s" % attrs,
-            u"cache key %(nurl)s" % attrs,
+            u"url %(surl)s" % attrs,
+            u"cache key %(surl)s" % attrs,
             u"real url %(nurl)s" % attrs,
+            u"info Redirected to `%(nurl)s'." % attrs,
             u"warning Leading or trailing whitespace in URL `%(url)s'." % attrs,
             u"valid",
         ]
@@ -52,22 +56,24 @@ class TestWhitespace (LinkCheckTest):
 
     def test_trailing_whitespace (self):
         # Trailing whitespace
-        url = u"http://www.heise.de/ "
-        nurl = self.norm(url.strip())
+        url = u"http://www.example.org/ "
+        nurl = "http://www.iana.org/domains/example/"
         resultlines = [
-            u"url %s" % nurl,
-            u"cache key %s" % nurl,
+            u"url %s" % url.strip(),
+            u"cache key %s" % url.strip(),
             u"real url %s" % nurl,
+            u"info Redirected to `%s'." % nurl,
             u"warning Leading or trailing whitespace in URL `%s'." % url,
             u"valid",
         ]
         self.direct(url, resultlines)
-        url = u"http://www.heise.de/\n"
-        nurl = self.norm(url.strip())
+        url = u"http://www.example.org/\n"
+        nurl = "http://www.iana.org/domains/example/"
         resultlines = [
-            u"url %s" % nurl,
-            u"cache key %s" % nurl,
+            u"url %s" % url.strip(),
+            u"cache key %s" % url.strip(),
             u"real url %s" % nurl,
+            u"info Redirected to `%s'." % nurl,
             u"warning Leading or trailing whitespace in URL `%s'." % url,
             u"valid",
         ]
