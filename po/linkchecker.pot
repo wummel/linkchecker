@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2012-09-16 11:53+0200\n"
+"POT-Creation-Date: 2012-09-17 21:20+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: ../linkcheck/director/aggregator.py:73
+#: ../linkcheck/director/aggregator.py:74
 msgid "These URLs are still active:"
 msgstr ""
 
@@ -126,7 +126,7 @@ msgstr ""
 msgid "could not download update information"
 msgstr ""
 
-#: ../linkcheck/cache/addrinfo.py:57
+#: ../linkcheck/cache/addrinfo.py:58
 #, python-format
 msgid "could not parse host %(host)r: %(msg)s"
 msgstr ""
@@ -151,52 +151,52 @@ msgstr ""
 msgid "invalid login URL `%s'. Only HTTP and HTTPS URLs are supported."
 msgstr ""
 
-#: ../linkcheck/configuration/__init__.py:318
+#: ../linkcheck/configuration/__init__.py:322
 msgid "missing user or URL pattern in authentication data."
 msgstr ""
 
-#: ../linkcheck/configuration/__init__.py:365
+#: ../linkcheck/configuration/__init__.py:369
 msgid "activating text logger output."
 msgstr ""
 
-#: ../linkcheck/configuration/__init__.py:384
+#: ../linkcheck/configuration/__init__.py:388
 msgid "Clamav could not be initialized"
 msgstr ""
 
-#: ../linkcheck/configuration/__init__.py:390
+#: ../linkcheck/configuration/__init__.py:394
 msgid "activating sendcookies."
 msgstr ""
 
-#: ../linkcheck/configuration/__init__.py:393
+#: ../linkcheck/configuration/__init__.py:397
 msgid "activating storecookies."
 msgstr ""
 
-#: ../linkcheck/configuration/__init__.py:402
+#: ../linkcheck/configuration/__init__.py:406
 msgid "no CGI password fieldname given for login URL."
 msgstr ""
 
-#: ../linkcheck/configuration/__init__.py:406
+#: ../linkcheck/configuration/__init__.py:410
 msgid "no CGI user fieldname given for login URL."
 msgstr ""
 
-#: ../linkcheck/configuration/__init__.py:410
+#: ../linkcheck/configuration/__init__.py:414
 msgid "no user/password authentication data found for login URL."
 msgstr ""
 
-#: ../linkcheck/configuration/__init__.py:413
+#: ../linkcheck/configuration/__init__.py:417
 msgid "login URL is not a HTTP URL."
 msgstr ""
 
-#: ../linkcheck/configuration/__init__.py:417
+#: ../linkcheck/configuration/__init__.py:421
 msgid "login URL is incomplete."
 msgstr ""
 
-#: ../linkcheck/configuration/__init__.py:421
+#: ../linkcheck/configuration/__init__.py:425
 #, python-format
 msgid "disabling login URL %(url)s."
 msgstr ""
 
-#: ../linkcheck/configuration/__init__.py:461
+#: ../linkcheck/configuration/__init__.py:465
 #, python-format
 msgid "could not copy initial configuration file %(src)r to %(dst)r: %(errmsg)r"
 msgstr ""
@@ -476,115 +476,123 @@ msgstr ""
 msgid "URL is unrecognized or has invalid syntax"
 msgstr ""
 
-#: ../linkcheck/checker/const.py:106
+#: ../linkcheck/checker/const.py:113
 msgid "The effective URL is different from the original."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:108
+#: ../linkcheck/checker/const.py:115
 msgid "Could not get the content of the URL."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:109
+#: ../linkcheck/checker/const.py:116
 msgid "URL anchor was not found."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:111
+#: ../linkcheck/checker/const.py:118
 msgid "The warning regular expression was found in the URL contents."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:112
-msgid "The URL content size is too large."
-msgstr ""
-
-#: ../linkcheck/checker/const.py:113
-msgid "The URL content size is zero."
-msgstr ""
-
-#: ../linkcheck/checker/const.py:114
-msgid "The URL content size and download size are unequal."
-msgstr ""
-
-#: ../linkcheck/checker/const.py:115
-msgid "The URL contains leading or trailing whitespace."
-msgstr ""
-
-#: ../linkcheck/checker/const.py:116
-msgid "The file: URL is missing a trailing slash."
-msgstr ""
-
-#: ../linkcheck/checker/const.py:118
-msgid "The file: path is not the same as the system specific path."
-msgstr ""
-
 #: ../linkcheck/checker/const.py:119
-msgid "The ftp: URL is missing a trailing slash."
+msgid "The URL content is a duplicate of another URL."
 msgstr ""
 
 #: ../linkcheck/checker/const.py:120
-msgid "The http: URL checking has been denied."
+msgid "The URL content size is too large."
 msgstr ""
 
 #: ../linkcheck/checker/const.py:121
-msgid "The URL has moved permanently."
+msgid "The URL content size is zero."
+msgstr ""
+
+#: ../linkcheck/checker/const.py:122
+msgid "The URL content size and download size are unequal."
 msgstr ""
 
 #: ../linkcheck/checker/const.py:123
-msgid "The URL has been redirected to an URL of a different type."
+msgid "The URL is longer than the recommended size."
 msgstr ""
 
 #: ../linkcheck/checker/const.py:124
-msgid "The URL had no content."
+msgid "The URL contains leading or trailing whitespace."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:126
-msgid "An error occurred while storing a cookie."
+#: ../linkcheck/checker/const.py:125
+msgid "The file: URL is missing a trailing slash."
+msgstr ""
+
+#: ../linkcheck/checker/const.py:127
+msgid "The file: path is not the same as the system specific path."
 msgstr ""
 
 #: ../linkcheck/checker/const.py:128
-msgid "An error occurred while decompressing the URL content."
+msgid "The ftp: URL is missing a trailing slash."
+msgstr ""
+
+#: ../linkcheck/checker/const.py:129
+msgid "The http: URL checking has been denied."
 msgstr ""
 
 #: ../linkcheck/checker/const.py:130
-msgid "The URL content is encoded with an unknown encoding."
+msgid "The URL has moved permanently."
 msgstr ""
 
 #: ../linkcheck/checker/const.py:132
-msgid "Unsupported HTTP authentication method."
+msgid "The URL has been redirected to an URL of a different type."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:134 ../linkcheck/checker/httpurl.py:235
-msgid "Unauthorized access without HTTP authentication."
+#: ../linkcheck/checker/const.py:133
+msgid "The URL had no content."
 msgstr ""
 
 #: ../linkcheck/checker/const.py:135
-msgid "The SSL certificate is invalid or expired."
-msgstr ""
-
-#: ../linkcheck/checker/const.py:136
-msgid "The URL has been ignored."
+msgid "An error occurred while storing a cookie."
 msgstr ""
 
 #: ../linkcheck/checker/const.py:137
-msgid "The mail MX host could not be found."
+msgid "An error occurred while decompressing the URL content."
 msgstr ""
 
 #: ../linkcheck/checker/const.py:139
-msgid "The mailto: address could not be verified."
+msgid "The URL content is encoded with an unknown encoding."
 msgstr ""
 
 #: ../linkcheck/checker/const.py:141
-msgid "No connection to a MX host could be established."
+msgid "Unsupported HTTP authentication method."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:142
-msgid "No NNTP server was found."
-msgstr ""
-
-#: ../linkcheck/checker/const.py:143
-msgid "The NNTP newsgroup could not be found."
+#: ../linkcheck/checker/const.py:143 ../linkcheck/checker/httpurl.py:235
+msgid "Unauthorized access without HTTP authentication."
 msgstr ""
 
 #: ../linkcheck/checker/const.py:144
+msgid "The SSL certificate is invalid or expired."
+msgstr ""
+
+#: ../linkcheck/checker/const.py:145
+msgid "The URL has been ignored."
+msgstr ""
+
+#: ../linkcheck/checker/const.py:146
+msgid "The mail MX host could not be found."
+msgstr ""
+
+#: ../linkcheck/checker/const.py:148
+msgid "The mailto: address could not be verified."
+msgstr ""
+
+#: ../linkcheck/checker/const.py:150
+msgid "No connection to a MX host could be established."
+msgstr ""
+
+#: ../linkcheck/checker/const.py:151
+msgid "No NNTP server was found."
+msgstr ""
+
+#: ../linkcheck/checker/const.py:152
+msgid "The NNTP newsgroup could not be found."
+msgstr ""
+
+#: ../linkcheck/checker/const.py:153
 msgid "The IP is obfuscated."
 msgstr ""
 
@@ -718,131 +726,146 @@ msgstr ""
 msgid "Found MX mail host %(host)s"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:68
+#: ../linkcheck/checker/urlbase.py:70
 #, python-format
 msgid "URL has unparsable domain name: %(name)s"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:137
+#: ../linkcheck/checker/urlbase.py:139
 #, python-format
 msgid "Leading or trailing whitespace in URL `%(url)s'."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:385
+#: ../linkcheck/checker/urlbase.py:387
 msgid "URL is missing"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:388
+#: ../linkcheck/checker/urlbase.py:390
 msgid "URL is empty"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:395
+#: ../linkcheck/checker/urlbase.py:405
 #, python-format
 msgid "Effective URL %(url)r."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:454
+#: ../linkcheck/checker/urlbase.py:411
+#, python-format
+msgid "URL length %(len)d is longer than maximum of %(max)d."
+msgstr ""
+
+#: ../linkcheck/checker/urlbase.py:414
+#, python-format
+msgid "URL length %(len)d is longer than %(warn)d."
+msgstr ""
+
+#: ../linkcheck/checker/urlbase.py:466
 #, python-format
 msgid "URL has invalid port %(port)r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:459
+#: ../linkcheck/checker/urlbase.py:471
 msgid "URL has empty hostname"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:470
+#: ../linkcheck/checker/urlbase.py:482
 #, python-format
 msgid "URL %(url)s has obfuscated IP address %(ip)s"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:497
+#: ../linkcheck/checker/urlbase.py:509
 #, python-format
 msgid "URL is located in %(country)s."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:522
+#: ../linkcheck/checker/urlbase.py:534
 msgid "Hostname not found"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:525
+#: ../linkcheck/checker/urlbase.py:537
 #, python-format
 msgid "Bad HTTP response %(line)r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:538
+#: ../linkcheck/checker/urlbase.py:550
 #, python-format
 msgid "could not get content: %(msg)r"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:679
+#: ../linkcheck/checker/urlbase.py:691
 #, python-format
 msgid "Anchor `%(name)s' not found."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:680
+#: ../linkcheck/checker/urlbase.py:692
 #, python-format
 msgid "Available anchors: %(anchors)s."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:734 ../linkcheck/checker/fileurl.py:193
+#: ../linkcheck/checker/urlbase.py:746 ../linkcheck/checker/fileurl.py:193
 #: ../linkcheck/checker/httpurl.py:686
 msgid "File size too large"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:778
+#: ../linkcheck/checker/urlbase.py:760
 #, python-format
-msgid "Found %(match)r at line %(line)d in link contents."
-msgstr ""
-
-#: ../linkcheck/checker/urlbase.py:794
-msgid "Content size is zero."
+msgid "Content with %(size)s is the same as in URLs (%(urls)s)."
 msgstr ""
 
 #: ../linkcheck/checker/urlbase.py:800
 #, python-format
+msgid "Found %(match)r at line %(line)d in link contents."
+msgstr ""
+
+#: ../linkcheck/checker/urlbase.py:816
+msgid "Content size is zero."
+msgstr ""
+
+#: ../linkcheck/checker/urlbase.py:822
+#, python-format
 msgid "Content size %(dlsize)s is larger than %(maxbytes)s."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:805
+#: ../linkcheck/checker/urlbase.py:827
 #, python-format
 msgid ""
 "Download size (%(dlsize)d Byte) does not equal content size (%(size)d Byte)."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:826 ../linkcheck/checker/urlbase.py:891
+#: ../linkcheck/checker/urlbase.py:848 ../linkcheck/checker/urlbase.py:913
 msgid "valid HTML syntax"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:832
+#: ../linkcheck/checker/urlbase.py:854
 #, python-format
 msgid "tidy HTML parsing caused error: %(msg)s "
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:854 ../linkcheck/checker/urlbase.py:927
+#: ../linkcheck/checker/urlbase.py:876 ../linkcheck/checker/urlbase.py:949
 msgid "valid CSS syntax"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:860
+#: ../linkcheck/checker/urlbase.py:882
 #, python-format
 msgid "cssutils parsing caused error: %(msg)s"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:869
+#: ../linkcheck/checker/urlbase.py:891
 #, python-format
 msgid "%(w3type)s validation error at line %(line)s col %(column)s: %(msg)s"
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:900
+#: ../linkcheck/checker/urlbase.py:922
 #, python-format
 msgid "HTML W3C validation caused error: %(msg)s "
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:935
+#: ../linkcheck/checker/urlbase.py:957
 #, python-format
 msgid "CSS W3C validation caused error: %(msg)s "
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:988
+#: ../linkcheck/checker/urlbase.py:1010
 #, python-format
 msgid "%(num)d URL parsed."
 msgid_plural "%(num)d URLs parsed."
@@ -914,7 +937,7 @@ msgstr ""
 msgid "Missing trailing directory slash in ftp url."
 msgstr ""
 
-#: ../linkcheck/checker/ftpurl.py:226
+#: ../linkcheck/checker/ftpurl.py:227
 msgid "FTP file size too large"
 msgstr ""
 
@@ -1028,12 +1051,12 @@ msgstr ""
 msgid "Unsupported HTTP url scheme `%(scheme)s'"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:707
+#: ../linkcheck/checker/httpurl.py:708
 #, python-format
 msgid "Decompress error %(err)s"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:723
+#: ../linkcheck/checker/httpurl.py:724
 #, python-format
 msgid "Unsupported content encoding `%(encoding)s'."
 msgstr ""
