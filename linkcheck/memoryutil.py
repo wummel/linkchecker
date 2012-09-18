@@ -18,7 +18,9 @@
 Memory utilities.
 """
 import sys
-from . import strformat
+import gc
+import pprint
+from . import strformat, log, LOG_CHECK
 from .fileutil import get_temp_file
 
 # Message to display when meliae package is not installed
@@ -32,6 +34,10 @@ def write_memory_dump():
     @return: JSON filename where memory dump has been written to
     @rtype: string
     """
+    # first do a full garbage collection run
+    gc.collect()
+    if gc.garbage:
+        log.warn(LOG_CHECK, "Unreachabe objects: %s", pprint.pformat(gc.garbage))
     from meliae import scanner
     fo, filename = get_temp_file(mode='wb', suffix='.json', prefix='lcdump_')
     try:
@@ -40,15 +46,3 @@ def write_memory_dump():
         fo.close()
     return filename
 
-
-def print_memory_dump(filename, out=sys.stdout):
-    """Print a memory dump to given output stream.
-    @param filename: memory dump file
-    @ptype filename: string
-    @param out: output stream, default: stdout
-    @ptype out: open file object
-    """
-    from meliae import loader
-    om = loader.load(filename)
-    om.collapse_instance_dicts()
-    print >>out, om.summarize()

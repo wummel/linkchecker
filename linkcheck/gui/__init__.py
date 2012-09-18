@@ -429,21 +429,9 @@ Version 2 or later.
         self.set_statusmsg(_(u"Dumping memory statistics..."))
         filename = memoryutil.write_memory_dump()
         title = _(u"LinkChecker memory dump written")
-        message = _(u"The memory dump has been written to `%(filename)s'. Do you want to display a summary?")
+        message = _(u"The memory dump has been written to `%(filename)s'.")
         attrs = dict(filename=filename)
-        res = QtGui.QMessageBox.question(self, title, message % attrs,
-            buttons=QtGui.QMessageBox.Cancel|QtGui.QMessageBox.Ok,
-            defaultButton=QtGui.QMessageBox.Cancel)
-        if res == QtGui.QMessageBox.Ok:
-            self.show_memory(filename)
-
-    def show_memory(self, filename):
-        """Show memory usage summary."""
-        from cStringIO import StringIO
-        out = StringIO()
-        memoryutil.print_memory_dump(filename, out=out)
-        self.debugmemory.setText(out.getvalue())
-        self.debugmemory.show()
+        res = QtGui.QMessageBox.information(self, title, message % attrs)
 
     def get_url (self):
         """Return URL to check from the urlinput widget."""
