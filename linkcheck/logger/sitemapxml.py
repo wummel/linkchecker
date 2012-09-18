@@ -91,9 +91,10 @@ class SitemapXmlLogger (xmllog.XMLLogger):
             priority = self.priority
         self.xml_starttag(u'url')
         self.xml_tag(u'loc', url_data.url)
-        # use it when last modified is part of official URL
-        #if url_data.last_modified:
-        #    self.xml_tag(u'lastmod', url_data.last_modified)
+        if url_data.modified:
+            modified = get_sitemap_modified(url_data.modified)
+            if modified:
+                self.xml_tag(u'lastmod', modified)
         self.xml_tag(u'changefreq', self.frequency)
         self.xml_tag(u'priority', "%.1f" % priority)
         self.xml_endtag(u'url')
@@ -106,3 +107,10 @@ class SitemapXmlLogger (xmllog.XMLLogger):
         self.xml_endtag(u"urlset")
         self.xml_end_output()
         self.close_fileoutput()
+
+
+def get_sitemap_modified(s):
+    """Reformat UrlData modified string into sitemap format specified at
+     http://www.w3.org/TR/NOTE-datetime."""
+    # XXX
+    return None

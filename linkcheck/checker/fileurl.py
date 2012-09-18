@@ -25,7 +25,7 @@ import urllib
 import urllib2
 
 from . import urlbase, get_index_html, get_url_from
-from .. import log, LOG_CHECK, fileutil, LinkCheckerError, url as urlutil
+from .. import log, LOG_CHECK, fileutil, strformat, LinkCheckerError, url as urlutil
 from ..bookmarks import firefox
 from .const import WARN_FILE_MISSING_SLASH, WARN_FILE_SYSTEM_PATH
 
@@ -148,14 +148,16 @@ class FileUrl (urlbase.UrlBase):
         self.url = urlutil.urlunsplit(self.urlparts)
 
     def add_size_info (self):
-        """Get size of file content from filename path."""
+        """Get size of file content and modification time from filename path."""
         if self.is_directory():
             # Directory size always differs from the customer index.html
             # that is generated. So return without calculating any size.
             return
-        self.size = fileutil.get_size(self.get_os_filename())
+        filename = self.get_os_filename()
+        self.size = fileutil.get_size(filename)
         if self.dlsize == -1:
             self.dlsize = self.size
+        self.modified = strformat.strtime(fileutil.get_mtime(filename))
 
     def check_connection (self):
         """

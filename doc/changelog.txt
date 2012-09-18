@@ -14,6 +14,8 @@ Changes:
 - logging: Print download and cache statistics in text output logger.
 - logging: Print warning tag in text output logger. Makes warning filtering
   more easy.
+- logging: Make the last modification time a separate field in logging
+  output. See doc/upgrading.txt for compatibility changes.
 
 Fixes:
 - logging: Close logger properly on I/O errors.

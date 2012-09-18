@@ -42,6 +42,7 @@ Fields = dict(
     checktime=_("Check time"),
     url=_("URL"),
     level=_("Level"),
+    modified=_("Modified"),
 )
 del _
 

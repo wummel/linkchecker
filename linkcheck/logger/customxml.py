@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2011 Bastian Kleineidam
+# Copyright (C) 2000-2012 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -71,6 +71,8 @@ class CustomXMLLogger (xmllog.XMLLogger):
             for info in url_data.info:
                 self.xml_tag(u"info", info)
             self.xml_endtag(u"infos")
+        if url_data.modified and self.has_part('modified'):
+            self.xml_tag(u"modified", url_data.modified)
         if url_data.warnings and self.has_part('warning'):
             self.xml_starttag(u"warnings")
             for tag, data in url_data.warnings:

@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2011 Bastian Kleineidam
+# Copyright (C) 2000-2012 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -99,7 +99,8 @@ class SQLLogger (Logger):
               "%(dltime)d,"
               "%(dlsize)d,"
               "%(cached)d,"
-              "%(level)d"
+              "%(level)d,"
+              "%(modified)s"
               ")%(separator)s" %
               {'table': self.dbname,
                'base_url': sqlify(url_data.base_url),
@@ -119,6 +120,7 @@ class SQLLogger (Logger):
                'cached': intify(url_data.cached),
                'separator': self.separator,
                "level": url_data.level,
+               "modified": url_data.modified,
               })
         self.flush()
 

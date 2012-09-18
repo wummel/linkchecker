@@ -19,5 +19,6 @@ create table linksdb (
     dltime         int,
     dlsize         int,
     cached         int,
-    level          int not null
+    level          int not null,
+    modified       varchar(256)
 );

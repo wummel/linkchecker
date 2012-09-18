@@ -1,5 +1,12 @@
 Upgrading
 =========
+Migrating from 8.0 to 8.1
+-------------------------
+All loggers have an additional output field "modified".
+If these loggers are not configured with specific output parts,
+the output format will change.
+For example existing SQL tables can be altered with:
+alter table linkcheck add (modified varchar(256));
 
 Migrating from 7.9 to 8.0
 -------------------------

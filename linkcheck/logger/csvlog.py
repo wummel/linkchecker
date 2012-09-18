@@ -23,6 +23,12 @@ import sys
 from . import Logger
 from .. import strformat
 
+Columns = (
+    u"urlname", u"parentname", u"baseref", u"result", u"warningstring",
+    u"infostring", u"valid", u"url", u"line", u"column", u"name",
+    u"dltime", u"dlsize", u"checktime", u"cached", u"level", u"modified",
+)
+
 
 class CSVLogger (Logger):
     """
@@ -68,22 +74,7 @@ class CSVLogger (Logger):
         self.writer = csv.writer(self.fd, dialect='excel',
                delimiter=self.separator, lineterminator=self.linesep,
                quotechar=self.quotechar)
-        for s in (u"urlname",
-                  u"parentname",
-                  u"baseref",
-                  u"result",
-                  u"warningstring",
-                  u"infostring",
-                  u"valid",
-                  u"url",
-                  u"line",
-                  u"column",
-                  u"name",
-                  u"dltime",
-                  u"dlsize",
-                  u"checktime",
-                  u"cached",
-                  u"level"):
+        for s in Columns:
             if self.has_part(s):
                 row.append(s)
         if row:
@@ -124,6 +115,8 @@ class CSVLogger (Logger):
             row.append(url_data.cached)
         if self.has_part("level"):
             row.append(url_data.level)
+        if self.has_part("modified"):
+            row.append(url_data.modified)
         self.writerow(map(strformat.unicode_safe, row))
         self.flush()
 

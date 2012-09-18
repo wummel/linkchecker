@@ -488,9 +488,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 self.set_result(u"%r %s" % (response.status, response.reason))
             else:
                 self.set_result(_("OK"))
-        modified = self.getheader('Last-Modified', u'')
-        if modified:
-            self.add_info(_("Last modified %(date)s.") % {"date": modified})
+        self.modified = self.getheader('Last-Modified', u'')
 
     def _try_http_response (self):
         """Try to get a HTTP response object. For reused persistent

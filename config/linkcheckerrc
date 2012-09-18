@@ -119,6 +119,11 @@
 [gxml]
 #encoding=iso-8859-1
 
+# Sitemap logger
+[sitemap]
+#priority=0.7
+#frequency=weekly
+
 
 ##################### checking options ##########################
 [checking]

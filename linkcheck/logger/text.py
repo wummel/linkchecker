@@ -110,6 +110,8 @@ class TextLogger (Logger):
             self.write_dlsize(url_data)
         if url_data.info and self.has_part('info'):
             self.write_info(url_data)
+        if url_data.modified and self.has_part('modified'):
+            self.write_modified(url_data)
         if url_data.warnings and self.has_part('warning'):
             self.write_warning(url_data)
         if self.has_part('result'):
@@ -175,6 +177,11 @@ class TextLogger (Logger):
         """Write url_data.info."""
         self.write(self.part("info") + self.spaces("info"))
         self.writeln(self.wrap(url_data.info, 65), color=self.colorinfo)
+
+    def write_modified(self, url_data):
+        """Write url_data.modified."""
+        self.write(self.part("modified") + self.spaces("modified"))
+        self.writeln(url_data.modified)
 
     def write_warning (self, url_data):
         """Write url_data.warning."""

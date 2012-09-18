@@ -119,6 +119,8 @@ class HtmlLogger (Logger):
             self.write_checktime(url_data)
         if url_data.info and self.has_part("info"):
             self.write_info(url_data)
+        if url_data.modified and self.has_part("modified"):
+            self.write_modified(url_data)
         if url_data.warnings and self.has_part("warning"):
             self.write_warning(url_data)
         if self.has_part("result"):
@@ -216,6 +218,12 @@ class HtmlLogger (Logger):
         text = sep.join(cgi.escape(x) for x in url_data.info)
         self.writeln(u'<tr><td valign="top">' + self.part("info")+
                u"</td><td>"+text+u"</td></tr>")
+
+    def write_modified(self, url_data):
+        """Write url_data.modified."""
+        text = cgi.escape(url_data.modified)
+        self.writeln(u'<tr><td valign="top">' + self.part("modified") +
+            u"</td><td>"+text+u"</td></tr>")
 
     def write_warning (self, url_data):
         """Write url_data.warnings."""
