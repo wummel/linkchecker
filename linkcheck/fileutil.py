@@ -27,6 +27,7 @@ import mimetypes
 import tempfile
 from distutils.spawn import find_executable
 
+from .decorators import memoized
 from . import log, LOG_CHECK
 
 def write_file (filename, content, backup=False, callback=None):
@@ -136,10 +137,16 @@ class Buffer (object):
         return data
 
 
+@memoized
+def get_stat(filename):
+    """Return stat(2) data for given filename. Kan raise os.error"""
+    return os.stat(filename)
+
+
 def get_mtime (filename):
     """Return modification time of filename or zero on errors."""
     try:
-        return os.stat(filename)[stat.ST_MTIME]
+        return get_stat(filename)[stat.ST_MTIME]
     except os.error:
         return 0
 
@@ -147,7 +154,7 @@ def get_mtime (filename):
 def get_size (filename):
     """Return file size in Bytes, or -1 on error."""
     try:
-        return os.stat(filename)[stat.ST_SIZE]
+        return get_stat(filename)[stat.ST_SIZE]
     except os.error:
         return -1
 
@@ -258,11 +265,13 @@ def is_tty (fp):
     return (hasattr(fp, "isatty") and fp.isatty())
 
 
+@memoized
 def is_readable(filename):
     """Check if file is a regular file and is readable."""
     return os.path.isfile(filename) and os.access(filename, os.R_OK)
 
 
+@memoized
 def is_writable(filename):
     """Check if
     - the file is a regular file and is writable, or
