@@ -204,6 +204,10 @@ class Configuration (dict):
             "filename": "linkchecker-out.dot",
             "encoding": "ascii",
         }
+        self['sitemap'] = {
+            "filename": "linkchecker-out.sitemap.xml",
+            "encoding": "utf-8",
+        }
         self['none'] = {}
         self['output'] = 'text'
         self['logger'] = None

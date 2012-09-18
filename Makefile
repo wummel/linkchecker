@@ -207,7 +207,7 @@ doccheck:
 	  *.py
 
 filescheck: localbuild
-	for out in text html gml sql csv xml gxml dot; do \
+	for out in text html gml sql csv xml gxml dot sitemap; do \
 	  ./linkchecker -o$$out -F$$out --complete -r1 -C $(FILESCHECK_URL) || exit 1; \
 	done
 

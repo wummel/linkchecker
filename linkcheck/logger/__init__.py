@@ -448,6 +448,7 @@ from .blacklist import BlacklistLogger
 from .gxml import GraphXMLLogger
 from .customxml import CustomXMLLogger
 from .none import NoneLogger
+from .sitemapxml import SitemapXmlLogger
 
 
 # default URL logger classes
@@ -461,6 +462,7 @@ Loggers = {
     "blacklist": BlacklistLogger,
     "gxml": GraphXMLLogger,
     "xml": CustomXMLLogger,
+    "sitemap": SitemapXmlLogger,
     "none": NoneLogger,
 }
 # for easy printing: a comma separated logger list

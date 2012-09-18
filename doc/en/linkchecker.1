@@ -114,7 +114,8 @@ The \fIFILENAME\fP and \fIENCODING\fP parts of the \fBnone\fP output type
 will be ignored, else if the file already exists, it will be overwritten.
 You can specify this option more than once. Valid file output types
 are \fBtext\fP, \fBhtml\fP, \fBsql\fP,
-\fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBnone\fP or \fBblacklist\fP.
+\fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBsitemap\fP, \fBnone\fP or
+\fBblacklist\fP.
 Default is no file output. The various output types are documented
 below. Note that you can suppress all console output
 with the option \fB\-o none\fP.
@@ -127,7 +128,8 @@ Don't log warnings. Default is to log warnings.
 .TP
 \fB\-o\fP\fITYPE\fP[\fB/\fP\fIENCODING\fP], \fB\-\-output=\fP\fITYPE\fP[\fB/\fP\fIENCODING\fP]
 Specify output type as \fBtext\fP, \fBhtml\fP, \fBsql\fP,
-\fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBnone\fP or \fBblacklist\fP.
+\fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBsitemap\fP, \fBnone\fP or
+\fBblacklist\fP.
 Default type is \fBtext\fP. The various output types are documented
 below.
 .br
@@ -262,6 +264,10 @@ Log check result as a GraphXML sitemap graph.
 .TP
 \fBxml\fP
 Log check result as machine-readable XML.
+.TP
+\fBsitemap\fP
+Log check result as an XML sitemap whose protocol is documented at
+\fBhttp://www.sitemaps.org/protocol.html\fP.
 .TP
 \fBsql\fP
 Log check result as SQL script with INSERT commands. An example

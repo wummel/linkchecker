@@ -121,10 +121,10 @@ aufgelistet.
 Der \fIDATEINAME\fP und \fIENKODIERUNG\fP Teil wird beim Ausgabetyp \fBnone\fP
 ignoriert, ansonsten wird die Datei überschrieben falls sie existiert. Sie
 können diese Option mehr als einmal verwenden. Gültige Ausgabetypen sind
-\fBtext\fP, \fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBnone\fP oder
-\fBblacklist\fP. Standard ist keine Dateiausgabe. \fIENKODIERUNG\fP gibt die
-Ausgabekodierung an,der Standard ist die Enkodierung der ausgewählten
-Spracheinstellung. Gültige Enkodierungen sind unter
+\fBtext\fP, \fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP, \fBsitemap\fP,
+\fBnone\fP oder \fBblacklist\fP. Standard ist keine Dateiausgabe. \fIENKODIERUNG\fP
+gibt die Ausgabekodierung an,der Standard ist die Enkodierung der
+ausgewählten Spracheinstellung. Gültige Enkodierungen sind unter
 \fBhttp://docs.python.org/library/codecs.html#standard\-encodings\fP
 aufgelistet. Beachten Sie, dass Sie mit der Option \fB\-o none\fP jegliche
 Ausgaben auf der Konsole verhindern können.
@@ -137,8 +137,8 @@ Gebe keine Warnungen aus. Standard ist die Ausgabe von Warnungen.
 .TP 
 \fB\-o\fP\fITYP\fP[\fB/\fP\fIENKODIERUNG\fP], \fB\-\-output=\fP\fITYP\fP[\fB/\fP\fIENKODIERUNG\fP]
 Gib Ausgabetyp als \fBtext\fP, \fBhtml\fP, \fBsql\fP, \fBcsv\fP, \fBgml\fP, \fBdot\fP, \fBxml\fP,
-\fBnone\fP oder \fBblacklist\fP an.  Stadard Typ ist \fBtext\fP. Die verschiedenen
-Ausgabetypen sind unten dokumentiert.
+\fBsitemap\fP, \fBnone\fP oder \fBblacklist\fP an.  Stadard Typ ist \fBtext\fP. Die
+verschiedenen Ausgabetypen sind unten dokumentiert.
 .br
 Das \fIENCODING\fP gibt die Ausgabekodierung an. Der Standard ist das der
 lokalen Spracheinstellung. Gültige Enkodierungen sind unter
@@ -276,6 +276,10 @@ Gebe Prüfresultat als GraphXML\-Datei aus.
 .TP 
 \fBxml\fP
 Gebe Prüfresultat als maschinenlesbare XML\-Datei aus.
+.TP 
+\fBsitemap\fP
+Protokolliere Prüfergebnisse als XML Sitemap dessen Format unter
+\fBhttp://www.sitemaps.org/protocol.html\fP dokumentiert ist.
 .TP 
 \fBsql\fP
 Gebe Prüfresultat als SQL Skript mit INSERT Befehlen aus. Ein
