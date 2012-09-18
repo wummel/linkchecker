@@ -22,6 +22,7 @@ Changelog.linkchecker*
 /linkchecker.egg-info
 /tests/checker/data/dir
 /linkchecker-out.*
+/lcdump*
 /doc/html/*.qhc
 /doc/html/*.qch
 /.achievements
