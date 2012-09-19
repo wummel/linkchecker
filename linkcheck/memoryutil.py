@@ -17,7 +17,6 @@
 """
 Memory utilities.
 """
-import sys
 import gc
 import pprint
 from . import strformat, log, LOG_CHECK
