@@ -7,6 +7,8 @@ Features:
 - checking: Check URL length. Print error on URL longer than 2000 characters,
   warning for longer than 255 characters.
 - checking: Warn about duplicate URL contents.
+- logging: A new XML sitemap logger can be used that implements the protocol
+  defined at http://www.sitemaps.org/protocol.php.
 
 Changes:
 - doc: Mention 7-zip to extract the .tar.xz under Windows.
@@ -16,6 +18,9 @@ Changes:
   more easy.
 - logging: Make the last modification time a separate field in logging
   output. See doc/upgrading.txt for compatibility changes.
+- logging: All sitemap loggers log all valid URLs regardless of the
+  --warnings or --complete options. This way the sitemaps can be
+  logged to file without changing the output of URLs in other loggers.
 
 Fixes:
 - logging: Close logger properly on I/O errors.
