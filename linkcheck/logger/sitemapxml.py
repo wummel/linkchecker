@@ -62,31 +62,29 @@ class SitemapXmlLogger (xmllog.XMLLogger):
         self.xml_starttag(u'urlset', attrs)
         self.flush()
 
-    def filter_url(self, url_data):
-        """Determine if URL should not be logged in sitemap.
-        Only valid HTML pages which start with the first logged URL are
-        considered."""
-        if not url_data.valid:
-            return True
-        if not url_data.url.startswith((u'http:', u'https:')):
-            return True
-        if not url_data.url.startswith(self.prefix):
-            return True
-        if url_data.content_type not in ('text/html', "application/xhtml+xml"):
-            return True
-        return False
+    def log_filter_url(self, url_data, do_print):
+        """
+        Update accounting data and determine if URL should be included in the sitemap.
+        """
+        self.stats.log_url(url_data, do_print)
+        # ignore the do_print flag and determine ourselves if we filter the url
+        if (url_data.valid and
+            url_data.url.startswith((u'http:', u'https:')) and
+            url_data.url.startswith(self.prefix) and
+            url_data.content_type in ('text/html', "application/xhtml+xml")):
+            self.log_url(url_data)
 
     def log_url (self, url_data):
         """
         Log URL data in sitemap format.
         """
         if self.prefix is None:
+            # first URL (ie. the homepage) gets priority 1.0 per default
             self.prefix = url_data.url
             priority = 1.0
         else:
+            # all other pages get priority 0.5 per default
             priority = 0.5
-        if self.filter_url(url_data):
-            return
         if self.priority is not None:
             priority = self.priority
         self.xml_starttag(u'url')

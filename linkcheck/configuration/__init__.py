@@ -352,7 +352,6 @@ class Configuration (dict):
         if self['loginurl']:
             self.sanitize_loginurl()
         self.sanitize_proxies()
-        self.sanitize_filter()
 
     def sanitize_anchors (self):
         """Make anchor configuration consistent."""
@@ -369,15 +368,6 @@ class Configuration (dict):
             log.warn(LOG_CHECK, _("activating text logger output."))
             self['output'] = 'text'
         self['logger'] = self.logger_new(self['output'])
-
-    def sanitize_filter(self):
-        """Set filter flags for graph loggers."""
-        from ..logger import gml, dot, gxml
-        graph_classes = (gml.GMLLogger, dot.DOTLogger, gxml.GraphXMLLogger)
-        for logger in [self['logger']] + self['fileoutput']:
-            if logger.__class__ in graph_classes:
-                self['complete'] = True
-                break
 
     def sanitize_scanvirus (self):
         """Ensure clamav is installed for virus checking."""

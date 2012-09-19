@@ -32,6 +32,15 @@ class GraphLogger (Logger):
         self.nodes = {}
         self.nodeid = 0
 
+    def log_filter_url(self, url_data, do_print):
+        """Update accounting data and log all valid URLs regardless the
+        do_print flag.
+        """
+        self.stats.log_url(url_data, do_print)
+        # ignore the do_print flag and determine ourselves if we filter the url
+        if url_data.valid:
+            self.log_url(url_data)
+
     def get_node (self, url_data):
         """Return new node data or None if node already exists."""
         if not url_data.url:
