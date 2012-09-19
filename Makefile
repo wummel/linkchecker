@@ -233,7 +233,10 @@ test:	localbuild
 
 pyflakes:
 	pyflakes $(PY_FILES_DIRS) 2>&1 | \
-          grep -v "redefinition of unused 'linkcheck'" | \
+          grep -v -E "redefinition of unused '(StringIO|Editor|ContentTypeLexers)'" | \
+          grep -v "local variable 'dummy' is assigned to but never used" | \
+          grep -v -E "'(py2exe|py2app|PyQt4|biplist|setuptools|win32com|find_executable|parse_bookmark_data|parse_bookmark_file|wsgiref|pyftpdlib)' imported but unused" | \
+          grep -v -E "redefinition of unused '(setup|Distribution|build)'" | \
           grep -v "undefined name '_'" | \
 	  grep -v "undefined name '_n'" | cat
 
