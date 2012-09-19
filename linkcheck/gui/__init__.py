@@ -431,7 +431,7 @@ Version 2 or later.
         title = _(u"LinkChecker memory dump written")
         message = _(u"The memory dump has been written to `%(filename)s'.")
         attrs = dict(filename=filename)
-        res = QtGui.QMessageBox.information(self, title, message % attrs)
+        QtGui.QMessageBox.information(self, title, message % attrs)
 
     def get_url (self):
         """Return URL to check from the urlinput widget."""
