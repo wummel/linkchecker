@@ -107,8 +107,12 @@ class SitemapXmlLogger (xmllog.XMLLogger):
         self.close_fileoutput()
 
 
-def get_sitemap_modified(s):
+def get_sitemap_modified(modified):
     """Reformat UrlData modified string into sitemap format specified at
-     http://www.w3.org/TR/NOTE-datetime."""
-    # XXX
-    return None
+     http://www.w3.org/TR/NOTE-datetime.
+    @param modified: last modified time
+    @ptype modified: datetime object with timezone information
+    @return: formatted date
+    @rtype: string
+    """
+    return modified.isoformat('T')

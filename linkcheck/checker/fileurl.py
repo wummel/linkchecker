@@ -23,9 +23,10 @@ import os
 import urlparse
 import urllib
 import urllib2
+from datetime import datetime
 
 from . import urlbase, get_index_html, get_url_from
-from .. import log, LOG_CHECK, fileutil, strformat, LinkCheckerError, url as urlutil
+from .. import log, LOG_CHECK, fileutil, LinkCheckerError, url as urlutil
 from ..bookmarks import firefox
 from .const import WARN_FILE_MISSING_SLASH, WARN_FILE_SYSTEM_PATH
 
@@ -157,7 +158,7 @@ class FileUrl (urlbase.UrlBase):
         self.size = fileutil.get_size(filename)
         if self.dlsize == -1:
             self.dlsize = self.size
-        self.modified = strformat.strtime(fileutil.get_mtime(filename))
+        self.modified = datetime.utcfromtimestamp(fileutil.get_mtime(filename))
 
     def check_connection (self):
         """

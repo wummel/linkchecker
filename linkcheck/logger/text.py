@@ -181,7 +181,7 @@ class TextLogger (Logger):
     def write_modified(self, url_data):
         """Write url_data.modified."""
         self.write(self.part("modified") + self.spaces("modified"))
-        self.writeln(url_data.modified)
+        self.writeln(url_data.modified.isoformat(" "))
 
     def write_warning (self, url_data):
         """Write url_data.warning."""

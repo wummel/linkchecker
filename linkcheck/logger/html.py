@@ -221,7 +221,7 @@ class HtmlLogger (Logger):
 
     def write_modified(self, url_data):
         """Write url_data.modified."""
-        text = cgi.escape(url_data.modified)
+        text = cgi.escape(url_data.modified.isoformat(" "))
         self.writeln(u'<tr><td valign="top">' + self.part("modified") +
             u"</td><td>"+text+u"</td></tr>")
 

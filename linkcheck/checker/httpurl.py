@@ -24,7 +24,10 @@ import os
 import errno
 import zlib
 import socket
+import rfc822
+import time
 from cStringIO import StringIO
+from datetime import datetime
 
 from .. import (log, LOG_CHECK, gzip2 as gzip, strformat, url as urlutil,
     httplib2 as httplib, LinkCheckerError, get_link_pat, httputil,
@@ -488,7 +491,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 self.set_result(u"%r %s" % (response.status, response.reason))
             else:
                 self.set_result(_("OK"))
-        self.modified = self.getheader('Last-Modified', u'')
+        modified = rfc822.parsedate(self.getheader('Last-Modified', u''))
+        self.modified = datetime.utcfromtimestamp(time.mktime(modified))
 
     def _try_http_response (self):
         """Try to get a HTTP response object. For reused persistent
