@@ -42,6 +42,10 @@ def set_properties (widget, data):
         widget.prop_size.setText(strformat.strsize(data.dlsize))
     else:
         widget.prop_size.setText(u"")
+    if data.modified:
+        widget.prop_modified.setText(data.modified.isoformat(" "))
+    else:
+        widget.prop_modified.setText(u"")
     widget.prop_info.setText(wrap(data.info, 65))
     warning_msgs = [x[1] for x in data.warnings]
     widget.prop_warning.setText(wrap(warning_msgs, 65))
