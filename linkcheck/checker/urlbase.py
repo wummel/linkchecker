@@ -185,7 +185,7 @@ class UrlBase (object):
         # content size
         self.size = -1
         # last modification time of content in HTTP-date format as specified in RFC2616 chapter 3.3.1
-        self.modified = u""
+        self.modified = None
         # download time
         self.dltime = -1
         # download size
@@ -1198,8 +1198,8 @@ class UrlBase (object):
           MIME content type for URL content.
         - url_data.level: int
           Recursion level until reaching this URL from start URL
-        - url_data.last_modified: unicode
-          Last modification date of retrieved page (or empty).
+        - url_data.last_modified: datetime
+          Last modification date of retrieved page (or None).
         """
         return dict(valid=self.valid,
           extern=self.extern[0],

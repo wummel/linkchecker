@@ -437,6 +437,17 @@ class Logger (object):
         self.stats.addrinfo_stats = addrinfo_stats
         self.stats.downloaded_bytes = download_stats
 
+    def format_modified(self, modified, sep=" "):
+        """Format modification date if it's not None.
+        @param modified: modification date
+        @ptype modified: datetime or None
+        @return: formatted date or empty string
+        @rtype: unicode
+        """
+        if modified is not None:
+            return modified.isoformat(sep)
+        return u""
+
 
 # the standard URL logger implementations
 from .text import TextLogger

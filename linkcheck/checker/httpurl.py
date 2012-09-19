@@ -492,7 +492,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             else:
                 self.set_result(_("OK"))
         modified = rfc822.parsedate(self.getheader('Last-Modified', u''))
-        self.modified = datetime.utcfromtimestamp(time.mktime(modified))
+        if modified:
+            self.modified = datetime.utcfromtimestamp(time.mktime(modified))
 
     def _try_http_response (self):
         """Try to get a HTTP response object. For reused persistent

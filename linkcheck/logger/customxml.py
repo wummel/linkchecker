@@ -72,7 +72,7 @@ class CustomXMLLogger (xmllog.XMLLogger):
                 self.xml_tag(u"info", info)
             self.xml_endtag(u"infos")
         if url_data.modified and self.has_part('modified'):
-            self.xml_tag(u"modified", url_data.modified)
+            self.xml_tag(u"modified", self.format_modified(url_data.modified))
         if url_data.warnings and self.has_part('warning'):
             self.xml_starttag(u"warnings")
             for tag, data in url_data.warnings:

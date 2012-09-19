@@ -67,34 +67,33 @@ class SitemapXmlLogger (xmllog.XMLLogger):
         Update accounting data and determine if URL should be included in the sitemap.
         """
         self.stats.log_url(url_data, do_print)
-        # ignore the do_print flag and determine ourselves if we filter the url
-        if (url_data.valid and
-            url_data.url.startswith((u'http:', u'https:')) and
-            url_data.url.startswith(self.prefix) and
-            url_data.content_type in ('text/html', "application/xhtml+xml")):
-            self.log_url(url_data)
-
-    def log_url (self, url_data):
-        """
-        Log URL data in sitemap format.
-        """
+        # initialize prefix and priority
         if self.prefix is None:
-            # first URL (ie. the homepage) gets priority 1.0 per default
             self.prefix = url_data.url
+            # first URL (ie. the homepage) gets priority 1.0 per default
             priority = 1.0
         else:
             # all other pages get priority 0.5 per default
             priority = 0.5
         if self.priority is not None:
             priority = self.priority
+         # ignore the do_print flag and determine ourselves if we filter the url
+        if (url_data.valid and
+            url_data.url.startswith((u'http:', u'https:')) and
+            url_data.url.startswith(self.prefix) and
+            url_data.content_type in ('text/html', "application/xhtml+xml")):
+            self.log_url(url_data, priority=priority)
+
+    def log_url (self, url_data, priority=None):
+        """
+        Log URL data in sitemap format.
+        """
         self.xml_starttag(u'url')
         self.xml_tag(u'loc', url_data.url)
         if url_data.modified:
-            modified = get_sitemap_modified(url_data.modified)
-            if modified:
-                self.xml_tag(u'lastmod', modified)
+            self.xml_tag(u'lastmod', self.format_modified(url_data.modified, sep="T"))
         self.xml_tag(u'changefreq', self.frequency)
-        self.xml_tag(u'priority', "%.1f" % priority)
+        self.xml_tag(u'priority', "%.2f" % priority)
         self.xml_endtag(u'url')
         self.flush()
 
@@ -106,13 +105,3 @@ class SitemapXmlLogger (xmllog.XMLLogger):
         self.xml_end_output()
         self.close_fileoutput()
 
-
-def get_sitemap_modified(modified):
-    """Reformat UrlData modified string into sitemap format specified at
-     http://www.w3.org/TR/NOTE-datetime.
-    @param modified: last modified time
-    @ptype modified: datetime object with timezone information
-    @return: formatted date
-    @rtype: string
-    """
-    return modified.isoformat('T')

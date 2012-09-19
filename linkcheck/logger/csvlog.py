@@ -116,7 +116,7 @@ class CSVLogger (Logger):
         if self.has_part("level"):
             row.append(url_data.level)
         if self.has_part("modified"):
-            row.append(url_data.modified)
+            row.append(self.format_modified(url_data.modified))
         self.writerow(map(strformat.unicode_safe, row))
         self.flush()
 

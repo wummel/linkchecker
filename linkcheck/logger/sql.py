@@ -120,7 +120,7 @@ class SQLLogger (Logger):
                'cached': intify(url_data.cached),
                'separator': self.separator,
                "level": url_data.level,
-               "modified": url_data.modified,
+               "modified": sqlify(self.format_modified(url_data.modified)),
               })
         self.flush()
 
