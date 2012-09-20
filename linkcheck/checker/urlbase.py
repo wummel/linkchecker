@@ -135,9 +135,6 @@ class UrlBase (object):
         """
         self.base_ref = base_ref
         self.base_url = base_url.strip() if base_url else base_url
-        if self.base_url != base_url:
-            self.add_warning(_("Leading or trailing whitespace in URL `%(url)s'.") %
-                               {"url": base_url}, tag=WARN_URL_WHITESPACE)
         self.parent_url = parent_url
         self.recursion_level = recursion_level
         self.aggregate = aggregate
@@ -155,6 +152,9 @@ class UrlBase (object):
         url = absolute_url(self.base_url, base_ref, parent_url)
         # assume file link if no scheme is found
         self.scheme = url.split(":", 1)[0] or "file"
+        if self.base_url != base_url:
+            self.add_warning(_("Leading or trailing whitespace in URL `%(url)s'.") %
+                               {"url": base_url}, tag=WARN_URL_WHITESPACE)
 
     def reset (self):
         """
@@ -305,7 +305,8 @@ class UrlBase (object):
         Add a warning string.
         """
         item = (tag, s)
-        if item not in self.warnings:
+        if item not in self.warnings and \
+           tag not in self.aggregate.config["ignorewarnings"]:
             self.warnings.append(item)
 
     def add_info (self, s):

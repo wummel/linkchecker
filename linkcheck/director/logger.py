@@ -28,7 +28,6 @@ class Logger (object):
         """Initialize basic logging variables."""
         self.loggers = [config['logger']]
         self.loggers.extend(config['fileoutput'])
-        self.ignorewarnings = config["ignorewarnings"]
         self.verbose = config["verbose"]
         self.complete = config["complete"]
         self.warnings = config["warnings"]
@@ -60,12 +59,7 @@ class Logger (object):
             return False
         if self.verbose:
             return True
-        has_warnings = False
-        for tag, dummy in url_data.warnings:
-            if tag not in self.ignorewarnings:
-                has_warnings = True
-                break
-        if self.warnings and has_warnings:
+        if self.warnings and url_data.warnings:
             return True
         return not url_data.valid
 

@@ -21,6 +21,8 @@ Changes:
 - logging: All sitemap loggers log all valid URLs regardless of the
   --warnings or --complete options. This way the sitemaps can be
   logged to file without changing the output of URLs in other loggers.
+- logging: Ignored warnings are now never logged, even when the URL
+  has errors.
 
 Fixes:
 - logging: Close logger properly on I/O errors.
