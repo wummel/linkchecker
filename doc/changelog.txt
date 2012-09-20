@@ -11,7 +11,7 @@ Features:
   defined at http://www.sitemaps.org/protocol.php.
 
 Changes:
-- doc: Mention 7-zip to extract the .tar.xz under Windows.
+- doc: Mention 7-zip and Peazip to extract the .tar.xz under Windows.
   Closes: SF bug #3564733
 - logging: Print download and cache statistics in text output logger.
 - logging: Print warning tag in text output logger. Makes warning filtering
@@ -27,6 +27,7 @@ Changes:
 Fixes:
 - logging: Close logger properly on I/O errors.
   Closes: SF bug #3567476
+- checking: Fix wrong method name when print SSL certificate warnings.
 
 
 8.0 "Luminaris" (released 2.9.2012)
