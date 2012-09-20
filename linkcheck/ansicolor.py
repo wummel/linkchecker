@@ -203,8 +203,9 @@ def has_colors (fp):
     elif has_curses:
         import curses
         try:
-            curses.setupterm(None, fp.fileno())
-            return curses.has_colors()
+            curses.setupterm(os.environ.get("TERM"), fp.fileno())
+            # More than 8 colors are good enough.
+            return curses.tigetnum("colors") >= 8
         except curses.error:
             return False
     return False
@@ -219,7 +220,7 @@ def get_columns (fp):
     if has_curses:
         import curses
         try:
-            curses.setupterm()
+            curses.setupterm(os.environ.get("TERM"), fp.fileno())
             return curses.tigetnum("cols")
         except curses.error:
            pass
