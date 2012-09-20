@@ -97,7 +97,7 @@ class HttpsUrl (httpurl.HttpUrl):
             self.add_ssl_warning(ssl_sock, msg)
         elif checkDaysValid > 0 and \
               secondsValid < (checkDaysValid * strformat.SECONDS_PER_DAY):
-            strSecondsValid = strformat.str_duration_long(secondsValid)
+            strSecondsValid = strformat.strduration_long(secondsValid)
             msg = _('certificate is only %s valid') % strSecondsValid
             self.add_ssl_warning(ssl_sock, msg)
 
