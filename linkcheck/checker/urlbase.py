@@ -758,8 +758,10 @@ class UrlBase (object):
         @ptype urls: list of unicode
         """
         if urls:
-            args = dict(urls=u",".join(urls), size=strformat.strsize(self.size))
-            self.add_warning(_("Content with %(size)s is the same as in URLs (%(urls)s).") % args, tag=WARN_URL_CONTENT_DUPLICATE)
+            args = dict(urls=u",".join(urls), size=u"")
+            if self.size >= 0:
+                args["size"] = _(" with %s") % strformat.strsize(self.size)
+            self.add_warning(_("Content%(size)s is the same as in URLs (%(urls)s).") % args, tag=WARN_URL_CONTENT_DUPLICATE)
 
     def check_content (self):
         """Check content data for warnings, syntax errors, viruses etc."""
