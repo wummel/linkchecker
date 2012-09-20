@@ -203,12 +203,10 @@ def has_colors (fp):
     elif has_curses:
         import curses
         try:
-            curses.initscr()
+            curses.setupterm(None, fp.fileno())
             return curses.has_colors()
         except curses.error:
             return False
-        finally:
-            curses.endwin()
     return False
 
 
