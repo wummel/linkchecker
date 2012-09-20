@@ -30,8 +30,7 @@ from cStringIO import StringIO
 from datetime import datetime
 
 from .. import (log, LOG_CHECK, gzip2 as gzip, strformat, url as urlutil,
-    httplib2 as httplib, LinkCheckerError, get_link_pat, httputil,
-    configuration)
+    httplib2 as httplib, LinkCheckerError, httputil, configuration)
 from . import (internpaturl, proxysupport, httpheaders as headers, urlbase,
     get_url_from)
 # import warnings
@@ -380,11 +379,10 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             if self.recursion_level == 0 and urlparts[0] in ('http', 'https'):
                 # Add intern patterns for redirection of URLs given by the
                 # user for HTTP schemes.
-                pat = internpaturl.get_intern_pattern(redirected)
-                log.debug(LOG_CHECK, "Add intern pattern %r", pat)
-                self.aggregate.config['internlinks'].append(get_link_pat(pat))
+                self.add_intern_pattern(url=redirected)
                 return True
         # check extern filter again
+        self.extern = None
         self.set_extern(redirected)
         if self.extern[0] and self.extern[1]:
             if set_result:

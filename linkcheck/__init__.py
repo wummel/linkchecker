@@ -101,14 +101,6 @@ class LinkCheckerInterrupt (StandardError):
     """Used for testing."""
     pass
 
-def add_intern_pattern (url_data, config):
-    """Add intern URL regex to config."""
-    pat = url_data.get_intern_pattern()
-    if pat:
-        log.debug(LOG_CHECK, "Add intern pattern %r", pat)
-        config['internlinks'].append(get_link_pat(pat))
-        url_data.set_extern(url_data.url)
-
 
 def get_link_pat (arg, strict=False):
     """Get a link pattern matcher for intern/extern links.

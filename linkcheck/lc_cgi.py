@@ -25,8 +25,8 @@ import locale
 import re
 import time
 import urlparse
-from . import configuration, strformat, checker, director, \
-    add_intern_pattern, get_link_pat, init_i18n, url as urlutil
+from . import configuration, strformat, checker, director, get_link_pat, \
+    init_i18n, url as urlutil
 from .decorators import synchronized
 
 # 5 minutes timeout for requests
@@ -139,14 +139,7 @@ def checklink (form=None, env=os.environ):
     config = get_configuration(form, out)
     url = strformat.stripurl(formvalue(form, "url"))
     aggregate = director.get_aggregate(config)
-    url_data = checker.get_url_from(url, 0, aggregate)
-    try:
-        add_intern_pattern(url_data, config)
-    except UnicodeError, errmsg:
-        log(env, errmsg)
-        msg = _("URL has unparsable domain name: %s") % errmsg
-        yield encode(format_error(msg))
-        return
+    url_data = checker.get_url_from(url, 0, aggregate, extern=(0, 0))
     aggregate.urlqueue.put(url_data)
     for html_str in start_check(aggregate, out):
         yield encode(html_str)

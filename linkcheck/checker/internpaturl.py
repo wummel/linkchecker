@@ -49,14 +49,15 @@ def get_intern_pattern (url):
 class InternPatternUrl (urlbase.UrlBase):
     """Class supporting an intern URL pattern."""
 
-    def get_intern_pattern (self):
+    def get_intern_pattern (self, url=None):
         """
         Get pattern for intern URL matching.
 
         @return non-empty regex pattern or None
         @rtype String or None
         """
-        url = absolute_url(self.base_url, self.base_ref, self.parent_url)
+        if url is None:
+            url = absolute_url(self.base_url, self.base_ref, self.parent_url)
         if not url:
             return None
         return get_intern_pattern(url)

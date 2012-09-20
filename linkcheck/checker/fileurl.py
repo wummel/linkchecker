@@ -95,7 +95,7 @@ class FileUrl (urlbase.UrlBase):
     """
 
     def init (self, base_ref, base_url, parent_url, recursion_level,
-              aggregate, line, column, name, url_encoding):
+              aggregate, line, column, name, url_encoding, extern):
         """
         Besides the usual initialization the URL is normed according
         to the platform:
@@ -103,7 +103,7 @@ class FileUrl (urlbase.UrlBase):
          - under Windows platform the drive specifier is normed
         """
         super(FileUrl, self).init(base_ref, base_url, parent_url,
-               recursion_level, aggregate, line, column, name, url_encoding)
+         recursion_level, aggregate, line, column, name, url_encoding, extern)
         self.scheme = u'file'
         if self.base_url is None:
             return
@@ -286,13 +286,14 @@ class FileUrl (urlbase.UrlBase):
                 self.content_type = u""
         return self.content_type
 
-    def get_intern_pattern (self):
+    def get_intern_pattern (self, url=None):
         """Get pattern for intern URL matching.
 
         @return non-empty regex pattern or None
         @rtype String or None
         """
-        url = self.url
+        if url is None:
+            url = self.url
         if not url:
             return None
         if url.startswith('file://'):

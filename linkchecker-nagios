@@ -163,7 +163,7 @@ aggregate = get_aggregate(config)
 # add urls to queue
 if args:
     for url in args:
-        aggregate_url(aggregate, config, strformat.stripurl(url), err_exit_code=3)
+        aggregate_url(aggregate, strformat.stripurl(url), err_exit_code=3)
 else:
     log.warn(LOG_CMDLINE, _("no files or URLs given"))
     sys.exit(3)

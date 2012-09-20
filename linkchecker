@@ -454,12 +454,16 @@ if has_optcomplete:
 
 def read_stdin_urls ():
     """Read list of URLs, separated by white-space, from stdin."""
+    num = 0
     while True:
         lines = sys.stdin.readlines(8 * 1024)
         if not lines:
             break
         for line in lines:
             for url in line.split():
+                num += 1
+                if num % 10000 == 0:
+                    log.info(LOG_CMDLINE, "Read %d URLs from stdin", num)
                 yield url
 
 
@@ -662,10 +666,10 @@ if options.trace:
 # add urls to queue
 if options.stdin:
     for url in read_stdin_urls():
-        aggregate_url(aggregate, config, url)
+        aggregate_url(aggregate, url)
 elif args:
     for url in args:
-        aggregate_url(aggregate, config, strformat.stripurl(url))
+        aggregate_url(aggregate, strformat.stripurl(url))
 else:
     log.warn(LOG_CMDLINE, _("no files or URLs given"))
 # set up profiling

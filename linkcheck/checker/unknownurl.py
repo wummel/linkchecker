@@ -74,7 +74,6 @@ class UnknownUrl (urlbase.UrlBase):
 
     def local_check (self):
         """Only logs that this URL is unknown."""
-        self.set_extern(self.url)
         if self.extern[0] and self.extern[1]:
             self.add_info(_("Outside of domain filter, checked only syntax."))
         elif self.ignored():

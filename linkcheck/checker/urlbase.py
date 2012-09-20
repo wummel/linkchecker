@@ -31,7 +31,7 @@ import select
 from . import absolute_url, StoringHandler, get_url_from
 from .. import (log, LOG_CHECK, LOG_CACHE, httputil, httplib2 as httplib,
   strformat, LinkCheckerError, url as urlutil, trace, clamav, winutil, geoip,
-  fileutil)
+  fileutil, get_link_pat)
 from ..HtmlParser import htmlsax
 from ..htmlutil import linkparse
 from ..network import iputil
@@ -109,7 +109,7 @@ class UrlBase (object):
 
     def __init__ (self, base_url, recursion_level, aggregate,
                   parent_url=None, base_ref=None, line=-1, column=-1,
-                  name=u"", url_encoding=None):
+                  name=u"", url_encoding=None, extern=None):
         """
         Initialize check data, and store given variables.
 
@@ -122,14 +122,18 @@ class UrlBase (object):
         @param column: column number of url in parent content
         @param name: name of url or empty
         @param url_encoding: encoding of URL or None
+        @param extern: None or (is_extern, is_strict)
         """
         self.reset()
         self.init(base_ref, base_url, parent_url, recursion_level,
-                  aggregate, line, column, name, url_encoding)
+                  aggregate, line, column, name, url_encoding, extern)
         self.check_syntax()
+        if recursion_level == 0:
+            self.add_intern_pattern()
+        self.set_extern(self.url)
 
     def init (self, base_ref, base_url, parent_url, recursion_level,
-              aggregate, line, column, name, url_encoding):
+              aggregate, line, column, name, url_encoding, extern):
         """
         Initialize internal data.
         """
@@ -143,6 +147,7 @@ class UrlBase (object):
         self.name = name
         self.encoding = url_encoding
         self.charset = None
+        self.extern = extern
         if self.base_ref:
             assert not urlutil.url_needs_quoting(self.base_ref), \
                    "unquoted base reference URL %r" % self.base_ref
@@ -199,8 +204,8 @@ class UrlBase (object):
         # cache keys, are set by build_url() calling set_cache_keys()
         self.cache_url_key = None
         self.cache_content_key = None
-        # extern flags (is_extern, is_strict), both enabled as default
-        self.extern = (1, 1)
+        # extern flags (is_extern, is_strict)
+        self.extern = None
         # flag if the result should be cached
         self.caching = True
         # title is either the URL or parsed from content
@@ -399,7 +404,6 @@ class UrlBase (object):
             self.set_result(unicode_safe(msg), valid=False)
         else:
             self.set_cache_keys()
-            self.set_extern(self.url)
 
     def check_url_warnings(self):
         """Check URL name and length."""
@@ -704,6 +708,11 @@ class UrlBase (object):
 
         @return: None
         """
+        if self.extern:
+            return
+        if not url:
+            self.extern = (1, 1)
+            return
         for entry in self.aggregate.config["externlinks"]:
             match = entry['pattern'].search(url)
             if (entry['negate'] and not match) or \
@@ -1133,14 +1142,27 @@ class UrlBase (object):
             u"anchor=%r" % self.anchor,
            ])
 
-    def get_intern_pattern (self):
-        """
-        Get pattern for intern URL matching.
+    def get_intern_pattern (self, url=None):
+        """Get pattern for intern URL matching.
 
+        @param url: the URL to set intern pattern for, else self.url
+        @ptype url: unicode or None
         @return non-empty regex pattern or None
         @rtype String or None
         """
         return None
+
+    def add_intern_pattern(self, url=None):
+        """Add intern URL regex to config."""
+        try:
+            pat = self.get_intern_pattern(url=url)
+            if pat:
+                log.debug(LOG_CHECK, "Add intern pattern %r", pat)
+                self.aggregate.config['internlinks'].append(get_link_pat(pat))
+        except UnicodeError, msg:
+            res = _("URL has unparsable domain name: %(domain)s") % \
+                {"domain": msg}
+            self.set_result(res, valid=False)
 
     def __str__ (self):
         """

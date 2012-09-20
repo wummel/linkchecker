@@ -184,8 +184,7 @@ class LinkCheckTest (unittest.TestCase):
             confargs = {}
         logargs = {'expected': self.get_resultlines(filename)}
         aggregate = get_test_aggregate(confargs, logargs)
-        url_data = get_url_from(url, 0, aggregate)
-        linkcheck.add_intern_pattern(url_data, aggregate.config)
+        url_data = get_url_from(url, 0, aggregate, extern=(0, 0))
         aggregate.urlqueue.put(url_data)
         linkcheck.director.check_urls(aggregate)
         diff = aggregate.config['logger'].diff
@@ -213,7 +212,6 @@ class LinkCheckTest (unittest.TestCase):
         # initial URL has recursion level zero
         url_reclevel = 0
         url_data = get_url_from(url, url_reclevel, aggregate)
-        linkcheck.add_intern_pattern(url_data, aggregate.config)
         aggregate.urlqueue.put(url_data)
         linkcheck.director.check_urls(aggregate)
         diff = aggregate.config['logger'].diff

@@ -36,8 +36,8 @@ from .urlsave import urlsave
 from .settings import Settings
 from .recentdocs import RecentDocumentModel
 from .projects import openproject, saveproject, loadproject, ProjectExt
-from .. import configuration, checker, director, add_intern_pattern, \
-    strformat, fileutil, LinkCheckerError, get_link_pat, memoryutil
+from .. import configuration, checker, director, get_link_pat, \
+    strformat, fileutil, LinkCheckerError, memoryutil
 from ..containers import enum
 from .. import url as urlutil
 from ..checker import httpheaders
@@ -458,14 +458,15 @@ Version 2 or later.
             self.set_statusmsg(_("Error, empty URL"))
             return
         self.set_statusmsg(_("Checking '%s'.") % strformat.limit(url, 40))
-        url_data = checker.get_url_from(url, 0, aggregate)
-        try:
-            self.backup_config('internlinks')
-            add_intern_pattern(url_data, self.config)
-        except UnicodeError:
-            self.set_statusmsg(_("Error, invalid URL `%s'.") %
-                                  strformat.limit(url, 40))
-            return
+        url_data = checker.get_url_from(url, 0, aggregate, extern=(0, 0))
+        # XXX
+        #try:
+        #    self.backup_config('internlinks')
+        #    add_intern_pattern(url_data, self.config)
+        #except UnicodeError:
+        #    self.set_statusmsg(_("Error, invalid URL `%s'.") %
+        #                          strformat.limit(url, 40))
+        #    return
         self.recent.add_document(url)
         aggregate.urlqueue.put(url_data)
         self.aggregate = aggregate

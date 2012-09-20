@@ -19,8 +19,7 @@ Utility functions suitable for command line clients.
 """
 import sys
 import optparse
-from . import fileutil, ansicolor, strformat, add_intern_pattern, checker, \
-    log, LOG_CMDLINE
+from . import fileutil, ansicolor, strformat, checker
 from .director import console
 from .decorators import notimplemented
 
@@ -113,7 +112,7 @@ class LCOptionParser (optparse.OptionParser, object):
         pass
 
 
-def aggregate_url (aggregate, config, url, err_exit_code=2):
+def aggregate_url (aggregate, url, err_exit_code=2):
     """Append given commandline URL to input queue."""
     get_url_from = checker.get_url_from
     if url.lower().startswith("www."):
@@ -122,12 +121,5 @@ def aggregate_url (aggregate, config, url, err_exit_code=2):
     elif url.lower().startswith("ftp."):
         # syntactic sugar
         url = "ftp://%s" % url
-    url_data = get_url_from(url, 0, aggregate)
-    try:
-        add_intern_pattern(url_data, config)
-    except UnicodeError:
-        log.error(LOG_CMDLINE,
-            _("URL has unparsable domain name: %(domain)s") %
-            {"domain": sys.exc_info()[1]})
-        sys.exit(err_exit_code)
+    url_data = get_url_from(url, 0, aggregate, extern=(0, 0))
     aggregate.urlqueue.put(url_data)

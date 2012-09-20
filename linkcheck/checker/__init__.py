@@ -50,7 +50,7 @@ def absolute_url (base_url, base_ref, parent_url):
 
 def get_url_from (base_url, recursion_level, aggregate,
                   parent_url=None, base_ref=None, line=0, column=0,
-                  name=u"", parent_content_type=None):
+                  name=u"", parent_content_type=None, extern=None):
     """
     Get url data from given base data.
 
@@ -70,6 +70,8 @@ def get_url_from (base_url, recursion_level, aggregate,
     @type column: number
     @param name: link name
     @type name: string
+    @param extern: (is_extern, is_strict) or None
+    @type extern: tuple(int, int) or None
     """
     if base_url is not None:
         base_url = strformat.unicode_safe(base_url)
@@ -96,7 +98,7 @@ def get_url_from (base_url, recursion_level, aggregate,
     log.debug(LOG_CHECK, "%s handles url %s", klass.__name__, base_url)
     return klass(base_url, recursion_level, aggregate,
                  parent_url=parent_url, base_ref=base_ref,
-                 line=line, column=column, name=name)
+                 line=line, column=column, name=name, extern=extern)
 
 
 def get_urlclass_from (url, assume_local_file=False):
