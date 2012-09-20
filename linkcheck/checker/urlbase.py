@@ -767,10 +767,11 @@ class UrlBase (object):
         @param urls: URLs with duplicate content
         @ptype urls: list of unicode
         """
-        if urls:
-            args = dict(urls=u",".join(urls), size=u"")
-            if self.size >= 0:
-                args["size"] = _(" with %s") % strformat.strsize(self.size)
+        if urls and self.size > 0:
+            args = dict(
+                urls=u",".join(urls),
+                size=_(" with %s") % strformat.strsize(self.size),
+            )
             self.add_warning(_("Content%(size)s is the same as in URLs (%(urls)s).") % args, tag=WARN_URL_CONTENT_DUPLICATE)
 
     def check_content (self):
