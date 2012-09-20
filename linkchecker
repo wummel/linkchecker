@@ -193,7 +193,7 @@ Warnings = _(r"""IGNORE WARNINGS
 The following warnings are recognized in the 'ignorewarnings' config
 file entry:
 """) + \
-"\n".join([u" o %s\n   %s" % (tag, desc) \
+"\n".join([u" o %s - %s" % (tag, desc) \
            for tag, desc in sorted(linkcheck.checker.const.Warnings.items())])
 
 
