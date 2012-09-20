@@ -554,8 +554,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             self.url_connection.putheader("Referer", self.parent_url)
         self.url_connection.putheader("User-Agent",
             self.aggregate.config["useragent"])
-        self.url_connection.putheader("Accept-Encoding",
-                                  "gzip;q=1.0, deflate;q=0.9, identity;q=0.5")
         self.url_connection.putheader("DNT", "1")
         if self.aggregate.config['sendcookies']:
             self.send_cookies()
@@ -706,6 +704,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 else:
                     f = gzip.GzipFile('', 'rb', 9, StringIO(data))
             except zlib.error, msg:
+                log.debug(LOG_CHECK, "Error %s data of len %d", encoding, len(data))
                 self.add_warning(_("Decompress error %(err)s") %
                                  {"err": str(msg)},
                                  tag=WARN_HTTP_DECOMPRESS_ERROR)

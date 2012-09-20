@@ -80,7 +80,6 @@ class RobotFileParser (object):
         self._reset()
         headers = {
             'User-Agent': configuration.UserAgent,
-            'Accept-Encoding' : 'gzip;q=1.0, deflate;q=0.9, identity;q=0.5',
         }
         req = urllib2.Request(self.url, None, headers)
         try:

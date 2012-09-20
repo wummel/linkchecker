@@ -560,8 +560,6 @@ def get_content (url, user=None, password=None, proxy=None, data=None,
         debuglevel = 0
     headers = {
         'User-Agent': configuration.UserAgent,
-        # makes problems with some sites
-        #'Accept-Encoding': 'gzip;q=1.0, deflate;q=0.9, identity;q=0.5',
     }
     if addheaders:
         headers.update(addheaders)
