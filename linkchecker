@@ -454,14 +454,13 @@ if has_optcomplete:
 
 def read_stdin_urls ():
     """Read list of URLs, separated by white-space, from stdin."""
-    urls = []
     while True:
         lines = sys.stdin.readlines(8 * 1024)
         if not lines:
             break
         for line in lines:
-            urls.extend(line.split())
-    return urls
+            for url in line.split():
+                yield url
 
 
 # read and parse command line options and arguments
@@ -662,8 +661,9 @@ if options.trace:
     linkcheck.trace.trace_on()
 # add urls to queue
 if options.stdin:
-    args.extend(read_stdin_urls())
-if args:
+    for url in read_stdin_urls():
+        aggregate_url(aggregate, config, url)
+elif args:
     for url in args:
         aggregate_url(aggregate, config, strformat.stripurl(url))
 else:
