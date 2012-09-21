@@ -140,3 +140,70 @@ def stop_server (port):
     conn = httplib.HTTPConnection("localhost:%d" % port)
     conn.request("QUIT", "/")
     conn.getresponse()
+
+
+def get_cookie (maxage=2000):
+    data = (
+        ("Comment", "justatest"),
+        ("Max-Age", "%d" % maxage),
+        ("Path", "/"),
+        ("Version", "1"),
+        ("Foo", "Bar"),
+    )
+    return "; ".join('%s="%s"' % (key, value) for key, value in data)
+
+
+class CookieRedirectHttpRequestHandler (NoQueryHttpRequestHandler):
+    """Handler redirecting certain requests, and setting cookies."""
+
+    def end_headers (self):
+        """Send cookie before ending headers."""
+        self.send_header("Set-Cookie", get_cookie())
+        self.send_header("Set-Cookie", get_cookie(maxage=0))
+        super(CookieRedirectHttpRequestHandler, self).end_headers()
+
+    def redirect (self):
+        """Redirect request."""
+        path = self.path.replace("redirect", "newurl")
+        self.send_response(302)
+        self.send_header("Location", path)
+        self.end_headers()
+
+    def redirect_newhost (self):
+        """Redirect request to a new host."""
+        path = "http://www.example.com/"
+        self.send_response(302)
+        self.send_header("Location", path)
+        self.end_headers()
+
+    def redirect_newscheme (self):
+        """Redirect request to a new scheme."""
+        if "file" in self.path:
+            path = "file:README"
+        else:
+            path = "ftp://example.com/"
+        self.send_response(302)
+        self.send_header("Location", path)
+        self.end_headers()
+
+    def do_GET (self):
+        """Handle redirections for GET."""
+        if "redirect_newscheme" in self.path:
+            self.redirect_newscheme()
+        elif "redirect_newhost" in self.path:
+            self.redirect_newhost()
+        elif "redirect" in self.path:
+            self.redirect()
+        else:
+            super(CookieRedirectHttpRequestHandler, self).do_GET()
+
+    def do_HEAD (self):
+        """Handle redirections for HEAD."""
+        if "redirect_newscheme" in self.path:
+            self.redirect_newscheme()
+        elif "redirect_newhost" in self.path:
+            self.redirect_newhost()
+        elif "redirect" in self.path:
+            self.redirect()
+        else:
+            super(CookieRedirectHttpRequestHandler, self).do_HEAD()

@@ -1,0 +1,67 @@
+# -*- coding: iso-8859-1 -*-
+# Copyright (C) 2004-2012 Bastian Kleineidam
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+"""
+Test http checking.
+"""
+import os
+import sys
+from .httpserver import HttpServerTest
+from linkcheck.network import iputil
+
+class TestHttpMisc (HttpServerTest):
+    """Test http:// misc link checking."""
+
+    def test_html (self):
+        try:
+            self.start_server()
+            self.swf_test()
+            self.obfuscate_test()
+        finally:
+            self.stop_server()
+
+    def swf_test (self):
+        url = u"http://localhost:%d/tests/checker/data/test.swf" % self.port
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % url,
+            u"real url %s" % url,
+            u"info 1 URL parsed.",
+            u"valid",
+            u"url http://www.example.org/",
+            u"cache key http://www.example.org/",
+            u"real url http://www.iana.org/domains/example/",
+            u"info Redirected to `http://www.iana.org/domains/example/'.",
+            u"valid",
+        ]
+        self.direct(url, resultlines, recursionlevel=1)
+
+    def obfuscate_test (self):
+        if os.name != "posix" or sys.platform != 'linux2':
+            return
+        host = "www.google.de"
+        ip = iputil.resolve_host(host).pop()
+        url = u"http://%s/" % iputil.obfuscate_ip(ip)
+        rurl = u"http://%s/" % host
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % url,
+            u"real url %s" % rurl,
+            u"info Redirected to `%s'." % rurl,
+            u"warning URL %s has obfuscated IP address %s" % (url, ip),
+            u"valid",
+        ]
+        self.direct(url, resultlines, recursionlevel=0)
