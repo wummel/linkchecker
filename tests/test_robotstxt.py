@@ -271,7 +271,7 @@ class TestRobotsTxt (unittest.TestCase):
 
     def test_access7 (self):
         lines = [
-            "User-agent: Example*",
+            "User-agent: Example",
             "Disallow: /example",
             "",
             "User-agent: *",

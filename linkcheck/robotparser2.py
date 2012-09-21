@@ -131,6 +131,7 @@ class RobotFileParser (object):
             if ct and ct.lower().startswith("text/plain"):
                 self.parse([line.strip() for line in res])
             else:
+                log.debug(LOG_CHECK, "%r allow all (not text content)", self.url)
                 self.allow_all = True
         finally:
             if res is not None:
@@ -240,14 +241,16 @@ class RobotFileParser (object):
         @rtype: bool
         """
         log.debug(LOG_CHECK, "%r check allowance for:\n" \
-              "  user agent: %r\n  url: %r", self.url, useragent, url)
+              "  user agent: %r\n  url: %r ...", self.url, useragent, url)
         if not isinstance(useragent, str):
             useragent = useragent.encode("ascii", "ignore")
         if not isinstance(url, str):
             url = url.encode("ascii", "ignore")
         if self.disallow_all:
+            log.debug(LOG_CHECK, " ... disallow all.")
             return False
         if self.allow_all:
+            log.debug(LOG_CHECK, " ... allow all.")
             return True
         # search for given user agent matches
         # the first match counts
@@ -259,6 +262,7 @@ class RobotFileParser (object):
         if self.default_entry is not None:
             return self.default_entry.allowance(url)
         # agent not found ==> access granted
+        log.debug(LOG_CHECK, " ... agent not found, allow.")
         return True
 
     def get_crawldelay (self, useragent):
@@ -345,14 +349,12 @@ class Entry (object):
         """
         if not useragent:
             return True
-        # split the name token and make it lower case unicode
-        useragent = useragent.split("/")[0].lower()
+        useragent = useragent.lower()
         for agent in self.useragents:
             if agent == '*':
                 # we have the catch-all agent
                 return True
-            agent = agent.lower()
-            if useragent in agent:
+            if agent.lower() in useragent:
                 return True
         return False
 
@@ -369,5 +371,7 @@ class Entry (object):
         for line in self.rulelines:
             log.debug(LOG_CHECK, "%s %s %s", filename, str(line), line.allowance)
             if line.applies_to(filename):
+                log.debug(LOG_CHECK, " ... rule line %s", line)
                 return line.allowance
+        log.debug(LOG_CHECK, " ... no rule lines of %s applied to %s; allowed.", self.useragents, filename)
         return True
