@@ -6,8 +6,6 @@
 # The error file should be checked for
 # - internal errors
 # - program errors (ie. segmentation fault)
-# Generally, the error should be empty, so anything in there has
-# to be inspected.
 #
 # Note that the result can depend on the current location.
 # Some sites have geo-location-aware content.
@@ -17,7 +15,7 @@ logfile=alexa_1m.log
 errfile=alexa_1m_err.log
 rm -f $logfile $errfile
 for url in $(cat $HOME/src/alexatopsites/top-1m.txt); do
-  echo "Checking $url" | tee -a $logfile
+  echo "Checking $url" | tee -a $logfile | tee -a $errfile
   ./linkchecker -r1 --no-status $url >> $logfile 2>>$errfile
 done
 
