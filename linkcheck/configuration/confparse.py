@@ -56,10 +56,13 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             raise LinkCheckerError(
               _("Error parsing configuration: %s") % unicode(msg))
 
-    def read_string_option (self, section, option):
+    def read_string_option (self, section, option, allowempty=False):
         """Read a sring option."""
         if self.has_option(section, option):
-            self.config[option] = self.get(section, option)
+            value = self.get(section, option)
+            if not allowempty and not value:
+                raise LinkCheckerError(_("invalid empty value for %s: %s\n") % (option, value))
+            self.config[option] = value
 
     def read_boolean_option(self, section, option):
         """Read a boolean option."""
