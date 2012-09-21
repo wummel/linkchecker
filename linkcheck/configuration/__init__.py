@@ -45,7 +45,7 @@ Url = configdata.url
 SupportUrl = u"http://sourceforge.net/projects/linkchecker/support"
 DonateUrl = u"http://linkchecker.sourceforge.net/donations.html"
 Email = configdata.author_email
-UserAgent = u"%s/%s (+%s)" % (AppName, Version, Url)
+UserAgent = u"Mozilla/5.0 (compatible; %s/%s; +%s)" % (AppName, Version, Url)
 Freeware = AppName+u""" comes with ABSOLUTELY NO WARRANTY!
 This is free software, and you are welcome to redistribute it
 under certain conditions. Look at the file `LICENSE' within this
