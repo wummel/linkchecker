@@ -191,13 +191,13 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 self.add_info(_("Enforced proxy `%(name)s'.") %
                               {"name": newproxy})
                 self.set_proxy(newproxy)
+                response.close()
                 if not self.proxy:
                     self.set_result(
                          _("Enforced proxy `%(name)s' ignored, aborting.") %
                          {"name": newproxy},
                          valid=False)
-                    return response
-                response.close()
+                    return None
                 response = self._try_http_response()
                 # restore old proxy settings
                 self.proxy, self.proxyauth = oldproxy
@@ -222,7 +222,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                     continue
                 self.set_result(_("more than %d redirections, aborting") %
                                 self.max_redirects, valid=False)
-                return response
+                response.close()
+                return None
             if self.do_fallback(response.status):
                 self.fallback_to_get()
                 continue
@@ -236,7 +237,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                     # Either way, this is a warning.
                     self.add_warning(_("Unauthorized access without HTTP authentication."),
                        tag=WARN_HTTP_AUTH_UNAUTHORIZED)
-                    return
+                    return response
                 if not authenticate.startswith("Basic"):
                     # LinkChecker only supports Basic authorization
                     args = {"auth": authenticate}
@@ -244,7 +245,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                        _("Unsupported HTTP authentication `%(auth)s', " \
                          "only `Basic' authentication is supported.") % args,
                        tag=WARN_HTTP_AUTH_UNKNOWN)
-                    return
+                    return response
                 if not self.auth:
                     self.construct_auth()
                     continue
