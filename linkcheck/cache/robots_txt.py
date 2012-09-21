@@ -47,7 +47,7 @@ class RobotsTxt (object):
             self.hits += 1
             rp = self.cache[roboturl]
         else:
-            self.misses = 1
+            self.misses += 1
             rp = robotparser2.RobotFileParser(proxy=proxy, user=user,
                 password=password)
             rp.set_url(roboturl)
