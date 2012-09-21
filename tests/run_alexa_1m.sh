@@ -1,14 +1,23 @@
 #!/bin/sh
 # Run the top 1 million URLs as reported by alexa site monitoring.
-# The logfile should be searched for internal errors first, then
-# all unusual errors and warnings should be inspected.
+# The logfile should be checked for
+# - unusual errors and warnings,
+# - missing recursion when robots.txt is allowed
+# The error file should be checked for
+# - internal errors
+# - program errors (ie. segmentation fault)
+# Generally, the error should be empty, so anything in there has
+# to be inspected.
 #
-# Note that the result is usually depending on the current location
-# from where the tests are run.
+# Note that the result can depend on the current location.
+# Some sites have geo-location-aware content.
 set -u
+LANG=C
 logfile=alexa_1m.log
-rm -f $logfile
+errfile=alexa_1m_err.log
+rm -f $logfile $errfile
 for url in $(cat $HOME/src/alexatopsites/top-1m.txt); do
-  ./linkchecker -r1 $url >> $logfile 2>&1
+  echo "Checking $url" | tee -a $logfile
+  ./linkchecker -r1 --no-status $url >> $logfile 2>>$errfile
 done
 
