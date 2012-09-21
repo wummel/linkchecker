@@ -154,7 +154,7 @@
 # parse a cookiefile for initial cookie data
 #cookiefile=/path/to/cookies.txt
 # User-Agent header string to send to HTTP web servers
-#useragent=Mozilla/4.0
+#useragent=Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
 # Pause the given number of seconds between two subsequent connection
 # requests to the same host.
 #pause=0
