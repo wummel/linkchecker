@@ -241,7 +241,7 @@ class Configuration (dict):
         logging.config.dictConfig(configdict)
         if handler is None:
             handler = ansicolor.ColoredStreamHandler(strm=sys.stderr)
-        self.add_loghandler(handler)
+        self.add_loghandler(handler, debug)
         self.set_debug(debug)
         self.status_logger = status_logger
 
@@ -250,13 +250,15 @@ class Configuration (dict):
         is a list of logger names to enable debug for."""
         self.set_loglevel(debug, logging.DEBUG)
 
-    def add_loghandler (self, handler):
+    def add_loghandler (self, handler, debug):
         """Add log handler to root logger LOG_ROOT and set formatting."""
         logging.getLogger(LOG_ROOT).addHandler(handler)
+        format = "%(levelname)s "
+        if debug:
+            format += "%(asctime)s "
         if self['threads'] > 0:
-            format = "%(levelname)s %(threadName)s %(message)s"
-        else:
-            format = "%(levelname)s %(message)s"
+            format += "%(threadName)s "
+        format += "%(message)s"
         handler.setFormatter(logging.Formatter(format))
 
     def remove_loghandler (self, handler):
