@@ -32,3 +32,5 @@ Changelog.linkchecker*
 /LinkChecker-*.exe
 /LinkChecker.egg-info
 /todo
+/alexa*.log
+
