@@ -156,7 +156,7 @@ class UrlBase (object):
                    "unquoted parent URL %r" % self.parent_url
         url = absolute_url(self.base_url, base_ref, parent_url)
         # assume file link if no scheme is found
-        self.scheme = url.split(":", 1)[0] or "file"
+        self.scheme = url.split(":", 1)[0].lower() or "file"
         if self.base_url != base_url:
             self.add_warning(_("Leading or trailing whitespace in URL `%(url)s'.") %
                                {"url": base_url}, tag=WARN_URL_WHITESPACE)
