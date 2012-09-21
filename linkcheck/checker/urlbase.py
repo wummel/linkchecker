@@ -583,10 +583,10 @@ class UrlBase (object):
             not value:
             # EBADF occurs when operating on an already socket
             self.caching = False
-        errmsg = etype.__name__
-        if str(value):
+        errmsg = unicode(etype.__name__)
+        if unicode(value):
             # use Exception class name
-            errmsg += ": %s" % str(value)
+            errmsg += u": %s" % unicode(value)
         # limit length to 240
         return strformat.limit(errmsg, length=240)
 
