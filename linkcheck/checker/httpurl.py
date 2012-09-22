@@ -259,7 +259,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         @return: True if checker should use GET, else False
         @rtype: bool
         """
-        if self.method == "HEAD" and self.method_get_allowed:
+        if self.method == "HEAD":
             # Some sites do not support HEAD requests, for example
             # youtube sends a 404 with HEAD, 200 with GET. Doh.
             # A 405 "Method not allowed" status should also use GET.
