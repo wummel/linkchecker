@@ -248,7 +248,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                     return response
                 if not self.auth:
                     self.construct_auth()
-                    continue
+                    if self.auth:
+                        continue
             break
         return response
 
