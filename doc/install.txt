@@ -130,8 +130,8 @@ Manual setup for OSX systems
 3. Run ``make app``.
    
    Note: this appears not to be working due to bugs
-   in third-party libraries. Since I don't have no OSX hardware
-   anymore, I cannot fix that myself.
+   in third-party libraries (but it worked the last time I had
+   an OSX system available).
 
 
 WSGI web interface
