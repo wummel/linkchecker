@@ -113,7 +113,14 @@ class UrlQueue (object):
             url_data.copy_from_cache(self.checked[key])
         elif key in self.in_progress:
             # It's being checked currently; put it back in the queue.
-            self.queue.append(url_data)
+            if len(self.queue) < 100:
+                # queue is small - put at end is ok
+                self.queue.append(url_data)
+            else:
+                # queue is large - put near front
+                self.queue.rotate(-10)
+                self.queue.appendleft(url_data)
+                self.queue.rotate(10)
             url_data = None
         else:
             self.in_progress[key] = url_data
