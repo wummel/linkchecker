@@ -18,6 +18,7 @@
 A sitemap XML logger.
 """
 from . import xmllog
+from .. import log, LOG_CHECK
 
 ChangeFreqs = (
     'always',
@@ -29,19 +30,22 @@ ChangeFreqs = (
     'never',
 )
 
+HTTP_SCHEMES = (u'http:', u'https:')
+HTML_TYPES = ('text/html', "application/xhtml+xml")
+
 class SitemapXmlLogger (xmllog.XMLLogger):
-    """
-    Sitemap XML output according to http://www.sitemaps.org/protocol.html
+    """Sitemap XML output according to http://www.sitemaps.org/protocol.html
     """
 
     def __init__ (self, **args):
-        """
-        Initialize graph node list and internal id counter.
-        """
+        """Initialize graph node list and internal id counter."""
         super(SitemapXmlLogger, self).__init__(**args)
         # All URLs must have the given prefix, which is determined
         # by the first logged URL.
         self.prefix = None
+        # If first URL does not have a valid HTTP scheme, disable this
+        # logger
+        self.disabled = False
         if 'frequency' in args:
             if args['frequency'] not in ChangeFreqs:
                 raise ValueError("Invalid change frequency %r" % args['frequency'])
@@ -53,9 +57,7 @@ class SitemapXmlLogger (xmllog.XMLLogger):
             self.priority = float(args['priority'])
 
     def start_output (self):
-        """
-        Write start of checking info as xml comment.
-        """
+        """Write start of checking info as xml comment."""
         super(SitemapXmlLogger, self).start_output()
         self.xml_start_output()
         attrs = {u"xmlns": u"http://www.sitemaps.org/schemas/sitemap/0.9"}
@@ -63,12 +65,18 @@ class SitemapXmlLogger (xmllog.XMLLogger):
         self.flush()
 
     def log_filter_url(self, url_data, do_print):
-        """
-        Update accounting data and determine if URL should be included in the sitemap.
+        """Update accounting data and determine if URL should be included
+        in the sitemap.
         """
         self.stats.log_url(url_data, do_print)
+        if self.disabled:
+            return
         # initialize prefix and priority
         if self.prefix is None:
+            if not url_data.url.startswith(HTTP_SCHEMES):
+                log.warn(LOG_CHECK, "Sitemap URL %r does not start with http: or https:.", url_data.url)
+                self.disabled = True
+                return
             self.prefix = url_data.url
             # first URL (ie. the homepage) gets priority 1.0 per default
             priority = 1.0
@@ -78,16 +86,16 @@ class SitemapXmlLogger (xmllog.XMLLogger):
         if self.priority is not None:
             priority = self.priority
          # ignore the do_print flag and determine ourselves if we filter the url
-        if (url_data.valid and
-            url_data.url.startswith((u'http:', u'https:')) and
-            url_data.url.startswith(self.prefix) and
-            url_data.content_type in ('text/html', "application/xhtml+xml")):
+        if (url_data.valid
+            and url_data.url.startswith(HTTP_SCHEMES)
+            and url_data.url.startswith(self.prefix)
+            and url_data.url != self.prefix
+            and url_data.content_type in HTML_TYPES
+            and not url_data.cached):
             self.log_url(url_data, priority=priority)
 
     def log_url (self, url_data, priority=None):
-        """
-        Log URL data in sitemap format.
-        """
+        """Log URL data in sitemap format."""
         self.xml_starttag(u'url')
         self.xml_tag(u'loc', url_data.url)
         if url_data.modified:
@@ -98,10 +106,7 @@ class SitemapXmlLogger (xmllog.XMLLogger):
         self.flush()
 
     def end_output (self):
-        """
-        Write XML end tag.
-        """
+        """Write XML end tag."""
         self.xml_endtag(u"urlset")
         self.xml_end_output()
         self.close_fileoutput()
-
