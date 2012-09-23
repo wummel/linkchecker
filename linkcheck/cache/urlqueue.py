@@ -24,6 +24,9 @@ from .. import log, LOG_CACHE
 from ..containers import LFUCache
 
 
+LARGE_QUEUE_THRESHOLD = 1000
+FRONT_CHUNK_SIZE = 100
+
 class Timeout (StandardError):
     """Raised by join()"""
     pass
@@ -113,14 +116,7 @@ class UrlQueue (object):
             url_data.copy_from_cache(self.checked[key])
         elif key in self.in_progress:
             # It's being checked currently; put it back in the queue.
-            if len(self.queue) < 100:
-                # queue is small - put at end is ok
-                self.queue.append(url_data)
-            else:
-                # queue is large - put near front
-                self.queue.rotate(-10)
-                self.queue.appendleft(url_data)
-                self.queue.rotate(10)
+            self._put_near_front(url_data)
             url_data = None
         else:
             self.in_progress[key] = url_data
@@ -152,10 +148,21 @@ class UrlQueue (object):
             self.queue.appendleft(url_data)
         elif key in self.in_progress:
             # Put at beginning of queue since it will be cached soon.
-            self.queue.appendleft(url_data)
+            self._put_near_front(url_data)
         else:
             self.queue.append(url_data)
         self.unfinished_tasks += 1
+
+    def _put_near_front(self, url_data):
+        """Put URL in queue near front."""
+        if len(self.queue) < LARGE_QUEUE_THRESHOLD:
+            # queue is small - put at end is ok
+            self.queue.append(url_data)
+        else:
+            # queue is large - put near front
+            self.queue.rotate(-FRONT_CHUNK_SIZE)
+            self.queue.appendleft(url_data)
+            self.queue.rotate(FRONT_CHUNK_SIZE)
 
     def task_done (self, url_data):
         """
