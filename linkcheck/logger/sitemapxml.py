@@ -80,6 +80,8 @@ class SitemapXmlLogger (xmllog.XMLLogger):
             self.prefix = url_data.url
             # first URL (ie. the homepage) gets priority 1.0 per default
             priority = 1.0
+        elif url_data.url == self.prefix:
+            return
         else:
             # all other pages get priority 0.5 per default
             priority = 0.5
@@ -89,7 +91,6 @@ class SitemapXmlLogger (xmllog.XMLLogger):
         if (url_data.valid
             and url_data.url.startswith(HTTP_SCHEMES)
             and url_data.url.startswith(self.prefix)
-            and url_data.url != self.prefix
             and url_data.content_type in HTML_TYPES
             and not url_data.cached):
             self.log_url(url_data, priority=priority)
