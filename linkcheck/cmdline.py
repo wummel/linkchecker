@@ -115,11 +115,6 @@ class LCOptionParser (optparse.OptionParser, object):
 def aggregate_url (aggregate, url, err_exit_code=2):
     """Append given commandline URL to input queue."""
     get_url_from = checker.get_url_from
-    if url.lower().startswith("www."):
-        # syntactic sugar
-        url = "http://%s" % url
-    elif url.lower().startswith("ftp."):
-        # syntactic sugar
-        url = "ftp://%s" % url
+    url = checker.guess_url(url)
     url_data = get_url_from(url, 0, aggregate, extern=(0, 0))
     aggregate.urlqueue.put(url_data)

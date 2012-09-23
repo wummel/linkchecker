@@ -27,6 +27,23 @@ from .. import strformat, url as urlutil, log, LOG_CHECK
 MAX_FILESIZE = 1024*1024*10 # 10MB
 
 
+def guess_url(url):
+    """Guess if URL is a http or ftp URL.
+    @param url: the URL to check
+    @ptype url: unicode
+    @return: url with http:// or ftp:// prepended if it's detected as
+      a http respective ftp URL.
+    @rtype: unicode
+    """
+    if url.lower().startswith("www."):
+        # syntactic sugar
+        return "http://%s" % url
+    elif url.lower().startswith("ftp."):
+        # syntactic sugar
+        return "ftp://%s" % url
+    return url
+
+
 def absolute_url (base_url, base_ref, parent_url):
     """
     Search for the absolute url to detect the link type. This does not

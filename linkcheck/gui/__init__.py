@@ -436,11 +436,8 @@ Version 2 or later.
     def get_url (self):
         """Return URL to check from the urlinput widget."""
         url = strformat.stripurl(unicode(self.urlinput.text()))
-        if url.startswith(u"www."):
-            url = u"http://%s" % url
-        elif url.startswith(u"ftp."):
-            url = u"ftp://%s" % url
-        elif url and u":" not in url:
+        url = checker.guess_url(url)
+        if url and u":" not in url:
             # Look for local file, else assume it's an HTTP URL.
             if not os.path.exists(url):
                 url = u"http://%s" % url
@@ -459,14 +456,6 @@ Version 2 or later.
             return
         self.set_statusmsg(_("Checking '%s'.") % strformat.limit(url, 40))
         url_data = checker.get_url_from(url, 0, aggregate, extern=(0, 0))
-        # XXX
-        #try:
-        #    self.backup_config('internlinks')
-        #    add_intern_pattern(url_data, self.config)
-        #except UnicodeError:
-        #    self.set_statusmsg(_("Error, invalid URL `%s'.") %
-        #                          strformat.limit(url, 40))
-        #    return
         self.recent.add_document(url)
         aggregate.urlqueue.put(url_data)
         self.aggregate = aggregate
