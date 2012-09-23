@@ -32,6 +32,7 @@ from . import log, LOG_CHECK, configuration
 
 __all__ = ["RobotFileParser"]
 
+ACCEPT_ENCODING = 'x-gzip,gzip,deflate'
 
 class RobotFileParser (object):
     """This class provides a set of methods to read, parse and answer
@@ -80,6 +81,7 @@ class RobotFileParser (object):
         self._reset()
         headers = {
             'User-Agent': configuration.UserAgent,
+            'Accept-Encoding': ACCEPT_ENCODING,
         }
         req = urllib2.Request(self.url, None, headers)
         try:

@@ -42,13 +42,18 @@ from .const import WARN_HTTP_ROBOTS_DENIED, \
 
 # assumed HTTP header encoding
 HEADER_ENCODING = "iso-8859-1"
+HTTP_SCHEMAS = ('http://', 'https://')
 
 # helper alias
 unicode_safe = strformat.unicode_safe
 
 supportHttps = hasattr(httplib, "HTTPSConnection")
 
-_supported_encodings = ('gzip', 'x-gzip', 'deflate')
+SUPPORTED_ENCODINGS = ('x-gzip', 'gzip', 'deflate')
+# Accept-Encoding header value
+ACCEPT_ENCODING = ",".join(SUPPORTED_ENCODINGS)
+# Accept-Charset header value
+ACCEPT_CHARSET = "utf-8,ISO-8859-1;q=0.7,*;q=0.3"
 
 
 class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
@@ -552,10 +557,14 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             self.url_connection.putheader("Proxy-Authorization",
                                          self.proxyauth)
         if (self.parent_url and
-            self.parent_url.startswith(('http://', 'https://'))):
+            self.parent_url.lower().startswith(HTTP_SCHEMAS)):
             self.url_connection.putheader("Referer", self.parent_url)
         self.url_connection.putheader("User-Agent",
             self.aggregate.config["useragent"])
+        # prefer compressed content
+        self.url_connection.putheader("Accept-Encoding", ACCEPT_ENCODING)
+        # prefer UTF-8 encoding
+        self.url_connection.putheader("Accept-Charset", ACCEPT_CHARSET)
         self.url_connection.putheader("DNT", "1")
         if self.aggregate.config['sendcookies']:
             self.send_cookies()
@@ -699,7 +708,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         urls = self.aggregate.add_download_data(self.cache_content_key, data)
         self.warn_duplicate_content(urls)
         encoding = headers.get_content_encoding(self.headers)
-        if encoding in _supported_encodings:
+        if encoding in SUPPORTED_ENCODINGS:
             try:
                 if encoding == 'deflate':
                     f = StringIO(zlib.decompress(data))
@@ -721,7 +730,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
     def encoding_supported (self):
         """Check if page encoding is supported."""
         encoding = headers.get_content_encoding(self.headers)
-        if encoding and encoding not in _supported_encodings and \
+        if encoding and encoding not in SUPPORTED_ENCODINGS and \
            encoding != 'identity':
             self.add_warning(_("Unsupported content encoding `%(encoding)s'.") %
                              {"encoding": encoding},
