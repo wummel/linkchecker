@@ -9,8 +9,8 @@ PYTHONSRC:=${HOME}/src/cpython-hg/Lib
 #PYTHONSRC:=/usr/lib/$(PYTHON)
 SF_FILEPATH=/home/frs/project/l/li/linkchecker
 PY_FILES_DIRS:=linkcheck tests *.py linkchecker linkchecker-nagios linkchecker-gui cgi-bin config doc
-TESTS ?= tests/
-# set test options, eg. to "--nologcapture"
+TESTS ?= tests
+# set test options, eg. to "--verbose"
 TESTOPTS=
 PAGER ?= less
 # build dir for debian package
@@ -22,18 +22,17 @@ DNSPYTHON:=$(HOME)/src/dnspython-git
 PEP8OPTS:=--repeat --ignore=E211,E501,E225,E301,E302,E241 \
    --exclude="gzip2.py,httplib2.py,robotparser2.py"
 PY2APPOPTS ?=
+NUMPROCESSORS:=$(shell grep -c processor /proc/cpuinfo)
 ifeq ($(shell uname),Darwin)
-  NOSETESTS:=/usr/local/share/python/nosetests
   CHMODMINUSMINUS:=
 else
-  NOSETESTS:=$(shell which nosetests)
   CHMODMINUSMINUS:=--
 endif
-# Nose options:
-# - do not show output of successful tests
-# - be verbose
-# - only run test_* methods
-NOSEOPTS:=--logging-clear-handlers -v -m '^test_.*'
+# Pytest options:
+# - use multiple processors
+# - write test results in file
+# - run all tests found in the "tests" subdirectory
+PYTESTOPTS:=-n $(NUMPROCESSORS) --resultlog=testresults.txt
 
 
 all:
@@ -177,30 +176,7 @@ doccheck:
 	  linkcheck/gui/updater.py \
 	  linkcheck/gui/urlmodel.py \
 	  linkcheck/gui/urlsave.py \
-	  linkcheck/__init__.py \
-	  linkcheck/ansicolor.py \
-	  linkcheck/clamav.py \
-	  linkcheck/containers.py \
-	  linkcheck/cookies.py \
-	  linkcheck/decorators.py \
-	  linkcheck/dummy.py \
-	  linkcheck/fileutil.py \
-	  linkcheck/ftpparse.py \
-	  linkcheck/geoip.py \
-	  linkcheck/httputil.py \
-	  linkcheck/i18n.py \
-	  linkcheck/lc_cgi.py \
-	  linkcheck/lock.py \
-	  linkcheck/log.py \
-	  linkcheck/mem.py \
-	  linkcheck/robotparser2.py \
-	  linkcheck/socketutil.py \
-	  linkcheck/strformat.py \
-	  linkcheck/threader.py \
-	  linkcheck/trace.py \
-	  linkcheck/updater.py \
-	  linkcheck/url.py \
-	  linkcheck/winutil.py \
+	  linkcheck/*.py \
 	  cgi-bin/lc.wsgi \
 	  linkchecker \
 	  linkchecker-gui \
@@ -230,7 +206,7 @@ sign_distfiles:
 	done
 
 test:	localbuild
-	$(PYTHON) $(NOSETESTS) $(NOSEOPTS) $(TESTOPTS) $(TESTS)
+	$(PYTHON) -m pytest $(PYTESTOPTS) $(TESTOPTS) $(TESTS)
 
 pyflakes:
 	pyflakes $(PY_FILES_DIRS) 2>&1 | \
