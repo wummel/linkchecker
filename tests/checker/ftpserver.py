@@ -20,8 +20,12 @@ Define http test support classes for LinkChecker tests.
 import sys
 import os
 import time
+import threading
+from ftplib import FTP
 from . import LinkCheckTest
 
+
+TIMEOUT = 5
 
 class FtpServerTest (LinkCheckTest):
     """Start/stop an FTP server that can be used for testing."""
@@ -29,35 +33,23 @@ class FtpServerTest (LinkCheckTest):
     def __init__ (self, methodName='runTest'):
         """Init test class and store default ftp server port."""
         super(FtpServerTest, self).__init__(methodName=methodName)
-        self.host = '127.0.0.1'
-        self.port = 8888
+        self.host = 'localhost'
+        self.port = None
 
     def start_server (self):
         """Start a new FTP server in a new thread."""
-        try:
-            import threading
-        except ImportError:
-            self.fail("This test needs threading support")
-        t = threading.Thread(None, start_server, None, (self.host, self.port))
-        t.start()
-        # wait for server to start up
-        time.sleep(3)
+        self.port = start_server(self.host, 0)
+        self.assertFalse(self.port is None)
 
     def stop_server (self):
         """Send QUIT request to http server."""
-        from ftplib import FTP
-        ftp = FTP()
-        ftp.connect(self.host, self.port)
-        ftp.login()
         try:
-            ftp.sendcmd("kill")
-        except EOFError:
+            stop_server(self.host, self.port)
+        except Exception:
             pass
-        ftp.close()
 
 
 def start_server (host, port):
-
     def line_logger(msg):
         if "kill" in msg:
             sys.exit(0)
@@ -70,6 +62,7 @@ def start_server (host, port):
     # Instantiate FTP handler class
     ftp_handler = ftpserver.FTPHandler
     ftp_handler.authorizer = authorizer
+    ftp_handler.timeout = TIMEOUT
     ftpserver.logline = line_logger
 
     # Define a customized banner (string returned when client connects)
@@ -78,5 +71,31 @@ def start_server (host, port):
     # Instantiate FTP server class and listen to host:port
     address = (host, port)
     server = ftpserver.FTPServer(address, ftp_handler)
-    print 'FTP server started on port %d...' % port
-    server.serve_forever()
+    port = server.address[1]
+    t = threading.Thread(None, server.serve_forever)
+    t.start()
+    # wait for server to start up
+    tries = 0
+    while tries < 5:
+        tries += 1
+        try:
+            ftp = FTP()
+            ftp.connect(host, port, TIMEOUT)
+            ftp.login()
+            ftp.close()
+            break
+        except:
+            time.sleep(0.5)
+    return port
+
+
+def stop_server (host, port):
+    """Stop a running FTP server."""
+    ftp = FTP()
+    ftp.connect(host, port, TIMEOUT)
+    ftp.login()
+    try:
+        ftp.sendcmd("kill")
+    except EOFError:
+        pass
+    ftp.close()
