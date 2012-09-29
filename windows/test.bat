@@ -15,5 +15,5 @@
 :: 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 @echo off
 set PYDIR=C:\Python27
-%PYDIR%\python.exe %PYDIR%\scripts\nosetests -v -m "^test_.*" tests/
+%PYDIR%\python.exe -m pytest tests
 pause
