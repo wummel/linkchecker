@@ -19,7 +19,7 @@ import subprocess
 import os
 import sys
 import socket
-from nose import SkipTest
+import pytest
 from contextlib import contextmanager
 from linkcheck import LinkCheckerInterrupt
 
@@ -66,7 +66,7 @@ def _need_func (testfunc, name):
     def check_func (func):
         def newfunc (*args, **kwargs):
             if not testfunc():
-                raise SkipTest("%s is not available" % name)
+                pytest.skip("%s is not available" % name)
             return func(*args, **kwargs)
         newfunc.func_name = func.func_name
         return newfunc
@@ -192,7 +192,7 @@ def need_newsserver (server):
     def check_func (func):
         def newfunc (*args, **kwargs):
             if not has_newsserver(server):
-                raise SkipTest("Newsserver `%s' is not available" % server)
+                pytest.skip("Newsserver `%s' is not available" % server)
             return func(*args, **kwargs)
         newfunc.func_name = func.func_name
         return newfunc
@@ -245,8 +245,7 @@ def limit_time (seconds, skip=False):
                     return func(*args, **kwargs)
             except LinkCheckerInterrupt, msg:
                 if skip:
-                    skipmsg = "time limit of %d seconds exceeded" % seconds
-                    raise SkipTest(skipmsg)
+                    pytest.skip("time limit of %d seconds exceeded" % seconds)
                 assert False, msg
         new_func.func_name = func.func_name
         return new_func
