@@ -33,11 +33,21 @@ class TestClamav (unittest.TestCase):
 
     @need_clamav
     def testInfected (self):
-        data = '<object data="&#109;s-its:mhtml:file://' + \
-               'C:\\foo.mht!${PATH}/' + \
-               'EXPLOIT.CHM::' + \
-               '/exploit.htm">'
+        # from the clamav test direcotry: the clamav test file as html data
+        data = '<a href="data:application/octet-stream;base64,' \
+           'TVpQAAIAAAAEAA8A//8AALgAAAAhAAAAQAAaAAAAAAAAAAAAAAAAAAAAAAAAAA' \
+           'AAAAAAAAAAAAAAAAAAAAEAALtxEEAAM8BQUIvzU1NQsClAMARmrHn5ujEAeA2t' \
+           'UP9mcA4fvjEA6eX/tAnNIbRMzSFiDAoBAnB2FwIeTgwEL9rMEAAAAAAAAAAAAA' \
+           'AAAAAAwBAAAIAQAAAAAAAAAAAAAAAAAADaEAAA9BAAAAAAAAAAAAAAAAAAAAAA' \
+           'AAAAAAAAS0VSTkVMMzIuRExMAABFeGl0UHJvY2VzcwBVU0VSMzIuRExMAENMQU' \
+           '1lc3NhZ2VCb3hBAOYQAAAAAAAAPz8/P1BFAABMAQEAYUNhQgAAAAAAAAAA4ACO' \
+           'gQsBAhkABAAAAAYAAAAAAABAEAAAABAAAEAAAAAAAEAAABAAAAACAAABAAAAAA' \
+           'AAAAMACgAAAAAAACAAAAAEAAAAAAAAAgAAAAAAEAAAIAAAAAAQAAAQAAAAAAAA' \
+           'EAAAAAAAAAAAAAAAhBAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' \
+           'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' \
+           'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAW0NMQU1BVl' \
+           '0AEAAAABAAAAACAAABAAAAAAAAAAAAAAAAAAAAAAAAwA==">t</a>'
         infected, errors = clamav.scan(data)
-        msg = 'stream: Exploit.HTML.MHTRedir.2n FOUND\n'
+        msg = 'stream: ClamAV-Test-File(2d1206194bd704385e37000be6113f73:781) FOUND\n'
         self.assertTrue(msg in infected)
         self.assertFalse(errors)
