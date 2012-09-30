@@ -20,7 +20,7 @@ Test robots.txt parsing.
 
 import unittest
 from tests import need_network
-import linkcheck.robotparser2
+from linkcheck import configuration, robotparser2
 
 
 class TestRobotParser (unittest.TestCase):
@@ -29,15 +29,14 @@ class TestRobotParser (unittest.TestCase):
     """
 
     def setUp (self):
-        """
-        Initialize self.rp as a robots.txt parser.
-        """
-        self.rp = linkcheck.robotparser2.RobotFileParser()
+        """Initialize self.rp as a robots.txt parser."""
+        self.rp = robotparser2.RobotFileParser()
+        config = configuration.Configuration()
+        # uncomment for debugging
+        config.init_logging(None, debug=["all"])
 
     def check (self, a, b):
-        """
-        Helper function comparing two results a and b.
-        """
+        """Helper function comparing two results a and b."""
         if not b:
             ac = "access denied"
         else:
@@ -47,18 +46,15 @@ class TestRobotParser (unittest.TestCase):
 
     @need_network
     def test_nonexisting_robots (self):
-        """
-        Test access of a non-existing robots.txt file.
-        """
         # robots.txt that does not exist
         self.rp.set_url('http://www.lycos.com/robots.txt')
         self.rp.read()
-        self.check(self.rp.can_fetch('Mozilla',
+        self.check(self.rp.can_fetch(configuration.UserAgent,
                                      'http://www.lycos.com/search'), True)
 
     @need_network
     def test_disallowed_robots (self):
         self.rp.set_url('http://google.com/robots.txt')
         self.rp.read()
-        self.check(self.rp.can_fetch("*",
+        self.check(self.rp.can_fetch(configuration.UserAgent,
                                      "http://google.com/search"), False)
