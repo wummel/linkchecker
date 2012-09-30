@@ -5,18 +5,17 @@ name %(datadir)s/anchor.html
 info 5 URLs parsed.
 valid
 
-url #broken2
+url #myid%%3A (cached)
 cache key file://%(curdir)s/%(datadir)s/anchor.html
 real url file://%(curdir)s/%(datadir)s/anchor.html
-name Bla4
+name Bla
 info 5 URLs parsed.
-warning Anchor `broken2' not found. Available anchors: `myid:'.
 valid
 
-url anchor.html (cached)
+url #myid%%3A (cached)
 cache key file://%(curdir)s/%(datadir)s/anchor.html
 real url file://%(curdir)s/%(datadir)s/anchor.html
-name Bla6
+name Bla2
 info 5 URLs parsed.
 valid
 
@@ -28,16 +27,17 @@ info 5 URLs parsed.
 warning Anchor `broken' not found. Available anchors: `myid:'.
 valid
 
-url #myid%%3A (cached)
+url anchor.html (cached)
 cache key file://%(curdir)s/%(datadir)s/anchor.html
 real url file://%(curdir)s/%(datadir)s/anchor.html
-name Bla2
+name Bla6
 info 5 URLs parsed.
 valid
 
-url #myid%%3A (cached)
+url #broken2
 cache key file://%(curdir)s/%(datadir)s/anchor.html
 real url file://%(curdir)s/%(datadir)s/anchor.html
-name Bla
+name Bla4
 info 5 URLs parsed.
+warning Anchor `broken2' not found. Available anchors: `myid:'.
 valid
