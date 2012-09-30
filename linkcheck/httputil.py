@@ -32,10 +32,10 @@ import base64
 ##  WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
 ##  ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 ##  SOFTWARE.
+
 def decode (page):
     """Gunzip or deflate a compressed page."""
-    log.debug(LOG_CHECK,
-      "robots.txt page info %d %s", page.code, str(page.info()))
+    log.debug(LOG_CHECK, "page info %d %s", page.code, str(page.info()))
     encoding = page.info().get("Content-Encoding")
     if encoding in ('gzip', 'x-gzip', 'deflate'):
         # cannot seek in socket descriptors, so must get content now
@@ -58,6 +58,7 @@ def decode (page):
         newpage = urllib.addinfourl(fp, headers, page.geturl())
         newpage.code = page.code
         newpage.msg = page.msg
+        return newpage
     return page
 
 

@@ -79,11 +79,12 @@ class RobotFileParser (object):
     def read (self):
         """Read the robots.txt URL and feeds it to the parser."""
         self._reset()
+        data = None
         headers = {
             'User-Agent': configuration.UserAgent,
             'Accept-Encoding': ACCEPT_ENCODING,
         }
-        req = urllib2.Request(self.url, None, headers)
+        req = urllib2.Request(self.url, data, headers)
         try:
             self._read_content(req)
         except urllib2.HTTPError, x:
@@ -125,7 +126,12 @@ class RobotFileParser (object):
         @raise: httplib.HTTPException, IOError on HTTP errors
         @raise: ValueError on bad digest auth (a bug)
         """
-        f = urlutil.get_opener(self.user, self.password, self.proxy)
+        if log.is_debug(LOG_CHECK):
+            debuglevel = 1
+        else:
+            debuglevel = 0
+        f = urlutil.get_opener(user=self.user, password=self.password,
+            proxy=self.proxy, debuglevel=debuglevel)
         res = None
         try:
             res = f.open(req)
@@ -133,7 +139,7 @@ class RobotFileParser (object):
             if ct and ct.lower().startswith("text/plain"):
                 self.parse([line.strip() for line in res])
             else:
-                log.debug(LOG_CHECK, "%r allow all (not text content)", self.url)
+                log.debug(LOG_CHECK, "%r allow all (no text content)", self.url)
                 self.allow_all = True
         finally:
             if res is not None:
@@ -157,7 +163,7 @@ class RobotFileParser (object):
 
         @return: None
         """
-        log.debug(LOG_CHECK, "%r parse lines", self.url)
+        log.debug(LOG_CHECK, "%r parse %d lines", self.url, len(lines))
         state = 0
         linenumber = 0
         entry = Entry()
