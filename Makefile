@@ -22,11 +22,12 @@ DNSPYTHON:=$(HOME)/src/dnspython-git
 PEP8OPTS:=--repeat --ignore=E211,E501,E225,E301,E302,E241 \
    --exclude="gzip2.py,httplib2.py,robotparser2.py"
 PY2APPOPTS ?=
-NUMPROCESSORS:=$(shell grep -c processor /proc/cpuinfo)
 ifeq ($(shell uname),Darwin)
   CHMODMINUSMINUS:=
+  NUMPROCESSORS:=$(shell sysctl -n hw.ncpu)
 else
   CHMODMINUSMINUS:=--
+  NUMPROCESSORS:=$(shell grep -c processor /proc/cpuinfo)
 endif
 # Pytest options:
 # - use multiple processors
