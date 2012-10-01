@@ -588,6 +588,8 @@ def shorten_duplicate_content_url(url):
         url = url.split('#', 1)[0]
     if url.endswith('index.html'):
         return url[:-10]
+    if url.endswith('index.htm'):
+        return url[:-9]
     return url
 
 
