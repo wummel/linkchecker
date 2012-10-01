@@ -18,10 +18,10 @@
 Test mail checking.
 """
 from tests import need_network
-from . import LinkCheckTest
+from . import MailTest
 
 
-class TestMail (LinkCheckTest):
+class TestMailGood (MailTest):
     """
     Test mailto: link checking.
     """
@@ -126,67 +126,33 @@ class TestMail (LinkCheckTest):
         ]
         self.direct(url, resultlines)
 
-    def mail_valid (self, addr, **kwargs):
-        return self.mail_test(addr, u"valid", **kwargs)
-
-    def mail_error (self, addr, **kwargs):
-        return self.mail_test(addr, u"error", **kwargs)
-
-    def mail_test (self, addr, result, cache_key=None, warning=None):
-        """Test error mails."""
-        url = self.norm(addr)
-        if cache_key is None:
-            cache_key = url
-        resultlines = [
-            u"url %s" % url,
-            u"cache key %s" % cache_key,
-            u"real url %s" % url,
-        ]
-        if warning:
-            resultlines.append(u"warning %s" % warning)
-        resultlines.append(result)
-        self.direct(url, resultlines)
-
-    def test_error_mail (self):
-        # too long or too short
-        self.mail_error(u"mailto:@")
-        self.mail_error(u"mailto:@example.org")
-        self.mail_error(u"mailto:a@")
-        url_too_long = "URL length %d is longer than 255."
-        url = u"mailto:%s@%s" % (u"a"*60, u"b"*200)
-        warning = url_too_long % len(url)
-        self.mail_error(url, warning=warning)
-        url = u"mailto:a@%s" % (u"a"*256)
-        warning = url_too_long % len(url)
-        self.mail_error(url, warning=warning)
-        self.mail_error(u"mailto:%s@example.org" % (u"a"*65))
-        self.mail_error(u'mailto:a@%s.com' % (u"a"*64))
-        # local part quoted
-        self.mail_error(u'mailto:"a""@example.com', cache_key=u'mailto:a')
-        self.mail_error(u'mailto:""a"@example.com', cache_key=u'mailto:""a"@example.com')
-        self.mail_error(u'mailto:"a\\"@example.com', cache_key=u'mailto:a"@example.com')
-        # local part unqouted
-        self.mail_error(u'mailto:.a@example.com')
-        self.mail_error(u'mailto:a.@example.com')
-        self.mail_error(u'mailto:a..b@example.com')
-        # domain part
-        self.mail_error(u'mailto:a@a_b.com')
-        self.mail_error(u'mailto:a@example.com.')
-        self.mail_error(u'mailto:a@example.com.111')
-        self.mail_error(u'mailto:a@example..com')
-        # other
-        # ? extension forbidden in <> construct
-        self.mail_error(u"mailto:Bastian Kleineidam <calvin@users.sourceforge.net?foo=bar>",
-            cache_key=u"mailto:calvin@users.sourceforge.net?foo=bar")
+    def _mail_valid_unverified(self, char):
+        # valid mail addresses
+        addr = u'abc%sdef@sourceforge.net' % char
+        url = u"mailto:%s" % addr
+        self.mail_valid(url,
+          warning=u"Unverified address: 550 <%s> Unrouteable address." % addr,
+          cache_key=url)
 
     @need_network
-    def test_valid_mail (self):
-        # valid mail addresses
-        for char in u"!#$&'*+-/=^_`.{|}~":
-            addr = u'abc%sdef@sourceforge.net' % char
-            self.mail_valid(u"mailto:%s" % addr,
-                warning=u"Unverified address: 550 <%s> Unrouteable address." % addr,
-                cache_key=u"mailto:%s" % addr)
+    def test_valid_mail1 (self):
+        for char in u"!#$&'":
+            self._mail_valid_unverified(char)
+
+    @need_network
+    def test_valid_mail2 (self):
+        for char in u"*+-/=":
+            self._mail_valid_unverified(char)
+
+    @need_network
+    def test_valid_mail3 (self):
+        for char in u"^_`.":
+            self._mail_valid_unverified(char)
+
+    @need_network
+    def test_valid_mail4 (self):
+        for char in u"{|}~":
+            self._mail_valid_unverified(char)
 
     @need_network
     def test_unicode_mail (self):

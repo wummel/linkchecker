@@ -76,7 +76,8 @@ class TestLogger (linkcheck.logger.Logger):
         if self.has_part('info'):
             for info in url_data.info:
                 if "Last modified" not in info and \
-                   "is located in" not in info:
+                   "is located in" not in info and \
+                   "Using proxy" not in info:
                     self.result.append(u"info %s" % info)
         if self.has_part('warning'):
             for tag, warning in url_data.warnings:
@@ -219,3 +220,30 @@ class LinkCheckTest (unittest.TestCase):
             l = [u"Differences found testing %s" % url]
             l.extend(x.rstrip() for x in diff[2:])
             self.fail_unicode(unicode(os.linesep).join(l))
+
+
+class MailTest (LinkCheckerTest):
+    """Test mailto: link checking."""
+
+    def mail_valid (self, addr, **kwargs):
+        """Test valid mail address."""
+        return self.mail_test(addr, u"valid", **kwargs)
+
+    def mail_error (self, addr, **kwargs):
+        """Test error mail address."""
+        return self.mail_test(addr, u"error", **kwargs)
+
+    def mail_test (self, addr, result, cache_key=None, warning=None):
+        """Test mail address."""
+        url = self.norm(addr)
+        if cache_key is None:
+            cache_key = url
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % cache_key,
+            u"real url %s" % url,
+        ]
+        if warning:
+            resultlines.append(u"warning %s" % warning)
+        resultlines.append(result)
+        self.direct(url, resultlines)
