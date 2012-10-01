@@ -23,11 +23,12 @@ Changes:
   logged to file without changing the output of URLs in other loggers.
 - logging: Ignored warnings are now never logged, even when the URL
   has errors.
+- checking: Improved robots.txt caching by using finer grained locking.
 
 Fixes:
 - logging: Close logger properly on I/O errors.
   Closes: SF bug #3567476
-- checking: Fix wrong method name when print SSL certificate warnings.
+- checking: Fix wrong method name when printing SSL certificate warnings.
 
 
 8.0 "Luminaris" (released 2.9.2012)
