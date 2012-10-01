@@ -5,14 +5,14 @@ name %(datadir)s/file.html
 info 6 URLs parsed.
 valid
 
-url #iswas (cached)
+url file.html (cached)
 cache key file://%(curdir)s/%(datadir)s/file.html
 real url file://%(curdir)s/%(datadir)s/file.html
-name good anchor
+name relative url
 info 6 URLs parsed.
 valid
 
-url #isnix
+url file.html#isnix
 cache key file://%(curdir)s/%(datadir)s/file.html
 real url file://%(curdir)s/%(datadir)s/file.html
 name bad anchor
@@ -27,7 +27,7 @@ name good anchor
 info 6 URLs parsed.
 valid
 
-url file.html#isnix
+url #isnix
 cache key file://%(curdir)s/%(datadir)s/file.html
 real url file://%(curdir)s/%(datadir)s/file.html
 name bad anchor
@@ -35,10 +35,10 @@ info 6 URLs parsed.
 warning Anchor `isnix' not found. Available anchors: `iswas'.
 valid
 
-url file.html (cached)
+url #iswas (cached)
 cache key file://%(curdir)s/%(datadir)s/file.html
 real url file://%(curdir)s/%(datadir)s/file.html
-name relative url
+name good anchor
 info 6 URLs parsed.
 valid
 

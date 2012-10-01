@@ -4,38 +4,6 @@ real url http://localhost:%(port)d/%(datadir)s/http.html
 info 23 URLs parsed.
 valid
 
-url http.html (cached)
-cache key http://localhost:%(port)d/%(datadir)s/http.html
-real url http://localhost:%(port)d/%(datadir)s/http.html
-name CSS urls
-info 23 URLs parsed.
-valid
-
-url http.html (cached)
-cache key http://localhost:%(port)d/%(datadir)s/http.html
-real url http://localhost:%(port)d/%(datadir)s/http.html
-name CSS urls
-info 23 URLs parsed.
-valid
-
-url http.html (cached)
-cache key http://localhost:%(port)d/%(datadir)s/http.html
-real url http://localhost:%(port)d/%(datadir)s/http.html
-info 23 URLs parsed.
-valid
-
-url http.html (cached)
-cache key http://localhost:%(port)d/%(datadir)s/http.html
-real url http://localhost:%(port)d/%(datadir)s/http.html
-info 23 URLs parsed.
-valid
-
-url  (cached)
-cache key http://localhost:%(port)d/%(datadir)s/http.html
-real url http://localhost:%(port)d/%(datadir)s/http.html
-info 23 URLs parsed.
-valid
-
 url http://www.garantiertnixgutt.bla/
 cache key http://www.garantiertnixgutt.bla/
 real url http://www.garantiertnixgutt.bla/
@@ -131,6 +99,38 @@ cache key http://localhost:%(port)d/?quoted=%%C3%%BC
 real url http://localhost:%(port)d/?quoted=%%C3%%BC
 name html entities
 warning Content with 2KB is the same as in URLs (http://localhost:%(port)d/?d=directory&p=page,http://localhost:%(port)d/?d=directory&p=page1).
+valid
+
+url  (cached)
+cache key http://localhost:%(port)d/%(datadir)s/http.html
+real url http://localhost:%(port)d/%(datadir)s/http.html
+info 23 URLs parsed.
+valid
+
+url http.html (cached)
+cache key http://localhost:%(port)d/%(datadir)s/http.html
+real url http://localhost:%(port)d/%(datadir)s/http.html
+info 23 URLs parsed.
+valid
+
+url http.html (cached)
+cache key http://localhost:%(port)d/%(datadir)s/http.html
+real url http://localhost:%(port)d/%(datadir)s/http.html
+info 23 URLs parsed.
+valid
+
+url http.html (cached)
+cache key http://localhost:%(port)d/%(datadir)s/http.html
+real url http://localhost:%(port)d/%(datadir)s/http.html
+name CSS urls
+info 23 URLs parsed.
+valid
+
+url http.html (cached)
+cache key http://localhost:%(port)d/%(datadir)s/http.html
+real url http://localhost:%(port)d/%(datadir)s/http.html
+name CSS urls
+info 23 URLs parsed.
 valid
 
 url clsid:12345-67890
