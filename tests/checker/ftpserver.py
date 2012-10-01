@@ -17,7 +17,6 @@
 """
 Define http test support classes for LinkChecker tests.
 """
-import sys
 import os
 import time
 import threading
@@ -52,7 +51,7 @@ class FtpServerTest (LinkCheckTest):
 def start_server (host, port):
     def line_logger(msg):
         if "kill" in msg:
-            sys.exit(0)
+            raise KeyboardInterrupt()
 
     from pyftpdlib import ftpserver
     authorizer = ftpserver.DummyAuthorizer()
