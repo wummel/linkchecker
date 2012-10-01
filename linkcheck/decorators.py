@@ -87,11 +87,15 @@ def signal_handler (signal_number):
     return newfunc
 
 
-def synchronize (lock, func):
+def synchronize (lock, func, log_duration_secs=0):
     """Return synchronized function acquiring the given lock."""
     def newfunc (*args, **kwargs):
         """Execute function synchronized."""
+        t = time.time()
         with lock:
+            duration = time.time() - t
+            if log_duration_secs and duration > log_duration_secs:
+                print >> sys.stderr, "WARN:", func.__name__, "locking took %0.2f seconds" % duration
             return func(*args, **kwargs)
     return update_func_meta(newfunc, func)
 
