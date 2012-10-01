@@ -580,3 +580,23 @@ def get_content (url, user=None, password=None, proxy=None, data=None,
         log.warn(LOG_CHECK, ("Could not get content of URL %(url)s: %(msg)s.") \
           % {"url": url, "msg": str(msg)})
     return (None, None)
+
+
+def shorten_duplicate_content_url(url):
+    """Remove anchor part and trailing index.html from URL."""
+    if '#' in url:
+        url = url.split('#', 1)[0]
+    if url.endswith('index.html'):
+        return url[:-10]
+    return url
+
+
+def is_duplicate_content_url(url1, url2):
+    """Check if both URLs are allowed to point to the same content."""
+    if url1 == url2:
+        return True
+    if url2 in url1:
+        return shorten_duplicate_content_url(url1) == url2
+    if url1 in url2:
+        return shorten_duplicate_content_url(url2) == url1
+    return False
