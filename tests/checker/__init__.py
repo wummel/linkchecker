@@ -222,7 +222,7 @@ class LinkCheckTest (unittest.TestCase):
             self.fail_unicode(unicode(os.linesep).join(l))
 
 
-class MailTest (LinkCheckerTest):
+class MailTest (LinkCheckTest):
     """Test mailto: link checking."""
 
     def mail_valid (self, addr, **kwargs):

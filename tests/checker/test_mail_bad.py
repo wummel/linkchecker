@@ -17,7 +17,6 @@
 """
 Test mail checking of bad mail addresses.
 """
-from tests import need_network
 from . import MailTest
 
 
