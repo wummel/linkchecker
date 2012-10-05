@@ -554,7 +554,10 @@ class UrlBase (object):
                 self.check_size()
             except tuple(ExcList):
                 value = self.handle_exception()
-                self.add_warning(_("could not get content: %(msg)r") %
+                # make nicer error msg for bad status line
+                if isinstance(value, httplib.BadStatusLine):
+                    value = _('Bad HTTP response %(line)r') % {"line": str(value)}
+                self.add_warning(_("could not get content: %(msg)s") %
                      {"msg": str(value)}, tag=WARN_URL_ERROR_GETTING_CONTENT)
 
     def close_connection (self):
