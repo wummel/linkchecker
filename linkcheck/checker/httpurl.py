@@ -523,9 +523,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             raise
 
     def _get_http_response (self):
-        """
-        Send HTTP request and get response object.
-        """
+        """Send HTTP request and get response object."""
         if self.proxy:
             scheme = self.proxytype
             host, port = urllib.splitport(self.proxy)
@@ -537,38 +535,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         # close/release a previous connection
         self.close_connection()
         self.url_connection = self.get_http_object(scheme, host, port)
-        # the anchor fragment is not part of a HTTP URL, see
-        # http://tools.ietf.org/html/rfc2616#section-3.2.2
-        anchor = ''
-        if self.proxy:
-            path = urlutil.urlunsplit((self.urlparts[0], self.urlparts[1],
-                                 self.urlparts[2], self.urlparts[3], anchor))
-        else:
-            path = urlutil.urlunsplit(('', '', self.urlparts[2],
-                                        self.urlparts[3], anchor))
-        self.url_connection.putrequest(self.method, path, skip_host=True,
-                                       skip_accept_encoding=True)
-        # be sure to use the original host as header even for proxies
-        self.url_connection.putheader("Host", self.urlparts[1])
-        if self.auth:
-            # HTTP authorization
-            self.url_connection.putheader("Authorization", self.auth)
-        if self.proxyauth:
-            self.url_connection.putheader("Proxy-Authorization",
-                                         self.proxyauth)
-        if (self.parent_url and
-            self.parent_url.lower().startswith(HTTP_SCHEMAS)):
-            self.url_connection.putheader("Referer", self.parent_url)
-        self.url_connection.putheader("User-Agent",
-            self.aggregate.config["useragent"])
-        # prefer compressed content
-        self.url_connection.putheader("Accept-Encoding", ACCEPT_ENCODING)
-        # prefer UTF-8 encoding
-        self.url_connection.putheader("Accept-Charset", ACCEPT_CHARSET)
-        self.url_connection.putheader("DNT", "1")
-        if self.aggregate.config['sendcookies']:
-            self.send_cookies()
-        self.url_connection.endheaders()
+        self.add_connection_request()
+        self.add_connection_headers()
         buffering = True
         response = self.url_connection.getresponse(buffering)
         self.timeout = headers.http_timeout(response)
@@ -593,6 +561,43 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if response.status in httplib.responses:
             response.reason = httplib.responses[response.status]
         return response
+
+    def add_connection_request(self):
+        # the anchor fragment is not part of a HTTP URL, see
+        # http://tools.ietf.org/html/rfc2616#section-3.2.2
+        anchor = ''
+        if self.proxy:
+            path = urlutil.urlunsplit((self.urlparts[0], self.urlparts[1],
+                                 self.urlparts[2], self.urlparts[3], anchor))
+        else:
+            path = urlutil.urlunsplit(('', '', self.urlparts[2],
+                                        self.urlparts[3], anchor))
+        self.url_connection.putrequest(self.method, path, skip_host=True,
+                                       skip_accept_encoding=True)
+
+    def add_connection_headers(self):
+        # be sure to use the original host as header even for proxies
+        self.url_connection.putheader("Host", self.urlparts[1])
+        if self.auth:
+            # HTTP authorization
+            self.url_connection.putheader("Authorization", self.auth)
+        if self.proxyauth:
+            self.url_connection.putheader("Proxy-Authorization",
+                                         self.proxyauth)
+        if (self.parent_url and
+            self.parent_url.lower().startswith(HTTP_SCHEMAS)):
+            self.url_connection.putheader("Referer", self.parent_url)
+        self.url_connection.putheader("User-Agent",
+            self.aggregate.config["useragent"])
+        # prefer compressed content
+        self.url_connection.putheader("Accept-Encoding", ACCEPT_ENCODING)
+        # prefer UTF-8 encoding
+        self.url_connection.putheader("Accept-Charset", ACCEPT_CHARSET)
+        # send do-not-track header
+        self.url_connection.putheader("DNT", "1")
+        if self.aggregate.config['sendcookies']:
+            self.send_cookies()
+        self.url_connection.endheaders()
 
     def store_cookies (self):
         """Save cookies from response headers."""
