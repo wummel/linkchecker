@@ -26,7 +26,7 @@ from . import logger, status, checker, cleanup
 
 
 _w3_time_lock = threading.Lock()
-_threads_lock = threading.Lock()
+_threads_lock = threading.RLock()
 _download_lock = threading.Lock()
 
 class Aggregate (object):
@@ -69,7 +69,7 @@ class Aggregate (object):
     def print_active_threads (self):
         """Log all currently active threads."""
         first = True
-        for name in self._get_check_threads():
+        for name in self.get_check_threads():
             if first:
                 log.info(LOG_CHECK, _("These URLs are still active:"))
                 first = False
@@ -78,10 +78,6 @@ class Aggregate (object):
     @synchronized(_threads_lock)
     def get_check_threads(self):
         """Return iterator of checker threads."""
-        return self._get_check_threads()
-
-    def _get_check_threads(self):
-        """Return iterator of checker threads (non-synchronized method)."""
         for t in self.threads:
             name = t.getName()
             if name.startswith("CheckThread-"):
@@ -105,10 +101,6 @@ class Aggregate (object):
     @synchronized(_threads_lock)
     def remove_stopped_threads (self):
         """Remove the stopped threads from the internal thread list."""
-        self._remove_stopped_threads()
-
-    def _remove_stopped_threads (self):
-        """Not threads-safe function to really remove stopped threads."""
         self.threads = [t for t in self.threads if t.is_alive()]
 
     @synchronized(_threads_lock)
@@ -125,7 +117,7 @@ class Aggregate (object):
     @synchronized(_threads_lock)
     def is_finished (self):
         """Determine if checking is finished."""
-        self._remove_stopped_threads()
+        self.remove_stopped_threads()
         return self.urlqueue.empty() and not self.threads
 
     @synchronized(_w3_time_lock)
