@@ -24,6 +24,8 @@ Changes:
 - logging: Ignored warnings are now never logged, even when the URL
   has errors.
 - checking: Improved robots.txt caching by using finer grained locking.
+- checking: Limit number of concurrent connections to FTP and HTTP
+  servers. This avoids spurious BadStatusLine errors.
 
 Fixes:
 - logging: Close logger properly on I/O errors.
