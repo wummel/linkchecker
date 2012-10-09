@@ -21,7 +21,12 @@ import threading
 from . import log, LOG_THREAD
 
 def get_lock (name, debug=False):
-    """Return a new thread lock object."""
+    """Get a new lock.
+    @param debug: if True, acquire() and release() will have debug messages
+    @ptype debug: boolean, default is False
+    @return: a lock object
+    @rtype: threading.Lock or DebugLock
+    """
     lock = threading.Lock()
     # for thread debugging, use the DebugLock wrapper
     if debug:
@@ -52,6 +57,14 @@ class DebugLock (object):
 
 
 def get_semaphore(name, value=None, debug=False):
+    """Get a new semaphore.
+    @param value: if not None, a BoundedSemaphore will be used
+    @ptype debug: int or None
+    @param debug: if True, acquire() and release() will have debug messages
+    @ptype debug: boolean, default is False
+    @return: a semaphore object
+    @rtype: threading.Semaphore or threading.BoundedSemaphore or DebugLock
+    """
     if value is None:
         lock = threading.Semaphore()
     else:
@@ -59,4 +72,3 @@ def get_semaphore(name, value=None, debug=False):
     if debug:
         lock = DebugLock(lock, name)
     return lock
-

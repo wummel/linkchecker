@@ -71,6 +71,21 @@ class ProxySupport (object):
                     return True
         return False
 
+    def get_netloc(self):
+        """Determine scheme, host and port for this connection taking
+        proxy data into account.
+        @return: tuple (scheme, host, port)
+        @rtype: tuple(string, string, int)
+        """
+        if self.proxy:
+            scheme = self.proxytype
+            host, port = urlutil.splitport(self.proxy)
+        else:
+            scheme = self.scheme
+            host = self.host
+            port = self.port
+        return (scheme, host, port)
+
 
 def parse_host_port (host_port):
     """Parse a host:port string into separate components."""

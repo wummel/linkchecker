@@ -467,12 +467,11 @@ class UrlBase (object):
             self.urlparts[1] = host.lower()
         # safe anchor for later checking
         self.anchor = self.urlparts[4]
-        self.host, self.port = urllib.splitport(host)
-        if self.port is not None:
-            if not urlutil.is_numeric_port(self.port):
-                raise LinkCheckerError(_("URL has invalid port %(port)r") %
-                    {"port": str(self.port)})
-            self.port = int(self.port)
+        port = urlutil.default_ports.get(self.scheme, 0)
+        self.host, self.port = urlutil.splitport(host, port=port)
+        if self.port is None:
+            raise LinkCheckerError(_("URL host %(host)r has invalid port") %
+                    {"host": host})
         if self.scheme in scheme_requires_host:
             if not self.host:
                 raise LinkCheckerError(_("URL has empty hostname"))

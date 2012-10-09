@@ -19,7 +19,6 @@ Handle http links.
 """
 
 import urlparse
-import urllib
 import os
 import errno
 import zlib
@@ -32,7 +31,7 @@ from datetime import datetime
 from .. import (log, LOG_CHECK, gzip2 as gzip, strformat, url as urlutil,
     httplib2 as httplib, LinkCheckerError, httputil, configuration)
 from . import (internpaturl, proxysupport, httpheaders as headers, urlbase,
-    get_url_from)
+    get_url_from, pooledconnection)
 # import warnings
 from .const import WARN_HTTP_ROBOTS_DENIED, \
     WARN_HTTP_WRONG_REDIRECT, WARN_HTTP_MOVED_PERMANENT, \
@@ -56,7 +55,7 @@ ACCEPT_ENCODING = ",".join(SUPPORTED_ENCODINGS)
 ACCEPT_CHARSET = "utf-8,ISO-8859-1;q=0.7,*;q=0.3"
 
 
-class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
+class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledconnection.PooledConnection):
     """
     Url link with http scheme.
     """
@@ -78,8 +77,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         self.cookies = []
         # temporary data filled when reading redirections
         self._data = None
-        # flag indicating connection reuse
-        self.reused_connection = False
         # flag telling if GET method is allowed; determined by robots.txt
         self.method_get_allowed = True
 
@@ -501,21 +498,21 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             self.modified = datetime.utcfromtimestamp(time.mktime(modified))
 
     def _try_http_response (self):
-        """Try to get a HTTP response object. For reused persistent
+        """Try to get a HTTP response object. For persistent
         connections that the server closed unexpected, a new connection
         will be opened.
         """
         try:
             return self._get_http_response()
         except socket.error, msg:
-            if msg.args[0] == 32 and self.reused_connection:
+            if msg.args[0] == 32 and self.persistent:
                 # server closed persistent connection - retry
                 log.debug(LOG_CHECK, "Server closed connection: retry")
                 self.persistent = False
                 return self._get_http_response()
             raise
         except httplib.BadStatusLine, msg:
-            if not msg and self.reused_connection:
+            if self.persistent:
                 # server closed connection - retry
                 log.debug(LOG_CHECK, "Empty status line: retry")
                 self.persistent = False
@@ -524,17 +521,9 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
 
     def _get_http_response (self):
         """Send HTTP request and get response object."""
-        if self.proxy:
-            scheme = self.proxytype
-            host, port = urllib.splitport(self.proxy)
-        else:
-            scheme = self.scheme
-            host = self.host
-            port = self.port
+        scheme, host, port = self.get_netloc()
         log.debug(LOG_CHECK, "Connecting to %r", host)
-        # close/release a previous connection
-        self.close_connection()
-        self.url_connection = self.get_http_object(scheme, host, port)
+        self.get_http_object(scheme, host, port)
         self.add_connection_request()
         self.add_connection_headers()
         buffering = True
@@ -563,6 +552,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         return response
 
     def add_connection_request(self):
+        """Add connection request."""
         # the anchor fragment is not part of a HTTP URL, see
         # http://tools.ietf.org/html/rfc2616#section-3.2.2
         anchor = ''
@@ -576,6 +566,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                                        skip_accept_encoding=True)
 
     def add_connection_headers(self):
+        """Add connection header."""
         # be sure to use the original host as header even for proxies
         self.url_connection.putheader("Host", self.urlparts[1])
         if self.auth:
@@ -618,7 +609,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         scheme = self.urlparts[0]
         host = self.urlparts[1]
         port = urlutil.default_ports.get(scheme, 80)
-        host, port = urllib.splitnport(host, port)
+        host, port = urlutil.splitport(host, port)
         path = self.urlparts[2]
         self.cookies = self.aggregate.cookies.get(scheme, host, port, path)
         if not self.cookies:
@@ -651,33 +642,29 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         Open a HTTP connection.
 
         @param host: the host to connect to
-        @type host: string of the form <host>[:<port>]
+        @ptype host: string of the form <host>[:<port>]
         @param scheme: 'http' or 'https'
-        @type scheme: string
-        @return: open HTTP(S) connection
-        @rtype: httplib.HTTP(S)Connection
+        @ptype scheme: string
+        @return: None
         """
-        key = self.get_connection_key(scheme, host, port)
-        conn = self.aggregate.connections.get(key)
-        if conn is not None:
-            log.debug(LOG_CHECK, "reuse cached HTTP(S) connection %s", conn)
-            self.reused_connection = True
-            return conn
-        self.aggregate.connections.wait_for_host(host)
-        if scheme == "http":
-            strict = True
-            h = httplib.HTTPConnection(host, port, strict)
-        elif scheme == "https" and supportHttps:
-            devel_dir = os.path.join(configuration.configdata.install_data, "config")
-            ca_certs = configuration.get_share_file(devel_dir, 'ca-certificates.crt')
-            h = httplib.HTTPSConnection(host, port, ca_certs=ca_certs)
-        else:
-            msg = _("Unsupported HTTP url scheme `%(scheme)s'") % {"scheme": scheme}
-            raise LinkCheckerError(msg)
-        if log.is_debug(LOG_CHECK):
-            h.set_debuglevel(1)
-        h.connect()
-        return h
+        self.close_connection()
+        def create_connection(scheme, host, port):
+            """Create a new http or https connection."""
+            if scheme == "http":
+                strict = True
+                h = httplib.HTTPConnection(host, port, strict)
+            elif scheme == "https" and supportHttps:
+                devel_dir = os.path.join(configuration.configdata.install_data, "config")
+                ca_certs = configuration.get_share_file(devel_dir, 'ca-certificates.crt')
+                h = httplib.HTTPSConnection(host, port, ca_certs=ca_certs)
+            else:
+                msg = _("Unsupported HTTP url scheme `%(scheme)s'") % {"scheme": scheme}
+                raise LinkCheckerError(msg)
+            if log.is_debug(LOG_CHECK):
+                h.set_debuglevel(1)
+            return h
+        self.get_pooled_connection(scheme, host, port, create_connection)
+        self.url_connection.connect()
 
     def read_content (self):
         """Get content of the URL target. The content data is cached after
@@ -743,15 +730,9 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             return False
         return True
 
-    def set_title_from_content (self):
-        """Check if it's allowed to read content before execution."""
-        if self.method_get_allowed:
-            super(HttpUrl, self).set_title_from_content()
-
-    def get_anchors (self):
-        """Check if it's allowed to read content before execution."""
-        if self.method_get_allowed:
-            super(HttpUrl, self).get_anchors()
+    def can_get_content(self):
+        """Check if it's allowed to read content."""
+        return self.method_get_allowed
 
     def content_allows_robots (self):
         """Check if it's allowed to read content before execution."""
@@ -837,49 +818,19 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         return "%s://%s/robots.txt" % tuple(self.urlparts[0:2])
 
     def close_connection (self):
+        """Release the connection from the connection pool. Persistent
+        connections will not be closed.
         """
-        If connection is persistent, add it to the connection pool.
-        Else close the connection. Errors on closing are ignored.
-        """
+        log.debug(LOG_CHECK, "Closing %s", self.url_connection)
         if self.url_connection is None:
             # no connection is open
             return
         # add to cached connections
+        scheme, host, port = self.get_netloc()
         if self.persistent and self.url_connection.is_idle():
-            key = self.get_urlconnection_key()
-            self.aggregate.connections.add(
-                  key, self.url_connection, self.timeout)
+            # XXX use self.repsonse
+            expiration = time.time() + self.timeout
         else:
-            try:
-                self.url_connection.close()
-            except Exception:
-                # ignore close errors
-                pass
+            expiration = None
+        self.aggregate.connections.release(scheme, host, port, self.url_connection, expiration=expiration)
         self.url_connection = None
-
-    def get_connection_key (self, scheme, host, port):
-        """Get unique key specifying this connection.
-        Used to reuse cached connections.
-        @param scheme: 'https' or 'http'
-        @ptype scheme: string
-        @param host: host[:port]
-        @ptype host: string
-        @return: (scheme, host, port, user, password)
-        @rtype: tuple(string, string, int, string, string)
-        """
-        _user, _password = self.get_user_password()
-        return (scheme, host, port, _user, _password)
-
-    def get_urlconnection_key (self):
-        """Get unique key specifying this connection.
-        Used to cache connections.
-        @return: (scheme, host, port, user, password)
-        @rtype: tuple(string, string, int, string, string)
-        """
-        host, port = self.url_connection.host, self.url_connection.port
-        if supportHttps and isinstance(self.url_connection, httplib.HTTPSConnection):
-            scheme = 'https'
-        else:
-            scheme = 'http'
-        _user, _password = self.get_user_password()
-        return (scheme, host, port, _user, _password)

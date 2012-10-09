@@ -22,13 +22,13 @@ import ftplib
 from cStringIO import StringIO
 
 from .. import log, LOG_CHECK, LinkCheckerError, fileutil
-from . import proxysupport, httpurl, internpaturl, get_index_html
+from . import proxysupport, httpurl, internpaturl, get_index_html, pooledconnection
 from .const import WARN_FTP_MISSING_SLASH
 
 DEFAULT_TIMEOUT_SECS = 300
 
 
-class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
+class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledconnection.PooledConnection):
     """
     Url link with ftp scheme.
     """
@@ -71,39 +71,34 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         return None
 
     def login (self):
-        """
-        Log into ftp server and check the welcome message.
-        """
-        # ready to connect
-        _user, _password = self.get_user_password()
-        key = ("ftp", self.host, self.port, _user, _password)
-        conn = self.aggregate.connections.get(key)
-        if conn is not None and conn.sock is not None:
-            # reuse cached FTP connection
-            self.url_connection = conn
-            return
-        self.aggregate.connections.wait_for_host(self.host)
-        try:
-            self.url_connection = ftplib.FTP()
+        """Log into ftp server and check the welcome message."""
+        def create_connection(scheme, host, port):
+            """Create a new ftp connection."""
+            connection = ftplib.FTP()
             if log.is_debug(LOG_CHECK):
-                self.url_connection.set_debuglevel(1)
+                connection.set_debuglevel(1)
+            return connection
+        scheme, host, port = self.get_netloc()
+        self.get_pooled_connection(scheme, host, port, create_connection)
+        try:
             self.url_connection.connect(self.host, self.port)
+            _user, _password = self.get_user_password()
             if _user is None:
                 self.url_connection.login()
             elif _password is None:
                 self.url_connection.login(_user)
             else:
                 self.url_connection.login(_user, _password)
+            info = self.url_connection.getwelcome()
+            if info:
+                # note that the info may change every time a user logs in,
+                # so don't add it to the url_data info.
+                log.debug(LOG_CHECK, "FTP info %s", info)
+            else:
+                raise LinkCheckerError(_("Got no answer from FTP server"))
         except EOFError, msg:
             raise LinkCheckerError(
-                  _("Remote host has closed connection: %(msg)s") % str(msg))
-        info = self.url_connection.getwelcome()
-        if info:
-            # note that the info may change every time a user logs in,
-            # so don't add it to the url_data info.
-            log.debug(LOG_CHECK, "FTP info %s", info)
-        else:
-            raise LinkCheckerError(_("Got no answer from FTP server"))
+                      _("Remote host has closed connection: %(msg)s") % str(msg))
 
     def negotiate_encoding (self):
         """Check if server can handle UTF-8 encoded filenames.
@@ -232,14 +227,9 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         return data, len(data)
 
     def close_connection (self):
-        """
-        Add the open connection to the connection pool.
-        """
+        """Release the open connection from the connection pool."""
         if self.url_connection is None:
             return
-        # add to cached connections
-        _user, _password = self.get_user_password()
-        key = ("ftp", self.urlparts[1], _user, _password)
-        cache_add = self.aggregate.connections.add
-        cache_add(key, self.url_connection, DEFAULT_TIMEOUT_SECS)
+        scheme, host, port = self.get_netloc()
+        self.aggregate.connections.release(scheme, host, port, self.url_connection)
         self.url_connection = None

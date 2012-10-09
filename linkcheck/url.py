@@ -50,6 +50,7 @@ default_ports = {
     'http': 80,
     'https': 443,
     'nntps': 563,
+    'ftp': 21,
 }
 
 # adapted from David Wheelers "Secure Programming for Linux and Unix HOWTO"
@@ -463,7 +464,7 @@ def url_split (url):
     """
     scheme, netloc = urllib.splittype(url)
     host, document = urllib.splithost(netloc)
-    port = default_ports.get(scheme, 80)
+    port = default_ports.get(scheme, 0)
     if host:
         host = host.lower()
         host, port = splitport(host, port=port)
@@ -477,7 +478,7 @@ def url_unsplit (parts):
     return "%s://%s:%d%s" % parts
 
 
-def splitport (host, port=80):
+def splitport (host, port=0):
     """Split optional port number from host. If host has no port number,
     the given default port is returned.
 
@@ -491,6 +492,8 @@ def splitport (host, port=80):
         iport = is_numeric_port(sport)
         if iport:
             port = iport
+        else:
+            port = None
     return host, port
 
 

@@ -39,9 +39,8 @@ class HttpsUrl (httpurl.HttpUrl):
 
     def get_http_object (self, scheme, host, port):
         """Open a HTTP connection and check the SSL certificate."""
-        h = super(HttpsUrl, self).get_http_object(scheme, host, port)
-        self.check_ssl_certificate(h.sock, host)
-        return h
+        super(HttpsUrl, self).get_http_object(scheme, host, port)
+        self.check_ssl_certificate(self.url_connection.sock, host)
 
     def check_ssl_certificate(self, ssl_sock, host):
         """Run all SSL certificate checks that have not yet been done.

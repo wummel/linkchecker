@@ -21,30 +21,49 @@ Store and retrieve open connections.
 import time
 from .. import log, LOG_CACHE
 from ..decorators import synchronized
-from ..lock import get_lock
+from ..lock import get_lock, get_semaphore
+from ..containers import enum
 
 _lock = get_lock("connection")
 _wait_lock = get_lock("connwait")
 
+ConnectionTypes = ("ftp", "http", "https")
+ConnectionState = enum("available", "busy")
+
+DefaultLimits = dict(
+    http=4,
+    https=4,
+    ftp=2,
+)
+
+def get_connection_id(connection):
+    return id(connection)
+
+
+def is_expired(curtime, conn_data):
+    return (curtime+5.0) >= conn_data[2]
+
+
 class ConnectionPool (object):
     """Thread-safe cache, storing a set of connections for URL retrieval."""
 
-    def __init__ (self, wait=0):
+    def __init__ (self, wait=0, limits=None):
         """
-        Initialize an empty connection dictionary which will have entries
-        of the form::
-        key -> [connection, status, expiration time]
+        Initialize an empty connection dictionary which will have the form:
+        {(type, host, port) -> (lock, {id -> [connection, state, expiration time]})}
 
         Connection can be any open connection object (HTTP, FTP, ...).
-        Status is either 'available' or 'busy'.
+        State is of type ConnectionState (either 'available' or 'busy').
         Expiration time is the point of time in seconds when this
         connection will be timed out.
 
-        The identifier key is usually a tuple (type, host, user, pass),
-        but it can be any immutable Python object.
+        The type is the connection type and an either 'ftp' or 'http'.
+        The host is the hostname as string, port the port number as an integer.
+
+        For each type, the maximum number of connection can be defined. The default
+        is 4 for http/1.0, 2 for http/1.1 and 2 for ftp.
         """
         # open connections
-        # {(type, host, user, pass) -> [connection, status, expiration time]}
         self.connections = {}
         # {host -> due time}
         self.times = {}
@@ -53,20 +72,19 @@ class ConnectionPool (object):
         if wait < 0:
             raise ValueError("negative wait value %d" % wait)
         self.wait = wait
+        if limits is None:
+            self.limits = DefaultLimits
+        else:
+            self.limits = {}
+            for type in ConnectionTypes:
+                self.limits[type] = limits.get(type, DefaultLimits[type])
 
-    @synchronized(_lock)
+    @synchronized(_wait_lock)
     def host_wait (self, host, wait):
         """Set a host specific time to wait between requests."""
         if wait < 0:
             raise ValueError("negative wait value %d" % wait)
         self.host_waits[host] = wait
-
-    @synchronized(_lock)
-    def add (self, key, conn, timeout):
-        """Add connection to the pool with given identifier key and timeout
-        in seconds."""
-        assert timeout >= 1.0, 'invalid timeout value %r' % timeout
-        self.connections[key] = [conn, 'available', time.time() + timeout]
 
     @synchronized(_wait_lock)
     def wait_for_host (self, host):
@@ -82,66 +100,130 @@ class ConnectionPool (object):
                 t = time.time()
         self.times[host] = t + self.host_waits.get(host, self.wait)
 
-    @synchronized(_lock)
-    def get (self, key):
-        """
-        Get open connection if available.
+    def _add (self, type, host, port, create_connection):
+        """Add connection to the pool with given parameters.
 
-        @param key - connection key to look for
-        @ptype key - tuple (type, host, user, pass)
+        @param type: the connection scheme (eg. http)
+        @ptype type: string
+        @param host: the hostname
+        @ptype host: string
+        @param port: the port number
+        @ptype port: int
+        @param create_connection: function to create a new connection object
+        @ptype create_connection: callable
+        @return: newly created connection
+        @rtype: HTTP(S)Connection or FTPConnection
+        """
+        self.wait_for_host(host)
+        connection = create_connection(type, host, port)
+        id = get_connection_id(connection)
+        expiration = None
+        conn_data = [connection, 'busy', expiration]
+        key = (type, host, port)
+        if key in self.connections:
+            lock, entries = self.connections[key]
+            entries[id] = conn_data
+        else:
+            lock = get_semaphore("%s:%d" % (host, port), self.limits[type])
+            lock.acquire()
+            log.debug(LOG_CACHE, "Acquired lock for %s://%s:%d" % key)
+            entries = {id: conn_data}
+            self.connections[key] = (lock, entries)
+        return connection
+
+    @synchronized(_lock)
+    def get (self, type, host, port, create_connection):
+        """Get open connection if available or create a new one.
+
+        @param type: connection type
+        @ptype type: ConnectionType
+        @param host: hostname
+        @ptype host: string
+        @param port: port number
+        @ptype port: int
         @return: Open connection object or None if none is available.
         @rtype None or FTPConnection or HTTP(S)Connection
         """
+        assert type in ConnectionTypes, 'invalid type %r' % type
+        assert 65535 >= port > 0, 'invalid port number %r' % port
+        key = (type, host, port)
         if key not in self.connections:
-            # not found
-            return None
-        conn_data = self.connections[key]
+            return self._add(type, host, port, create_connection)
+        lock, entries = self.connections[key]
+        if not lock.acquire(False):
+            log.debug(LOG_CACHE, "wait for %s connection to %s:%d",
+                      type, host, port)
+            return lock
+        log.debug(LOG_CACHE, "Acquired lock for %s://%s:%d" % key)
+        # either a connection is available or a new one can be created
         t = time.time()
-        if (t+5.0) >= conn_data[2]:
-            # already or soon to be timed out
-            self._remove_connection(key)
-            return None
-        if conn_data[1] == 'busy':
-            # connection is in use
-            return None
-        log.debug(LOG_CACHE,
-          "reusing connection %s timing out in %.01f seconds",
-           key, (conn_data[2] - t))
-        # mark busy and return connection object
-        conn_data[1] = 'busy'
-        return conn_data[0]
+        delete_entries = []
+        try:
+            for id, conn_data in entries.items():
+                if conn_data[1] == ConnectionState.available:
+                    if is_expired(t, conn_data):
+                        delete_entries.append(id)
+                    else:
+                        conn_data[1] = ConnectionState.busy
+                        log.debug(LOG_CACHE,
+                          "reusing connection %s timing out in %.01f seconds",
+                           key, (conn_data[2] - t))
+                        return conn_data[0]
+        finally:
+            for id in delete_entries:
+                del entries[id]
+        # make a new connection
+        return self._add(type, host, port, create_connection)
 
     @synchronized(_lock)
-    def release (self, key):
-        """Mark an open and reusable connection as available."""
+    def release (self, type, host, port, connection, expiration=None):
+        """Release a used connection."""
+        key = (type, host, port)
         if key in self.connections:
-            self.connections[key][1] = 'available'
+            lock, entries = self.connections[key]
+            id = get_connection_id(connection)
+            if id in entries:
+                log.debug(LOG_CACHE, "Release lock for %s://%s:%d and expiration %s", type, host, port, expiration)
+                # if the connection is reusable, set it to available, else delete it
+                if expiration is None:
+                    del entries[id]
+                else:
+                    entries[id][1] = ConnectionState.available
+                    entries[id][2] = expiration
+                lock.release()
+            else:
+                log.warn(LOG_CACHE, "Release unknown connection %s://%s:%d", type, host, port)
+        else:
+            log.warn(LOG_CACHE, "Release unknown connection %s://%s:%d", type, host, port)
 
     @synchronized(_lock)
     def remove_expired (self):
         """Remove expired or soon to be expired connections from this pool."""
         t = time.time()
-        to_delete = []
-        for key, conn_data in self.connections.items():
-            if conn_data[1] == 'available' and (t+5.0) >= conn_data[2]:
-                to_delete.append(key)
-        for key in to_delete:
-            self._remove_connection(key)
-
-    def _remove_connection (self, key):
-        """Close and remove a connection (not thread-safe, internal use
-        only)."""
-        conn_data = self.connections[key]
-        del self.connections[key]
-        try:
-            conn_data[1].close()
-        except Exception:
-            # ignore close errors
-            pass
+        for lock, entries in self.connections.values():
+            delete_entries = []
+            for id, conn_data in entries.items():
+                if conn_data[1] == 'available' and (t+5.0) >= conn_data[2]:
+                    try_close(conn_data[0])
+                    delete_entries.add(id)
+            for id in delete_entries:
+                del entries[id]
+                lock.release()
+                log.debug(LOG_CACHE, "released lock for id %s", id)
 
     @synchronized(_lock)
     def clear (self):
         """Remove all connections from this cache, even if busy."""
-        keys = self.connections.keys()
-        for key in keys:
-            self._remove_connection(key)
+        for lock, entries in self.connections.values():
+            for conn_data in entries.values():
+                try_close(conn_data[0])
+        self.connections.clear()
+
+
+def try_close (connection):
+    """Close and remove a connection (not thread-safe, internal use only)."""
+    try:
+        connection.close()
+    except Exception:
+        # ignore close errors
+        pass
