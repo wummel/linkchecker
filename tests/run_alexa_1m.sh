@@ -16,5 +16,5 @@ errfile=alexa_1m_err.log
 rm -f $logfile $errfile
 for url in $(shuf $HOME/src/alexatopsites/top-1m.txt); do
   echo "Checking $url" | tee -a $logfile | tee -a $errfile
-  ./linkchecker -r1 --no-status $url >> $logfile 2>>$errfile
+  ./linkchecker -r1 --no-status -Dall $url >> $logfile 2>>$errfile
 done
