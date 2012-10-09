@@ -51,7 +51,7 @@ class GraphLogger (Logger):
             "url": url_data.url,
             "parent_url": url_data.parent_url,
             "id": self.nodeid,
-            "label": quote(url_data.title),
+            "label": quote(url_data.title if url_data.title else url_data.name),
             "extern": 1 if url_data.extern else 0,
             "checktime": url_data.checktime,
             "dlsize": url_data.dlsize,
