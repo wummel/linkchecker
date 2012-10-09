@@ -94,7 +94,7 @@ def synchronize (lock, func, log_duration_secs=0):
         t = time.time()
         with lock:
             duration = time.time() - t
-            if log_duration_secs and duration > log_duration_secs:
+            if duration > log_duration_secs > 0:
                 print >> sys.stderr, "WARN:", func.__name__, "locking took %0.2f seconds" % duration
             return func(*args, **kwargs)
     return update_func_meta(newfunc, func)
