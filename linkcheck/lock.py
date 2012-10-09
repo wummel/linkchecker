@@ -20,11 +20,13 @@ Locking utility class.
 import threading
 from . import log, LOG_THREAD
 
-def get_lock (name):
+def get_lock (name, debug=False):
     """Return a new thread lock object."""
-    return threading.Lock()
+    lock = threading.Lock()
     # for thread debugging, use the DebugLock wrapper
-    #return DebugLock(threading.Lock(), name)
+    if debug:
+        lock = DebugLock(lock, name)
+    return lock
 
 
 class DebugLock (object):
@@ -47,3 +49,14 @@ class DebugLock (object):
         threadname = threading.currentThread().getName()
         log.debug(LOG_THREAD, "Release %s for %s", self.name, threadname)
         self.lock.release()
+
+
+def get_semaphore(name, value=None, debug=False):
+    if value is None:
+        lock = threading.Semaphore()
+    else:
+        lock = threading.BoundedSemaphore(value)
+    if debug:
+        lock = DebugLock(lock, name)
+    return lock
+
