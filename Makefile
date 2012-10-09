@@ -177,7 +177,7 @@ doccheck:
 	  linkcheck/gui/updater.py \
 	  linkcheck/gui/urlmodel.py \
 	  linkcheck/gui/urlsave.py \
-	  linkcheck/*.py \
+	  $(filter-out %2.py,$(wildcard linkcheck/*.py)) \
 	  cgi-bin/lc.wsgi \
 	  linkchecker \
 	  linkchecker-gui \
