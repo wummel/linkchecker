@@ -331,3 +331,10 @@ def str_cache_stats(hits, misses):
     strhits = _n("%d hit", "%d hits", hits) % hits
     strmisses = _n("%d miss", "%d misses", misses) % misses
     return u"%s, %s" % (strhits, strmisses)
+
+
+def strip_control_chars(text):
+    """Remove console control characters from text."""
+    if text:
+        return re.sub(r"[\x01-\x1F\x7F]", "", text)
+    return text

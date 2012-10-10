@@ -171,3 +171,14 @@ class TestStrFormat (unittest.TestCase):
         self.assertEqual(ascii_safe("a"), "a")
         self.assertEqual(ascii_safe(u"a"), "a")
         self.assertEqual(ascii_safe(u"ä"), "")
+
+    def test_strip_control_chars(self):
+        strip = linkcheck.strformat.strip_control_chars
+        self.assertEqual(strip(""), "")
+        self.assertEqual(strip(u""), u"")
+        self.assertEqual(strip("a"), "a")
+        self.assertEqual(strip(u"a"), u"a")
+        self.assertEqual(strip("ä"), "ä")
+        self.assertEqual(strip(u"ä"), u"ä")
+        self.assertEqual(strip("\x01"), "")
+        self.assertEqual(strip(u"\x01"), u"")

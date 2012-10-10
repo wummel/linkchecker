@@ -96,7 +96,6 @@ class LogStatistics (object):
         self.downloaded_bytes = None
         # cache stats
         self.robots_txt_stats = None
-        self.addrinfo_stats = None
 
     def log_url (self, url_data, do_print):
         """Log URL statistics."""
@@ -293,8 +292,8 @@ class Logger (object):
         return strformat.wrap(text, width, **kwargs).lstrip()
 
     def write (self, s, **args):
-        """
-        Write string to output descriptor.
+        """Write string to output descriptor. Strips control characters
+        from string before writing.
         """
         if self.filename is not None:
             self.start_fileoutput()
@@ -303,7 +302,7 @@ class Logger (object):
             log.warn(LOG_CHECK, "writing to unitialized or closed file")
         else:
             try:
-                self.fd.write(s, **args)
+                self.fd.write(strformat.strip_control_chars(s), **args)
             except IOError:
                 msg = sys.exc_info()[1]
                 log.warn(LOG_CHECK,
@@ -431,10 +430,9 @@ class Logger (object):
         log.warn(LOG_CHECK, "internal error occurred")
         self.stats.log_internal_error()
 
-    def add_statistics(self, robots_txt_stats, addrinfo_stats, download_stats):
+    def add_statistics(self, robots_txt_stats, download_stats):
         """Add cache and download statistics."""
         self.stats.robots_txt_stats = robots_txt_stats
-        self.stats.addrinfo_stats = addrinfo_stats
         self.stats.downloaded_bytes = download_stats
 
     def format_modified(self, modified, sep=" "):
