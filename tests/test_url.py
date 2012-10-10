@@ -554,3 +554,13 @@ class TestUrl (unittest.TestCase):
     @need_network
     def test_get_content (self):
         linkcheck.url.get_content('http://www.debian.org/')
+
+    def test_duplicate_urls(self):
+        is_dup = linkcheck.url.is_duplicate_content_url
+        self.assertTrue(is_dup("http://example.org", "http://example.org"))
+        self.assertTrue(is_dup("http://example.org/", "http://example.org"))
+        self.assertTrue(is_dup("http://example.org", "http://example.org/"))
+        self.assertTrue(is_dup("http://example.org/index.html", "http://example.org"))
+        self.assertTrue(is_dup("http://example.org", "http://example.org/index.html"))
+        self.assertTrue(is_dup("http://example.org/index.htm", "http://example.org"))
+        self.assertTrue(is_dup("http://example.org", "http://example.org/index.htm"))

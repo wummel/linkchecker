@@ -601,7 +601,13 @@ def is_duplicate_content_url(url1, url2):
     if url1 == url2:
         return True
     if url2 in url1:
-        return shorten_duplicate_content_url(url1) == url2
+        url1 = shorten_duplicate_content_url(url1)
+        if not url2.endswith('/') and url1.endswith('/'):
+            url2 += '/'
+        return url1 == url2
     if url1 in url2:
-        return shorten_duplicate_content_url(url2) == url1
+        url2 = shorten_duplicate_content_url(url2)
+        if not url1.endswith('/') and url2.endswith('/'):
+            url1 += '/'
+        return url1 == url2
     return False
