@@ -1,4 +1,4 @@
-8.1 "" (release xx.xx.2012)
+8.1 "" (released xx.xx.2012)
 
 Features:
 - checking: Allow specification of maximum checking time or maximum
