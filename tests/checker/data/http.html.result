@@ -91,14 +91,14 @@ url /?d=directory&p=page1
 cache key http://localhost:%(port)d/?d=directory&p=page1
 real url http://localhost:%(port)d/?d=directory&p=page1
 name should not be cached
-warning Content with 2KB is the same as in URLs (http://localhost:%(port)d/?d=directory&p=page).
+warning Content with 1KB is the same as in URLs (http://localhost:%(port)d/?d=directory&p=page).
 valid
 
 url /?quoted=ü
 cache key http://localhost:%(port)d/?quoted=%%C3%%BC
 real url http://localhost:%(port)d/?quoted=%%C3%%BC
 name html entities
-warning Content with 2KB is the same as in URLs (http://localhost:%(port)d/?d=directory&p=page,http://localhost:%(port)d/?d=directory&p=page1).
+warning Content with 1KB is the same as in URLs (http://localhost:%(port)d/?d=directory&p=page,http://localhost:%(port)d/?d=directory&p=page1).
 valid
 
 url  (cached)
