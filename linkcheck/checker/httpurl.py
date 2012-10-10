@@ -526,8 +526,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         self.get_http_object(scheme, host, port)
         self.add_connection_request()
         self.add_connection_headers()
-        buffering = True
-        response = self.url_connection.getresponse(buffering)
+        response = self.url_connection.getresponse(buffering=True)
         self.headers = response.msg
         self.content_type = None
         self.persistent = not response.will_close

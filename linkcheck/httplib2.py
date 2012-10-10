@@ -81,7 +81,6 @@ try:
     from cStringIO import StringIO
 except ImportError:
     from StringIO import StringIO
-import cache.addrinfo
 
 __all__ = ["HTTP", "HTTPResponse", "HTTPConnection",
            "HTTPException", "NotConnected", "UnknownProtocol",
@@ -366,7 +365,9 @@ class HTTPResponse:
 
     def _read_status(self):
         # Initialize with Simple-Response defaults
-        line = self.fp.readline()
+        line = self.fp.readline(_MAXLINE + 1)
+        if len(line) > _MAXLINE:
+            raise LineTooLong("header line")
         if self.debuglevel > 0:
             print "reply:", repr(line)
         if not line:
@@ -683,8 +684,9 @@ class HTTPConnection:
     strict = 0
 
     def __init__(self, host, port=None, strict=None,
-                 timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
+                 timeout=socket._GLOBAL_DEFAULT_TIMEOUT, source_address=None):
         self.timeout = timeout
+        self.source_address = source_address
         self.sock = None
         self._buffer = []
         self.__response = None
@@ -763,26 +765,12 @@ class HTTPConnection:
             if line == '\r\n':
                 break
 
+
     def connect(self):
         """Connect to the host and port specified in __init__."""
-        msg = "getaddrinfo returns an empty list"
-        for res in cache.addrinfo.getaddrinfo(self.host, self.port):
-            af, socktype, proto, canonname, sa = res
-            try:
-                self.sock = socket.socket(af, socktype, proto)
-                if self.debuglevel > 0:
-                    print "connect: (%s, %s)" % (self.host, self.port)
-                self.sock.connect(sa)
-            except socket.error, msg:
-                if self.debuglevel > 0:
-                    print 'connect fail:', (self.host, self.port), msg
-                if self.sock is not None:
-                    self.sock.close()
-                    self.sock = None
-                continue
-            break
-        if not self.sock:
-            raise socket.error, msg
+        self.sock = socket.create_connection((self.host,self.port),
+                                             self.timeout, self.source_address)
+
         if self._tunnel_host:
             self._tunnel()
 
@@ -1161,7 +1149,7 @@ class HTTP:
 
             ### should we keep this behavior? do people use it?
             # keep the socket open (as a file), and return it
-            self.file = self._conn.sock.makefile('rb')
+            self.file = self._conn.sock.makefile('rb', 0)
 
             # close our socket -- we want to restart after any protocol error
             self.close()
@@ -1183,7 +1171,6 @@ class HTTP:
         ### do it
         self.file = None
 
-
 try:
     import ssl
 except ImportError:
@@ -1196,8 +1183,9 @@ else:
 
         def __init__(self, host, port=None, key_file=None, cert_file=None,
                      strict=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT,
-                     ca_certs=None):
-            HTTPConnection.__init__(self, host, port, strict, timeout)
+                     source_address=None, ca_certs=None):
+            HTTPConnection.__init__(self, host, port, strict, timeout,
+                                    source_address)
             self.key_file = key_file
             self.cert_file = cert_file
             self.ca_certs = ca_certs
@@ -1209,7 +1197,8 @@ else:
         def connect(self):
             "Connect to a host on a given (SSL) port."
 
-            sock = socket.create_connection((self.host, self.port), self.timeout)
+            sock = socket.create_connection((self.host, self.port),
+                                            self.timeout, self.source_address)
             if self._tunnel_host:
                 self.sock = sock
                 self._tunnel()

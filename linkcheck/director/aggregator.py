@@ -21,7 +21,7 @@ import time
 import threading
 from .. import log, LOG_CHECK
 from ..decorators import synchronized
-from ..cache import urlqueue, addrinfo, content
+from ..cache import urlqueue, content
 from . import logger, status, checker, cleanup
 
 
@@ -145,7 +145,5 @@ class Aggregate (object):
         logger.
         """
         robots_txt_stats = self.robots_txt.hits, self.robots_txt.misses
-        addrinfo_stats = addrinfo.getstats()
         download_stats = self.downloaded_bytes
-        self.logger.add_statistics(robots_txt_stats, addrinfo_stats,
-          download_stats)
+        self.logger.add_statistics(robots_txt_stats, download_stats)

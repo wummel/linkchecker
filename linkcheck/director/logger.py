@@ -46,10 +46,10 @@ class Logger (object):
         for logger in self.loggers:
             logger.end_output()
 
-    def add_statistics(self, robots_txt_stats, addrinfo_stats, download_stats):
+    def add_statistics(self, robots_txt_stats, download_stats):
         """Add statistics to logger."""
         for logger in self.loggers:
-            logger.add_statistics(robots_txt_stats, addrinfo_stats, download_stats)
+            logger.add_statistics(robots_txt_stats, download_stats)
 
     def do_print (self, url_data):
         """Determine if URL entry should be logged or not."""
