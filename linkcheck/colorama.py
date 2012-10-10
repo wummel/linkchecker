@@ -70,6 +70,7 @@ class CONSOLE_SCREEN_BUFFER_INFO(Structure):
         ("dwMaximumWindowSize", COORD),
     ]
     def __str__(self):
+        """Get string representation of console screen buffer info."""
         return '(%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d)' % (
             self.dwSize.Y, self.dwSize.X
             , self.dwCursorPosition.Y, self.dwCursorPosition.X
@@ -79,6 +80,7 @@ class CONSOLE_SCREEN_BUFFER_INFO(Structure):
         )
 
 def GetConsoleScreenBufferInfo(stream_id=STDOUT):
+    """Get console screen buffer info object."""
     handle = handles[stream_id]
     csbi = CONSOLE_SCREEN_BUFFER_INFO()
     success = windll.kernel32.GetConsoleScreenBufferInfo(
@@ -87,6 +89,7 @@ def GetConsoleScreenBufferInfo(stream_id=STDOUT):
 
 
 def SetConsoleTextAttribute(stream_id, attrs):
+    """Set a console text attribute."""
     handle = handles[stream_id]
     return windll.kernel32.SetConsoleTextAttribute(handle, attrs)
 
@@ -111,6 +114,7 @@ _default_style = None
 
 
 def init():
+    """Initialize foreground and background attributes."""
     global _default_foreground, _default_background, _default_style
     attrs = GetConsoleScreenBufferInfo(STDOUT).wAttributes
     _default_foreground = attrs & 7
@@ -119,10 +123,12 @@ def init():
 
 
 def get_attrs(foreground, background, style):
+    """Get foreground and background attributes."""
     return foreground + (background << 4) + style
 
 
 def set_console(stream=STDOUT, foreground=None, background=None, style=None):
+    """Set console foreground and background attributes."""
     if foreground is None:
         foreground = _default_foreground
     if background is None:
@@ -134,8 +140,10 @@ def set_console(stream=STDOUT, foreground=None, background=None, style=None):
 
 
 def reset_console(stream=STDOUT):
+    """Reset the console."""
     set_console(stream=stream)
 
 
 def get_console_size():
+    """Get the console size."""
     return GetConsoleScreenBufferInfo(STDOUT).dwSize

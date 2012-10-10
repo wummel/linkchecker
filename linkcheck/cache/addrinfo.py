@@ -27,6 +27,7 @@ from ..decorators import synchronized
 _lock = get_lock("addrinfo")
 
 class AddrInfo(object):
+    """Cache for socket.getaddrinfo() results."""
 
     def __init__(self):
         """Initialize address info cache and cache statistics."""

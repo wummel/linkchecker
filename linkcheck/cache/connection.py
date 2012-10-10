@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2005-2011 Bastian Kleineidam
+# Copyright (C) 2005-2012 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -37,10 +37,12 @@ DefaultLimits = dict(
 )
 
 def get_connection_id(connection):
+    """Return unique id for connection object."""
     return id(connection)
 
 
 def is_expired(curtime, conn_data):
+    """Test if connection is expired."""
     return (curtime+5.0) >= conn_data[2]
 
 

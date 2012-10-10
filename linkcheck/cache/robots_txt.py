@@ -48,6 +48,8 @@ class RobotsTxt (object):
             return self._allows_url(roboturl, url, proxy, user, password, callback)
 
     def _allows_url (self, roboturl, url, proxy, user, password, callback):
+        """Ask robots.txt allowance. Assumes only single thread per robots.txt
+        URL calls this function."""
         with cache_lock:
             if roboturl in self.cache:
                 self.hits += 1
@@ -69,4 +71,5 @@ class RobotsTxt (object):
 
     @synchronized(robot_lock)
     def get_lock(self, roboturl):
+        """Return lock for robots.txt url."""
         return self.roboturl_locks.setdefault(roboturl, get_lock(roboturl))

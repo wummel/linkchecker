@@ -96,6 +96,7 @@ class LCOptionParser (optparse.OptionParser, object):
 
     @notimplemented
     def get_usage (self):
+        """Print usage text."""
         pass
 
     def print_help_msg (self, s, out):
@@ -109,6 +110,7 @@ class LCOptionParser (optparse.OptionParser, object):
 
     @notimplemented
     def print_help (self, file=None):
+        """Print help text to given file."""
         pass
 
 

@@ -24,6 +24,7 @@ from ..decorators import synchronized
 _lock = get_lock("checksums")
 
 class ChecksumInfo(object):
+    """Cache for content checksums."""
 
     def __init__(self):
         """Initialize checksums and cache statistics."""
@@ -68,4 +69,3 @@ def get_checksum_urls(url, content):
     @rtype: list of unicode"""
     checksum = hashlib.sha1(content).hexdigest()
     return _checksuminfo.get_checksum_urls(url, checksum)
-
