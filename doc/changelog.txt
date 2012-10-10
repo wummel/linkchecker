@@ -31,6 +31,9 @@ Fixes:
 - logging: Close logger properly on I/O errors.
   Closes: SF bug #3567476
 - checking: Fix wrong method name when printing SSL certificate warnings.
+- checking: Catch ValueError on invalid cookie expiration dates.
+  Patch from Charles Jones.
+  Closes: SF bug #3575556
 
 
 8.0 "Luminaris" (released 2.9.2012)

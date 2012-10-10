@@ -119,7 +119,12 @@ class HttpCookie (object):
                 # note: even self.now + maxage can overflow
                 pass
         elif "expires" in self.attributes:
-            self.expire = cookielib.http2time(self.attributes["expires"])
+            expiration_date = self.attributes["expires"]
+            try:
+                self.expire = cookielib.http2time(expiration_date)
+            except ValueError:
+                # see http://bugs.python.org/issue16181
+                raise CookieError("Invalid expiration date in %r" % expiration_date)
 
     def is_expired (self, now=None):
         """Return True if this cookie is expired, else False."""

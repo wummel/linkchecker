@@ -151,6 +151,22 @@ class TestCookies (unittest.TestCase):
         self.assertRaises(linkcheck.cookies.CookieError,
                  linkcheck.cookies.NetscapeCookie, value, scheme, host, path)
 
+    def test_netscape_cookie9 (self):
+        # illegal expiration date
+        data = (
+            ("Foo", "Bar"),
+            ("Domain", "example.org"),
+            ("Expires", "Thu, 08-Oct-3697739 18:36:07 GMT"),
+            ("Path", "/"),
+        )
+        # note: values are without quotes
+        value = "; ".join('%s=%s' % (key, value) for key, value in data)
+        scheme = "http"
+        host = "example.org"
+        path = "/"
+        self.assertRaises(linkcheck.cookies.CookieError,
+                 linkcheck.cookies.NetscapeCookie, value, scheme, host, path)
+
     def test_rfc_cookie1 (self):
         data = (
             ("Foo", "Bar"),
