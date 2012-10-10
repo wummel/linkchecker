@@ -695,7 +695,9 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         """Read URL contents and store then in self._data.
         This way, the method can be called by other functions than
         read_content()"""
-        data = response.read()
+        data = response.read(self.MaxFilesizeBytes+1)
+        if len(data) > self.MaxFilesizeBytes:
+            raise LinkCheckerError(_("File size too large"))
         self._size = len(data)
         urls = self.aggregate.add_download_data(self.cache_content_key, data)
         self.warn_duplicate_content(urls)

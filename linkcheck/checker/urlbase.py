@@ -758,7 +758,9 @@ class UrlBase (object):
         Can be overridden in subclasses."""
         if self.size > self.MaxFilesizeBytes:
             raise LinkCheckerError(_("File size too large"))
-        data = self.url_connection.read()
+        data = self.url_connection.read(self.MaxFilesizeBytes+1)
+        if len(data) > self.MaxFilesizeBytes:
+            raise LinkCheckerError(_("File size too large"))
         if not self.is_local():
             urls = self.aggregate.add_download_data(self.cache_content_key, data)
             self.warn_duplicate_content(urls)
