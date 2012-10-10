@@ -56,7 +56,7 @@ def get_file(type_str, open_files, basedir):
         fd = codecs.open(os.path.join(basedir, filename), 'w', encoding)
         open_files[type_str] = fd
         write_html_header(fd, type_str, encoding)
-    return open_files[type_str] 
+    return open_files[type_str]
 
 def close_files(open_files):
     for fp in open_files.values():
