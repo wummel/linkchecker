@@ -302,7 +302,7 @@ class Logger (object):
             log.warn(LOG_CHECK, "writing to unitialized or closed file")
         else:
             try:
-                self.fd.write(strformat.strip_control_chars(s), **args)
+                self.fd.write(s, **args)
             except IOError:
                 msg = sys.exc_info()[1]
                 log.warn(LOG_CHECK,
