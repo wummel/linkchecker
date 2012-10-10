@@ -79,6 +79,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         self._data = None
         # flag telling if GET method is allowed; determined by robots.txt
         self.method_get_allowed = True
+        # HttpResponse object
+        self.response = None
 
     def allows_robots (self, url):
         """
@@ -143,13 +145,13 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         # first try with HEAD
         self.method = "HEAD"
         # check the http connection
-        response = self.check_http_connection()
+        self.check_http_connection()
         # redirections might have changed the URL
         self.url = urlutil.urlunsplit(self.urlparts)
         # check response
-        if response:
-            self.check_response(response)
-            response.close()
+        if self.response is not None:
+            self.check_response()
+            self.close_response()
 
     def check_http_connection (self):
         """
@@ -159,13 +161,11 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         @return: response or None if url is already handled
         @rtype: HttpResponse or None
         """
-        response = None
         while True:
             # XXX refactor this
-            if response is not None:
-                response.close()
+            self.close_response()
             try:
-                response = self._try_http_response()
+                self._try_http_response()
             except httplib.BadStatusLine, msg:
                 # some servers send empty HEAD replies
                 if self.method == "HEAD" and self.method_get_allowed:
@@ -180,31 +180,28 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
                     self.fallback_to_get()
                     continue
                 raise
-            if response.reason:
-                response.reason = unicode_safe(response.reason)
-            log.debug(LOG_CHECK,
-                "Response: %s %s", response.status, response.reason)
+
             uheaders = unicode_safe(self.headers, encoding=HEADER_ENCODING)
             log.debug(LOG_CHECK, "Headers: %s", uheaders)
             # proxy enforcement (overrides standard proxy)
-            if response.status == 305 and self.headers:
+            if self.response.status == 305 and self.headers:
                 oldproxy = (self.proxy, self.proxyauth)
                 newproxy = self.getheader("Location")
                 self.add_info(_("Enforced proxy `%(name)s'.") %
                               {"name": newproxy})
                 self.set_proxy(newproxy)
-                response.close()
+                self.close_response()
                 if not self.proxy:
                     self.set_result(
                          _("Enforced proxy `%(name)s' ignored, aborting.") %
                          {"name": newproxy},
                          valid=False)
-                    return None
-                response = self._try_http_response()
+                    return
+                self._try_http_response()
                 # restore old proxy settings
                 self.proxy, self.proxyauth = oldproxy
             try:
-                tries, response = self.follow_redirections(response)
+                tries = self.follow_redirections()
             except httplib.BadStatusLine, msg:
                 # some servers send empty HEAD replies
                 if self.method == "HEAD" and self.method_get_allowed:
@@ -214,9 +211,9 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
                 raise
             if tries == -1:
                 log.debug(LOG_CHECK, "already handled")
-                response.close()
+                self.close_response()
                 self.do_check_content = False
-                return None
+                return
             if tries >= self.max_redirects:
                 if self.method == "HEAD" and self.method_get_allowed:
                     # Microsoft servers tend to recurse HEAD requests
@@ -224,13 +221,13 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
                     continue
                 self.set_result(_("more than %d redirections, aborting") %
                                 self.max_redirects, valid=False)
-                response.close()
-                return None
-            if self.do_fallback(response.status):
+                self.close_response()
+                return
+            if self.do_fallback(self.response.status):
                 self.fallback_to_get()
                 continue
             # user authentication
-            if response.status == 401:
+            if self.response.status == 401:
                 authenticate = self.getheader('WWW-Authenticate')
                 if authenticate is None:
                     # Either the server intentionally blocked this request,
@@ -239,7 +236,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
                     # Either way, this is a warning.
                     self.add_warning(_("Unauthorized access without HTTP authentication."),
                        tag=WARN_HTTP_AUTH_UNAUTHORIZED)
-                    return response
+                    return
                 if not authenticate.startswith("Basic"):
                     # LinkChecker only supports Basic authorization
                     args = {"auth": authenticate}
@@ -247,13 +244,12 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
                        _("Unsupported HTTP authentication `%(auth)s', " \
                          "only `Basic' authentication is supported.") % args,
                        tag=WARN_HTTP_AUTH_UNKNOWN)
-                    return response
+                    return
                 if not self.auth:
                     self.construct_auth()
                     if self.auth:
                         continue
             break
-        return response
 
     def do_fallback(self, status):
         """Check for fallback according to response status.
@@ -305,21 +301,21 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
                 self.content_type = u""
         return self.content_type
 
-    def follow_redirections (self, response, set_result=True):
+    def follow_redirections (self, set_result=True):
         """Follow all redirections of http response."""
         log.debug(LOG_CHECK, "follow all redirections")
         redirected = self.url
         tries = 0
-        while response.status in [301, 302] and self.headers and \
+        while self.response.status in [301, 302] and self.headers and \
               tries < self.max_redirects:
-            num, response = self.follow_redirection(response, set_result, redirected)
+            num = self.follow_redirection(set_result, redirected)
             if num == -1:
-                return num, response
+                return num
             redirected = urlutil.urlunsplit(self.urlparts)
             tries += num
-        return tries, response
+        return tries
 
-    def follow_redirection (self, response, set_result, redirected):
+    def follow_redirection (self, set_result, redirected):
         """Follow one redirection of http response."""
         newurl = self.getheader("Location",
                      self.getheader("Uri", u""))
@@ -332,17 +328,17 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         log.debug(LOG_CHECK, "Norm redirected to %r", redirected)
         urlparts = strformat.url_unicode_split(redirected)
         if not self.check_redirection_scheme(redirected, urlparts, set_result):
-            return -1, response
+            return -1
         if not self.check_redirection_newscheme(redirected, urlparts, set_result):
-            return -1, response
+            return -1
         if not self.check_redirection_domain(redirected, urlparts,
-                                             set_result, response):
-            return -1, response
+                                             set_result):
+            return -1
         if not self.check_redirection_robots(redirected, set_result):
-            return -1, response
+            return -1
         num = self.check_redirection_recursion(redirected, set_result)
         if num != 0:
-            return num, response
+            return num
         # remember redirected url as alias
         self.aliases.append(redirected)
         if self.anchor:
@@ -351,16 +347,16 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         self.urlparts = urlparts
         self.build_url_parts()
         if set_result:
-            self.check301status(response)
+            self.check301status()
         # check cache again on the changed URL
         if self.aggregate.urlqueue.checked_redirect(redirected, self):
-            return -1, response
+            return -1
         # store cookies from redirect response
         self.store_cookies()
         # new response data
-        response.close()
-        response = self._try_http_response()
-        return 1, response
+        self.close_response()
+        self._try_http_response()
+        return 1
 
     def check_redirection_scheme (self, redirected, urlparts, set_result):
         """Return True if redirection scheme is ok, else False."""
@@ -375,7 +371,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
             self.set_result(_("syntax OK"))
         return False
 
-    def check_redirection_domain (self, redirected, urlparts, set_result, response):
+    def check_redirection_domain (self, redirected, urlparts, set_result):
         """Return True if redirection domain is ok, else False."""
         # XXX does not support user:pass@netloc format
         if urlparts[1] != self.urlparts[1]:
@@ -390,7 +386,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         self.set_extern(redirected)
         if self.extern[0] and self.extern[1]:
             if set_result:
-                self.check301status(response)
+                self.check301status()
                 self.add_info(_("The redirected URL is outside of the domain "
                               "filter, checked only syntax."))
                 self.set_result(_("filtered"))
@@ -447,9 +443,9 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
             raise LinkCheckerError(msg)
         return True
 
-    def check301status (self, response):
+    def check301status (self):
         """If response page has been permanently moved add a warning."""
-        if response.status == 301 and not self.has301status:
+        if self.response.status == 301 and not self.has301status:
             self.add_warning(_("HTTP 301 (moved permanent) encountered: you"
                                " should update this link."),
                              tag=WARN_HTTP_MOVED_PERMANENT)
@@ -477,20 +473,20 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         data["info"] = self.info
         return data
 
-    def check_response (self, response):
+    def check_response (self):
         """Check final result and log it."""
-        if response.status >= 400:
-            self.set_result(u"%r %s" % (response.status, response.reason),
+        if self.response.status >= 400:
+            self.set_result(u"%r %s" % (self.response.status, self.response.reason),
                             valid=False)
         else:
-            if response.status == 204:
+            if self.response.status == 204:
                 # no content
-                self.add_warning(unicode_safe(response.reason),
+                self.add_warning(self.response.reason,
                                  tag=WARN_HTTP_EMPTY_CONTENT)
             # store cookies for valid links
             self.store_cookies()
-            if response.status >= 200:
-                self.set_result(u"%r %s" % (response.status, response.reason))
+            if self.response.status >= 200:
+                self.set_result(u"%r %s" % (self.response.status, self.response.reason))
             else:
                 self.set_result(_("OK"))
         modified = rfc822.parsedate(self.getheader('Last-Modified', u''))
@@ -503,21 +499,23 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         will be opened.
         """
         try:
-            return self._get_http_response()
+            self._get_http_response()
         except socket.error, msg:
             if msg.args[0] == 32 and self.persistent:
                 # server closed persistent connection - retry
                 log.debug(LOG_CHECK, "Server closed connection: retry")
                 self.persistent = False
-                return self._get_http_response()
-            raise
+                self._get_http_response()
+            else:
+                raise
         except httplib.BadStatusLine, msg:
             if self.persistent:
                 # server closed connection - retry
                 log.debug(LOG_CHECK, "Empty status line: retry")
                 self.persistent = False
-                return self._get_http_response()
-            raise
+                self._get_http_response()
+            else:
+                raise
 
     def _get_http_response (self):
         """Send HTTP request and get response object."""
@@ -526,10 +524,10 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         self.get_http_object(scheme, host, port)
         self.add_connection_request()
         self.add_connection_headers()
-        response = self.url_connection.getresponse(buffering=True)
-        self.headers = response.msg
+        self.response = self.url_connection.getresponse(buffering=True)
+        self.headers = self.response.msg
         self.content_type = None
-        self.persistent = not response.will_close
+        self.persistent = not self.response.will_close
         if self.persistent and self.method == "HEAD":
             # Some servers send page content after a HEAD request,
             # but only after making the *next* request. This breaks
@@ -539,15 +537,12 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
             self.persistent = False
         # Note that for POST method the connection should also be closed,
         # but this method is never used.
-        if self.persistent and (self.method == "GET" or
-           self.getheader("Content-Length") != u"0"):
-            # always read content from persistent connections
-            self._read_content(response)
-            assert not response.will_close
         # If possible, use official W3C HTTP response name
-        if response.status in httplib.responses:
-            response.reason = httplib.responses[response.status]
-        return response
+        if self.response.status in httplib.responses:
+            self.response.reason = httplib.responses[self.response.status]
+        if self.response.reason:
+            self.response.reason = unicode_safe(self.response.reason)
+        log.debug(LOG_CHECK, "Response: %s %s", self.response.status, self.response.reason)
 
     def add_connection_request(self):
         """Add connection request."""
@@ -672,31 +667,26 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         @rtype: string
         """
         assert self.method_get_allowed, 'unallowed content read'
-        self.method = "GET"
-        response = self._try_http_response()
-        response = self.follow_redirections(response, set_result=False)[1]
-        self.headers = response.msg
+        if self.method != "GET" or self.response is None:
+            self.method = "GET"
+            self._try_http_response()
+            self.follow_redirections(set_result=False)
+        self.headers = self.response.msg
         self.content_type = None
         self.charset = headers.get_charset(self.headers)
         # Re-read size info, since the GET request result could be different
         # than a former HEAD request.
         self.add_size_info()
-        if self._data is None:
-            if self.size > self.MaxFilesizeBytes:
-                raise LinkCheckerError(_("File size too large"))
-            self._read_content(response)
-        data, size = self._data, self._size
-        self._data = self._size = None
-        return data, size
+        if self.size > self.MaxFilesizeBytes:
+            raise LinkCheckerError(_("File size too large"))
+        return self._read_content()
 
-    def _read_content (self, response):
-        """Read URL contents and store then in self._data.
-        This way, the method can be called by other functions than
-        read_content()"""
-        data = response.read(self.MaxFilesizeBytes+1)
+    def _read_content (self):
+        """Read URL contents."""
+        data = self.response.read(self.MaxFilesizeBytes+1)
         if len(data) > self.MaxFilesizeBytes:
             raise LinkCheckerError(_("File size too large"))
-        self._size = len(data)
+        dlsize = len(data)
         urls = self.aggregate.add_download_data(self.cache_content_key, data)
         self.warn_duplicate_content(urls)
         encoding = headers.get_content_encoding(self.headers)
@@ -716,8 +706,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
                 data = f.read()
             finally:
                 f.close()
-        # store temporary data
-        self._data = data
+        return data, dlsize
 
     def encoding_supported (self):
         """Check if page encoding is supported."""
@@ -817,6 +806,13 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         """
         return "%s://%s/robots.txt" % tuple(self.urlparts[0:2])
 
+    def close_response(self):
+        """Close the HTTP response object."""
+        if self.response is None:
+            return
+        self.response.close()
+        self.response = None
+
     def close_connection (self):
         """Release the connection from the connection pool. Persistent
         connections will not be closed.
@@ -830,6 +826,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         if self.persistent and self.url_connection.is_idle():
             expiration = time.time() + headers.http_keepalive(self.headers)
         else:
+            self.close_response()
             expiration = None
         self.aggregate.connections.release(scheme, host, port, self.url_connection, expiration=expiration)
         self.url_connection = None
