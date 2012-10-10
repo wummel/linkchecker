@@ -25,6 +25,7 @@ import logging.config
 import urllib
 import urlparse
 import shutil
+import socket
 import _LinkChecker_configdata as configdata
 from .. import (log, LOG_CHECK, LOG_ROOT, ansicolor, lognames, clamav,
     get_config_dir, fileutil, configdict)
@@ -354,6 +355,8 @@ class Configuration (dict):
         if self['loginurl']:
             self.sanitize_loginurl()
         self.sanitize_proxies()
+        # set default socket timeout
+        socket.setdefaulttimeout(self['timeout'])
 
     def sanitize_anchors (self):
         """Make anchor configuration consistent."""

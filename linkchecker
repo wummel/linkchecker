@@ -25,7 +25,6 @@ import codecs
 import re
 import os
 import pprint
-import socket
 import optparse
 import getpass
 # installs _() and _n() gettext functions into global namespace
@@ -598,7 +597,6 @@ if options.timeout is not None:
     else:
         print_usage(_("Illegal argument %(arg)r for option %(option)s") % \
                     {"arg": options.timeout, "option": "'--timeout'"})
-socket.setdefaulttimeout(config["timeout"])
 if options.version is not None:
     print_version()
 if options.verbose is not None:

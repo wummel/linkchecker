@@ -54,7 +54,7 @@ class TelnetUrl (urlbase.UrlBase):
         Open a telnet connection and try to login. Expected login
         label is "login: ", expected password label is "Password: ".
         """
-        self.url_connection = telnetlib.Telnet()
+        self.url_connection = telnetlib.Telnet(timeout=self.aggregate.config["timeout"])
         if log.is_debug(LOG_CHECK):
             self.url_connection.set_debuglevel(1)
         self.url_connection.open(self.host, self.port)

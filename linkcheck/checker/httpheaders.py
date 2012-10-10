@@ -18,7 +18,7 @@
 Helper functions dealing with HTTP headers.
 """
 
-DEFAULT_TIMEOUT_SECS = 300
+DEFAULT_KEEPALIVE = 300
 
 MAX_HEADER_BYTES = 8*1024
 
@@ -54,25 +54,25 @@ def http_persistent (response):
     return has_header_value(headers, "Connection", "Keep-Alive")
 
 
-def http_timeout (response):
+def http_keepalive (headers):
     """
-    Get HTTP timeout value, either from the Keep-Alive header or a
+    Get HTTP keepalive value, either from the Keep-Alive header or a
     default value.
 
-    @param response: response instance
-    @type response: httplib.HTTPResponse
-    @return: timeout
+    @param headers: HTTP headers
+    @type headers: dict
+    @return: keepalive in seconds
     @rtype: int
     """
-    timeout = response.getheader("Keep-Alive")
-    if timeout is not None:
+    keepalive = headers.get("Keep-Alive")
+    if keepalive is not None:
         try:
-            timeout = int(timeout[8:].strip())
-        except ValueError:
-            timeout = DEFAULT_TIMEOUT_SECS
+            keepalive = int(keepalive[8:].strip())
+        except (ValueError, OverflowError):
+            keepalive = DEFAULT_KEEPALIVE
     else:
-        timeout = DEFAULT_TIMEOUT_SECS
-    return timeout
+        keepalive = DEFAULT_KEEPALIVE
+    return keepalive
 
 
 def get_content_type (headers):

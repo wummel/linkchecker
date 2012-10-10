@@ -32,8 +32,6 @@ from ..network import iputil
 from .const import WARN_MAIL_NO_MX_HOST, \
     WARN_MAIL_UNVERIFIED_ADDRESS, WARN_MAIL_NO_CONNECTION
 
-DEFAULT_TIMEOUT_SECS = 300
-
 
 def getaddresses (addr):
     """Return list of email addresses from given field value."""
@@ -308,7 +306,7 @@ class MailtoUrl (urlbase.UrlBase):
             try:
                 log.debug(LOG_CHECK,
                     "SMTP check for %r (preference %d)", host, preference)
-                self.url_connection = smtplib.SMTP(timeout=DEFAULT_TIMEOUT_SECS)
+                self.url_connection = smtplib.SMTP(timeout=self.aggregate.config["timeout"])
                 if log.is_debug(LOG_CHECK):
                     self.url_connection.set_debuglevel(1)
                 self.url_connection.connect(host)

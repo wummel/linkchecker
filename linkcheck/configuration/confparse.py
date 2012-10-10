@@ -69,13 +69,16 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         if self.has_option(section, option):
             self.config[option] = self.getboolean(section, option)
 
-    def read_int_option (self, section, option, key=None, allownegative=False):
+    def read_int_option (self, section, option, key=None, min=None, max=None):
         """Read an integer option."""
         if self.has_option(section, option):
             num = self.getint(section, option)
-            if not allownegative and num < 0:
+            if min is not None and num < min:
                 raise LinkCheckerError(
-                    _("invalid negative value for %s: %d\n") % (option, num))
+                    _("invalid value for %s: %d must not be less than %d") % (option, num, min))
+            if max is not None and num < max:
+                raise LinkCheckerError(
+                    _("invalid value for %s: %d must not be greater than %d") % (option, num, max))
             if key is None:
                 key = option
             self.config[key] = num
@@ -128,19 +131,19 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
     def read_checking_config (self):
         """Read configuration options in section "checking"."""
         section = "checking"
-        self.read_int_option(section, "threads", allownegative=True)
+        self.read_int_option(section, "threads", min=-1)
         self.config['threads'] = max(0, self.config['threads'])
-        self.read_int_option(section, "timeout")
+        self.read_int_option(section, "timeout", min=1)
         self.read_boolean_option(section, "anchors")
-        self.read_int_option(section, "recursionlevel", allownegative=True)
+        self.read_int_option(section, "recursionlevel", min=-1)
         if self.has_option(section, "warningregex"):
             val = self.get(section, "warningregex")
             if val:
                 self.config["warningregex"] = re.compile(val)
-        self.read_int_option(section, "warnsizebytes")
+        self.read_int_option(section, "warnsizebytes", min=1)
         self.read_string_option(section, "nntpserver")
         self.read_string_option(section, "useragent")
-        self.read_int_option(section, "pause", key="wait")
+        self.read_int_option(section, "pause", key="wait", min=0)
         self.read_check_options(section)
 
     def read_check_options (self, section):
@@ -155,8 +158,8 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                 self.getboolean(section, "cookies")
         self.read_string_option(section, "cookiefile")
         self.read_string_option(section, "localwebroot")
-        self.read_int_option(section, "warnsslcertdaysvalid")
-        self.read_int_option(section, "maxrunseconds")
+        self.read_int_option(section, "warnsslcertdaysvalid", min=1)
+        self.read_int_option(section, "maxrunseconds", min=0)
 
     def read_authentication_config (self):
         """Read configuration options in section "authentication"."""

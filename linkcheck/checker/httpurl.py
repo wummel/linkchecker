@@ -528,7 +528,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         self.add_connection_headers()
         buffering = True
         response = self.url_connection.getresponse(buffering)
-        self.timeout = headers.http_timeout(response)
         self.headers = response.msg
         self.content_type = None
         self.persistent = not response.will_close
@@ -650,13 +649,13 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         self.close_connection()
         def create_connection(scheme, host, port):
             """Create a new http or https connection."""
+            kwargs = dict(port=port, strict=True, timeout=self.aggregate.config["timeout"])
             if scheme == "http":
-                strict = True
-                h = httplib.HTTPConnection(host, port, strict)
+                h = httplib.HTTPConnection(host, **kwargs)
             elif scheme == "https" and supportHttps:
                 devel_dir = os.path.join(configuration.configdata.install_data, "config")
-                ca_certs = configuration.get_share_file(devel_dir, 'ca-certificates.crt')
-                h = httplib.HTTPSConnection(host, port, ca_certs=ca_certs)
+                kwargs["ca_certs"] = configuration.get_share_file(devel_dir, 'ca-certificates.crt')
+                h = httplib.HTTPSConnection(host, **kwargs)
             else:
                 msg = _("Unsupported HTTP url scheme `%(scheme)s'") % {"scheme": scheme}
                 raise LinkCheckerError(msg)
@@ -830,8 +829,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         # add to cached connections
         scheme, host, port = self.get_netloc()
         if self.persistent and self.url_connection.is_idle():
-            # XXX use self.repsonse
-            expiration = time.time() + self.timeout
+            expiration = time.time() + headers.http_keepalive(self.headers)
         else:
             expiration = None
         self.aggregate.connections.release(scheme, host, port, self.url_connection, expiration=expiration)

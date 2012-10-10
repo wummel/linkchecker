@@ -25,8 +25,6 @@ from .. import log, LOG_CHECK, LinkCheckerError, fileutil
 from . import proxysupport, httpurl, internpaturl, get_index_html, pooledconnection
 from .const import WARN_FTP_MISSING_SLASH
 
-DEFAULT_TIMEOUT_SECS = 300
-
 
 class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledconnection.PooledConnection):
     """
@@ -74,7 +72,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledco
         """Log into ftp server and check the welcome message."""
         def create_connection(scheme, host, port):
             """Create a new ftp connection."""
-            connection = ftplib.FTP()
+            connection = ftplib.FTP(timeout=self.aggregate.config["timeout"])
             if log.is_debug(LOG_CHECK):
                 connection.set_debuglevel(1)
             return connection
