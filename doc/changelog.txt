@@ -34,6 +34,8 @@ Fixes:
 - checking: Catch ValueError on invalid cookie expiration dates.
   Patch from Charles Jones.
   Closes: SF bug #3575556
+- checking: Detect and handle stale remove filesystem errors when checking
+  local file links.
 
 
 8.0 "Luminaris" (released 2.9.2012)

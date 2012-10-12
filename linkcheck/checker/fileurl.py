@@ -96,22 +96,28 @@ class FileUrl (urlbase.UrlBase):
 
     def init (self, base_ref, base_url, parent_url, recursion_level,
               aggregate, line, column, name, url_encoding, extern):
-        """
-        Besides the usual initialization the URL is normed according
-        to the platform:
-         - the base URL is made an absolute file:// URL
-         - under Windows platform the drive specifier is normed
-        """
+        """Initialize the scheme."""
         super(FileUrl, self).init(base_ref, base_url, parent_url,
          recursion_level, aggregate, line, column, name, url_encoding, extern)
         self.scheme = u'file'
+
+    def build_base_url(self):
+        """The URL is normed according to the platform:
+         - the base URL is made an absolute file:// URL
+         - under Windows platform the drive specifier is normed
+        """
         if self.base_url is None:
             return
         base_url = self.base_url
-        if not (parent_url or base_ref or base_url.startswith("file:")):
+        if not (self.parent_url or self.base_ref or base_url.startswith("file:")):
             base_url = os.path.expanduser(base_url)
             if not is_absolute_path(base_url):
-                base_url = os.getcwd()+"/"+base_url
+                try:
+                    base_url = os.getcwd()+"/"+base_url
+                except OSError, msg:
+                    # occurs on stale remote filesystems (eg. NFS)
+                    errmsg = _("Could not get current working directory: %(msg)s") % dict(msg=msg)
+                    raise LinkCheckerError(errmsg)
                 if os.path.isdir(base_url):
                     base_url += "/"
             base_url = "file://"+base_url
@@ -127,6 +133,7 @@ class FileUrl (urlbase.UrlBase):
         """
         Calls super.build_url() and adds a trailing slash to directories.
         """
+        self.build_base_url()
         if self.parent_url is not None:
             # URL joining with the parent URL only works if the query
             # of the base URL are removed first.
