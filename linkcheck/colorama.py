@@ -32,7 +32,7 @@ STDOUT = -11
 STDERR = -12
 
 from ctypes import (windll, byref, Structure, c_char, c_short, c_uint32,
-  c_ushort)
+  c_ushort, ArgumentError)
 
 handles = {
     STDOUT: windll.kernel32.GetStdHandle(STDOUT),
@@ -116,10 +116,16 @@ _default_style = None
 def init():
     """Initialize foreground and background attributes."""
     global _default_foreground, _default_background, _default_style
-    attrs = GetConsoleScreenBufferInfo(STDOUT).wAttributes
-    _default_foreground = attrs & 7
-    _default_background = (attrs >> 4) & 7
-    _default_style = attrs & BRIGHT
+    try:
+        attrs = GetConsoleScreenBufferInfo().wAttributes
+    except ArgumentError:
+        _default_foreground = GREY
+        _default_background = BLACK
+        _default_style = NORMAL
+    else:
+        _default_foreground = attrs & 7
+        _default_background = (attrs >> 4) & 7
+        _default_style = attrs & BRIGHT
 
 
 def get_attrs(foreground, background, style):
@@ -146,4 +152,4 @@ def reset_console(stream=STDOUT):
 
 def get_console_size():
     """Get the console size."""
-    return GetConsoleScreenBufferInfo(STDOUT).dwSize
+    return GetConsoleScreenBufferInfo().dwSize
