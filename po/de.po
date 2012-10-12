@@ -286,7 +286,7 @@ msgstr "Inhalte: %(image)d Bild, %(text)d Text, %(video)d Video, %(audio)d Audio
 #: ../linkcheck/logger/text.py:259
 #, python-format
 msgid "URL lengths: min=%(min)d, max=%(max)d, avg=%(avg)d."
-msgstr "URL Längen: min=%(min)d, max=%(max)d, ∅=%(avg)d"
+msgstr "URL Längen: min=%(min)d, max=%(max)d, mittel=%(avg)d"
 
 #: ../linkcheck/logger/html.py:270
 #: ../linkcheck/logger/text.py:264
