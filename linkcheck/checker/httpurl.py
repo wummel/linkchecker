@@ -672,14 +672,12 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
             self.method = "GET"
             self._try_http_response()
             self.follow_redirections(set_result=False)
-        self.headers = self.response.msg
-        self.content_type = None
-        self.charset = headers.get_charset(self.headers)
-        # Re-read size info, since the GET request result could be different
-        # than a former HEAD request.
-        self.add_size_info()
+            # Re-read size info, since the GET request result could be different
+            # than a former HEAD request.
+            self.add_size_info()
         if self.size > self.MaxFilesizeBytes:
             raise LinkCheckerError(_("File size too large"))
+        self.charset = headers.get_charset(self.headers)
         return self._read_content()
 
     def _read_content (self):
