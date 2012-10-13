@@ -339,6 +339,10 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         num = self.check_redirection_recursion(redirected, set_result)
         if num != 0:
             return num
+        if set_result:
+            self.check301status()
+        self.close_response()
+        self.close_connection()
         # remember redirected url as alias
         self.aliases.append(redirected)
         if self.anchor:
@@ -346,15 +350,12 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         # note: urlparts has to be a list
         self.urlparts = urlparts
         self.build_url_parts()
-        if set_result:
-            self.check301status()
         # check cache again on the changed URL
         if self.aggregate.urlqueue.checked_redirect(redirected, self):
             return -1
         # store cookies from redirect response
         self.store_cookies()
         # new response data
-        self.close_response()
         self._try_http_response()
         return 1
 
