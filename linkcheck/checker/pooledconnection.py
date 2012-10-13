@@ -28,10 +28,11 @@ class PooledConnection (object):
         while True:
             connection = get_connection(scheme, host, port, create_connection)
             if hasattr(connection, 'acquire'):
+                # It's a connection lock object.
                 # This little trick avoids polling: wait for another
-                # connection to be released.
+                # connection to be released by acquiring the lock.
                 connection.acquire()
-                # The lock is immediately released since the above call to
+                # The lock is immediately released since the calling
                 # connections.get() acquires it again.
                 connection.release()
             else:
