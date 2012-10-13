@@ -564,3 +564,22 @@ class TestUrl (unittest.TestCase):
         self.assertTrue(is_dup("http://example.org", "http://example.org/index.html"))
         self.assertTrue(is_dup("http://example.org/index.htm", "http://example.org"))
         self.assertTrue(is_dup("http://example.org", "http://example.org/index.htm"))
+
+    def test_splitport(self):
+        splitport = linkcheck.url.splitport
+        netloc = "hostname"
+        host, port = splitport(netloc, 99)
+        self.assertEqual(host, netloc)
+        self.assertEqual(port, 99)
+        netloc = "hostname:"
+        host, port = splitport(netloc, 99)
+        self.assertEqual(host, "hostname")
+        self.assertEqual(port, 99)
+        netloc = "hostname:42"
+        host, port = splitport(netloc, 99)
+        self.assertEqual(host, "hostname")
+        self.assertEqual(port, 42)
+        netloc = "hostname:foo"
+        host, port = splitport(netloc, 99)
+        self.assertEqual(host, netloc)
+        self.assertEqual(port, 99)

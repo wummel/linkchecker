@@ -484,16 +484,23 @@ def splitport (host, port=0):
 
     @param host: host name
     @ptype host: string
+    @param port: the port number (default 0)
+    @ptype port: int
+
     @return: tuple of (host, port)
     @rtype: tuple of (string, int)
     """
     if ":" in host:
-        host, sport = host.split(":", 1)
+        shost, sport = host.split(":", 1)
         iport = is_numeric_port(sport)
         if iport:
-            port = iport
+            host, port = shost, iport
+        elif not sport:
+            # empty port, ie. the host was "hostname:"
+            host = shost
         else:
-            port = None
+            # For an invalid non-empty port leave the host name as is
+            pass
     return host, port
 
 
