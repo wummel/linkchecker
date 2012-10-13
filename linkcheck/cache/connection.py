@@ -118,18 +118,18 @@ class ConnectionPool (object):
         """
         self.wait_for_host(host)
         connection = create_connection(type, host, port)
-        id = get_connection_id(connection)
+        cid = get_connection_id(connection)
         expiration = None
         conn_data = [connection, 'busy', expiration]
         key = (type, host, port)
         if key in self.connections:
             lock, entries = self.connections[key]
-            entries[id] = conn_data
+            entries[cid] = conn_data
         else:
             lock = get_semaphore("%s:%d" % (host, port), self.limits[type])
             lock.acquire()
             log.debug(LOG_CACHE, "Acquired lock for %s://%s:%d" % key)
-            entries = {id: conn_data}
+            entries = {cid: conn_data}
             self.connections[key] = (lock, entries)
         return connection
 
@@ -147,7 +147,8 @@ class ConnectionPool (object):
         @rtype None or FTPConnection or HTTP(S)Connection
         """
         assert type in ConnectionTypes, 'invalid type %r' % type
-        assert 65535 >= port > 0, 'invalid port number %r' % port
+        # 65536 == 2**16
+        assert 0 < port < 65536, 'invalid port number %r' % port
         key = (type, host, port)
         if key not in self.connections:
             return self._add(type, host, port, create_connection)
@@ -194,7 +195,7 @@ class ConnectionPool (object):
                     entries[id][2] = expiration
                 lock.release()
             else:
-                log.warn(LOG_CACHE, "Release unknown connection %s://%s:%d", type, host, port)
+                log.warn(LOG_CACHE, "Release unknown connection %s://%s:%d from entries %s", type, host, port, entries.keys())
         else:
             log.warn(LOG_CACHE, "Release unknown connection %s://%s:%d", type, host, port)
 
