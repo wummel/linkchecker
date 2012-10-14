@@ -1,4 +1,4 @@
-8.1 "" (released xx.xx.2012)
+8.1 "Safety Not Guaranteed" (released 14.10.2012)
 
 Features:
 - checking: Allow specification of maximum checking time or maximum
@@ -34,7 +34,7 @@ Fixes:
 - checking: Catch ValueError on invalid cookie expiration dates.
   Patch from Charles Jones.
   Closes: SF bug #3575556
-- checking: Detect and handle stale remove filesystem errors when checking
+- checking: Detect and handle remote filesystem errors when checking
   local file links.
 
 

@@ -1,6 +1,6 @@
 Project: LinkChecker
-Version: 8.0
-Release-Focus: Major feature enhancements
+Version: 8.1
+Release-Focus: Minor feature enhancements
 Hide: N
 Website-URL: http://linkchecker.sourceforge.net/
 Changelog-URL: http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker/linkchecker;a=blob;f=doc/changelog.txt;hb=HEAD
@@ -9,5 +9,7 @@ Debian-Package-URL: http://packages.debian.org/linkchecker
 GIT-Tree-URL: http://linkchecker.git.sourceforge.net/
 Windows-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.exe
 
-SSL certificates for HTTPS connections are checked and verified now.
-Several checking bugs have also been fixed.
+The maximum check time or maximum number of URLs to check can now be configured.
+For HTTP requests, a do-not-track header is sent.
+An XML sitemap can be generated for search engine optimization.
+Several checking bugs were also fixed.
