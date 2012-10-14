@@ -135,6 +135,15 @@ that are already expired.
 The default number of days is 14.
 .br
 Command line option: none
+.TP
+\fBmaxrunseconds=\fP\fINUMBER\fP
+Stop checking new URLs after the given number of seconds. Same as if the
+user stops (by hitting Ctrl-C or clicking the abort buttin in the GUI)
+after the given number of seconds.
+.br
+The default is not to stop until all URLs are checked.
+.br
+Command line option: none
 .SS \fB[filtering]\fP
 .TP
 \fBignore=\fP\fIREGEX\fP (MULTILINE)
