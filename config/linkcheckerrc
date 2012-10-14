@@ -182,6 +182,9 @@
 # Stop checking new URLs after the given number of seconds. Same as if the
 # user hits Ctrl-C after X seconds.
 #maxrunseconds=600
+# Maximum number of URLs to check. New URLs will not be queued after the
+# given number of URLs is checked.
+#maxnumurls=153
 
 ##################### filtering options ##########################
 [filtering]

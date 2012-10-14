@@ -228,6 +228,7 @@ class Configuration (dict):
         self["localwebroot"] = None
         self["warnsslcertdaysvalid"] = 14
         self["maxrunseconds"] = None
+        self["maxnumurls"] = None
         from ..logger import Loggers
         self.loggers = dict(**Loggers)
 

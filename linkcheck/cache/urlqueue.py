@@ -40,7 +40,7 @@ class UrlQueue (object):
     """A queue supporting several consumer tasks. The task_done() idea is
     from the Python 2.5 implementation of Queue.Queue()."""
 
-    def __init__ (self, allowed_puts=None):
+    def __init__ (self, max_allowed_puts=None):
         """Initialize the queue state and task counters."""
         # Note: don't put a maximum size on the queue since it would
         # lead to deadlocks when all worker threads called put().
@@ -61,9 +61,9 @@ class UrlQueue (object):
         self.shutdown = False
         # Each put() decreases the number of allowed puts.
         # This way we can restrict the number of URLs that are checked.
-        if allowed_puts is not None and allowed_puts <= 0:
-            raise ValueError("Non-positive number of allowed puts: %d" % allowed_puts)
-        self.allowed_puts = allowed_puts
+        if max_allowed_puts is not None and max_allowed_puts <= 0:
+            raise ValueError("Non-positive number of allowed puts: %d" % max_allowed_puts)
+        self.allowed_puts = max_allowed_puts
 
     def qsize (self):
         """Return the approximate size of the queue (not reliable!)."""
