@@ -38,7 +38,7 @@ echo Compressing Python libraries and executables
 :: skip DLL compression as it causes the GUI not to start
 for /r %PORTDIR% %%f in (*.pyd,*.exe) do %UPX_EXE% "%%f" --best
 echo Generating portable distribution file
-%SZ_EXE% a -mx=9 -md=32m LinkChecker-%VERSION%-portable.zip %PORTDIR%
+%SZ_EXE% a -mx=9 LinkChecker-%VERSION%-portable.zip %PORTDIR%
 rd /s /q %PORTDIR%
 
 :finish
