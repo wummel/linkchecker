@@ -12,4 +12,5 @@ Windows-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-
 The maximum check time or maximum number of URLs to check can now be configured.
 For HTTP requests, a do-not-track header is sent.
 An XML sitemap can be generated for search engine optimization.
+The URL length and duplicate page contents are now checked.
 Several checking bugs were also fixed.
