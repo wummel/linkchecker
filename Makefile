@@ -53,7 +53,7 @@ distclean: clean cleandeb
 	rm -f _$(APPNAME)_configdata.py MANIFEST Packages.gz
 # clean aborted dist builds and -out files
 	rm -f linkchecker-out* linkchecker.prof
-	rm -f alexa*.log
+	rm -f alexa*.log testresults.txt
 	rm -rf $(APPNAME)-$(VERSION)
 	rm -rf coverage dist-stamp python-build-stamp*
 
