@@ -1,15 +1,18 @@
 HTMLDIR:=$(HOME)/public_html/linkchecker.sf.net/source
-MANFILES:= \
+MANHTMLFILES:= \
 	$(HTMLDIR)/man1/linkchecker.1.html \
 	$(HTMLDIR)/man5/linkcheckerrc.5.html \
 	$(HTMLDIR)/man1/linkchecker-gui.1.html
+
+MANFILES:=linkchecker.1 linkcheckerrc.5 linkchecker-gui.1
+LOCALES:=en de
 
 all:
 
 po4a:
 	po4a --localized-charset=UTF-8 po4a.conf
 
-man:	$(MANFILES)
+man:	$(MANHTMLFILES)
 
 $(HTMLDIR)/man1/linkchecker.1.html: en/linkchecker.1 linkchecker.1.html.diff
 	man2html -r $< | tail -n +2 | sed 's/Time:.*//g' | sed 's@/:@/@g' > $@
@@ -23,4 +26,15 @@ $(HTMLDIR)/man1/linkchecker-gui.1.html: en/linkchecker-gui.1 linkchecker-gui.1.h
 	man2html -r $< | tail -n +2 | sed 's/Time:.*//g' | sed 's@/:@/@g' > $@
 	patch --no-backup-if-mismatch --quiet $@ linkchecker-gui.1.html.diff
 
-.PHONY: po4a man
+# check all makefiles for formatting warnings
+check:
+	@t=$(shell tempfile); \
+	for loc in $(LOCALES); do \
+	  for manfile in $(MANFILES); do \
+	    echo "Checking $$loc/$$manfile"; \
+	    LC_ALL=en_US.UTF-8 MANWIDTH=80 man --warnings -E UTF-8 -l $$loc/$$manfile > /dev/null 2>$$t ; \
+	    if [ -s $$t ]; then cat $$t; exit 1; fi; \
+	  done; \
+	done
+
+.PHONY: po4a man check

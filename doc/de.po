@@ -451,8 +451,8 @@ msgstr ""
 "Ausgabe in eine Datei namens B<linkchecker-out.>I<TYP>, B<$HOME/.linkchecker/"
 "blacklist> bei B<blacklist> Ausgabe, oder I<DATEINAME> falls angegeben. Das "
 "I<ENCODING> gibt die Ausgabekodierung an. Der Standard ist das der lokalen "
-"Spracheinstellung. Gültige Enkodierungen sind unter B<http://docs.python.org/"
-"library/\\:codecs.html#standard-encodings> aufgelistet."
+"Spracheinstellung. Gültige Enkodierungen sind aufgelistet unter B<http://docs.python.org/"
+"library/\\:codecs.html#standard-encodings>."
 
 # type: Plain text
 #. type: Plain text
@@ -470,12 +470,9 @@ msgstr ""
 "ignoriert, ansonsten wird die Datei überschrieben falls sie existiert. Sie "
 "können diese Option mehr als einmal verwenden. Gültige Ausgabetypen sind "
 "B<text>, B<html>, B<sql>, B<csv>, B<gml>, B<dot>, B<xml>, B<sitemap>, "
-"B<none> oder B<blacklist>. Standard ist keine Dateiausgabe. I<ENKODIERUNG> "
-"gibt die Ausgabekodierung an,der Standard ist die Enkodierung der "
-"ausgewählten Spracheinstellung. Gültige Enkodierungen sind unter B<http://"
-"docs.python.org/library/codecs.html#standard-encodings> aufgelistet. "
-"Beachten Sie, dass Sie mit der Option B<-o none> jegliche Ausgaben auf der "
-"Konsole verhindern können."
+"B<none> oder B<blacklist>. Standard ist keine Dateiausgabe. Die unterschiedlichen "
+"Ausgabetypen sind weiter unten dokumentiert. Beachten Sie, dass Sie mit "
+"der Option B<-o none> jegliche Ausgaben auf der Konsole verhindern können."
 
 # type: TP
 #. type: TP
@@ -531,8 +528,8 @@ msgid ""
 "codecs.html#standard-encodings>."
 msgstr ""
 "Das I<ENCODING> gibt die Ausgabekodierung an. Der Standard ist das der "
-"lokalen Spracheinstellung. Gültige Enkodierungen sind unter B<http://docs."
-"python.org/library/\\:codecs.html#standard-encodings> aufgelistet."
+"lokalen Spracheinstellung. Gültige Enkodierungen sind aufgelistet unter B<http://docs."
+"python.org/library/\\:codecs.html#standard-encodings>."
 
 # type: TP
 #. type: TP
@@ -2641,8 +2638,8 @@ msgid ""
 "codecs.html#standard-encodings>."
 msgstr ""
 "Das I<ENCODING> gibt die Ausgabekodierung an. Der Standard ist das der "
-"lokalen Spracheinstellung. Gültige Enkodierungen sind unter B<http://docs."
-"python.org/library/codecs.html#standard-encodings> aufgelistet."
+"lokalen Spracheinstellung. Gültige Enkodierungen sind aufgelistet unter B<http://docs."
+"python.org/library/codecs.html#standard-encodings>."
 
 # type: Plain text
 #. type: Plain text
@@ -2798,8 +2795,8 @@ msgid ""
 "Valid encodings are listed in B<http://docs.python.org/library/codecs."
 "html#standard-encodings>."
 msgstr ""
-"Gültige Enkodierungen sind unter B<http://docs.python.org/library/codecs."
-"html#standard-encodings> aufgelistet."
+"Gültige Enkodierungen sind aufgelistet unter B<http://docs.python.org/library/codecs."
+"html#standard-encodings>."
 
 #. type: Plain text
 #: en/linkcheckerrc.5:292
