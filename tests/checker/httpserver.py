@@ -23,6 +23,9 @@ import BaseHTTPServer
 import httplib
 import time
 import threading
+import cgi
+import urllib
+from cStringIO import StringIO
 from . import LinkCheckTest
 
 
@@ -67,7 +70,8 @@ class StoppableHttpServer (BaseHTTPServer.HTTPServer, object):
 
 class NoQueryHttpRequestHandler (StoppableHttpRequestHandler):
     """
-    Handler ignoring the query part of requests.
+    Handler ignoring the query part of requests and sending dummy directory
+    listings.
     """
 
     def remove_path_query (self):
@@ -91,6 +95,34 @@ class NoQueryHttpRequestHandler (StoppableHttpRequestHandler):
         """
         self.remove_path_query()
         super(NoQueryHttpRequestHandler, self).do_HEAD()
+
+    def list_directory(self, path):
+        """Helper to produce a directory listing (absent index.html).
+
+        Return value is either a file object, or None (indicating an
+        error).  In either case, the headers are sent, making the
+        interface the same as for send_head().
+
+        """
+        f = StringIO()
+        f.write('<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">')
+        f.write("<html>\n<title>Dummy directory listing</title>\n")
+        f.write("<body>\n<h2>Dummy test directory listing</h2>\n")
+        f.write("<hr>\n<ul>\n")
+        list = ["example1.txt", "example2.html", "example3"]
+        for name in list:
+            displayname = linkname = name
+            f.write('<li><a href="%s">%s</a>\n'
+                    % (urllib.quote(linkname), cgi.escape(displayname)))
+        f.write("</ul>\n<hr>\n</body>\n</html>\n")
+        length = f.tell()
+        f.seek(0)
+        self.send_response(200)
+        encoding = "utf-8"
+        self.send_header("Content-type", "text/html; charset=%s" % encoding)
+        self.send_header("Content-Length", str(length))
+        self.end_headers()
+        return f
 
 
 class HttpServerTest (LinkCheckTest):
