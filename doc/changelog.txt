@@ -1,3 +1,10 @@
+8.2 "" (released xx.xx.xxxx)
+
+Changes:
+- checking: Print a warning when passwords are found in the configuration file
+  and the file is accessible by others.
+
+
 8.1 "Safety Not Guaranteed" (released 14.10.2012)
 
 Features:

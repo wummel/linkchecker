@@ -214,6 +214,8 @@
 
 ##################### password authentication ##########################
 [authentication]
+# WARNING: if you store passwords in this configuration entry, make sure the
+# configuration file is not readable by other users.
 # Different user/password pairs for different URLs can be provided.
 # Entries are a triple (URL regular expression, username, password),
 # separated by whitespace.

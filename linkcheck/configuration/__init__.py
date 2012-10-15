@@ -312,11 +312,20 @@ class Configuration (dict):
         else:
             cfiles = files[:]
         if not cfiles:
-            cfiles.append(get_user_config())
-        # weed out invalid files
-        cfiles = [f for f in cfiles if os.path.isfile(f)]
-        log.debug(LOG_CHECK, "reading configuration from %s", cfiles)
-        confparse.LCConfigParser(self).read(cfiles)
+            userconf = get_user_config()
+            if os.path.isfile(userconf):
+                cfiles.append(userconf)
+        # filter invalid files
+        filtered_cfiles = []
+        for cfile in cfiles:
+            if not os.path.isfile(cfile):
+                log.warn(LOG_CHECK, _("Configuration file %r does not exist."), cfile)
+            elif not fileutil.is_readable(cfile):
+                log.warn(LOG_CHECK, _("Configuration file %r is not readable."), cfile)
+            else:
+                filtered_cfiles.append(cfile)
+        log.debug(LOG_CHECK, "reading configuration from %s", filtered_cfiles)
+        confparse.LCConfigParser(self).read(filtered_cfiles)
         self.sanitize()
 
     def add_auth (self, user=None, password=None, pattern=None):
@@ -443,8 +452,11 @@ def get_user_config():
     """Get the user configuration filename.
     If the user configuration file does not exist, copy it from the initial
     configuration file, but only if this is not a portable installation.
-    Returns path to user config file (which might not exist do to copy
-    failures or on portable systems)."""
+    Returns path to user config file (which might not exist due to copy
+    failures or on portable systems).
+    @return configuration filename
+    @rtype string
+    """
     # initial config (with all options explained)
     initialconf = normpath(os.path.join(get_config_dir(), "linkcheckerrc"))
     # per user config settings

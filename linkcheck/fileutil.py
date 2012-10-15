@@ -271,6 +271,12 @@ def is_readable(filename):
     return os.path.isfile(filename) and os.access(filename, os.R_OK)
 
 
+def is_accessable_by_others(filename):
+    """Check if file is group or world accessable."""
+    mode = get_stat(filename)[stat.ST_MODE]
+    return mode & (stat.S_IRWXG | stat.S_IRWXO)
+
+
 @memoized
 def is_writable(filename):
     """Check if

@@ -18,7 +18,8 @@
 
 import ConfigParser
 import re
-from .. import LinkCheckerError, get_link_pat
+import os
+from .. import LinkCheckerError, get_link_pat, LOG_CHECK, log, fileutil
 
 
 def read_multiline (value):
@@ -45,8 +46,12 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
 
         @raises: LinkCheckerError on syntax errors in the config file(s)
         """
+        assert isinstance(files, list), "Invalid file list %r" % files
         try:
-            super(LCConfigParser, self).read(files)
+            self.read_ok = super(LCConfigParser, self).read(files)
+            if len(self.read_ok) < len(files):
+                failed_files = set(files) - set(self.read_ok)
+                log.warn(LOG_CHECK, "Could not read configuration files %s.", failed_files)
             # Read all the configuration parameters from the given files.
             self.read_output_config()
             self.read_checking_config()
@@ -164,12 +169,14 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
     def read_authentication_config (self):
         """Read configuration options in section "authentication"."""
         section = "authentication"
+        password_fields = []
         if self.has_option(section, "entry"):
             for val in read_multiline(self.get(section, "entry")):
                 auth = val.split()
                 if len(auth) == 3:
                     self.config.add_auth(pattern=auth[0], user=auth[1],
                                          password=auth[2])
+                    password_fields.append("entry/%s/%s" % (auth[0], auth[1]))
                 elif len(auth) == 2:
                     self.config.add_auth(pattern=auth[0], user=auth[1])
                 else:
@@ -186,11 +193,31 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             self.config["storecookies"] = self.config["sendcookies"] = True
         self.read_string_option(section, "loginuserfield")
         self.read_string_option(section, "loginpasswordfield")
+        if self.config["loginpasswordfield"]:
+            password_fields.append("loginpasswordfield")
         # read login extra fields
         if self.has_option(section, "loginextrafields"):
             for val in read_multiline(self.get(section, "loginextrafields")):
                 name, value = val.split(":", 1)
                 self.config["loginextrafields"][name] = value
+        self.check_password_readable(section, password_fields)
+
+    def check_password_readable(self, section, fields):
+        """Check if there is a readable configuration file and print a warning."""
+        if not fields:
+            return
+        # The information which of the  configuration files
+        # included which option is not available. To avoid false positives,
+        # a warning is only printed if exactly one file has been read.
+        if len(self.read_ok) != 1:
+            return
+        fn = self.read_ok[0]
+        if fileutil.is_accessable_by_others(fn):
+            log.warn(LOG_CHECK, "The configuration file %s contains password information (in section [%s] and options %s) and the file is readable by others. Please make the file only readable by you.", fn, section, fields)
+            if os.name == 'posix':
+                log.warn(LOG_CHECK, _("For example execute 'chmod go-rw %s'.") % fn)
+            elif os.name == 'nt':
+                log.warn(LOG_CHECK, _("See http://support.microsoft.com/kb/308419 for more info on setting file permissions."))
 
     def read_filtering_config (self):
         """
