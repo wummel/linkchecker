@@ -151,6 +151,7 @@ check:
 	check-pofiles -v
 	py-tabdaddy
 	py-unittest2-compat tests/
+	$(MAKE) -C doc check
 	$(MAKE) doccheck
 	$(MAKE) pyflakes
 
@@ -198,6 +199,9 @@ releasecheck: check
 	fi
 	@if ! grep "Version: $(VERSION)" linkchecker.freecode > /dev/null; then \
 	  echo "Could not release: edit linkchecker.freecode version"; false; \
+	fi
+	@if grep "UNRELEASED" debian/changelog > /dev/null; then \
+	  echo "Could not release: edit debian/changelog distribution name"; false; \
 	fi
 	$(PYTHON) setup.py check --restructuredtext
 
