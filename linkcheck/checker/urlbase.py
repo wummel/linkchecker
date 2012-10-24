@@ -695,8 +695,11 @@ class UrlBase (object):
         enc = lambda anchor: urlutil.url_quote_part(anchor, encoding=self.encoding)
         if any(x for x in self.anchors if enc(x[0]) == self.anchor):
             return
-        anchornames = sorted(set(u"`%s'" % x[0] for x in self.anchors))
-        anchors = u", ".join(anchornames)
+        if self.anchors:
+            anchornames = sorted(set(u"`%s'" % x[0] for x in self.anchors))
+            anchors = u", ".join(anchornames)
+        else:
+            anchors = u"none"
         args = {"name": self.anchor, "anchors": anchors}
         msg = u"%s %s" % (_("Anchor `%(name)s' not found.") % args,
                           _("Available anchors: %(anchors)s.") % args)
