@@ -3,6 +3,8 @@
 Changes:
 - checking: Print a warning when passwords are found in the configuration file
   and the file is accessible by others.
+- checking: Add debug statements for unparseable content types.
+  Closing: SF bug #3579714
 
 
 8.1 "Safety Not Guaranteed" (released 14.10.2012)

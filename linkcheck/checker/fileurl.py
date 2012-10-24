@@ -258,9 +258,15 @@ class FileUrl (urlbase.UrlBase):
         @return: True if content is parseable
         @rtype: bool
         """
-        return (self.is_directory() or
-            firefox.has_sqlite and firefox.extension.search(self.url) or
-            self.get_content_type() in self.ContentMimetypes)
+        if self.is_directory():
+            return True
+        if firefox.has_sqlite and firefox.extension.search(self.url):
+            return True
+        ctype = self.get_content_type()
+        if ctype in self.ContentMimetypes:
+            return True
+        log.debug(LOG_CHECK, "File with content type %r is not parseable.", ctype)
+        return False
 
     def parse_url (self):
         """Parse file contents for new links to check."""

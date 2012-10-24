@@ -775,7 +775,9 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         """
         if not (self.valid and self.headers):
             return False
-        if self.get_content_type() not in self.ContentMimetypes:
+        ctype = self.get_content_type()
+        if ctype not in self.ContentMimetypes:
+            log.debug(LOG_CHECK, "URL with content type %r is not parseable", ctype)
             return False
         return self.encoding_supported()
 
