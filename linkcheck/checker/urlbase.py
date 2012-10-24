@@ -333,7 +333,7 @@ class UrlBase (object):
             # do not copy anchor warnings, since the current anchor
             # might have changed
             if anchor_changed and tag == WARN_URL_ANCHOR_NOT_FOUND:
-                pass
+                continue
             self.add_warning(msg, tag=tag)
         for info in cache_data["info"]:
             self.add_info(info)
@@ -699,7 +699,7 @@ class UrlBase (object):
             anchornames = sorted(set(u"`%s'" % x[0] for x in self.anchors))
             anchors = u", ".join(anchornames)
         else:
-            anchors = u"none"
+            anchors = u"-"
         args = {"name": self.anchor, "anchors": anchors}
         msg = u"%s %s" % (_("Anchor `%(name)s' not found.") % args,
                           _("Available anchors: %(anchors)s.") % args)
@@ -1152,6 +1152,8 @@ class UrlBase (object):
             u"column=%d" % self.column,
             u"name=%r" % self.name,
             u"anchor=%r" % self.anchor,
+            u"cached=%s" % self.cached,
+            u"cache_key=%s" % self.cache_url_key,
            ])
 
     def get_intern_pattern (self, url=None):
