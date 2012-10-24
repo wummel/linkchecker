@@ -577,18 +577,19 @@ class UrlBase (object):
         """
         An exception occurred. Log it and set the cache flag.
         """
-        etype, value = sys.exc_info()[:2]
-        log.debug(LOG_CHECK, "Error in %s: %s %s", self.url, etype, value, exception=True)
+        etype, evalue = sys.exc_info()[:2]
+        log.debug(LOG_CHECK, "Error in %s: %s %s", self.url, etype, evalue, exception=True)
         # note: etype must be the exact class, not a subclass
         if (etype in ExcNoCacheList) or \
-           (etype == socket.error and value.args[0]==errno.EBADF) or \
-            not value:
+           (etype == socket.error and evalue.args[0]==errno.EBADF) or \
+            not evalue:
             # EBADF occurs when operating on an already socket
             self.caching = False
+        # format unicode message "<exception name>: <error message>"
         errmsg = unicode(etype.__name__)
-        if unicode(value):
-            # use Exception class name
-            errmsg += u": %s" % unicode(value)
+        uvalue = strformat.unicode_safe(evalue)
+        if uvalue:
+            errmsg += u": %s" % uvalue
         # limit length to 240
         return strformat.limit(errmsg, length=240)
 
