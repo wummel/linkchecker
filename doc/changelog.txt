@@ -4,9 +4,9 @@ Changes:
 - checking: Print a warning when passwords are found in the configuration file
   and the file is accessible by others.
 - checking: Add debug statements for unparseable content types.
-  Closing: SF bug #3579714
+  Closes: SF bug #3579714
 - checking: Fix handling of non-ASCII exceptions (regression in 8.1).
-  Closing: SF bug #3579766
+  Closes: SF bug #3579766
 
 
 8.1 "Safety Not Guaranteed" (released 14.10.2012)
