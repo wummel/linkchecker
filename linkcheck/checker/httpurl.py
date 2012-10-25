@@ -629,6 +629,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
             else:
                 log.debug(LOG_CHECK, "Discard too-long cookie %r", cookievalue)
         if headervalue:
+            log.debug(LOG_CHECK, "Sending cookie header %s:%s", headername, headervalue)
             self.url_connection.putheader(headername, headervalue)
 
     def get_http_object (self, scheme, host, port):
