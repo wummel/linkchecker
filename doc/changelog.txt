@@ -8,6 +8,10 @@ Changes:
 - checking: Fix handling of non-ASCII exceptions (regression in 8.1).
   Closes: SF bug #3579766
 
+Fixes:
+- checking: Fix anchor checking of cached HTTP URLs.
+  Closes: SF bug #3577743
+
 
 8.1 "Safety Not Guaranteed" (released 14.10.2012)
 

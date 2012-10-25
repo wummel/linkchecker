@@ -741,21 +741,25 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         @return: True if URL points to HTML file
         @rtype: bool
         """
-        if not (self.valid and self.headers):
+        if not self.valid:
             return False
         mime = self.get_content_type()
         if self.ContentMimetypes.get(mime) != "html":
             return False
-        return self.encoding_supported()
+        if self.headers:
+            return self.encoding_supported()
+        return True
 
     def is_css (self):
         """Return True iff content of this url is CSS stylesheet."""
-        if not (self.valid and self.headers):
+        if not self.valid:
             return False
         mime = self.get_content_type()
         if self.ContentMimetypes.get(mime) != "css":
             return False
-        return self.encoding_supported()
+        if self.headers:
+            return self.encoding_supported()
+        return True
 
     def is_http (self):
         """
