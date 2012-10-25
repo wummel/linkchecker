@@ -129,7 +129,7 @@ dist: locale MANIFEST chmod
 # https://bugzilla.redhat.com/show_bug.cgi?id=236535
 # too uninvolved to fix it
 
-dist-stamp: changelog
+dist-stamp: changelog config/ca-certificates.crt
 	$(MAKE) dist
 	touch $@
 
@@ -251,7 +251,12 @@ count:
 ide:
 	eclipse -data $(CURDIR)/..
 
+update-certificates:	config/ca-certificates.crt
+
+config/ca-certificates.crt:	/etc/ssl/certs/ca-certificates.crt
+	cp $< $@
+
 .PHONY: test changelog gui count pyflakes ide login upload all clean distclean
 .PHONY: pep8 cleandeb locale localbuild deb_orig diff dnsdiff sign_distfiles
 .PHONY: filescheck update-copyright releasecheck check register announce
-.PHONY: chmod dist app rpm release homepage
+.PHONY: chmod dist app rpm release homepage update-certificates
