@@ -222,6 +222,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
                 self.set_result(_("more than %d redirections, aborting") %
                                 self.max_redirects, valid=False)
                 self.close_response()
+                self.do_check_content = False
                 return
             if self.do_fallback(self.response.status):
                 self.fallback_to_get()
@@ -672,7 +673,9 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         if self.method != "GET" or self.response is None:
             self.method = "GET"
             self._try_http_response()
-            self.follow_redirections(set_result=False)
+            num = self.follow_redirections(set_result=False)
+            if not (0 <= num <= self.max_redirects):
+                raise LinkCheckerError(_("Redirection error"))
             # Re-read size info, since the GET request result could be different
             # than a former HEAD request.
             self.add_size_info()
