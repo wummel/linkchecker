@@ -73,8 +73,8 @@ localbuild: MANIFEST locale
 	$(MAKE) -C doc/html
 	$(MAKE) -C linkcheck/HtmlParser
 	$(PYTHON) setup.py build
-	cp -f build/lib.$(PLATFORM)-$(PYVER)/linkcheck/HtmlParser/htmlsax*.so linkcheck/HtmlParser
-	cp -f build/lib.$(PLATFORM)-$(PYVER)/linkcheck/network/_network*.so linkcheck/network
+	cp -f build/lib.$(PLATFORM)-$(PYVER)*/linkcheck/HtmlParser/htmlsax*.so linkcheck/HtmlParser
+	cp -f build/lib.$(PLATFORM)-$(PYVER)*/linkcheck/network/_network*.so linkcheck/network
 
 deb_orig:
 	if [ ! -e $(DEB_ORIG_TARGET) ]; then \
