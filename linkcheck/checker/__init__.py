@@ -106,8 +106,8 @@ def get_url_from (base_url, recursion_level, aggregate,
         # use filename as base url, with slash as path seperator
         name = base_url.replace("\\", "/")
     if parent_content_type == 'application/x-httpd-php' and \
-       '<?' in base_url and url.startswith('file:'):
-        # ignore URLs from local PHP files with execution directives
+       '<?' in base_url and '?>' in base_url and url.startswith('file:'):
+        # ignore but warn about URLs from local PHP files with execution directives
         klass = ignoreurl.IgnoreUrl
     else:
         assume_local_file = recursion_level == 0
