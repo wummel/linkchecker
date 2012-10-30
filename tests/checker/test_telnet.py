@@ -17,13 +17,13 @@
 """
 Test telnet checking.
 """
-from . import LinkCheckTest
+from .telnetserver import TelnetServerTest
 
 
-class TestTelnet (LinkCheckTest):
+class TestTelnet (TelnetServerTest):
     """Test telnet: link checking."""
 
-    def test_telnet_1 (self):
+    def test_telnet_error (self):
         url = u"telnet:"
         nurl = self.norm(url)
         resultlines = [
@@ -34,32 +34,32 @@ class TestTelnet (LinkCheckTest):
         ]
         self.direct(url, resultlines)
 
-    def test_telnet_2 (self):
-        url = u"telnet://www.example.com"
-        resultlines = [
-            u"url %s" % url,
-            u"cache key %s" % url,
-            u"real url %s" % url,
-            u"error",
-        ]
-        self.direct(url, resultlines)
-
-    def test_telnet_3 (self):
-        url = u"telnet://user@www.example.com"
-        resultlines = [
-            u"url %s" % url,
-            u"cache key %s" % url,
-            u"real url %s" % url,
-            u"error",
-        ]
-        self.direct(url, resultlines)
-
-    def test_telnet_4 (self):
-        url = u"telnet://user:pass@www.example.com"
-        resultlines = [
-            u"url %s" % url,
-            u"cache key %s" % url,
-            u"real url %s" % url,
-            u"error",
-        ]
-        self.direct(url, resultlines)
+    def test_telnet_localhost (self):
+        try:
+            self.start_server()
+            url = self.get_url()
+            resultlines = [
+                u"url %s" % url,
+                u"cache key %s" % url,
+                u"real url %s" % url,
+                u"valid",
+            ]
+            self.direct(url, resultlines)
+            url = self.get_url(user=u"test")
+            resultlines = [
+                u"url %s" % url,
+                u"cache key %s" % url,
+                u"real url %s" % url,
+                u"valid",
+            ]
+            self.direct(url, resultlines)
+            url = self.get_url(user=u"test", password=u"test")
+            resultlines = [
+                u"url %s" % url,
+                u"cache key %s" % url,
+                u"real url %s" % url,
+                u"valid",
+            ]
+            self.direct(url, resultlines)
+        finally:
+            self.stop_server()

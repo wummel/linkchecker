@@ -1,0 +1,7 @@
+The following changes have been applied to the original sources.
+
+miniboa/async.py:
+- rename address to host
+- removed sys.exit() call on errors
+
+Note that this module is only used for testing.
