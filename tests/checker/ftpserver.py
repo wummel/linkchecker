@@ -41,7 +41,7 @@ class FtpServerTest (LinkCheckTest):
         self.assertFalse(self.port is None)
 
     def stop_server (self):
-        """Send QUIT request to http server."""
+        """Send stop request to server."""
         try:
             stop_server(self.host, self.port)
         except Exception:
