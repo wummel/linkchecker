@@ -11,6 +11,8 @@ Changes:
 Fixes:
 - checking: Fix anchor checking of cached HTTP URLs.
   Closes: SF bug #3577743
+- checking: Fix cookie path matching with empty paths.
+  Closes: SF bug #3578005
 
 
 8.1 "Safety Not Guaranteed" (released 14.10.2012)
