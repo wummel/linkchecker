@@ -605,7 +605,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         host = self.urlparts[1]
         port = urlutil.default_ports.get(scheme, 80)
         host, port = urlutil.splitport(host, port)
-        path = self.urlparts[2]
+        path = self.urlparts[2] or u"/"
         self.cookies = self.aggregate.cookies.get(scheme, host, port, path)
         if not self.cookies:
             return
