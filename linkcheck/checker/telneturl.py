@@ -23,6 +23,11 @@ from . import urlbase
 from .. import log, LOG_CHECK
 
 
+def encode(s, encoding="iso-8859-1", errors="ignore"):
+    """Encode telnet data like username and password."""
+    return s.encode(encoding, errors)
+
+
 class TelnetUrl (urlbase.UrlBase):
     """
     Url link with telnet scheme.
@@ -60,10 +65,10 @@ class TelnetUrl (urlbase.UrlBase):
         self.url_connection.open(self.host, self.port)
         if self.user:
             self.url_connection.read_until("login: ", 10)
-            self.url_connection.write(self.user+"\n")
+            self.url_connection.write(encode(self.user)+"\n")
             if self.password:
                 self.url_connection.read_until("Password: ", 10)
-                self.url_connection.write(self.password+"\n")
+                self.url_connection.write(encode(self.password)+"\n")
                 # XXX how to tell if we are logged in??
         self.url_connection.write("exit\n")
 
