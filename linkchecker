@@ -550,13 +550,13 @@ if options.fileoutput:
         if ftype not in linkcheck.logger.Loggers:
             print_usage(
      _("Unknown logger type %(type)r in %(output)r for option %(option)s") % \
-       {"type": ftype, "output": options.output,
+       {"type": ftype, "output": options.fileoutput,
         "option": "'-F, --file-output'"})
         if ftype != 'none' and 'encoding' in ns and \
            not has_encoding(ns['encoding']):
             print_usage(
     _("Unknown encoding %(encoding)r in %(output)r for option %(option)s") % \
-     {"encoding": ns['encoding'], "output": options.output,
+     {"encoding": ns['encoding'], "output": options.fileoutput,
       "option": "'-F, --file-output'"})
         logger = config.logger_new(ftype, **ns)
         config['fileoutput'].append(logger)
