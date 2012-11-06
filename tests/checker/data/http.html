@@ -1,40 +1,21 @@
-Just some HTTP links
 <a b=c "boo" href="http://www.garantiertnixgutt.bla/">bad url</a>
-<a href="http://www.example.com/">ok example</a>
-<a href="http:/www.example.com/">one slash example</a>
-<a href="http:www.example.com/">no slash example</a>
-<a href="//www.example.com/">no scheme example</a>
-<a href="http://">no url</a>
-<a href="http:/">no url, one slash</a>
-<a href="http:">no url, no slash</a>
-<a href=http://example.com/>unquoted</a>
-<a href="/stalter&sohn">unquoted ampersand</a>
-<a href="HtTP://WwW.ExaMple.cOm/">should be cached</a>
-<a href="HTTP://WWW.EXAMPLE.COM/">should be cached</a>
 <!-- check cache key with query -->
 <a href="/?d=directory&amp;p=page">should not be cached</a>
 <a href="/?d=directory&amp;p=page1">should not be cached</a>
 <!-- entities -->
-<a href="/?quoted=&uuml;">html entities</a>
-<!--  quoting test...
-<a href=""></a>
--->
+<a href="/?q=&uuml;">html entities</a>
 
 <!-- empty form URL -->
 <form action="" method="GET">
 </form>
 
 <!-- multiple links in one tag -->
-<applet archive="http.html" src="http.html">
+<applet archive="file.html" src="file.css">
 <!-- css urls -->
-<img style="@font-face {src:url(http.html)};background-image:url(http.html)"
+<img style="@font-face {src:url(file.asc)};background-image:url(file.txt)"
  title="CSS urls">
 
 <!-- object with codebase -->
 <object classid="clsid:12345-67890" codebase="http://example.org/foo/ #a=1,2,3">
 
 <!-- <a href=http://nocheckin> no check because of comment -->
-<a href=http://www.example.com/">no beginning quote example</a>
-<a href="http://www.example.com/>no ending quote example</a>
-<!-- check the parser at end of file -->
-<a href="g

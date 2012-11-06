@@ -1,0 +1,50 @@
+url http://localhost:%(port)d/%(datadir)s/http_slash.html
+cache key http://localhost:%(port)d/%(datadir)s/http_slash.html
+real url http://localhost:%(port)d/%(datadir)s/http_slash.html
+info 7 URLs parsed.
+valid
+
+url http://www.example.com/1
+cache key http://www.example.com/1
+real url http://www.iana.org/domains/example/
+name ok example
+info Redirected to `http://www.iana.org/domains/example/'.
+valid
+
+url http:/www.example.com/2
+cache key None
+real url http:///www.example.com/2
+name one slash example
+error
+
+url http:www.example.com/3
+cache key None
+real url http:///www.example.com/3
+name no slash example
+error
+
+url //www.example.com/4
+cache key http://www.example.com/4
+real url http://www.iana.org/domains/example/
+name no scheme example
+info Redirected to `http://www.iana.org/domains/example/'.
+valid
+
+url http://
+cache key None
+real url http://
+name no url
+error
+
+url http:/
+cache key None
+real url http:///
+name no url, one slash
+error
+
+url http:
+cache key None
+real url http://
+name no url, no slash
+error
+

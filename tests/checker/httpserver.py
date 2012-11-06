@@ -136,15 +136,21 @@ class HttpServerTest (LinkCheckTest):
         """
         super(HttpServerTest, self).__init__(methodName=methodName)
         self.port = None
+        self.handler = NoQueryHttpRequestHandler
 
-    def start_server (self, handler=NoQueryHttpRequestHandler):
+    def setUp(self):
         """Start a new HTTP server in a new thread."""
-        self.port = start_server(handler)
+        self.port = start_server(self.handler)
         assert self.port is not None
 
-    def stop_server (self):
+    def tearDown(self):
         """Send QUIT request to http server."""
         stop_server(self.port)
+
+    def get_url(self, filename):
+        """Get HTTP URL for filename."""
+        return u"http://localhost:%d/tests/checker/data/%s" % (self.port, filename)
+
 
 
 def start_server (handler):

@@ -1,0 +1,13 @@
+url http://localhost:%(port)d/%(datadir)s/http_lowercase.html
+cache key http://localhost:%(port)d/%(datadir)s/http_lowercase.html
+real url http://localhost:%(port)d/%(datadir)s/http_lowercase.html
+info 2 URLs parsed.
+valid
+
+url HtTP://WwW.ExaMple.cOm/
+cache key http://www.example.com/
+real url http://www.iana.org/domains/example/
+name l1
+info Redirected to `http://www.iana.org/domains/example/'.
+valid
+

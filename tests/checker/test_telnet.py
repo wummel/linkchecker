@@ -35,31 +35,27 @@ class TestTelnet (TelnetServerTest):
         self.direct(url, resultlines)
 
     def test_telnet_localhost (self):
-        try:
-            self.start_server()
-            url = self.get_url()
-            resultlines = [
-                u"url %s" % url,
-                u"cache key %s" % url,
-                u"real url %s" % url,
-                u"valid",
-            ]
-            self.direct(url, resultlines)
-            url = self.get_url(user=u"test")
-            resultlines = [
-                u"url %s" % url,
-                u"cache key %s" % url,
-                u"real url %s" % url,
-                u"valid",
-            ]
-            self.direct(url, resultlines)
-            url = self.get_url(user=u"test", password=u"test")
-            resultlines = [
-                u"url %s" % url,
-                u"cache key %s" % url,
-                u"real url %s" % url,
-                u"valid",
-            ]
-            self.direct(url, resultlines)
-        finally:
-            self.stop_server()
+        url = self.get_url()
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % url,
+            u"real url %s" % url,
+            u"valid",
+        ]
+        self.direct(url, resultlines)
+        url = self.get_url(user=u"test")
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % url,
+            u"real url %s" % url,
+            u"valid",
+        ]
+        self.direct(url, resultlines)
+        url = self.get_url(user=u"test", password=u"test")
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % url,
+            u"real url %s" % url,
+            u"valid",
+        ]
+        self.direct(url, resultlines)

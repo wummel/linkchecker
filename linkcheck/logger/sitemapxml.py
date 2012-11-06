@@ -91,8 +91,7 @@ class SitemapXmlLogger (xmllog.XMLLogger):
         if (url_data.valid
             and url_data.url.startswith(HTTP_SCHEMES)
             and url_data.url.startswith(self.prefix)
-            and url_data.content_type in HTML_TYPES
-            and not url_data.cached):
+            and url_data.content_type in HTML_TYPES):
             self.log_url(url_data, priority=priority)
 
     def log_url (self, url_data, priority=None):

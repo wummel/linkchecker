@@ -55,8 +55,6 @@ class Logger (object):
         """Determine if URL entry should be logged or not."""
         if self.complete:
             return True
-        if url_data.cached and url_data.valid:
-            return False
         if self.verbose:
             return True
         if self.warnings and url_data.warnings:

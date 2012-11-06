@@ -22,38 +22,18 @@ from .httpserver import HttpServerTest, CookieRedirectHttpRequestHandler
 class TestHttpRedirect (HttpServerTest):
     """Test http:// link redirection checking."""
 
-    def test_html (self):
-        try:
-            self.start_server(handler=CookieRedirectHttpRequestHandler)
-            self.redirect1_http_test()
-            self.redirect2_http_test()
-            self.redirect3_http_test()
-            self.redirect4_http_test()
-            self.redirect5_http_test()
-        finally:
-            self.stop_server()
+    def __init__(self, methodName='runTest'):
+        super(TestHttpRedirect, self).__init__(methodName=methodName)
+        self.handler = CookieRedirectHttpRequestHandler
 
-    def _test_redirect (self):
-        try:
-            self.start_server(handler=RedirectHttpsRequestHandler)
-            self.redirect_https_test()
-        finally:
-            self.stop_server()
+    def test_redirect (self):
+        self.redirect1()
+        self.redirect2()
+        self.redirect3()
+        self.redirect4()
+        self.redirect5()
 
-    def redirect_https_test (self):
-        url = u"http://localhost:%d/redirect1" % self.port
-        nurl = url
-        rurl = u"https://localhost:%d/newurl1" % self.port
-        resultlines = [
-            u"url %s" % url,
-            u"cache key %s" % nurl,
-            u"real url %s" % url,
-            u"info Redirected to `%s'." % rurl.replace('http:', 'https:'),
-            u"error",
-        ]
-        self.direct(url, resultlines, recursionlevel=0)
-
-    def redirect1_http_test (self):
+    def redirect1 (self):
         url = u"http://localhost:%d/redirect1" % self.port
         nurl = url
         rurl = url.replace("redirect", "newurl")
@@ -66,7 +46,7 @@ class TestHttpRedirect (HttpServerTest):
         ]
         self.direct(url, resultlines, recursionlevel=0)
 
-    def redirect2_http_test (self):
+    def redirect2 (self):
         url = u"http://localhost:%d/tests/checker/data/redirect.html" % \
               self.port
         nurl = url
@@ -78,22 +58,22 @@ class TestHttpRedirect (HttpServerTest):
             u"info Redirected to `%s'." % rurl,
             u"info 1 URL parsed.",
             u"valid",
-            u"url newurl.html (cached)",
+            u"url newurl.html",
             u"cache key %s" % rurl,
             u"real url %s" % rurl,
             u"name Recursive Redirect",
-            u"info Redirected to `%s'." % rurl,
             u"info 1 URL parsed.",
+            u"warning Content with 45B is the same as in URLs (%s)." % nurl,
             u"valid",
         ]
         self.direct(url, resultlines, recursionlevel=99)
 
-    def redirect3_http_test (self):
+    def redirect3 (self):
         url = u"http://localhost:%d/tests/checker/data/redir.html" % self.port
         resultlines = self.get_resultlines("redir.html")
         self.direct(url, resultlines, recursionlevel=1)
 
-    def redirect4_http_test (self):
+    def redirect4 (self):
         url = u"http://localhost:%d/redirect_newscheme_ftp" % self.port
         nurl = url
         rurl = u"ftp://example.com/"
@@ -111,7 +91,7 @@ class TestHttpRedirect (HttpServerTest):
         ]
         self.direct(url, resultlines, recursionlevel=99)
 
-    def redirect5_http_test (self):
+    def redirect5 (self):
         url = u"http://localhost:%d/redirect_newscheme_file" % self.port
         nurl = url
         rurl = u"file:README"
@@ -126,14 +106,3 @@ class TestHttpRedirect (HttpServerTest):
         ]
         self.direct(url, resultlines, recursionlevel=99)
 
-
-class RedirectHttpsRequestHandler (CookieRedirectHttpRequestHandler):
-
-    def redirect (self):
-        """Redirect request."""
-        path = self.path.replace("redirect", "newurl")
-        port = self.server.server_address[1]
-        url = "https://localhost:%d%s" % (port, path)
-        self.send_response(302)
-        self.send_header("Location", url)
-        self.end_headers()

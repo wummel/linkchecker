@@ -117,7 +117,7 @@ class SQLLogger (Logger):
                'checktime': url_data.checktime,
                'dltime': url_data.dltime,
                'dlsize': url_data.dlsize,
-               'cached': intify(url_data.cached),
+               'cached': 0,
                'separator': self.separator,
                "level": url_data.level,
                "modified": sqlify(self.format_modified(url_data.modified)),

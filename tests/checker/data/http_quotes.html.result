@@ -1,0 +1,25 @@
+url http://localhost:%(port)d/%(datadir)s/http_quotes.html
+cache key http://localhost:%(port)d/%(datadir)s/http_quotes.html
+real url http://localhost:%(port)d/%(datadir)s/http_quotes.html
+info 3 URLs parsed.
+valid
+
+url http://example.com/
+cache key http://example.com/
+real url http://www.iana.org/domains/example/
+name unquoted
+info Redirected to `http://www.iana.org/domains/example/'.
+valid
+
+url /stalter&sohn
+cache key http://localhost:%(port)d/stalter%%26sohn
+real url http://localhost:%(port)d/stalter%%26sohn
+name unquoted ampersand
+error
+
+url http://www.example.com/
+cache key http://www.example.com/
+real url http://www.iana.org/domains/example/
+name no beginning quote example
+info Redirected to `http://www.iana.org/domains/example/'.
+valid

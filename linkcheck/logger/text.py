@@ -128,8 +128,6 @@ class TextLogger (Logger):
         """Write url_data.base_url."""
         self.write(self.part('url') + self.spaces('url'))
         txt = strformat.strline(url_data.base_url)
-        if url_data.cached:
-            txt += _(" (cached)")
         self.writeln(txt, color=self.colorurl)
 
     def write_name (self, url_data):

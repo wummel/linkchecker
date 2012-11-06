@@ -22,16 +22,15 @@ from .httpserver import HttpServerTest, CookieRedirectHttpRequestHandler
 class TestHttp (HttpServerTest):
     """Test http:// link checking."""
 
+    def __init__(self, methodName='runTest'):
+        super(TestHttp, self).__init__(methodName=methodName)
+        self.handler = CookieRedirectHttpRequestHandler
+
     def test_html (self):
-        try:
-            self.start_server(handler=CookieRedirectHttpRequestHandler)
-            url = u"http://localhost:%d/tests/checker/data/" \
-                  u"http.html" % self.port
-            resultlines = self.get_resultlines("http.html")
-            self.direct(url, resultlines, recursionlevel=1)
-            url = u"http://localhost:%d/tests/checker/data/" \
-                  u"http.xhtml" % self.port
-            resultlines = self.get_resultlines("http.xhtml")
-            self.direct(url, resultlines, recursionlevel=1)
-        finally:
-            self.stop_server()
+        confargs = dict(recursionlevel=1)
+        self.file_test("http.html", confargs=confargs)
+        self.file_test("http_lowercase.html", confargs=confargs)
+        self.file_test("http_quotes.html", confargs=confargs)
+        self.file_test("http_slash.html", confargs=confargs)
+        self.file_test("http.xhtml", confargs=confargs)
+

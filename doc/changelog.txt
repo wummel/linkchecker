@@ -5,14 +5,17 @@ Changes:
   and the file is accessible by others.
 - checking: Add debug statements for unparseable content types.
   Closes: SF bug #3579714
-- checking: Fix handling of non-ASCII exceptions (regression in 8.1).
-  Closes: SF bug #3579766
+- checking: Turn off caching. This improves memory performance drastically
+  and it's a very seldom used feature - judging from user feedback over the years
+  and my own experience.
 
 Fixes:
 - checking: Fix anchor checking of cached HTTP URLs.
   Closes: SF bug #3577743
 - checking: Fix cookie path matching with empty paths.
   Closes: SF bug #3578005
+- checking: Fix handling of non-ASCII exceptions (regression in 8.1).
+  Closes: SF bug #3579766
 
 
 8.1 "Safety Not Guaranteed" (released 14.10.2012)

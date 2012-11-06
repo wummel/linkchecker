@@ -158,8 +158,6 @@ class HtmlLogger (Logger):
                      (self.colorurl, self.part("url")))
         self.write(u'<td bgcolor="%s">' % self.colorurl)
         self.write(u"`%s'" % cgi.escape(url_data.base_url))
-        if url_data.cached:
-            self.write(_(" (cached)"))
         self.writeln(u"</td></tr>")
 
     def write_name (self, url_data):

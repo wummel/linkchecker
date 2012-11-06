@@ -5,14 +5,12 @@ name %(datadir)s/frames.html
 info 2 URLs parsed.
 valid
 
-url frames.html (cached)
-cache key file://%(curdir)s/%(datadir)s/frames.html
-real url file://%(curdir)s/%(datadir)s/frames.html
-info 2 URLs parsed.
+url file.html
+cache key file://%(curdir)s/%(datadir)s/file.html
+real url file://%(curdir)s/%(datadir)s/file.html
 valid
 
-url frames.html (cached)
-cache key file://%(curdir)s/%(datadir)s/frames.html
-real url file://%(curdir)s/%(datadir)s/frames.html
-info 2 URLs parsed.
+url file.txt
+cache key file://%(curdir)s/%(datadir)s/file.txt
+real url file://%(curdir)s/%(datadir)s/file.txt
 valid

@@ -62,8 +62,6 @@ class TestLogger (linkcheck.logger.Logger):
         """
         if self.has_part('url'):
             url = u"url %s" % url_data.base_url
-            if url_data.cached:
-                url += u" (cached)"
             self.result.append(url)
         if self.has_part('cachekey'):
             self.result.append(u"cache key %s" % url_data.cache_url_key)
@@ -178,9 +176,13 @@ class LinkCheckTest (unittest.TestCase):
             return [line.rstrip(u'\r\n') % d for line in f
                     if line.strip() and not line.startswith(u'#')]
 
+    def get_url(self, filename):
+        """Get URL for given filename."""
+        return get_file(filename)
+
     def file_test (self, filename, confargs=None):
         """Check <filename> with expected result in <filename>.result."""
-        url = get_file(filename)
+        url = self.get_url(filename)
         if confargs is None:
             confargs = {}
         logargs = {'expected': self.get_resultlines(filename)}
@@ -196,7 +198,8 @@ class LinkCheckTest (unittest.TestCase):
     def fail_unicode (self, msg):
         """Print encoded fail message."""
         # XXX self.fail() only supports ascii
-        self.fail(msg.encode("ascii", "replace"))
+        msg = msg.encode("ascii", "replace")
+        self.fail(msg)
 
     def direct (self, url, resultlines, parts=None, recursionlevel=0,
                 confargs=None):

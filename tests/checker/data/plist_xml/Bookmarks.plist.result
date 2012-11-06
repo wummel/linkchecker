@@ -14,7 +14,7 @@ name Imadoofus
 info Redirected to `http://www.iana.org/domains/example/'.
 valid
 
-url http://www.example.net/ (cached)
+url http://www.example.net/
 cache key http://www.example.net/
 real url http://www.iana.org/domains/example/
 name Imanotherdoofus

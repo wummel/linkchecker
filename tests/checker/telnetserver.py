@@ -48,12 +48,12 @@ class TelnetServerTest (LinkCheckTest):
             netloc = self.host
         return u"telnet://%s:%d" % (netloc, self.port)
 
-    def start_server (self):
+    def setUp (self):
         """Start a new Telnet server in a new thread."""
         self.port = start_server(self.host, 0)
         self.assertFalse(self.port is None)
 
-    def stop_server (self):
+    def tearDown(self):
         """Send QUIT request to telnet server."""
         try:
             stop_server(self.host, self.port)

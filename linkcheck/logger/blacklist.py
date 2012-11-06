@@ -50,16 +50,15 @@ class BlacklistLogger (Logger):
         """
         Put invalid url in blacklist, delete valid url from blacklist.
         """
-        if not url_data.cached:
-            key = url_data.cache_url_key
-            if key in self.blacklist:
-                if url_data.valid:
-                    del self.blacklist[key]
-                else:
-                    self.blacklist[key] += 1
+        key = url_data.cache_url_key
+        if key in self.blacklist:
+            if url_data.valid:
+                del self.blacklist[key]
             else:
-                if not url_data.valid:
-                    self.blacklist[key] = 1
+                self.blacklist[key] += 1
+        else:
+            if not url_data.valid:
+                self.blacklist[key] = 1
 
     def end_output (self):
         """

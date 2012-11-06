@@ -1,7 +1,7 @@
 url http://localhost:%(port)d/%(datadir)s/http.html
 cache key http://localhost:%(port)d/%(datadir)s/http.html
 real url http://localhost:%(port)d/%(datadir)s/http.html
-info 23 URLs parsed.
+info 11 URLs parsed.
 valid
 
 url http://www.garantiertnixgutt.bla/
@@ -9,77 +9,6 @@ cache key http://www.garantiertnixgutt.bla/
 real url http://www.garantiertnixgutt.bla/
 name bad url
 error
-
-url http://www.example.com/
-cache key http://www.example.com/
-real url http://www.iana.org/domains/example/
-name ok example
-info Redirected to `http://www.iana.org/domains/example/'.
-valid
-
-url http:/www.example.com/
-cache key None
-real url http:///www.example.com/
-name one slash example
-error
-
-url http:www.example.com/
-cache key None
-real url http:///www.example.com/
-name no slash example
-error
-
-url //www.example.com/ (cached)
-cache key http://www.example.com/
-real url http://www.iana.org/domains/example/
-name no scheme example
-info Redirected to `http://www.iana.org/domains/example/'.
-valid
-
-url http://
-cache key None
-real url http://
-name no url
-error
-
-url http:/
-cache key None
-real url http:///
-name no url, one slash
-error
-
-url http:
-cache key None
-real url http://
-name no url, no slash
-error
-
-url http://example.com/ (cached)
-cache key http://example.com/
-real url http://www.iana.org/domains/example/
-name unquoted
-info Redirected to `http://www.iana.org/domains/example/'.
-valid
-
-url /stalter&sohn
-cache key http://localhost:%(port)d/stalter%%26sohn
-real url http://localhost:%(port)d/stalter%%26sohn
-name unquoted ampersand
-error
-
-url HtTP://WwW.ExaMple.cOm/ (cached)
-cache key http://www.example.com/
-real url http://www.iana.org/domains/example/
-name should be cached
-info Redirected to `http://www.iana.org/domains/example/'.
-valid
-
-url HTTP://WWW.EXAMPLE.COM/ (cached)
-cache key http://www.example.com/
-real url http://www.iana.org/domains/example/
-name should be cached
-info Redirected to `http://www.iana.org/domains/example/'.
-valid
 
 url /?d=directory&p=page
 cache key http://localhost:%(port)d/?d=directory&p=page
@@ -94,43 +23,33 @@ name should not be cached
 warning Content with 309B is the same as in URLs (http://localhost:%(port)d/?d=directory&p=page).
 valid
 
-url /?quoted=ü
-cache key http://localhost:%(port)d/?quoted=%%C3%%BC
-real url http://localhost:%(port)d/?quoted=%%C3%%BC
+url /?q=ü
+cache key http://localhost:%(port)d/?q=%%C3%%BC
+real url http://localhost:%(port)d/?q=%%C3%%BC
 name html entities
 warning Content with 309B is the same as in URLs (http://localhost:%(port)d/?d=directory&p=page,http://localhost:%(port)d/?d=directory&p=page1).
 valid
 
-url  (cached)
-cache key http://localhost:%(port)d/%(datadir)s/http.html
-real url http://localhost:%(port)d/%(datadir)s/http.html
-info 23 URLs parsed.
+url file.css
+cache key http://localhost:%(port)d/tests/checker/data/file.css
+real url http://localhost:%(port)d/tests/checker/data/file.css
 valid
 
-url http.html (cached)
-cache key http://localhost:%(port)d/%(datadir)s/http.html
-real url http://localhost:%(port)d/%(datadir)s/http.html
-info 23 URLs parsed.
+url file.html
+cache key http://localhost:%(port)d/tests/checker/data/file.html
+real url http://localhost:%(port)d/tests/checker/data/file.html
 valid
 
-url http.html (cached)
-cache key http://localhost:%(port)d/%(datadir)s/http.html
-real url http://localhost:%(port)d/%(datadir)s/http.html
-info 23 URLs parsed.
-valid
-
-url http.html (cached)
-cache key http://localhost:%(port)d/%(datadir)s/http.html
-real url http://localhost:%(port)d/%(datadir)s/http.html
+url file.asc
+cache key http://localhost:%(port)d/tests/checker/data/file.asc
+real url http://localhost:%(port)d/tests/checker/data/file.asc
 name CSS urls
-info 23 URLs parsed.
 valid
 
-url http.html (cached)
-cache key http://localhost:%(port)d/%(datadir)s/http.html
-real url http://localhost:%(port)d/%(datadir)s/http.html
+url file.txt
+cache key http://localhost:%(port)d/tests/checker/data/file.txt
+real url http://localhost:%(port)d/tests/checker/data/file.txt
 name CSS urls
-info 23 URLs parsed.
 valid
 
 url clsid:12345-67890
@@ -140,15 +59,9 @@ warning Clsid URL ignored.
 valid
 
 url http://example.org/foo/ #a=1,2,3
-cache key http://example.org/foo/%%20
+cache key http://example.org/foo/%%20#a%%3D1%%2C2%%2C3
 real url http://www.iana.org/domains/example/#a%%3D1%%2C2%%2C3
 info Redirected to `http://www.iana.org/domains/example/'.
 warning Anchor `a%%3D1%%2C2%%2C3' not found. Available anchors: `body', `body-container', `footer', `footer-beta-feedback', `footer-frame', `header', `header-frame', `header-logo', `header-nav', `iana-footer-first', `iana-footer-icann'.
 valid
 
-url http://www.example.com/ (cached)
-cache key http://www.example.com/
-real url http://www.iana.org/domains/example/
-name no beginning quote example
-info Redirected to `http://www.iana.org/domains/example/'.
-valid

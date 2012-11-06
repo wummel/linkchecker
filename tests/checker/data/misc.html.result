@@ -16,11 +16,6 @@ cache key file://%(curdir)s/%(datadir)s/favicon.ico
 real url file://%(curdir)s/%(datadir)s/favicon.ico
 valid
 
-url favicon.ico (cached)
-cache key file://%(curdir)s/%(datadir)s/favicon.ico
-real url file://%(curdir)s/%(datadir)s/favicon.ico
-valid
-
 url 
 cache key None
 real url 

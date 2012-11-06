@@ -20,7 +20,7 @@ from . import task
 
 
 class Status (task.LoggedCheckedTask):
-    """Status thread."""
+    """Thread that gathers and logs the status periodically."""
 
     def __init__ (self, urlqueue, logger, wait_seconds, max_duration):
         """Initialize the status logger task.
@@ -36,13 +36,21 @@ class Status (task.LoggedCheckedTask):
         super(Status, self).__init__(logger)
         self.urlqueue = urlqueue
         self.wait_seconds = wait_seconds
+        assert self.wait_seconds >= 1
+        self.first_wait = True
         self.max_duration = max_duration
 
     def run_checked (self):
         """Print periodic status messages."""
         self.start_time = time.time()
         self.setName("Status")
-        while not self.stopped(self.wait_seconds):
+        if not self.first_wait:
+            wait_seconds = self.wait_seconds
+        else:
+            # the first status should be after a second
+            self.first_wait = False
+            wait_seconds = 1
+        while not self.stopped(wait_seconds):
             self.log_status()
 
     def log_status (self):

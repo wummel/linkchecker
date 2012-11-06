@@ -21,7 +21,6 @@ import threading
 import collections
 from time import time as _time
 from .. import log, LOG_CACHE
-from ..containers import LFUCache
 
 
 LARGE_QUEUE_THRESHOLD = 1000
@@ -57,7 +56,7 @@ class UrlQueue (object):
         self.unfinished_tasks = 0
         self.finished_tasks = 0
         self.in_progress = {}
-        self.checked = LFUCache(size=100000)
+        self.seen = {}
         self.shutdown = False
         # Each put() decreases the number of allowed puts.
         # This way we can restrict the number of URLs that are checked.
@@ -84,8 +83,7 @@ class UrlQueue (object):
 
     def get (self, timeout=None):
         """Get first not-in-progress url from the queue and
-        return it. If no such url is available return None. The
-        url might be already cached.
+        return it. If no such url is available return None.
         """
         with self.not_empty:
             return self._get(timeout)
@@ -106,19 +104,12 @@ class UrlQueue (object):
                     raise Empty()
                 self.not_empty.wait(remaining)
         url_data = self.queue.popleft()
-        key = url_data.cache_url_key
         if url_data.has_result:
             # Already checked and copied from cache.
             pass
-        elif key in self.checked:
-            # Already checked; copy result. And even ignore
-            # the case where url happens to be in_progress.
-            url_data.copy_from_cache(self.checked[key])
-        elif key in self.in_progress:
-            # It's being checked currently; put it back in the queue.
-            self._put_near_front(url_data)
-            url_data = None
         else:
+            key = url_data.cache_url_key
+            assert key is not None
             self.in_progress[key] = url_data
         return url_data
 
@@ -142,27 +133,17 @@ class UrlQueue (object):
             self.allowed_puts -= 1
         log.debug(LOG_CACHE, "queueing %s", url_data)
         key = url_data.cache_url_key
-        if key in self.checked:
-            # Put at beginning of queue to get consumed quickly.
-            url_data.copy_from_cache(self.checked[key])
-            self.queue.appendleft(url_data)
-        elif key in self.in_progress:
-            # Put at beginning of queue since it will be cached soon.
-            self._put_near_front(url_data)
+        # cache key is None for URLs with invalid syntax
+        assert key is not None or url_data.has_result, "invalid cache key in %s" % url_data
+        if key in self.seen:
+            self.seen[key] += 1
+            if key is not None:
+                # do not check duplicate URLs
+                return
         else:
-            self.queue.append(url_data)
+            self.seen[key] = 0
+        self.queue.append(url_data)
         self.unfinished_tasks += 1
-
-    def _put_near_front(self, url_data):
-        """Put URL in queue near front."""
-        if len(self.queue) < LARGE_QUEUE_THRESHOLD:
-            # queue is small - put at end is ok
-            self.queue.append(url_data)
-        else:
-            # queue is large - put near front
-            self.queue.rotate(-FRONT_CHUNK_SIZE)
-            self.queue.appendleft(url_data)
-            self.queue.rotate(FRONT_CHUNK_SIZE)
 
     def task_done (self, url_data):
         """
@@ -181,35 +162,19 @@ class UrlQueue (object):
         """
         with self.all_tasks_done:
             log.debug(LOG_CACHE, "task_done %s", url_data)
-            if url_data is not None:
-                key = url_data.cache_url_key
-                if key is not None and key not in self.checked:
-                    self._cache_url(key, url_data)
-                else:
-                    assert key not in self.in_progress
+            # check for aliases (eg. through HTTP redirections)
+            if hasattr(url_data, "aliases"):
+                for key in url_data.aliases:
+                    if key in self.seen:
+                        self.seen[key] += 1
+                    else:
+                        self.seen[key] = 0
             self.finished_tasks += 1
-            unfinished = self.unfinished_tasks - 1
-            if unfinished <= 0:
-                if unfinished < 0:
+            self.unfinished_tasks -= 1
+            if self.unfinished_tasks <= 0:
+                if self.unfinished_tasks < 0:
                     raise ValueError('task_done() called too many times')
                 self.all_tasks_done.notifyAll()
-            self.unfinished_tasks = unfinished
-
-    def _cache_url (self, key, url_data):
-        """Put URL result data into cache."""
-        log.debug(LOG_CACHE, "Caching %r", key)
-        if key in self.in_progress:
-            del self.in_progress[key]
-        data = url_data.get_cache_data()
-        self.checked[key] = data
-        # check for aliases (eg. through HTTP redirections)
-        if hasattr(url_data, "aliases"):
-            data = url_data.get_alias_cache_data()
-            for key in url_data.aliases:
-                if key in self.checked or key in self.in_progress:
-                    continue
-                log.debug(LOG_CACHE, "Caching alias %r", key)
-                self.checked[key] = data
 
     def join (self, timeout=None):
         """Blocks until all items in the Queue have been gotten and processed.
@@ -252,15 +217,3 @@ class UrlQueue (object):
             return (self.finished_tasks,
                     len(self.in_progress), len(self.queue))
 
-    def checked_redirect (self, redirect, url_data):
-        """
-        Check if redirect is already in cache. Used for URL redirections
-        to avoid double checking of already cached URLs.
-        If the redirect URL is found in the cache, the result data is
-        already copied.
-        """
-        with self.mutex:
-            if redirect in self.checked:
-                url_data.copy_from_cache(self.checked[redirect])
-                return True
-            return False

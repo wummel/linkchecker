@@ -23,12 +23,8 @@ class TestHttpRobots (HttpServerTest):
     """Test robots.txt link checking behaviour."""
 
     def test_html (self):
-        try:
-            self.start_server()
-            self.robots_txt_test()
-            self.robots_txt2_test()
-        finally:
-            self.stop_server()
+        self.robots_txt_test()
+        self.robots_txt2_test()
 
     def robots_txt_test (self):
         url = u"http://localhost:%d/robots.txt" % self.port

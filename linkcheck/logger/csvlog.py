@@ -112,7 +112,7 @@ class CSVLogger (Logger):
         if self.has_part("checktime"):
             row.append(url_data.checktime)
         if self.has_part("cached"):
-            row.append(url_data.cached)
+            row.append(0)
         if self.has_part("level"):
             row.append(url_data.level)
         if self.has_part("modified"):

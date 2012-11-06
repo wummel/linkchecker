@@ -179,8 +179,6 @@ class UrlBase (object):
         # the result message string and flag
         self.result = u""
         self.has_result = False
-        # cached or not
-        self.cached = False
         # valid or not
         self.valid = True
         # list of warnings (without duplicates)
@@ -342,12 +340,9 @@ class UrlBase (object):
         self.dlsize = cache_data["dlsize"]
         self.anchors = cache_data["anchors"]
         self.content_type = cache_data["content_type"]
-        self.cached = True
         if anchor_changed and self.valid:
             # recheck anchor
-            if self.check_anchor():
-                # a new warning has been added - remove cached flag
-                self.cached = False
+            self.check_anchor()
 
     def get_cache_data (self):
         """Return all data values that should be put in the cache."""
@@ -363,12 +358,6 @@ class UrlBase (object):
                 "content_type": self.get_content_type(),
                }
 
-    def get_alias_cache_data (self):
-        """Return all data values that should be put in the cache.
-        Intended to be overridden by subclasses that handle aliases.
-        """
-        return self.get_cache_data()
-
     def set_cache_keys (self):
         """
         Set keys for URL checking and content recursion.
@@ -379,7 +368,11 @@ class UrlBase (object):
         assert isinstance(self.cache_content_key, unicode), self
         log.debug(LOG_CACHE, "Content cache key %r", self.cache_content_key)
         # construct cache key
-        self.cache_url_key = self.cache_content_key
+        if self.aggregate.config["anchors"]:
+            # add anchor to cache key
+            self.cache_url_key = urlutil.urlunsplit(self.urlparts[:4]+[self.anchor or u""])
+        else:
+            self.cache_url_key = self.cache_content_key
         assert isinstance(self.cache_url_key, unicode), self
         log.debug(LOG_CACHE, "URL cache key %r", self.cache_url_key)
 
@@ -1152,7 +1145,6 @@ class UrlBase (object):
             u"column=%d" % self.column,
             u"name=%r" % self.name,
             u"anchor=%r" % self.anchor,
-            u"cached=%s" % self.cached,
             u"cache_key=%s" % self.cache_url_key,
            ])
 
@@ -1203,8 +1195,6 @@ class UrlBase (object):
         The transport object must contain these attributes:
         - url_data.valid: bool
           Indicates if URL is valid
-        - url_data.cached: bool
-          Indicates if URL data has been loaded from cache.
         - url_data.result: unicode
           Result string
         - url_data.warnings: list of tuples (tag, warning message)
@@ -1242,7 +1232,6 @@ class UrlBase (object):
         """
         return dict(valid=self.valid,
           extern=self.extern[0],
-          cached=self.cached,
           result=self.result,
           warnings=self.warnings[:],
           name=self.name or u"",
@@ -1279,7 +1268,6 @@ def filter_tidy_errors (errors):
 urlDataAttr = [
     'valid',
     'extern',
-    'cached',
     'result',
     'warnings',
     'name',

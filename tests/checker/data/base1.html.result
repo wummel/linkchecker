@@ -10,7 +10,7 @@ cache key file://%(curdir)s/%(datadir)s/base2.html
 real url file://%(curdir)s/%(datadir)s/base2.html
 valid
 
-url base2.html (cached)
-cache key file://%(curdir)s/%(datadir)s/base2.html
-real url file://%(curdir)s/%(datadir)s/base2.html
+url file.html
+cache key file://%(curdir)s/%(datadir)s/file.html
+real url file://%(curdir)s/%(datadir)s/file.html
 valid

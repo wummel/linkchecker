@@ -351,9 +351,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         # note: urlparts has to be a list
         self.urlparts = urlparts
         self.build_url_parts()
-        # check cache again on the changed URL
-        if self.aggregate.urlqueue.checked_redirect(redirected, self):
-            return -1
         # store cookies from redirect response
         self.store_cookies()
         # new response data
@@ -463,17 +460,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         if value is None:
             return default
         return unicode_safe(value, encoding=HEADER_ENCODING)
-
-    def get_alias_cache_data (self):
-        """
-        Return all data values that should be put in the cache,
-        minus redirection warnings.
-        """
-        data = self.get_cache_data()
-        data["warnings"] = [
-            x for x in self.warnings if x[0] != WARN_HTTP_MOVED_PERMANENT]
-        data["info"] = self.info
-        return data
 
     def check_response (self):
         """Check final result and log it."""

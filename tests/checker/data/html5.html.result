@@ -5,32 +5,32 @@ name %(datadir)s/html5.html
 info 6 URLs parsed.
 valid
 
+url file.asc
+cache key file://%(curdir)s/%(datadir)s/file.asc
+real url file://%(curdir)s/%(datadir)s/file.asc
+valid
+
+url file.css
+cache key file://%(curdir)s/%(datadir)s/file.css
+real url file://%(curdir)s/%(datadir)s/file.css
+valid
+
+url file.php
+cache key file://%(curdir)s/%(datadir)s/file.php
+real url file://%(curdir)s/%(datadir)s/file.php
+valid
+
+url file.txt
+cache key file://%(curdir)s/%(datadir)s/file.txt
+real url file://%(curdir)s/%(datadir)s/file.txt
+valid
+
+url file.wml
+cache key file://%(curdir)s/%(datadir)s/file.wml
+real url file://%(curdir)s/%(datadir)s/file.wml
+valid
+
 url file.html
-cache key file://%(curdir)s/%(datadir)s/file.html
-real url file://%(curdir)s/%(datadir)s/file.html
-valid
-
-url file.html (cached)
-cache key file://%(curdir)s/%(datadir)s/file.html
-real url file://%(curdir)s/%(datadir)s/file.html
-valid
-
-url file.html (cached)
-cache key file://%(curdir)s/%(datadir)s/file.html
-real url file://%(curdir)s/%(datadir)s/file.html
-valid
-
-url file.html (cached)
-cache key file://%(curdir)s/%(datadir)s/file.html
-real url file://%(curdir)s/%(datadir)s/file.html
-valid
-
-url file.html (cached)
-cache key file://%(curdir)s/%(datadir)s/file.html
-real url file://%(curdir)s/%(datadir)s/file.html
-valid
-
-url file.html (cached)
 cache key file://%(curdir)s/%(datadir)s/file.html
 real url file://%(curdir)s/%(datadir)s/file.html
 valid

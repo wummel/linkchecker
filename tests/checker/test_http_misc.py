@@ -26,15 +26,11 @@ class TestHttpMisc (HttpServerTest):
     """Test http:// misc link checking."""
 
     def test_html (self):
-        try:
-            self.start_server()
-            self.swf_test()
-            self.obfuscate_test()
-        finally:
-            self.stop_server()
+        self.swf_test()
+        self.obfuscate_test()
 
     def swf_test (self):
-        url = u"http://localhost:%d/tests/checker/data/test.swf" % self.port
+        url = self.get_url(u"test.swf")
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % url,
