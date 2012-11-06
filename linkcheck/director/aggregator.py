@@ -19,7 +19,7 @@ Aggregate needed object instances for checker threads.
 """
 import time
 import threading
-from .. import log, LOG_CHECK
+from .. import log, LOG_CHECK, strformat
 from ..decorators import synchronized
 from ..cache import urlqueue, content
 from . import logger, status, checker, cleanup
@@ -68,12 +68,19 @@ class Aggregate (object):
     @synchronized(_threads_lock)
     def print_active_threads (self):
         """Log all currently active threads."""
-        first = True
-        for name in self.get_check_threads():
-            if first:
-                log.info(LOG_CHECK, _("These URLs are still active:"))
-                first = False
-            log.info(LOG_CHECK, name[12:])
+        debug = log.is_debug(LOG_CHECK)
+        if debug:
+            first = True
+            for name in self.get_check_threads():
+                if first:
+                    log.info(LOG_CHECK, _("These URLs are still active:"))
+                    first = False
+                log.info(LOG_CHECK, name[12:])
+        args = dict(
+            num=len(self.threads),
+            timeout=strformat.strduration_long(self.config["timeout"]),
+        )
+        log.info(LOG_CHECK, _("%(num)d URLs are still active. After a timeout of %(timeout)s the active URLs will stop.") % args)
 
     @synchronized(_threads_lock)
     def get_check_threads(self):
