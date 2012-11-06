@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Wed Sep 19 21:22:12 2012
+# Created: Tue Nov  6 21:47:39 2012
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(782, 664)
+        MainWindow.resize(713, 627)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -63,18 +63,21 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.setSizeConstraint(QtGui.QLayout.SetDefaultConstraint)
         self.horizontalLayout_4.setContentsMargins(0, 0, -1, -1)
         self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
+        self.label_29 = QtGui.QLabel(self.centralwidget)
+        self.label_29.setObjectName(_fromUtf8("label_29"))
+        self.horizontalLayout_4.addWidget(self.label_29)
         self.label_32 = QtGui.QLabel(self.centralwidget)
         self.label_32.setObjectName(_fromUtf8("label_32"))
         self.horizontalLayout_4.addWidget(self.label_32)
         self.label_active = QtGui.QLabel(self.centralwidget)
-        self.label_active.setMinimumSize(QtCore.QSize(50, 0))
+        self.label_active.setMinimumSize(QtCore.QSize(40, 0))
         self.label_active.setObjectName(_fromUtf8("label_active"))
         self.horizontalLayout_4.addWidget(self.label_active)
         self.label_30 = QtGui.QLabel(self.centralwidget)
         self.label_30.setObjectName(_fromUtf8("label_30"))
         self.horizontalLayout_4.addWidget(self.label_30)
         self.label_queued = QtGui.QLabel(self.centralwidget)
-        self.label_queued.setMinimumSize(QtCore.QSize(50, 0))
+        self.label_queued.setMinimumSize(QtCore.QSize(40, 0))
         self.label_queued.setObjectName(_fromUtf8("label_queued"))
         self.horizontalLayout_4.addWidget(self.label_queued)
         self.label_28 = QtGui.QLabel(self.centralwidget)
@@ -704,7 +707,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addLayout(self.horizontalLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 782, 20))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 713, 20))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuEdit = QtGui.QMenu(self.menubar)
         self.menuEdit.setObjectName(_fromUtf8("menuEdit"))
@@ -791,11 +794,12 @@ class Ui_MainWindow(object):
         self.label.setText(_("URL:"))
         self.controlButton.setToolTip(_("Start checking the given URL."))
         self.controlButton.setText(QtGui.QApplication.translate("MainWindow", "Start", "Start checking URL", QtGui.QApplication.UnicodeUTF8))
-        self.label_32.setText(_("Active:"))
+        self.label_29.setText(_("URLs: "))
+        self.label_32.setText(_("active"))
         self.label_active.setText(_("0"))
-        self.label_30.setText(_("Queued:"))
+        self.label_30.setText(_("queued"))
         self.label_queued.setText(_("0"))
-        self.label_28.setText(_("Checked:"))
+        self.label_28.setText(_("checked"))
         self.label_checked.setText(_("0"))
         self.label_15.setText(_("Info:"))
         self.label_busy.setText(_("-"))

@@ -47,6 +47,7 @@ DocBaseUrl = "qthelp://bfk.app.linkchecker/doc/"
 RegistryBase = "Bastian"
 Status = enum('idle', 'checking')
 
+MaxMessageLength = 60
 
 def get_app_style ():
     """Return appropriate QStyle object for the current platform to
@@ -411,7 +412,8 @@ Version 2 or later.
     def cancel (self):
         """Note that checking is canceled."""
         self.controlButton.setEnabled(False)
-        self.set_statusmsg(_(u"Closing pending connections..."))
+        duration = strformat.strduration_long(self.config["timeout"])
+        self.set_statusmsg(_(u"Closing active URLs with timeout %s...") % duration)
 
     @QtCore.pyqtSlot()
     def on_controlButton_clicked (self):
@@ -537,9 +539,11 @@ Version 2 or later.
     def set_statusmsg (self, msg):
         """Show given status message."""
         self.statusBar.showMessage(msg)
-        if len(msg) > 30:
+        if len(msg) > MaxMessageLength:
             self.label_status.setToolTip(msg)
-            msg = msg[:27]+u"..."
+            msg = msg[:MaxMessageLength-3]+u"..."
+        else:
+            self.label_status.setToolTip(u"")
         self.label_status.setText(msg)
 
     def hover_link (self, link):
