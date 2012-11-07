@@ -467,6 +467,10 @@ def get_user_config():
         try:
             userdir = os.path.dirname(userconf)
             if not os.path.isdir(userdir):
+                if os.name == 'nt':
+                    # Windows forbids filenames with leading dot unless
+                    # a trailing dot is added.
+                    userdir += "."
                 os.mkdir(userdir, 0700)
             shutil.copy(initialconf, userconf)
         except StandardError, errmsg:
