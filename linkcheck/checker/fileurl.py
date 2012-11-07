@@ -172,7 +172,8 @@ class FileUrl (urlbase.UrlBase):
         Try to open the local file. Under NT systems the case sensitivity
         is checked.
         """
-        if not self.parent_url.startswith("file:"):
+        if (self.parent_url is not None and
+           not self.parent_url.startswith(u"file:")):
             msg = _("local files are only checked without parent URL or when the parent URL is also a file")
             raise LinkCheckerError(msg)
         if self.is_directory():
