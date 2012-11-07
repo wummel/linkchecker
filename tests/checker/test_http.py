@@ -33,4 +33,5 @@ class TestHttp (HttpServerTest):
         self.file_test("http_quotes.html", confargs=confargs)
         self.file_test("http_slash.html", confargs=confargs)
         self.file_test("http.xhtml", confargs=confargs)
+        self.file_test("http_file.html", confargs=confargs)
 

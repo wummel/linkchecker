@@ -8,6 +8,8 @@ Changes:
 - checking: Turn off caching. This improves memory performance drastically
   and it's a very seldom used feature - judging from user feedback over the years
   and my own experience.
+- checking: Only allow checking of local files when parent URL does not exist or
+  it's also a file URL.
 
 Fixes:
 - checking: Fix anchor checking of cached HTTP URLs.
