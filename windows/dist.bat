@@ -1,4 +1,4 @@
-:: Gnerating the LinkChecker Windows .exe installer
+:: Generating the LinkChecker Windows .exe installer
 :: Copyright (C) 2010-2011 Bastian Kleineidam
 :: This program is free software; you can redistribute it and/or modify
 :: it under the terms of the GNU General Public License as published by
@@ -19,14 +19,9 @@ set UPX_EXE="C:\Software\upx308w\upx.exe"
 set SZ_EXE="C:\Programme\7-Zip\7z.exe"
 for /f "usebackq tokens=*" %%a in (`%PYDIR%\python.exe setup.py --version`) do set VERSION="%%a"
 set PORTDIR=LinkChecker-%VERSION%
-set LINKCHECKER_PORTABLE=0
-rd /s /q build > nul
-call %~dp0\build.bat
-rd /s /q dist > nul
-%PYDIR%\python.exe setup.py py2exe
-:: uncomment for skipping portable dist creation
-::goto :finish
 
+:: uncomment for skipping portable dist creation
+::goto :dist
 echo Building portable distribution
 set LINKCHECKER_PORTABLE=1
 rd /s /q dist > nul
@@ -40,5 +35,12 @@ for /r %PORTDIR% %%f in (*.pyd,*.exe) do %UPX_EXE% "%%f" --best
 echo Generating portable distribution file
 %SZ_EXE% a -mx=9 LinkChecker-%VERSION%-portable.zip %PORTDIR%
 rd /s /q %PORTDIR%
+
+:dist
+set LINKCHECKER_PORTABLE=0
+rd /s /q build > nul
+call %~dp0\build.bat
+rd /s /q dist > nul
+%PYDIR%\python.exe setup.py py2exe
 
 :finish
