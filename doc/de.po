@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 3.4\n"
-"POT-Creation-Date: 2012-10-14 11:11+0300\n"
-"PO-Revision-Date: 2012-10-14 11:12+0100\n"
+"POT-Creation-Date: 2012-11-08 11:13+0100\n"
+"PO-Revision-Date: 2012-11-08 11:14+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "Language: \n"
@@ -90,7 +90,7 @@ msgstr "LinkChecker beinhaltet"
 #: en/linkchecker.1:17 en/linkchecker.1:19 en/linkchecker.1:21
 #: en/linkchecker.1:23 en/linkchecker.1:25 en/linkchecker.1:27
 #: en/linkchecker.1:29 en/linkchecker.1:31 en/linkchecker.1:33
-#: en/linkchecker.1:513 en/linkchecker.1:517 en/linkchecker.1:519
+#: en/linkchecker.1:479 en/linkchecker.1:483 en/linkchecker.1:485
 #, no-wrap
 msgid "\\(bu"
 msgstr "\\(bu"
@@ -451,8 +451,8 @@ msgstr ""
 "Ausgabe in eine Datei namens B<linkchecker-out.>I<TYP>, B<$HOME/.linkchecker/"
 "blacklist> bei B<blacklist> Ausgabe, oder I<DATEINAME> falls angegeben. Das "
 "I<ENCODING> gibt die Ausgabekodierung an. Der Standard ist das der lokalen "
-"Spracheinstellung. Gültige Enkodierungen sind aufgelistet unter B<http://docs.python.org/"
-"library/\\:codecs.html#standard-encodings>."
+"Spracheinstellung. Gültige Enkodierungen sind aufgelistet unter B<http://"
+"docs.python.org/library/\\:codecs.html#standard-encodings>."
 
 # type: Plain text
 #. type: Plain text
@@ -470,9 +470,10 @@ msgstr ""
 "ignoriert, ansonsten wird die Datei überschrieben falls sie existiert. Sie "
 "können diese Option mehr als einmal verwenden. Gültige Ausgabetypen sind "
 "B<text>, B<html>, B<sql>, B<csv>, B<gml>, B<dot>, B<xml>, B<sitemap>, "
-"B<none> oder B<blacklist>. Standard ist keine Dateiausgabe. Die unterschiedlichen "
-"Ausgabetypen sind weiter unten dokumentiert. Beachten Sie, dass Sie mit "
-"der Option B<-o none> jegliche Ausgaben auf der Konsole verhindern können."
+"B<none> oder B<blacklist>. Standard ist keine Dateiausgabe. Die "
+"unterschiedlichen Ausgabetypen sind weiter unten dokumentiert. Beachten Sie, "
+"dass Sie mit der Option B<-o none> jegliche Ausgaben auf der Konsole "
+"verhindern können."
 
 # type: TP
 #. type: TP
@@ -528,8 +529,8 @@ msgid ""
 "codecs.html#standard-encodings>."
 msgstr ""
 "Das I<ENCODING> gibt die Ausgabekodierung an. Der Standard ist das der "
-"lokalen Spracheinstellung. Gültige Enkodierungen sind aufgelistet unter B<http://docs."
-"python.org/library/\\:codecs.html#standard-encodings>."
+"lokalen Spracheinstellung. Gültige Enkodierungen sind aufgelistet unter "
+"B<http://docs.python.org/library/\\:codecs.html#standard-encodings>."
 
 # type: TP
 #. type: TP
@@ -583,10 +584,10 @@ msgstr "B<-v>, B<--verbose>"
 # type: Plain text
 #. type: Plain text
 #: en/linkchecker.1:152
-msgid "Log all checked URLs once. Default is to log only errors and warnings."
+msgid "Log all checked URLs. Default is to log only errors and warnings."
 msgstr ""
-"Gebe alle geprüften URLs einmal aus. Standard ist es, nur fehlerhafte URLs "
-"und Warnungen auszugeben."
+"Gebe alle geprüften URLs aus. Standard ist es, nur fehlerhafte URLs und "
+"Warnungen auszugeben."
 
 # type: TP
 #. type: TP
@@ -1429,39 +1430,42 @@ msgstr ""
 "  3) Versuche, in das angegebene Verzeichnis zu wechseln\n"
 "  4) Liste die Dateien im Verzeichnis auf mit dem NLST-Befehl\n"
 
-#. type: Plain text
-#: en/linkchecker.1:396
-msgid "- Telnet links (``telnet:``)"
-msgstr "- Telnet-Links (``telnet:``)"
+#. type: TP
+#: en/linkchecker.1:395
+#, no-wrap
+msgid "Telnet links (``telnet:``)"
+msgstr "Telnet-Links (``telnet:``)"
 
 #. type: Plain text
-#: en/linkchecker.1:399
+#: en/linkchecker.1:400
 #, no-wrap
 msgid ""
 "  We try to connect and if user/password are given, login to the\n"
 "  given telnet server.\n"
 msgstr "  Versuche, zu dem angegeben Telnetrechner zu verginden und falls Benutzer/Passwort angegeben sind, wird versucht, sich anzumelden.\n"
 
-#. type: Plain text
+#. type: TP
 #: en/linkchecker.1:401
-msgid "- NNTP links (``news:``, ``snews:``, ``nntp``)"
-msgstr "- NNTP-Links (``news:``, ``snews:``, ``nntp``)"
+#, no-wrap
+msgid "NNTP links (``news:``, ``snews:``, ``nntp``)"
+msgstr "NNTP-Links (``news:``, ``snews:``, ``nntp``)"
 
 #. type: Plain text
-#: en/linkchecker.1:404
+#: en/linkchecker.1:406
 #, no-wrap
 msgid ""
 "  We try to connect to the given NNTP server. If a news group or\n"
 "  article is specified, try to request it from the server.\n"
 msgstr "  Versuche, zu dem angegebenen NNTP-Rechner eine Verbindung aufzubaucne. Falls eine Nachrichtengruppe oder ein bestimmter Artikel angegeben ist, wird versucht, diese Gruppe oder diesen Artikel vom Rechner anzufragen.\n"
 
-#. type: Plain text
-#: en/linkchecker.1:406
-msgid "- Unsupported links (``javascript:``, etc.)"
-msgstr "- Nicht unterstützte Links (``javascript:``, etc.)"
+#. type: TP
+#: en/linkchecker.1:407
+#, no-wrap
+msgid "Unsupported links (``javascript:``, etc.)"
+msgstr "Nicht unterstützte Links (``javascript:``, etc.)"
 
 #. type: Plain text
-#: en/linkchecker.1:409
+#: en/linkchecker.1:412
 #, no-wrap
 msgid ""
 "  An unsupported link will only print a warning. No further checking\n"
@@ -1469,100 +1473,25 @@ msgid ""
 msgstr "  Ein nicht unterstützter Link wird nur eine Warnung ausgeben. Weitere Prüfungen werden nicht durchgeführt.\n"
 
 #. type: Plain text
-#: en/linkchecker.1:412
+#: en/linkchecker.1:416
 #, no-wrap
 msgid ""
-"  Here is a complete list of recognized, but unsupported links. The most\n"
-"  prominent of them should be JavaScript links.\n"
-msgstr "  Dies ist eine komplette Liste von erkannten, aber nicht unterstützten Links. Die bekanntesten davon dürften JavaScript-Links sein.\n"
-
-#. type: Plain text
-#: en/linkchecker.1:449
-#, no-wrap
-msgid ""
-"  - ``acap:``      (application configuration access protocol)\n"
-"  - ``afs:``       (Andrew File System global file names)\n"
-"  - ``chrome:``    (Mozilla specific)\n"
-"  - ``cid:``       (content identifier)\n"
-"  - ``clsid:``     (Microsoft specific)\n"
-"  - ``data:``      (data)\n"
-"  - ``dav:``       (dav)\n"
-"  - ``fax:``       (fax)\n"
-"  - ``feed:``      (News feeds)\n"
-"  - ``find:``      (Mozilla specific)\n"
-"  - ``gopher:``    (Gopher)\n"
-"  - ``imap:``      (internet message access protocol)\n"
-"  - ``isbn:``      (ISBN (int. book numbers))\n"
-"  - ``javascript:`` (JavaScript)\n"
-"  - ``ldap:``      (Lightweight Directory Access Protocol)\n"
-"  - ``mailserver:`` (Access to data available from mail servers)\n"
-"  - ``mid:``       (message identifier)\n"
-"  - ``mms:``       (multimedia stream)\n"
-"  - ``modem:``     (modem)\n"
-"  - ``nfs:``       (network file system protocol)\n"
-"  - ``opaquelocktoken:`` (opaquelocktoken)\n"
-"  - ``pop:``       (Post Office Protocol v3)\n"
-"  - ``prospero:``  (Prospero Directory Service)\n"
-"  - ``rsync:``     (rsync protocol)\n"
-"  - ``rtsp:``      (real time streaming protocol)\n"
-"  - ``service:``   (service location)\n"
-"  - ``shttp:``     (secure HTTP)\n"
-"  - ``sip:``       (session initiation protocol)\n"
-"  - ``steam:``     (Steam browser protocol)\n"
-"  - ``tel:``       (telephone)\n"
-"  - ``tip:``       (Transaction Internet Protocol)\n"
-"  - ``tn3270:``    (Interactive 3270 emulation sessions)\n"
-"  - ``vemmi:``     (versatile multimedia interface)\n"
-"  - ``wais:``      (Wide Area Information Servers)\n"
-"  - ``z39.50r:``   (Z39.50 Retrieval)\n"
-"  - ``z39.50s:``   (Z39.50 Session)\n"
+"  The complete list of recognized, but unsupported links can be found\n"
+"  in the B<unknownurl.py> source file. The most prominent of them\n"
+"  should be JavaScript links.\n"
 msgstr ""
-"  - ``acap:``      (application configuration access protocol)\n"
-"  - ``afs:``       (Andrew File System global file names)\n"
-"  - ``chrome:``    (Mozilla specific)\n"
-"  - ``cid:``       (content identifier)\n"
-"  - ``clsid:``     (Microsoft specific)\n"
-"  - ``data:``      (data)\n"
-"  - ``dav:``       (dav)\n"
-"  - ``fax:``       (fax)\n"
-"  - ``feed:``      (News feeds)\n"
-"  - ``find:``      (Mozilla specific)\n"
-"  - ``gopher:``    (Gopher)\n"
-"  - ``imap:``      (internet message access protocol)\n"
-"  - ``isbn:``      (ISBN (int. book numbers))\n"
-"  - ``javascript:`` (JavaScript)\n"
-"  - ``ldap:``      (Lightweight Directory Access Protocol)\n"
-"  - ``mailserver:`` (Access to data available from mail servers)\n"
-"  - ``mid:``       (message identifier)\n"
-"  - ``mms:``       (multimedia stream)\n"
-"  - ``modem:``     (modem)\n"
-"  - ``nfs:``       (network file system protocol)\n"
-"  - ``opaquelocktoken:`` (opaquelocktoken)\n"
-"  - ``pop:``       (Post Office Protocol v3)\n"
-"  - ``prospero:``  (Prospero Directory Service)\n"
-"  - ``rsync:``     (rsync protocol)\n"
-"  - ``rtsp:``      (real time streaming protocol)\n"
-"  - ``service:``   (service location)\n"
-"  - ``shttp:``     (secure HTTP)\n"
-"  - ``sip:``       (session initiation protocol)\n"
-"  - ``steam:``     (Steam browser protocol)\n"
-"  - ``tel:``       (telephone)\n"
-"  - ``tip:``       (Transaction Internet Protocol)\n"
-"  - ``tn3270:``    (Interactive 3270 emulation sessions)\n"
-"  - ``vemmi:``     (versatile multimedia interface)\n"
-"  - ``wais:``      (Wide Area Information Servers)\n"
-"  - ``z39.50r:``   (Z39.50 Retrieval)\n"
-"  - ``z39.50s:``   (Z39.50 Session)\n"
+"  Die komplette Liste von erkannten, aber nicht unterstützten Links ist in der\n"
+"  Quelldatei B<unknownurl.py>. Die bekanntesten davon dürften JavaScript-Links sein.\n"
 
 # type: SH
 #. type: SH
-#: en/linkchecker.1:451
+#: en/linkchecker.1:417
 #, no-wrap
 msgid "RECURSION"
 msgstr "Rekursion"
 
 #. type: Plain text
-#: en/linkchecker.1:454
+#: en/linkchecker.1:420
 msgid ""
 "Before descending recursively into a URL, it has to fulfill several "
 "conditions. They are checked in this order:"
@@ -1571,12 +1500,12 @@ msgstr ""
 "erfüllen. Diese werden in folgender Reihenfolge geprüft:"
 
 #. type: Plain text
-#: en/linkchecker.1:456
+#: en/linkchecker.1:422
 msgid "1. A URL must be valid."
 msgstr "1. Eine URL muss gültig sein."
 
 #. type: Plain text
-#: en/linkchecker.1:462
+#: en/linkchecker.1:428
 #, no-wrap
 msgid ""
 "2. A URL must be parseable. This currently includes HTML files,\n"
@@ -1587,7 +1516,7 @@ msgid ""
 msgstr "2. Der URL-Inhalt muss analysierbar sein. Dies beinhaltet zur Zeit HTML-Dateien, Opera Lesezeichen, und Verzeichnisse. Falls ein Dateityp nicht erkannt wird, (zum Beispiel weil er keine bekannte HTML-Dateierweiterung besitzt, und der Inhalt nicht nach HTML aussieht), wird der Inhalt als nicht analysierbar angesehen.\n"
 
 #. type: Plain text
-#: en/linkchecker.1:465
+#: en/linkchecker.1:431
 #, no-wrap
 msgid ""
 "3. The URL content must be retrievable. This is usually the case\n"
@@ -1595,7 +1524,7 @@ msgid ""
 msgstr "3. Der URL-Inhalt muss ladbar sein. Dies ist normalerweise der Fall, mit Ausnahme von mailto: oder unbekannten URL-Typen.\n"
 
 #. type: Plain text
-#: en/linkchecker.1:468
+#: en/linkchecker.1:434
 #, no-wrap
 msgid ""
 "4. The maximum recursion level must not be exceeded. It is configured\n"
@@ -1603,7 +1532,7 @@ msgid ""
 msgstr "4. Die maximale Rekursionstiefe darf nicht überschritten werden. Diese wird mit der Option ``--recursion-level`` konfiguriert und ist standardmäßig nicht limitiert.\n"
 
 #. type: Plain text
-#: en/linkchecker.1:471
+#: en/linkchecker.1:437
 #, no-wrap
 msgid ""
 "5. It must not match the ignored URL list. This is controlled with\n"
@@ -1611,7 +1540,7 @@ msgid ""
 msgstr "5. Die URL darf nicht in der Liste von ignorierten URLs sein. Die ignorierten URLs werden mit der Option ``--ignore-url`` konfiguriert.\n"
 
 #. type: Plain text
-#: en/linkchecker.1:475
+#: en/linkchecker.1:441
 #, no-wrap
 msgid ""
 "6. The Robots Exclusion Protocol must allow links in the URL to be\n"
@@ -1620,7 +1549,7 @@ msgid ""
 msgstr "6. Das Robots Exclusion Protocol muss es erlauben, dass Verknüpfungen in der URL rekursiv verfolgt werden können. Dies wird geprüft, indem in den HTML Kopfdaten nach der \"nofollow\"-Direktive gesucht wird.\n"
 
 #. type: Plain text
-#: en/linkchecker.1:478
+#: en/linkchecker.1:444
 msgid ""
 "Note that the directory recursion reads all files in that directory, not "
 "just a subset like ``index.htm*``."
@@ -1630,14 +1559,14 @@ msgstr ""
 
 # type: SH
 #. type: SH
-#: en/linkchecker.1:479
+#: en/linkchecker.1:445
 #, no-wrap
 msgid "NOTES"
 msgstr "BEMERKUNGEN"
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:484
+#: en/linkchecker.1:450
 msgid ""
 "URLs on the commandline starting with B<ftp.> are treated like B<ftp://ftp."
 ">, URLs starting with B<www.> are treated like B<http://www.>.  You can also "
@@ -1649,7 +1578,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:489
+#: en/linkchecker.1:455
 msgid ""
 "If you have your system configured to automatically establish a connection "
 "to the internet (e.g. with diald), it will connect when checking links not "
@@ -1662,13 +1591,13 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:491
+#: en/linkchecker.1:457
 msgid "Javascript links are not supported."
 msgstr "Javascript Links werden nicht unterstützt."
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:494
+#: en/linkchecker.1:460
 msgid ""
 "If your platform does not support threading, LinkChecker disables it "
 "automatically."
@@ -1678,7 +1607,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:496
+#: en/linkchecker.1:462
 msgid "You can supply multiple user/password pairs in a configuration file."
 msgstr ""
 "Sie können mehrere Benutzer/Passwort Paare in einer Konfigurationsdatei "
@@ -1686,7 +1615,7 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:499
+#: en/linkchecker.1:465
 msgid ""
 "When checking B<news:> links the given NNTP host doesn't need to be the same "
 "as the host of the user browsing your pages."
@@ -1696,31 +1625,31 @@ msgstr ""
 
 # type: SH
 #. type: SH
-#: en/linkchecker.1:500
+#: en/linkchecker.1:466
 #, no-wrap
 msgid "ENVIRONMENT"
 msgstr "UMGEBUNG"
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:502
+#: en/linkchecker.1:468
 msgid "B<NNTP_SERVER> - specifies default NNTP server"
 msgstr "B<NNTP_SERVER> - gibt Standard NNTP Server an"
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:504
+#: en/linkchecker.1:470
 msgid "B<http_proxy> - specifies default HTTP proxy server"
 msgstr "B<http_proxy> - gibt Standard HTTP Proxy an"
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:506
+#: en/linkchecker.1:472
 msgid "B<ftp_proxy> - specifies default FTP proxy server"
 msgstr "B<ftp_proxy> - gibt Standard FTP Proxy an"
 
 #. type: Plain text
-#: en/linkchecker.1:508
+#: en/linkchecker.1:474
 msgid ""
 "B<no_proxy> - comma-separated list of domains to not contact over a proxy "
 "server"
@@ -1730,63 +1659,63 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:510
+#: en/linkchecker.1:476
 msgid "B<LC_MESSAGES>, B<LANG>, B<LANGUAGE> - specify output language"
 msgstr "B<LC_MESSAGES>, B<LANG>, B<LANGUAGE> - gibt Ausgabesprache an"
 
 # type: SH
 #. type: SH
-#: en/linkchecker.1:511
+#: en/linkchecker.1:477
 #, no-wrap
 msgid "RETURN VALUE"
 msgstr "RÜCKGABEWERT"
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:513
+#: en/linkchecker.1:479
 msgid "The return value is 2 when"
 msgstr "Der Rückgabewert ist 2 falls"
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:515
+#: en/linkchecker.1:481
 msgid "a program error occurred."
 msgstr "ein Programmfehler aufgetreten ist."
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:517
+#: en/linkchecker.1:483
 msgid "The return value is 1 when"
 msgstr "Der Rückgabewert ist 1 falls"
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:519
+#: en/linkchecker.1:485
 msgid "invalid links were found or"
 msgstr "ungültige Verknüpfungen gefunden wurden oder"
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:521
+#: en/linkchecker.1:487
 msgid "link warnings were found and warnings are enabled"
 msgstr "Warnungen gefunden wurden und Warnungen aktiviert sind"
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:523
+#: en/linkchecker.1:489
 msgid "Else the return value is zero."
 msgstr "Sonst ist der Rückgabewert Null."
 
 # type: SH
 #. type: SH
-#: en/linkchecker.1:524
+#: en/linkchecker.1:490
 #, no-wrap
 msgid "LIMITATIONS"
 msgstr "LIMITIERUNGEN"
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:528
+#: en/linkchecker.1:494
 msgid ""
 "LinkChecker consumes memory for each queued URL to check. With thousands of "
 "queued URLs the amount of consumed memory can become quite large. This might "
@@ -1799,33 +1728,33 @@ msgstr ""
 
 # type: SH
 #. type: SH
-#: en/linkchecker.1:529
+#: en/linkchecker.1:495
 #, no-wrap
 msgid "FILES"
 msgstr "DATEIEN"
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:531
+#: en/linkchecker.1:497
 msgid "B<~/.linkchecker/linkcheckerrc> - default configuration file"
 msgstr "B<~/.linkchecker/linkcheckerrc> - Standardkonfigurationsdatei"
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:533
+#: en/linkchecker.1:499
 msgid "B<~/.linkchecker/blacklist> - default blacklist logger output filename"
 msgstr ""
 "B<~/.linkchecker/blacklist> - Standard Dateiname der blacklist Logger Ausgabe"
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:535
+#: en/linkchecker.1:501
 msgid "B<linkchecker-out.>I<TYPE> - default logger file output name"
 msgstr "B<linkchecker-out.>I<TYP> - Standard Dateiname der Logausgabe"
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:537
+#: en/linkchecker.1:503
 msgid ""
 "B<http://docs.python.org/library/codecs.html#standard-encodings> - valid "
 "output encodings"
@@ -1835,49 +1764,60 @@ msgstr ""
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:539
+#: en/linkchecker.1:505
 msgid ""
 "B<http://docs.python.org/howto/regex.html> - regular expression documentation"
 msgstr ""
 "B<http://docs.python.org/howto/regex.html> - Dokumentation zu regulären "
 "Ausdrücken"
 
+#. type: Plain text
+#: en/linkchecker.1:507
+msgid ""
+"B<http://linkchecker.git.sf.net/\\:git/gitweb.cgi?p=linkchecker/linkchecker;"
+"\\:a=blob;f=linkcheck/checker/unknownurl.py;hb=HEAD> - the unknown.py source "
+"file"
+msgstr ""
+"B<http://linkchecker.git.sf.net/\\:git/gitweb.cgi?p=linkchecker/linkchecker;"
+"\\:a=blob;f=linkcheck/checker/unknownurl.py;hb=HEAD> - die unknown.py "
+"Quelldatei"
+
 # type: SH
 #. type: SH
-#: en/linkchecker.1:540 en/linkcheckerrc.5:587 en/linkchecker-gui.1:16
+#: en/linkchecker.1:508 en/linkcheckerrc.5:587 en/linkchecker-gui.1:16
 #, no-wrap
 msgid "SEE ALSO"
 msgstr "SIEHE AUCH"
 
 # type: TH
 #. type: Plain text
-#: en/linkchecker.1:542
+#: en/linkchecker.1:510
 msgid "B<linkcheckerrc>(5)"
 msgstr "B<linkcheckerrc>(5)"
 
 # type: SH
 #. type: SH
-#: en/linkchecker.1:543 en/linkcheckerrc.5:590 en/linkchecker-gui.1:19
+#: en/linkchecker.1:511 en/linkcheckerrc.5:590 en/linkchecker-gui.1:19
 #, no-wrap
 msgid "AUTHOR"
 msgstr "AUTHOR"
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:545 en/linkcheckerrc.5:592 en/linkchecker-gui.1:21
+#: en/linkchecker.1:513 en/linkcheckerrc.5:592 en/linkchecker-gui.1:21
 msgid "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
 msgstr "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
 
 # type: SH
 #. type: SH
-#: en/linkchecker.1:546 en/linkcheckerrc.5:593 en/linkchecker-gui.1:22
+#: en/linkchecker.1:514 en/linkcheckerrc.5:593 en/linkchecker-gui.1:22
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr "COPYRIGHT"
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:547 en/linkcheckerrc.5:594
+#: en/linkchecker.1:515 en/linkcheckerrc.5:594
 msgid "Copyright \\(co 2000-2012 Bastian Kleineidam"
 msgstr "Copyright \\(co 2000-2012 Bastian Kleineidam"
 
@@ -2638,8 +2578,8 @@ msgid ""
 "codecs.html#standard-encodings>."
 msgstr ""
 "Das I<ENCODING> gibt die Ausgabekodierung an. Der Standard ist das der "
-"lokalen Spracheinstellung. Gültige Enkodierungen sind aufgelistet unter B<http://docs."
-"python.org/library/codecs.html#standard-encodings>."
+"lokalen Spracheinstellung. Gültige Enkodierungen sind aufgelistet unter "
+"B<http://docs.python.org/library/codecs.html#standard-encodings>."
 
 # type: Plain text
 #. type: Plain text
@@ -2795,8 +2735,8 @@ msgid ""
 "Valid encodings are listed in B<http://docs.python.org/library/codecs."
 "html#standard-encodings>."
 msgstr ""
-"Gültige Enkodierungen sind aufgelistet unter B<http://docs.python.org/library/codecs."
-"html#standard-encodings>."
+"Gültige Enkodierungen sind aufgelistet unter B<http://docs.python.org/"
+"library/codecs.html#standard-encodings>."
 
 #. type: Plain text
 #: en/linkcheckerrc.5:292
@@ -3732,3 +3672,78 @@ msgstr "B<linkchecker>(1)"
 #: en/linkchecker-gui.1:23
 msgid "Copyright \\(co 2009-2012 Bastian Kleineidam"
 msgstr "Copyright \\(co 2009-2012 Bastian Kleineidam"
+
+#~ msgid ""
+#~ "  - ``acap:``      (application configuration access protocol)\n"
+#~ "  - ``afs:``       (Andrew File System global file names)\n"
+#~ "  - ``chrome:``    (Mozilla specific)\n"
+#~ "  - ``cid:``       (content identifier)\n"
+#~ "  - ``clsid:``     (Microsoft specific)\n"
+#~ "  - ``data:``      (data)\n"
+#~ "  - ``dav:``       (dav)\n"
+#~ "  - ``fax:``       (fax)\n"
+#~ "  - ``feed:``      (News feeds)\n"
+#~ "  - ``find:``      (Mozilla specific)\n"
+#~ "  - ``gopher:``    (Gopher)\n"
+#~ "  - ``imap:``      (internet message access protocol)\n"
+#~ "  - ``isbn:``      (ISBN (int. book numbers))\n"
+#~ "  - ``javascript:`` (JavaScript)\n"
+#~ "  - ``ldap:``      (Lightweight Directory Access Protocol)\n"
+#~ "  - ``mailserver:`` (Access to data available from mail servers)\n"
+#~ "  - ``mid:``       (message identifier)\n"
+#~ "  - ``mms:``       (multimedia stream)\n"
+#~ "  - ``modem:``     (modem)\n"
+#~ "  - ``nfs:``       (network file system protocol)\n"
+#~ "  - ``opaquelocktoken:`` (opaquelocktoken)\n"
+#~ "  - ``pop:``       (Post Office Protocol v3)\n"
+#~ "  - ``prospero:``  (Prospero Directory Service)\n"
+#~ "  - ``rsync:``     (rsync protocol)\n"
+#~ "  - ``rtsp:``      (real time streaming protocol)\n"
+#~ "  - ``service:``   (service location)\n"
+#~ "  - ``shttp:``     (secure HTTP)\n"
+#~ "  - ``sip:``       (session initiation protocol)\n"
+#~ "  - ``steam:``     (Steam browser protocol)\n"
+#~ "  - ``tel:``       (telephone)\n"
+#~ "  - ``tip:``       (Transaction Internet Protocol)\n"
+#~ "  - ``tn3270:``    (Interactive 3270 emulation sessions)\n"
+#~ "  - ``vemmi:``     (versatile multimedia interface)\n"
+#~ "  - ``wais:``      (Wide Area Information Servers)\n"
+#~ "  - ``z39.50r:``   (Z39.50 Retrieval)\n"
+#~ "  - ``z39.50s:``   (Z39.50 Session)\n"
+#~ msgstr ""
+#~ "  - ``acap:``      (application configuration access protocol)\n"
+#~ "  - ``afs:``       (Andrew File System global file names)\n"
+#~ "  - ``chrome:``    (Mozilla specific)\n"
+#~ "  - ``cid:``       (content identifier)\n"
+#~ "  - ``clsid:``     (Microsoft specific)\n"
+#~ "  - ``data:``      (data)\n"
+#~ "  - ``dav:``       (dav)\n"
+#~ "  - ``fax:``       (fax)\n"
+#~ "  - ``feed:``      (News feeds)\n"
+#~ "  - ``find:``      (Mozilla specific)\n"
+#~ "  - ``gopher:``    (Gopher)\n"
+#~ "  - ``imap:``      (internet message access protocol)\n"
+#~ "  - ``isbn:``      (ISBN (int. book numbers))\n"
+#~ "  - ``javascript:`` (JavaScript)\n"
+#~ "  - ``ldap:``      (Lightweight Directory Access Protocol)\n"
+#~ "  - ``mailserver:`` (Access to data available from mail servers)\n"
+#~ "  - ``mid:``       (message identifier)\n"
+#~ "  - ``mms:``       (multimedia stream)\n"
+#~ "  - ``modem:``     (modem)\n"
+#~ "  - ``nfs:``       (network file system protocol)\n"
+#~ "  - ``opaquelocktoken:`` (opaquelocktoken)\n"
+#~ "  - ``pop:``       (Post Office Protocol v3)\n"
+#~ "  - ``prospero:``  (Prospero Directory Service)\n"
+#~ "  - ``rsync:``     (rsync protocol)\n"
+#~ "  - ``rtsp:``      (real time streaming protocol)\n"
+#~ "  - ``service:``   (service location)\n"
+#~ "  - ``shttp:``     (secure HTTP)\n"
+#~ "  - ``sip:``       (session initiation protocol)\n"
+#~ "  - ``steam:``     (Steam browser protocol)\n"
+#~ "  - ``tel:``       (telephone)\n"
+#~ "  - ``tip:``       (Transaction Internet Protocol)\n"
+#~ "  - ``tn3270:``    (Interactive 3270 emulation sessions)\n"
+#~ "  - ``vemmi:``     (versatile multimedia interface)\n"
+#~ "  - ``wais:``      (Wide Area Information Servers)\n"
+#~ "  - ``z39.50r:``   (Z39.50 Retrieval)\n"
+#~ "  - ``z39.50s:``   (Z39.50 Session)\n"

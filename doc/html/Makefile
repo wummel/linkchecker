@@ -1,5 +1,5 @@
 HELPFILES := lccollection.qhc
-HTMLFILES := index.html options.html
+HTMLFILES := index.html
 OXYGEN := ${HOME}/src/oxygen-gitsvn
 ICOICONS := logo16x16.png logo32x32.png
 ICNSICONS := logo16x16.png logo32x32.png logo48x48.png logo128x128.png

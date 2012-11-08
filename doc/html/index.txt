@@ -2,11 +2,74 @@
 
 ## Basic usage
 
-To check a URL like ``http://www.example.org/`` it is enough to
+To check a URL like [http://www.example.org/](http://www.example.org/)
+it is enough to
 type ``linkchecker www.example.org`` on the command line or
 type ``www.example.org`` in the GUI application. This will check the
 complete domain of ``http://www.example.org`` recursively. All links
 pointing outside of the domain are also checked for validity.
+
+Local files can also be checked. On Unix or OSX systems the syntax
+is ``file:///path/to/my/file.html``. On Windows the syntax is
+``file://C|/path/to/my/file.html``. When directories are checked,
+all included files will be checked.
+
+On the GUI client the ``Edit`` menu has shortcuts for bookmark
+files. For example if Google Chrome is installed, there will be
+a menu entry called ``Insert Google Chrome bookmark file`` which
+can be used to check all browser bookmarks.
+
+## Options
+
+The commandline client options are documented
+in the [linkchecker(1) manual page](http://linkchecker.sourceforge.net/man1/linkchecker.1.html).
+
+In the GUI client, the following options are available:
+
+- Recursive depth
+  
+  Check recursively all links up to given depth.
+  A negative depth (eg. ``-1``) will enable infinite recursion.
+  
+- Verbose output
+  
+  If set, log all checked URLs. Default is to log only errors and warnings.
+  
+- Debug
+  
+  Prints debugging output in a separate window which can be seen with
+  ``Help -> Show debug``.
+  
+- Debug memory usage
+  
+  Profiles memory usage and writes statistics and a dump file when checking
+  stops. The dump file can be examined with
+  [external tools](http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker/linkchecker;a=blob;f=tests/analyze_memdump.py;hb=HEAD).
+  This option should only be useful for developers.
+  
+- Warning strings
+  
+  Log a warning if any strings are found in the content of the checked
+  URL. Strings are entered one per line.
+  
+  Use this to check for pages that contain some form of error, for example
+  "``This page has moved``" or "``Oracle Application error``".
+  
+- Ignoring URLs
+  
+  URLs matching the given regular expressions will be ignored and not checked.
+  Useful if certain URL types should not be checked like emails (ie.
+  "``^mailto:``").
+
+## Configuration file
+
+Each user can edit a configuration with advanced options for
+checking or filtering. The
+[linkcheckerrc(5) manual page](http://linkchecker.sourceforge.net/man5/linkcheckerrc.5.html)
+documents all the options.
+
+In the GUI client the configuration file can be edited directly from
+the dialog ``Edit -> Options`` and the clicking on ``Edit``.
 
 ## Performed checks
 
@@ -35,7 +98,7 @@ checking. All connection check types are described below.
   File contents are checked for recursion. If they are parseable
   files (for example HTML files), all links in that file will be
   checked.
-  
+
 - Mail links (``mailto:``)
   
   A mailto: link resolves to a list of email addresses.
@@ -77,48 +140,9 @@ checking. All connection check types are described below.
   An unsupported link will print a warning, but no error. No further checking
   will be made.
   
-  Here is the complete list of recognized, but unsupported links. The most
-  prominent of them are JavaScript links.
-  
-  - ``acap:``      (application configuration access protocol)
-  - ``afs:``       (Andrew File System global file names)
-  - ``chrome:``    (Mozilla specific)
-  - ``cid:``       (content identifier)
-  - ``clsid:``     (Microsoft specific)
-  - ``data:``      (data)
-  - ``dav:``       (dav)
-  - ``fax:``       (fax)
-  - ``feed:``      (News feeds)
-  - ``find:``      (Mozilla specific)
-  - ``gopher:``    (Gopher)
-  - ``imap:``      (internet message access protocol)
-  - ``irc:``       (internet relay chat)
-  - ``isbn:``      (ISBN (int. book numbers))
-  - ``javascript:`` (JavaScript)
-  - ``ldap:``      (Lightweight Directory Access Protocol)
-  - ``mailserver:`` (Access to data available from mail servers)
-  - ``mid:``       (message identifier)
-  - ``mms:``       (multimedia stream)
-  - ``modem:``     (modem)
-  - ``nfs:``       (network file system protocol)
-  - ``opaquelocktoken:`` (opaquelocktoken)
-  - ``pop:``       (Post Office Protocol v3)
-  - ``prospero:``  (Prospero Directory Service)
-  - ``rsync:``     (rsync protocol)
-  - ``rtsp:``      (real time streaming protocol)
-  - ``service:``   (service location)
-  - ``shttp:``     (secure HTTP)
-  - ``sip:``       (session initiation protocol)
-  - ``skype:``     (Skype)
-  - ``steam:``     (Steam browser protocol)
-  - ``tel:``       (telephone)
-  - ``tip:``       (Transaction Internet Protocol)
-  - ``tn3270:``    (Interactive 3270 emulation sessions)
-  - ``vemmi:``     (versatile multimedia interface)
-  - ``wais:``      (Wide Area Information Servers)
-  - ``z39.50r:``   (Z39.50 Retrieval)
-  - ``z39.50s:``   (Z39.50 Session)
-
+  The complete list of recognized, but unsupported links can be seen in the
+  [unknownurl.py](http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker/linkchecker;a=blob;f=linkcheck/checker/unknownurl.py;hb=HEAD)
+  source file. The most prominent of them are JavaScript links.
 
 ## Recursion
 
@@ -149,17 +173,3 @@ conditions. The conditions are checked in this order:
 
 Note that the local and FTP directory recursion reads all files in that
 directory, not just a subset like ``index.htm*``.
-
-
-## Configuration file
-
-Each user can edit a configuration with advanced options for
-checking or filtering.
-
-On Unix or OS X systems the user configuration file is at
-
-- ``~/.linkchecker/linkcheckerrc``
-
-On Windows systems the user configuration file is at
-
-- ``%HOMEPATH%\.linkchecker\linkcheckerrc``

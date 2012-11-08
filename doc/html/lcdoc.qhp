@@ -4,13 +4,10 @@
   <virtualFolder>doc</virtualFolder>
   <filterSection>
     <toc>
-      <section title="LinkChecker documentation" ref="index.html">
-        <section title="LinkChecker options" ref="options.html" />
-      </section>
+      <section title="LinkChecker documentation" ref="index.html"/>
     </toc>
     <files>
       <file>index.html</file>
-      <file>options.html</file>
     </files>
   </filterSection>
 </QtHelpProject>

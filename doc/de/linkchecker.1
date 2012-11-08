@@ -153,8 +153,8 @@ Prüfe Inhalt von URLs auf Viren mit ClamAV.
 Trace\-Information ausgeben.
 .TP 
 \fB\-v\fP, \fB\-\-verbose\fP
-Gebe alle geprüften URLs einmal aus. Standard ist es, nur fehlerhafte URLs
-und Warnungen auszugeben.
+Gebe alle geprüften URLs aus. Standard ist es, nur fehlerhafte URLs und
+Warnungen auszugeben.
 .TP 
 \fB\-W\fP\fIREGEX\fP, \fB\-\-warning\-regex=\fP\fIREGEX\fP
 Definieren Sie einen regulären Ausdruck der eine Warnung ausgibt falls er
@@ -402,57 +402,23 @@ Für FTP\-Links wird Folgendes geprüft:
   3) Versuche, in das angegebene Verzeichnis zu wechseln
   4) Liste die Dateien im Verzeichnis auf mit dem NLST\-Befehl
 
-\- Telnet\-Links (\*(lqtelnet:\*(lq)
+.TP 
+Telnet\-Links (\*(lqtelnet:\*(lq)
   
   Versuche, zu dem angegeben Telnetrechner zu verginden und falls Benutzer/Passwort angegeben sind, wird versucht, sich anzumelden.
 
-\- NNTP\-Links (\*(lqnews:\*(lq, \*(lqsnews:\*(lq, \*(lqnntp\*(lq)
+.TP 
+NNTP\-Links (\*(lqnews:\*(lq, \*(lqsnews:\*(lq, \*(lqnntp\*(lq)
   
   Versuche, zu dem angegebenen NNTP\-Rechner eine Verbindung aufzubaucne. Falls eine Nachrichtengruppe oder ein bestimmter Artikel angegeben ist, wird versucht, diese Gruppe oder diesen Artikel vom Rechner anzufragen.
 
-\- Nicht unterstützte Links (\*(lqjavascript:\*(lq, etc.)
+.TP 
+Nicht unterstützte Links (\*(lqjavascript:\*(lq, etc.)
   
   Ein nicht unterstützter Link wird nur eine Warnung ausgeben. Weitere Prüfungen werden nicht durchgeführt.
   
-  Dies ist eine komplette Liste von erkannten, aber nicht unterstützten Links. Die bekanntesten davon dürften JavaScript\-Links sein.
-  
-  \- \*(lqacap:\*(lq      (application configuration access protocol)
-  \- \*(lqafs:\*(lq       (Andrew File System global file names)
-  \- \*(lqchrome:\*(lq    (Mozilla specific)
-  \- \*(lqcid:\*(lq       (content identifier)
-  \- \*(lqclsid:\*(lq     (Microsoft specific)
-  \- \*(lqdata:\*(lq      (data)
-  \- \*(lqdav:\*(lq       (dav)
-  \- \*(lqfax:\*(lq       (fax)
-  \- \*(lqfeed:\*(lq      (News feeds)
-  \- \*(lqfind:\*(lq      (Mozilla specific)
-  \- \*(lqgopher:\*(lq    (Gopher)
-  \- \*(lqimap:\*(lq      (internet message access protocol)
-  \- \*(lqisbn:\*(lq      (ISBN (int. book numbers))
-  \- \*(lqjavascript:\*(lq (JavaScript)
-  \- \*(lqldap:\*(lq      (Lightweight Directory Access Protocol)
-  \- \*(lqmailserver:\*(lq (Access to data available from mail servers)
-  \- \*(lqmid:\*(lq       (message identifier)
-  \- \*(lqmms:\*(lq       (multimedia stream)
-  \- \*(lqmodem:\*(lq     (modem)
-  \- \*(lqnfs:\*(lq       (network file system protocol)
-  \- \*(lqopaquelocktoken:\*(lq (opaquelocktoken)
-  \- \*(lqpop:\*(lq       (Post Office Protocol v3)
-  \- \*(lqprospero:\*(lq  (Prospero Directory Service)
-  \- \*(lqrsync:\*(lq     (rsync protocol)
-  \- \*(lqrtsp:\*(lq      (real time streaming protocol)
-  \- \*(lqservice:\*(lq   (service location)
-  \- \*(lqshttp:\*(lq     (secure HTTP)
-  \- \*(lqsip:\*(lq       (session initiation protocol)
-  \- \*(lqsteam:\*(lq     (Steam browser protocol)
-  \- \*(lqtel:\*(lq       (telephone)
-  \- \*(lqtip:\*(lq       (Transaction Internet Protocol)
-  \- \*(lqtn3270:\*(lq    (Interactive 3270 emulation sessions)
-  \- \*(lqvemmi:\*(lq     (versatile multimedia interface)
-  \- \*(lqwais:\*(lq      (Wide Area Information Servers)
-  \- \*(lqz39.50r:\*(lq   (Z39.50 Retrieval)
-  \- \*(lqz39.50s:\*(lq   (Z39.50 Session)
-
+  Die komplette Liste von erkannten, aber nicht unterstützten Links ist in der
+  Quelldatei \fBunknownurl.py\fP. Die bekanntesten davon dürften JavaScript\-Links sein.
 
 .SH Rekursion
 Bevor eine URL rekursiv geprüft wird, hat diese mehrere Bedingungen zu
@@ -538,6 +504,9 @@ Ausgabe Enkodierungen
 .br
 \fBhttp://docs.python.org/howto/regex.html\fP \- Dokumentation zu regulären
 Ausdrücken
+.br
+\fBhttp://linkchecker.git.sf.net/\:git/gitweb.cgi?p=linkchecker/linkchecker;\:a=blob;f=linkcheck/checker/unknownurl.py;hb=HEAD\fP
+\- die unknown.py Quelldatei
 
 .SH "SIEHE AUCH"
 \fBlinkcheckerrc\fP(5)

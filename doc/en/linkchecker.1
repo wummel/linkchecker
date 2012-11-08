@@ -148,7 +148,7 @@ Scan content of URLs for viruses with ClamAV.
 Print tracing information.
 .TP
 \fB\-v\fP, \fB\-\-verbose\fP
-Log all checked URLs once. Default is to log only errors and warnings.
+Log all checked URLs. Default is to log only errors and warnings.
 .TP
 \fB\-W\fP\fIREGEX\fP, \fB\-\-warning\-regex=\fIREGEX\fP
 Define a regular expression which prints a warning if it matches any
@@ -392,61 +392,27 @@ FTP links (\fBftp:\fP)
   3) try to change to the given directory
   4) list the file with the NLST command
 
-- Telnet links (``telnet:``)
+.TP
+Telnet links (``telnet:``)
   
   We try to connect and if user/password are given, login to the
   given telnet server.
 
-- NNTP links (``news:``, ``snews:``, ``nntp``)
+.TP
+NNTP links (``news:``, ``snews:``, ``nntp``)
   
   We try to connect to the given NNTP server. If a news group or
   article is specified, try to request it from the server.
 
-- Unsupported links (``javascript:``, etc.)
+.TP
+Unsupported links (``javascript:``, etc.)
   
   An unsupported link will only print a warning. No further checking
   will be made.
   
-  Here is a complete list of recognized, but unsupported links. The most
-  prominent of them should be JavaScript links.
-  
-  - ``acap:``      (application configuration access protocol)
-  - ``afs:``       (Andrew File System global file names)
-  - ``chrome:``    (Mozilla specific)
-  - ``cid:``       (content identifier)
-  - ``clsid:``     (Microsoft specific)
-  - ``data:``      (data)
-  - ``dav:``       (dav)
-  - ``fax:``       (fax)
-  - ``feed:``      (News feeds)
-  - ``find:``      (Mozilla specific)
-  - ``gopher:``    (Gopher)
-  - ``imap:``      (internet message access protocol)
-  - ``isbn:``      (ISBN (int. book numbers))
-  - ``javascript:`` (JavaScript)
-  - ``ldap:``      (Lightweight Directory Access Protocol)
-  - ``mailserver:`` (Access to data available from mail servers)
-  - ``mid:``       (message identifier)
-  - ``mms:``       (multimedia stream)
-  - ``modem:``     (modem)
-  - ``nfs:``       (network file system protocol)
-  - ``opaquelocktoken:`` (opaquelocktoken)
-  - ``pop:``       (Post Office Protocol v3)
-  - ``prospero:``  (Prospero Directory Service)
-  - ``rsync:``     (rsync protocol)
-  - ``rtsp:``      (real time streaming protocol)
-  - ``service:``   (service location)
-  - ``shttp:``     (secure HTTP)
-  - ``sip:``       (session initiation protocol)
-  - ``steam:``     (Steam browser protocol)
-  - ``tel:``       (telephone)
-  - ``tip:``       (Transaction Internet Protocol)
-  - ``tn3270:``    (Interactive 3270 emulation sessions)
-  - ``vemmi:``     (versatile multimedia interface)
-  - ``wais:``      (Wide Area Information Servers)
-  - ``z39.50r:``   (Z39.50 Retrieval)
-  - ``z39.50s:``   (Z39.50 Session)
-
+  The complete list of recognized, but unsupported links can be found
+  in the \fBunknownurl.py\fP source file. The most prominent of them
+  should be JavaScript links.
 
 .SH RECURSION
 Before descending recursively into a URL, it has to fulfill several
@@ -536,6 +502,8 @@ might slow down the program or even the whole system.
 \fBhttp://docs.python.org/library/codecs.html#standard-encodings\fP - valid output encodings
 .br
 \fBhttp://docs.python.org/howto/regex.html\fP - regular expression documentation
+.br
+\fBhttp://linkchecker.git.sf.net/\:git/gitweb.cgi?p=linkchecker/linkchecker;\:a=blob;f=linkcheck/checker/unknownurl.py;hb=HEAD\fP - the unknown.py source file
 
 .SH "SEE ALSO"
 \fBlinkcheckerrc\fP(5)

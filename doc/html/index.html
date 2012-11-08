@@ -26,11 +26,71 @@ img { border: 0; }
 
 <h2>Basic usage</h2>
 
-<p>To check a URL like <code>http://www.example.org/</code> it is enough to
+<p>To check a URL like <a href="http://www.example.org/">http://www.example.org/</a>
+it is enough to
 type <code>linkchecker www.example.org</code> on the command line or
 type <code>www.example.org</code> in the GUI application. This will check the
 complete domain of <code>http://www.example.org</code> recursively. All links
 pointing outside of the domain are also checked for validity.</p>
+
+<p>Local files can also be checked. On Unix or OSX systems the syntax
+is <code>file:///path/to/my/file.html</code>. On Windows the syntax is
+<code>file://C|/path/to/my/file.html</code>. When directories are checked,
+all included files will be checked.</p>
+
+<p>On the GUI client the <code>Edit</code> menu has shortcuts for bookmark
+files. For example if Google Chrome is installed, there will be
+a menu entry called <code>Insert Google Chrome bookmark file</code> which
+can be used to check all browser bookmarks.</p>
+
+<h2>Options</h2>
+
+<p>The commandline client options are documented
+in the <a href="http://linkchecker.sourceforge.net/man1/linkchecker.1.html">linkchecker(1) manual page</a>.</p>
+
+<p>In the GUI client, the following options are available:</p>
+
+<ul>
+<li><p>Recursive depth</p>
+
+<p>Check recursively all links up to given depth.
+A negative depth (eg. <code>-1</code>) will enable infinite recursion.</p></li>
+<li><p>Verbose output</p>
+
+<p>If set, log all checked URLs. Default is to log only errors and warnings.</p></li>
+<li><p>Debug</p>
+
+<p>Prints debugging output in a separate window which can be seen with
+<code>Help -&gt; Show debug</code>.</p></li>
+<li><p>Debug memory usage</p>
+
+<p>Profiles memory usage and writes statistics and a dump file when checking
+stops. The dump file can be examined with
+<a href="http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker/linkchecker;a=blob;f=tests/analyze_memdump.py;hb=HEAD">external tools</a>.
+This option should only be useful for developers.</p></li>
+<li><p>Warning strings</p>
+
+<p>Log a warning if any strings are found in the content of the checked
+URL. Strings are entered one per line.</p>
+
+<p>Use this to check for pages that contain some form of error, for example
+"<code>This page has moved</code>" or "<code>Oracle Application error</code>".</p></li>
+<li><p>Ignoring URLs</p>
+
+<p>URLs matching the given regular expressions will be ignored and not checked.
+Useful if certain URL types should not be checked like emails (ie.
+"<code>^mailto:</code>").</p></li>
+</ul>
+
+<h2>Configuration file</h2>
+
+<p>Each user can edit a configuration with advanced options for
+checking or filtering. The
+<a href="http://linkchecker.sourceforge.net/man5/linkcheckerrc.5.html">linkcheckerrc(5) manual page</a>
+documents all the options.</p>
+
+<p>In the GUI client the configuration file can be edited directly from
+the dialog <code>Edit -&gt; Options</code> and the clicking on <code>Edit</code>.</p>
 
 <h2>Performed checks</h2>
 
@@ -100,49 +160,9 @@ article is specified, it will be requested from the server.</p></li>
 <p>An unsupported link will print a warning, but no error. No further checking
 will be made.</p>
 
-<p>Here is the complete list of recognized, but unsupported links. The most
-prominent of them are JavaScript links.</p>
-
-<ul>
-<li><code>acap:</code>      (application configuration access protocol)</li>
-<li><code>afs:</code>       (Andrew File System global file names)</li>
-<li><code>chrome:</code>    (Mozilla specific)</li>
-<li><code>cid:</code>       (content identifier)</li>
-<li><code>clsid:</code>     (Microsoft specific)</li>
-<li><code>data:</code>      (data)</li>
-<li><code>dav:</code>       (dav)</li>
-<li><code>fax:</code>       (fax)</li>
-<li><code>feed:</code>      (News feeds)</li>
-<li><code>find:</code>      (Mozilla specific)</li>
-<li><code>gopher:</code>    (Gopher)</li>
-<li><code>imap:</code>      (internet message access protocol)</li>
-<li><code>irc:</code>       (internet relay chat)</li>
-<li><code>isbn:</code>      (ISBN (int. book numbers))</li>
-<li><code>javascript:</code> (JavaScript)</li>
-<li><code>ldap:</code>      (Lightweight Directory Access Protocol)</li>
-<li><code>mailserver:</code> (Access to data available from mail servers)</li>
-<li><code>mid:</code>       (message identifier)</li>
-<li><code>mms:</code>       (multimedia stream)</li>
-<li><code>modem:</code>     (modem)</li>
-<li><code>nfs:</code>       (network file system protocol)</li>
-<li><code>opaquelocktoken:</code> (opaquelocktoken)</li>
-<li><code>pop:</code>       (Post Office Protocol v3)</li>
-<li><code>prospero:</code>  (Prospero Directory Service)</li>
-<li><code>rsync:</code>     (rsync protocol)</li>
-<li><code>rtsp:</code>      (real time streaming protocol)</li>
-<li><code>service:</code>   (service location)</li>
-<li><code>shttp:</code>     (secure HTTP)</li>
-<li><code>sip:</code>       (session initiation protocol)</li>
-<li><code>skype:</code>     (Skype)</li>
-<li><code>steam:</code>     (Steam browser protocol)</li>
-<li><code>tel:</code>       (telephone)</li>
-<li><code>tip:</code>       (Transaction Internet Protocol)</li>
-<li><code>tn3270:</code>    (Interactive 3270 emulation sessions)</li>
-<li><code>vemmi:</code>     (versatile multimedia interface)</li>
-<li><code>wais:</code>      (Wide Area Information Servers)</li>
-<li><code>z39.50r:</code>   (Z39.50 Retrieval)</li>
-<li><code>z39.50s:</code>   (Z39.50 Session)</li>
-</ul></li>
+<p>The complete list of recognized, but unsupported links can be seen in the
+<a href="http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker/linkchecker;a=blob;f=linkcheck/checker/unknownurl.py;hb=HEAD">unknownurl.py</a>
+source file. The most prominent of them are JavaScript links.</p></li>
 </ul>
 
 <h2>Recursion</h2>
@@ -176,23 +196,6 @@ HTML header data.</li>
 
 <p>Note that the local and FTP directory recursion reads all files in that
 directory, not just a subset like <code>index.htm*</code>.</p>
-
-<h2>Configuration file</h2>
-
-<p>Each user can edit a configuration with advanced options for
-checking or filtering.</p>
-
-<p>On Unix or OS X systems the user configuration file is at</p>
-
-<ul>
-<li><code>~/.linkchecker/linkcheckerrc</code></li>
-</ul>
-
-<p>On Windows systems the user configuration file is at</p>
-
-<ul>
-<li><code>%HOMEPATH%\.linkchecker\linkcheckerrc</code></li>
-</ul>
 <hr/>
     <div class="footer">
       &copy; Copyright 2012, Bastian Kleineidam.
