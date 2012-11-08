@@ -193,8 +193,6 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             self.config["storecookies"] = self.config["sendcookies"] = True
         self.read_string_option(section, "loginuserfield")
         self.read_string_option(section, "loginpasswordfield")
-        if self.config["loginpasswordfield"]:
-            password_fields.append("loginpasswordfield")
         # read login extra fields
         if self.has_option(section, "loginextrafields"):
             for val in read_multiline(self.get(section, "loginextrafields")):
