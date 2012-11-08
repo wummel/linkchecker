@@ -170,8 +170,8 @@ class UrlQueue (object):
                     else:
                         self.seen[key] = 0
             key = url_data.cache_url_key
-            assert key is not None
-            del self.in_progress[key]
+            if key in self.in_progress:
+                del self.in_progress[key]
             self.finished_tasks += 1
             self.unfinished_tasks -= 1
             if self.unfinished_tasks <= 0:
