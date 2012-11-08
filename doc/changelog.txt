@@ -18,6 +18,8 @@ Fixes:
   Closes: SF bug #3578005
 - checking: Fix handling of non-ASCII exceptions (regression in 8.1).
   Closes: SF bug #3579766
+- configuration: Fix configuration directory creation on Windows
+  systems.
 
 
 8.1 "Safety Not Guaranteed" (released 14.10.2012)
