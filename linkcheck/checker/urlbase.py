@@ -1134,18 +1134,22 @@ class UrlBase (object):
         if self.base_ref is not None:
             assert isinstance(self.base_ref, unicode), self
         assert isinstance(self.name, unicode), self
+        if self.anchor is not None:
+            assert isinstance(self.anchor, unicode), self
+        if self.cache_url_key is not None:
+            assert isinstance(self.cache_url_key, unicode), self
         return sep.join([
             u"%s link" % self.scheme,
             u"base_url=%r" % self.base_url,
             u"parent_url=%r" % self.parent_url,
             u"base_ref=%r" % self.base_ref,
-            u"recursion_level=%s" % self.recursion_level,
+            u"recursion_level=%d" % self.recursion_level,
             u"url_connection=%s" % self.url_connection,
             u"line=%d" % self.line,
             u"column=%d" % self.column,
             u"name=%r" % self.name,
             u"anchor=%r" % self.anchor,
-            u"cache_key=%s" % self.cache_url_key,
+            u"cache_key=%r" % self.cache_url_key,
            ])
 
     def get_intern_pattern (self, url=None):
