@@ -1,8 +1,9 @@
-linkchecker (8.2-1) UNRELEASED; urgency=low
+linkchecker (8.2-1) unstable; urgency=low
 
   * New upstream release.
+  * Use debhelper compatibility level 9.
 
- -- Bastian Kleineidam <calvin@debian.org>  Mon, 15 Oct 2012 19:54:21 +0200
+ -- Bastian Kleineidam <calvin@debian.org>  Fri, 09 Nov 2012 19:19:41 +0100
 
 linkchecker (8.1-1) unstable; urgency=low
 
