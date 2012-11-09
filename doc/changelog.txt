@@ -20,6 +20,7 @@ Fixes:
   Closes: SF bug #3579766
 - configuration: Fix configuration directory creation on Windows
   systems.
+  Closes: SF bug #3584837
 
 
 8.1 "Safety Not Guaranteed" (released 14.10.2012)
