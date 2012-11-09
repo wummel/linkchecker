@@ -1,6 +1,6 @@
 Project: LinkChecker
-Version: 8.1
-Release-Focus: Minor feature enhancements
+Version: 8.2
+Release-Focus: Minor bug fixes
 Hide: N
 Website-URL: http://linkchecker.sourceforge.net/
 Changelog-URL: http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker/linkchecker;a=blob;f=doc/changelog.txt;hb=HEAD
@@ -9,8 +9,8 @@ Debian-Package-URL: http://packages.debian.org/linkchecker
 GIT-Tree-URL: http://linkchecker.git.sourceforge.net/
 Windows-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.exe
 
-The maximum check time or maximum number of URLs to check can now be configured.
-For HTTP requests, a do-not-track header is sent.
-An XML sitemap can be generated for search engine optimization.
-The URL length and duplicate page contents are now checked.
-Several checking bugs were also fixed.
+Anchor checking, cookie path matching, non-ASCII exception handling and
+configuration directory creation on Windows systems has been fixed.
+
+Checking speed has been improved and checking of local files included in
+online pages is now forbidden. The GUI documentation has also been improved.
