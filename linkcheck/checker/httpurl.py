@@ -187,14 +187,19 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
             if self.response.status == 305 and self.headers:
                 oldproxy = (self.proxy, self.proxyauth)
                 newproxy = self.getheader("Location")
-                self.add_info(_("Enforced proxy `%(name)s'.") %
-                              {"name": newproxy})
+                if newproxy:
+                    self.add_info(_("Enforced proxy `%(name)s'.") %
+                                  {"name": newproxy})
                 self.set_proxy(newproxy)
                 self.close_response()
-                if not self.proxy:
+                if self.proxy is None:
                     self.set_result(
-                         _("Enforced proxy `%(name)s' ignored, aborting.") %
-                         {"name": newproxy},
+                         _("Missing 'Location' header with enforced proxy status 305, aborting."),
+                         valid=False)
+                    return
+                elif not self.proxy:
+                    self.set_result(
+                         _("Empty 'Location' header value with enforced proxy status 305, aborting."),
                          valid=False)
                     return
                 self._try_http_response()
