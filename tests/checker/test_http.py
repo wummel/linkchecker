@@ -35,3 +35,27 @@ class TestHttp (HttpServerTest):
         self.file_test("http.xhtml", confargs=confargs)
         self.file_test("http_file.html", confargs=confargs)
 
+    def test_status(self):
+        for status in sorted(self.handler.responses.keys()):
+            self._test_status(status)
+
+    def _test_status(self, status):
+        url = u"http://localhost:%d/status/%d" % (self.port, status)
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % url,
+            u"real url %s" % url,
+        ]
+        if status in (204,):
+            resultlines.append(u"warning No Content")
+        elif status == 401:
+            resultlines.append(u"warning Unauthorized access without HTTP authentication.")
+        elif status in (301, 302):
+            resultlines.append(u"info Redirected to `%s'." % url)
+        if (status != 101 and status < 200) or status >= 400 or status in (301, 302, 305):
+            result = u"error"
+        else:
+            result = u"valid"
+        resultlines.append(result)
+        self.direct(url, resultlines, recursionlevel=0)
+

@@ -82,19 +82,37 @@ class NoQueryHttpRequestHandler (StoppableHttpRequestHandler):
         if i != -1:
             self.path = self.path[:i]
 
+    def get_status(self):
+        dummy, status = self.path.rsplit('/', 1)
+        status = int(status)
+        if status in self.responses:
+             return status
+        return 500
+
     def do_GET (self):
         """
         Removes query part of GET request.
         """
         self.remove_path_query()
-        super(NoQueryHttpRequestHandler, self).do_GET()
+        if "status/" in self.path:
+            status = self.get_status()
+            self.send_response(status)
+            self.end_headers()
+            if  status >= 200 and status not in (204, 304):
+                self.wfile.write("testcontent")
+        else:
+            super(NoQueryHttpRequestHandler, self).do_GET()
 
     def do_HEAD (self):
         """
         Removes query part of HEAD request.
         """
         self.remove_path_query()
-        super(NoQueryHttpRequestHandler, self).do_HEAD()
+        if "status/" in self.path:
+            self.send_response(self.get_status())
+            self.end_headers()
+        else:
+            super(NoQueryHttpRequestHandler, self).do_HEAD()
 
     def list_directory(self, path):
         """Helper to produce a directory listing (absent index.html).
