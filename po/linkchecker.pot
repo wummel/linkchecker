@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2012 Bastian Kleineidam <calvin@users.sourceforge.net>
+# Copyright (C) YEAR Bastian Kleineidam <calvin@users.sourceforge.net>
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: calvin@users.sourceforge.net\n"
-"POT-Creation-Date: 2012-11-07 15:00+0100\n"
+"POT-Creation-Date: 2012-11-13 18:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -163,12 +163,12 @@ msgstr ""
 msgid "invalid login URL `%s'. Only HTTP and HTTPS URLs are supported."
 msgstr ""
 
-#: ../linkcheck/configuration/confparse.py:218
+#: ../linkcheck/configuration/confparse.py:216
 #, python-format
 msgid "For example execute 'chmod go-rw %s'."
 msgstr ""
 
-#: ../linkcheck/configuration/confparse.py:220
+#: ../linkcheck/configuration/confparse.py:218
 msgid ""
 "See http://support.microsoft.com/kb/308419 for more info on setting file "
 "permissions."
@@ -229,7 +229,7 @@ msgstr ""
 msgid "disabling login URL %(url)s."
 msgstr ""
 
-#: ../linkcheck/configuration/__init__.py:473
+#: ../linkcheck/configuration/__init__.py:477
 #, python-format
 msgid "could not copy initial configuration file %(src)r to %(dst)r: %(errmsg)r"
 msgstr ""
@@ -589,7 +589,7 @@ msgstr ""
 msgid "Unsupported HTTP authentication method."
 msgstr ""
 
-#: ../linkcheck/checker/const.py:143 ../linkcheck/checker/httpurl.py:238
+#: ../linkcheck/checker/const.py:143 ../linkcheck/checker/httpurl.py:243
 msgid "Unauthorized access without HTTP authentication."
 msgstr ""
 
@@ -832,8 +832,8 @@ msgid "Available anchors: %(anchors)s."
 msgstr ""
 
 #: ../linkcheck/checker/urlbase.py:757 ../linkcheck/checker/urlbase.py:760
-#: ../linkcheck/checker/fileurl.py:206 ../linkcheck/checker/httpurl.py:669
-#: ../linkcheck/checker/httpurl.py:677
+#: ../linkcheck/checker/fileurl.py:207 ../linkcheck/checker/httpurl.py:674
+#: ../linkcheck/checker/httpurl.py:682
 msgid "File size too large"
 msgstr ""
 
@@ -907,7 +907,7 @@ msgid_plural "%(num)d URLs parsed."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/checker/urlbase.py:1169
+#: ../linkcheck/checker/urlbase.py:1173
 #, python-format
 msgid "URL has unparsable domain name: %(domain)s"
 msgstr ""
@@ -986,21 +986,21 @@ msgstr ""
 msgid "Could not get current working directory: %(msg)s"
 msgstr ""
 
-#: ../linkcheck/checker/fileurl.py:139
+#: ../linkcheck/checker/fileurl.py:153
+msgid "Added trailing slash to directory."
+msgstr ""
+
+#: ../linkcheck/checker/fileurl.py:177
 msgid ""
 "local files are only checked without parent URL or when the parent URL is "
 "also a file"
 msgstr ""
 
-#: ../linkcheck/checker/fileurl.py:156
-msgid "Added trailing slash to directory."
-msgstr ""
-
-#: ../linkcheck/checker/fileurl.py:179
+#: ../linkcheck/checker/fileurl.py:180
 msgid "directory"
 msgstr ""
 
-#: ../linkcheck/checker/fileurl.py:196
+#: ../linkcheck/checker/fileurl.py:197
 #, python-format
 msgid ""
 "The URL path %(path)r is not the same as the system path %(realpath)r. You "
@@ -1011,102 +1011,105 @@ msgstr ""
 msgid "Access denied by robots.txt, skipping content checks."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:190
+#: ../linkcheck/checker/httpurl.py:191
 #, python-format
 msgid "Enforced proxy `%(name)s'."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:196
-#, python-format
-msgid "Enforced proxy `%(name)s' ignored, aborting."
+#: ../linkcheck/checker/httpurl.py:197
+msgid "Missing 'Location' header with enforced proxy status 305, aborting."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:222
+#: ../linkcheck/checker/httpurl.py:202
+msgid "Empty 'Location' header value with enforced proxy status 305, aborting."
+msgstr ""
+
+#: ../linkcheck/checker/httpurl.py:227
 #, python-format
 msgid "more than %d redirections, aborting"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:245
+#: ../linkcheck/checker/httpurl.py:250
 #, python-format
 msgid ""
 "Unsupported HTTP authentication `%(auth)s', only `Basic' authentication is "
 "supported."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:326
+#: ../linkcheck/checker/httpurl.py:331
 #, python-format
 msgid "Redirected to `%(url)s'."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:368
+#: ../linkcheck/checker/httpurl.py:373
 #, python-format
 msgid "Redirection to url `%(newurl)s' is not allowed."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:370 ../linkcheck/checker/httpurl.py:404
-#: ../linkcheck/checker/httpurl.py:438
+#: ../linkcheck/checker/httpurl.py:375 ../linkcheck/checker/httpurl.py:409
+#: ../linkcheck/checker/httpurl.py:443
 msgid "syntax OK"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:389
+#: ../linkcheck/checker/httpurl.py:394
 msgid "The redirected URL is outside of the domain filter, checked only syntax."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:391
+#: ../linkcheck/checker/httpurl.py:396
 msgid "filtered"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:402
+#: ../linkcheck/checker/httpurl.py:407
 msgid "Access to redirected URL denied by robots.txt, checked only syntax."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:420
+#: ../linkcheck/checker/httpurl.py:425
 #, python-format
 msgid ""
 "recursive redirection encountered:\n"
 " %(urls)s"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:433
+#: ../linkcheck/checker/httpurl.py:438
 #, python-format
 msgid ""
 "Redirection to URL `%(newurl)s' with different scheme found; the original URL "
 "was `%(url)s'."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:448
+#: ../linkcheck/checker/httpurl.py:453
 msgid "HTTP 301 (moved permanent) encountered: you should update this link."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:479
+#: ../linkcheck/checker/httpurl.py:484
 msgid "OK"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:578
+#: ../linkcheck/checker/httpurl.py:583
 #, python-format
 msgid "Sent Cookie: %(cookie)s."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:584
+#: ../linkcheck/checker/httpurl.py:589
 #, python-format
 msgid "Could not store cookies from headers: %(error)s."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:643
+#: ../linkcheck/checker/httpurl.py:648
 #, python-format
 msgid "Unsupported HTTP url scheme `%(scheme)s'"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:664
+#: ../linkcheck/checker/httpurl.py:669
 msgid "Redirection error"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:690
+#: ../linkcheck/checker/httpurl.py:695
 #, python-format
 msgid "Decompress error %(err)s"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:705
+#: ../linkcheck/checker/httpurl.py:710
 #, python-format
 msgid "Unsupported content encoding `%(encoding)s'."
 msgstr ""
@@ -1516,7 +1519,7 @@ msgstr ""
 msgid "&Save"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:160 ../linkcheck/gui/__init__.py:481
+#: ../linkcheck/gui/__init__.py:160 ../linkcheck/gui/__init__.py:483
 msgid "Ready."
 msgstr ""
 
@@ -1532,19 +1535,28 @@ msgstr ""
 msgid "Stop"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:364
+#: ../linkcheck/gui/__init__.py:362
+msgid "yes"
+msgstr ""
+
+#: ../linkcheck/gui/__init__.py:362
+msgid "no"
+msgstr ""
+
+#: ../linkcheck/gui/__init__.py:365
 #, python-format
 msgid "About %(appname)s"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:365
+#: ../linkcheck/gui/__init__.py:366
 #, python-format
 msgid ""
 "<qt><center>\n"
 "<h1>%(app)s</h1>\n"
 "<p>Released on %(releasedate)s\n"
 "<p>Python: %(pyver)s<br>\n"
-"%(modules)s\n"
+"%(modules)s<br>\n"
+"Portable version: %(portable)s\n"
 "<p>%(copyright)s\n"
 "<br>%(appname)s is licensed under the\n"
 "<a href=\"http://www.gnu.org/licenses/gpl.html\">GPL</a>\n"
@@ -1554,41 +1566,41 @@ msgid ""
 "</center></qt>"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:416
+#: ../linkcheck/gui/__init__.py:418
 #, python-format
 msgid "Closing active URLs with timeout %s..."
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:431 ../linkchecker:700
+#: ../linkcheck/gui/__init__.py:433 ../linkchecker:700
 msgid "Dumping memory statistics..."
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:433
+#: ../linkcheck/gui/__init__.py:435
 msgid "LinkChecker memory dump written"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:434 ../linkchecker:702
+#: ../linkcheck/gui/__init__.py:436 ../linkchecker:702
 #, python-format
 msgid "The memory dump has been written to `%(filename)s'."
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:457
+#: ../linkcheck/gui/__init__.py:459
 msgid "Error, empty URL"
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:459
+#: ../linkcheck/gui/__init__.py:461
 #, python-format
 msgid "Checking '%s'."
 msgstr ""
 
-#: ../linkcheck/gui/__init__.py:478
+#: ../linkcheck/gui/__init__.py:480
 #, python-format
 msgid "%d URL selected."
 msgid_plural "%d URLs selected"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../linkcheck/gui/__init__.py:565
+#: ../linkcheck/gui/__init__.py:567
 msgid "LinkChecker internal error"
 msgstr ""
 
