@@ -211,7 +211,7 @@ sign_distfiles:
 	done
 
 test:	localbuild
-	$(PYTHON) -m pytest $(PYTESTOPTS) $(TESTOPTS) $(TESTS)
+	env LANG=C $(PYTHON) -m pytest $(PYTESTOPTS) $(TESTOPTS) $(TESTS)
 
 pyflakes:
 	pyflakes $(PY_FILES_DIRS) 2>&1 | \
