@@ -66,13 +66,10 @@ First, install the required software.
 8. *Optional, used for login form submission:*
    Twill from http://twill.idyll.org/
 
-9. *Optional, for Mozilla Bookmark parsing:*
-   Python Sqlite from https://code.google.com/p/pysqlite/
-
-10. *Optional, for GNOME proxy setting parsing:*
+9. *Optional, for GNOME proxy setting parsing:*
     Python Gtk from http://www.pygtk.org/downloads.html
 
-11. *Optional, to run the WSGI web interface:*
+10. *Optional, to run the WSGI web interface:*
     Apache from http://httpd.apache.org/
     mod_wsgi from http://code.google.com/p/modwsgi/
 

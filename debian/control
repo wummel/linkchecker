@@ -26,7 +26,6 @@ Suggests: clamav-daemon,
           python-geoip (>= 1.2.1-2),
           python-meliae,
           python-optcomplete (>= 1.2-5),
-          python-pysqlite2,
           python-twill,
           python-utidylib
 Description: check websites and HTML documents for broken links

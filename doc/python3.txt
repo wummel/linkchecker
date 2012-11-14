@@ -11,5 +11,4 @@ TODO optcomplete from http://furius.ca/optcomplete/
 TODO HTML tidy from http://utidylib.berlios.de/
 TODO GeoIP from http://www.maxmind.com/app/python
 TODO Twill from http://twill.idyll.org/
-TODO Python Sqlite from https://code.google.com/p/pysqlite/
 TODO Python Gtk from http://www.pygtk.org/downloads.html
