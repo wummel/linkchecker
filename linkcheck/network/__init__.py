@@ -88,7 +88,7 @@ class IfConfig (object):
         """Get interface address."""
         try:
             result = self._ioctl(func, self._getifreq(ifname))
-        except IOError, msg:
+        except IOError as msg:
             log.warn(LOG_CHECK,
                   "error getting addr for interface %r: %s", ifname, msg)
             return None
@@ -113,7 +113,7 @@ class IfConfig (object):
             try:
                 result = self._ioctl(self.SIOCGIFCONF, ifreq)
                 break
-            except IOError, msg:
+            except IOError as msg:
                 # in case of EINVAL the buffer size was too small
                 if msg[0] != errno.EINVAL or bufsize == max_bufsize:
                     raise
@@ -139,7 +139,7 @@ class IfConfig (object):
         """Get the flags for an interface"""
         try:
             result = self._ioctl(self.SIOCGIFFLAGS, self._getifreq(ifname))
-        except IOError, msg:
+        except IOError as msg:
             log.warn(LOG_CHECK,
                  "error getting flags for interface %r: %s", ifname, msg)
             return 0

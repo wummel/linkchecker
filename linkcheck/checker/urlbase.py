@@ -263,7 +263,7 @@ class UrlBase (object):
         try:
             parser.feed(self.get_content())
             parser.flush()
-        except linkparse.StopParse, msg:
+        except linkparse.StopParse as msg:
             log.debug(LOG_CHECK, "Stopped parsing: %s", msg)
         # break cyclic dependencies
         handler.parser = None
@@ -393,7 +393,7 @@ class UrlBase (object):
         try:
             self.build_url()
             self.check_url_warnings()
-        except tuple(ExcSyntaxList), msg:
+        except tuple(ExcSyntaxList) as msg:
             self.set_result(unicode_safe(msg), valid=False)
         else:
             self.set_cache_keys()
@@ -640,7 +640,7 @@ class UrlBase (object):
         try:
             parser.feed(self.get_content())
             parser.flush()
-        except linkparse.StopParse, msg:
+        except linkparse.StopParse as msg:
             log.debug(LOG_CHECK, "Stopped parsing: %s", msg)
         # break cyclic dependencies
         handler.parser = None
@@ -667,7 +667,7 @@ class UrlBase (object):
         try:
             parser.feed(self.get_content())
             parser.flush()
-        except linkparse.StopParse, msg:
+        except linkparse.StopParse as msg:
             log.debug(LOG_CHECK, "Stopped parsing: %s", msg)
         # break cyclic dependencies
         handler.parser = None

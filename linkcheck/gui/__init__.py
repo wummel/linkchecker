@@ -234,7 +234,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         """Read user and system configuration file."""
         try:
             self.config.read()
-        except LinkCheckerError, msg:
+        except LinkCheckerError as msg:
             self.config_error = unicode(msg)
 
     def set_config (self):

@@ -126,7 +126,7 @@ def check_urls (aggregate):
     """
     try:
         visit_loginurl(aggregate)
-    except Exception, msg:
+    except Exception as msg:
         log.warn(LOG_CHECK, _("Error using login URL: %(msg)s.") % \
                  {'msg': str(msg)})
         raise

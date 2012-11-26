@@ -57,7 +57,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             self.read_checking_config()
             self.read_authentication_config()
             self.read_filtering_config()
-        except Exception, msg:
+        except Exception as msg:
             raise LinkCheckerError(
               _("Error parsing configuration: %s") % unicode(msg))
 
@@ -92,7 +92,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         """Read configuration options in section "output"."""
         section = "output"
         from ..logger import Loggers
-        for key in Loggers.iterkeys():
+        for key in Loggers.keys():
             if self.has_section(key):
                 for opt in self.options(key):
                     self.config[key][opt] = self.get(key, opt)

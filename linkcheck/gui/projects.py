@@ -114,7 +114,7 @@ def saveproject(parent, url):
     """Save a project file."""
     try:
         msg = saveproject_msg(parent, url)
-    except StandardError, errmsg:
+    except StandardError as errmsg:
         msg = str(errmsg)
     parent.set_statusmsg(msg)
 
@@ -168,7 +168,7 @@ def openproject (parent):
     """Select and load a project file."""
     try:
         msg = openproject_msg(parent)
-    except StandardError, errmsg:
+    except StandardError as errmsg:
         msg = str(errmsg)
     parent.set_statusmsg(msg)
 
@@ -192,7 +192,7 @@ def loadproject(parent, filename):
     """Load a project file."""
     try:
         msg = loadproject_msg(parent, filename)
-    except StandardError, errmsg:
+    except StandardError as errmsg:
         args = dict(filename=filename, err=errmsg)
         msg = _("Could not load project %(filename)s: %(err)s") % args
     parent.set_statusmsg(msg)

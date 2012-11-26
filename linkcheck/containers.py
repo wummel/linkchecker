@@ -206,7 +206,7 @@ class LFUCache (dict):
         """Shrink ca. 5% of entries."""
         trim = int(0.05*len(self))
         if trim:
-            items = super(LFUCache, self).iteritems()
+            items = super(LFUCache, self).items()
             # sorting function for items
             keyfunc = lambda x: x[1][0]
             values = sorted(items, key=keyfunc)
@@ -244,7 +244,7 @@ class LFUCache (dict):
 
     def iteritems (self):
         """Return iterator of items, not updating usage count."""
-        for key, value in super(LFUCache, self).iteritems():
+        for key, value in super(LFUCache, self).items():
             yield (key, value[1])
 
     def values (self):
@@ -253,7 +253,7 @@ class LFUCache (dict):
 
     def itervalues (self):
         """Return iterator of values, not updating usage count."""
-        for value in super(LFUCache, self).itervalues():
+        for value in super(LFUCache, self).values():
             yield value[1]
 
     def popitem (self):

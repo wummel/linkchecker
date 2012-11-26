@@ -25,6 +25,7 @@ import stat
 import fnmatch
 import mimetypes
 import tempfile
+import importlib
 from distutils.spawn import find_executable
 
 from .decorators import memoized
@@ -65,7 +66,7 @@ def has_module (name):
     @rtype: bool
     """
     try:
-        exec "import %s" % name
+        importlib.import_module(name)
         return True
     except (OSError, ImportError):
         # some modules (for example HTMLtidy) raise OSError
@@ -196,7 +197,7 @@ def init_mimedb():
     global mimedb
     try:
         mimedb = mimetypes.MimeTypes(strict=False)
-    except StandardError, msg:
+    except StandardError as msg:
         log.error(LOG_CHECK, "could not initialize MIME database: %s" % msg)
         return
     # For Opera bookmark files (opera6.adr)

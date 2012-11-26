@@ -131,7 +131,7 @@ def checklink (form=None, env=os.environ):
         form = {}
     try:
         checkform(form, env)
-    except LCFormError, errmsg:
+    except LCFormError as errmsg:
         log(env, errmsg)
         yield encode(format_error(errmsg))
         return
@@ -199,7 +199,7 @@ def checkform (form, env):
                 # XXX this is not thread-safe, so think of something else
                 locale.setlocale(locale.LC_ALL, localestr)
                 init_i18n()
-            except locale.Error, errmsg:
+            except locale.Error as errmsg:
                 log(env, "could not set locale %r: %s" % (localestr, errmsg))
         else:
             raise LCFormError(_("unsupported language %r") % lang)

@@ -45,7 +45,7 @@ def decode (page):
                 fp = StringIO(zlib.decompress(content))
             else:
                 fp = gzip.GzipFile('', 'rb', 9, StringIO(content))
-        except zlib.error, msg:
+        except zlib.error as msg:
             log.debug(LOG_CHECK, "uncompressing had error "
                  "%s, assuming non-compressed content", str(msg))
             fp = StringIO(content)

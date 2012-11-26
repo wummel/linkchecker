@@ -17,6 +17,7 @@
 """
 Helpers for console output.
 """
+from __future__ import print_function
 import sys
 import os
 import time
@@ -70,8 +71,8 @@ class StatusLogger (object):
 
 def internal_error (out=stderr, etype=None, evalue=None, tb=None):
     """Print internal error message (output defaults to stderr)."""
-    print >> out, os.linesep
-    print >> out, _("""********** Oops, I did it again. *************
+    print(os.linesep, file=out)
+    print(_("""********** Oops, I did it again. *************
 
 You have found an internal error in LinkChecker. Please write a bug report
 at %s
@@ -86,27 +87,27 @@ When using the commandline client:
 Not disclosing some of the information above due to privacy reasons is ok.
 I will try to help you nonetheless, but you have to give me something
 I can work with ;) .
-""") % configuration.SupportUrl
+""") % configuration.SupportUrl, file=out)
     if etype is None:
         etype = sys.exc_info()[0]
     if evalue is None:
         evalue = sys.exc_info()[1]
-    print >> out, etype, evalue
+    print(etype, evalue, file=out)
     if tb is None:
         tb = sys.exc_info()[2]
     traceback.print_exception(etype, evalue, tb, None, out)
     print_app_info(out=out)
     print_proxy_info(out=out)
     print_locale_info(out=out)
-    print >> out, os.linesep, \
-            _("******** LinkChecker internal error, over and out ********")
+    print(os.linesep,
+      _("******** LinkChecker internal error, over and out ********"), file=out)
 
 
 def print_env_info (key, out=stderr):
     """If given environment key is defined, print it out."""
     value = os.getenv(key)
     if value is not None:
-        print >> out, key, "=", repr(value)
+        print(key, "=", repr(value), file=out)
 
 
 def print_proxy_info (out=stderr):
@@ -119,7 +120,7 @@ def print_locale_info (out=stderr):
     """Print locale info."""
     for key in ("LANGUAGE", "LC_ALL", "LC_CTYPE", "LANG"):
         print_env_info(key, out=out)
-    print >> out, _("Default locale:"), i18n.get_locale()
+    print(_("Default locale:"), i18n.get_locale(), file=out)
 
 # Environment variables influencing the interpreter execution
 # See python(1) man page.
@@ -141,18 +142,19 @@ PYTHON_ENV_VARS = (
 )
 def print_app_info (out=stderr):
     """Print system and application info (output defaults to stderr)."""
-    print >> out, _("System info:")
-    print >> out, configuration.App
-    print >> out, _("Python %(version)s on %(platform)s") % \
-                    {"version": sys.version, "platform": sys.platform}
+    print(_("System info:"), file=out)
+    print(configuration.App, file=out)
+    print(_("Python %(version)s on %(platform)s") %
+                    {"version": sys.version, "platform": sys.platform}, file=out)
     for key in PYTHON_ENV_VARS:
         print_env_info(key, out=out)
     for line in configuration.get_modules_info():
-        print >> out, line
+        print(line, file=out)
     stime = strformat.strtime(time.time())
-    print >> out, _("Local time:"), stime
+    print(_("Local time:"), stime, file=out)
+    print(_("sys.argv:"), sys.argv, file=out)
 
 
 def print_version (out=stdout):
     """Print the program version (output defaults to stdout)."""
-    print >> out, configuration.AppInfo
+    print(configuration.AppInfo, file=out)

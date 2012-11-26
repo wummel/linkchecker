@@ -17,6 +17,7 @@
 """
 Utility functions suitable for command line clients.
 """
+from __future__ import print_function
 import sys
 import optparse
 from . import fileutil, ansicolor, strformat, checker
@@ -32,8 +33,8 @@ def print_version(exit_code=0):
 def print_usage (msg, exit_code=2):
     """Print a program msg text to stderr and exit."""
     program = sys.argv[0]
-    print >> console.stderr, _("Error: %(msg)s") % {"msg": msg}
-    print >> console.stderr, _("Execute '%(program)s -h' for help") % {"program": program}
+    print(_("Error: %(msg)s") % {"msg": msg}, file=console.stderr)
+    print(_("Execute '%(program)s -h' for help") % {"program": program}, file=console.stderr)
     sys.exit(exit_code)
 
 
@@ -105,7 +106,7 @@ class LCOptionParser (optparse.OptionParser, object):
         if fileutil.is_tty(out):
             strformat.paginate(s)
         else:
-            print >>out, s
+            print(s, file=out)
         sys.exit(0)
 
     @notimplemented

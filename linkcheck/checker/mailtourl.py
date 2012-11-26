@@ -122,7 +122,7 @@ class MailtoUrl (urlbase.UrlBase):
                     if key.lower() in EMAIL_CGI:
                         # Only the first header value is added
                         self.addresses.update(getaddresses(urllib.unquote(vals[0])))
-            except ValueError, err:
+            except ValueError as err:
                 self.add_warning(_("Error parsing CGI values: %s") % str(err))
         else:
             self.addresses.update(getaddresses(url))
@@ -330,7 +330,7 @@ class MailtoUrl (urlbase.UrlBase):
                 else:
                     self.add_warning(_("Unverified address: %(info)s.") % d,
                      tag=WARN_MAIL_UNVERIFIED_ADDRESS)
-            except smtplib.SMTPException, msg:
+            except smtplib.SMTPException as msg:
                 self.add_warning(
                       _("MX mail host %(host)s did not accept connections: "
                         "%(error)s.") % {'host': host, 'error': str(msg)},

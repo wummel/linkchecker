@@ -166,14 +166,14 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
             self.close_response()
             try:
                 self._try_http_response()
-            except httplib.BadStatusLine, msg:
+            except httplib.BadStatusLine as msg:
                 # some servers send empty HEAD replies
                 if self.method == "HEAD" and self.method_get_allowed:
                     log.debug(LOG_CHECK, "Bad status line %r: falling back to GET", msg)
                     self.fallback_to_get()
                     continue
                 raise
-            except socket.error, msg:
+            except socket.error as msg:
                 # some servers reset the connection on HEAD requests
                 if self.method == "HEAD" and self.method_get_allowed and \
                    msg[0] == errno.ECONNRESET:
@@ -207,7 +207,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
                 self.proxy, self.proxyauth = oldproxy
             try:
                 tries = self.follow_redirections()
-            except httplib.BadStatusLine, msg:
+            except httplib.BadStatusLine as msg:
                 # some servers send empty HEAD replies
                 if self.method == "HEAD" and self.method_get_allowed:
                     log.debug(LOG_CHECK, "Bad status line %r: falling back to GET", msg)
@@ -493,7 +493,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         """
         try:
             self._get_http_response()
-        except socket.error, msg:
+        except socket.error as msg:
             if msg.args[0] == 32 and self.persistent:
                 # server closed persistent connection - retry
                 log.debug(LOG_CHECK, "Server closed connection: retry")
@@ -501,7 +501,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
                 self._get_http_response()
             else:
                 raise
-        except httplib.BadStatusLine, msg:
+        except httplib.BadStatusLine as msg:
             if self.persistent:
                 # server closed connection - retry
                 log.debug(LOG_CHECK, "Empty status line: retry")
@@ -690,7 +690,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
                     f = StringIO(zlib.decompress(data))
                 else:
                     f = gzip.GzipFile('', 'rb', 9, StringIO(data))
-            except zlib.error, msg:
+            except zlib.error as msg:
                 log.debug(LOG_CHECK, "Error %s data of len %d", encoding, len(data))
                 self.add_warning(_("Decompress error %(err)s") %
                                  {"err": str(msg)},

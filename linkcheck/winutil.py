@@ -51,9 +51,12 @@ def has_word ():
     if not has_win32com:
         return False
     try:
-        import _winreg
-        key = _winreg.OpenKey(_winreg.HKEY_CLASSES_ROOT, "Word.Application")
-        _winreg.CloseKey(key)
+        import _winreg as winreg
+    except ImportError:
+        import winreg
+    try:
+        key = winreg.OpenKey(winreg.HKEY_CLASSES_ROOT, "Word.Application")
+        winreg.CloseKey(key)
         return True
     except (EnvironmentError, ImportError):
         pass
@@ -91,12 +94,15 @@ def close_wordfile (doc):
 
 def get_shell_folder (name):
     """Get Windows Shell Folder locations from the registry."""
-    import _winreg
-    lm = _winreg.ConnectRegistry(None, _winreg.HKEY_CURRENT_USER)
     try:
-        key = _winreg.OpenKey(lm, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
+        import _winreg as winreg
+    except ImportError:
+        import winreg
+    lm = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
+    try:
+        key = winreg.OpenKey(lm, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
         try:
-            return _winreg.QueryValueEx(key, name)[0]
+            return winreg.QueryValueEx(key, name)[0]
         finally:
             key.Close()
     finally:

@@ -114,7 +114,7 @@ class FileUrl (urlbase.UrlBase):
             if not is_absolute_path(base_url):
                 try:
                     base_url = os.getcwd()+"/"+base_url
-                except OSError, msg:
+                except OSError as msg:
                     # occurs on stale remote filesystems (eg. NFS)
                     errmsg = _("Could not get current working directory: %(msg)s") % dict(msg=msg)
                     raise LinkCheckerError(errmsg)

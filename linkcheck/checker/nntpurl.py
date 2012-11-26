@@ -79,7 +79,7 @@ class NntpUrl (urlbase.UrlBase):
                 nntp = nntplib.NNTP(nntpserver, usenetrc=False)
             except nntplib.NNTPTemporaryError:
                 self.wait()
-            except nntplib.NNTPPermanentError, msg:
+            except nntplib.NNTPPermanentError as msg:
                 if re.compile("^50[45]").search(str(msg)):
                     self.wait()
                 else:

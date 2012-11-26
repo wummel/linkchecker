@@ -220,7 +220,7 @@ def try_compile_re (arg):
     message and exit."""
     try:
         return re.compile(arg)
-    except re.error, msg:
+    except re.error as msg:
         log.error(LOG_CMDLINE,
            _("Syntax error in %(arg)r: %(msg)s") % {"arg": arg, "msg": msg})
         sys.exit(1)
@@ -488,7 +488,7 @@ try:
             log.warn(LOG_CMDLINE,
                       _("Unreadable config file: %r"), options.configfile)
     config.read(files=files)
-except linkcheck.LinkCheckerError, msg:
+except linkcheck.LinkCheckerError as msg:
     # config error
     print_usage(str(msg))
 linkcheck.drop_privileges()

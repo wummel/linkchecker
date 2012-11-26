@@ -44,7 +44,7 @@ class CookieJar (object):
                     self.cache.remove(cookie)
                 if not cookie.is_expired():
                     self.cache.add(cookie)
-            except cookies.CookieError, msg:
+            except cookies.CookieError as msg:
                 errmsg = "Invalid cookie %r for %s:%s%s: %s" % (
                          h, scheme, host, path, msg)
                 errors.append(errmsg)
@@ -56,7 +56,7 @@ class CookieJar (object):
                     self.cache.remove(cookie)
                 if not cookie.is_expired():
                     self.cache.add(cookie)
-            except cookies.CookieError, msg:
+            except cookies.CookieError as msg:
                 errmsg = "Invalid cookie2 %r for %s:%s%s: %s" % (
                          h, scheme, host, path, msg)
                 errors.append(errmsg)

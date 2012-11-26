@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+from __future__ import print_function
 import re
 import linecache
 import time
@@ -49,7 +50,7 @@ def _trace (frame, event, arg):
         _trace_line(frame, event, arg)
     elif event in ('return', 'c_return'):
         _trace_line(frame, event, arg)
-        print "  return:", arg
+        print("  return:", arg)
     #elif event in ('exception', 'c_exception'):
     #    _trace_line(frame, event, arg)
     return _trace
@@ -80,7 +81,7 @@ def _trace_line (frame, event, arg):
     tid = thread.get_ident()
     tname = threading.currentThread().getName()
     args = (tid, tname, time.time(), line.rstrip(), name, lineno)
-    print "THREAD(%d) %r %.2f %s # %s:%d" % args
+    print("THREAD(%d) %r %.2f %s # %s:%d" % args)
 
 
 def trace_on (full=False):

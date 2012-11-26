@@ -1,5 +1,8 @@
 8.3 "" (released xx.xx.xxxx)
 
+Changes:
+- logging: Print system arguments (sys.argv) in internal error information.
+
 
 8.2 "Belle De Jour" (released 9.11.2012)
 

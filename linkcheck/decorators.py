@@ -22,7 +22,7 @@ Example:
 @synchronized(thread.allocate_lock())
 def f ():
     "Synchronized function"
-    print "i am synchronized:", f, f.__doc__
+    print("i am synchronized:", f, f.__doc__)
 
 @deprecated
 def g ():
@@ -35,6 +35,7 @@ def h ():
     pass
 
 """
+from __future__ import print_function
 import warnings
 import signal
 import os
@@ -95,7 +96,7 @@ def synchronize (lock, func, log_duration_secs=0):
         with lock:
             duration = time.time() - t
             if duration > log_duration_secs > 0:
-                print >> sys.stderr, "WARN:", func.__name__, "locking took %0.2f seconds" % duration
+                print("WARN:", func.__name__, "locking took %0.2f seconds" % duration, file=sys.stderr)
             return func(*args, **kwargs)
     return update_func_meta(newfunc, func)
 
@@ -124,9 +125,9 @@ def timeit (func, log, limit):
         res = func(*args, **kwargs)
         duration = time.time() - t
         if duration > limit:
-            print >> log, func.__name__, "took %0.2f seconds" % duration
-            print >> log, args
-            print >> log, kwargs
+            print(func.__name__, "took %0.2f seconds" % duration, file=log)
+            print(args, file=log)
+            print(kwargs, file=log)
         return res
     return update_func_meta(newfunc, func)
 

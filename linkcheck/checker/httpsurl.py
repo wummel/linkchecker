@@ -72,7 +72,7 @@ class HttpsUrl (httpurl.HttpUrl):
         """
         try:
             match_hostname(cert, host)
-        except CertificateError, msg:
+        except CertificateError as msg:
             self.add_ssl_warning(ssl_sock, msg)
 
     def check_ssl_valid_date(self, ssl_sock, cert):
@@ -83,7 +83,7 @@ class HttpsUrl (httpurl.HttpUrl):
         checkDaysValid = self.aggregate.config["warnsslcertdaysvalid"]
         try:
             notAfter = ssl.cert_time_to_seconds(cert['notAfter'])
-        except ValueError, msg:
+        except ValueError as msg:
             msg = _('invalid certficate "notAfter" value %r') % cert['notAfter']
             self.add_ssl_warning(ssl_sock, msg)
             return

@@ -94,7 +94,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledco
                 log.debug(LOG_CHECK, "FTP info %s", info)
             else:
                 raise LinkCheckerError(_("Got no answer from FTP server"))
-        except EOFError, msg:
+        except EOFError as msg:
             raise LinkCheckerError(
                       _("Remote host has closed connection: %(msg)s") % str(msg))
 
@@ -103,7 +103,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledco
         See also RFC 2640."""
         try:
             features = self.url_connection.sendcmd("FEAT")
-        except ftplib.error_perm, msg:
+        except ftplib.error_perm as msg:
             log.debug(LOG_CHECK, "Ignoring error when getting FTP features: %s" % msg)
         else:
             log.debug(LOG_CHECK, "FTP features %s", features)

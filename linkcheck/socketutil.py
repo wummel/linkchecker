@@ -26,7 +26,7 @@ if socket.has_ipv6:
     try:
         socket.socket(socket.AF_INET6, socket.SOCK_STREAM).close()
         has_ipv6 = True
-    except socket.error, msg:
+    except socket.error as msg:
         # only catch these one:
         # socket.error: (97, 'Address family not supported by protocol')
         # socket.error: (10047, 'Address family not supported by protocol')

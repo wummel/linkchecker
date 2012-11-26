@@ -136,7 +136,7 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
                 stream << self.editor.text()
                 self.editor.setModified(False)
                 saved = True
-            except (IOError, OSError), e:
+            except (IOError, OSError) as e:
                 err = QtGui.QMessageBox(self)
                 err.setText(str(e))
                 err.exec_()
@@ -170,7 +170,7 @@ class EditorWindow (QtGui.QDialog, Ui_EditorDialog):
                 stream.setCodec("UTF-8")
                 self.setText(stream.readAll())
                 loaded = True
-            except (IOError, OSError), e:
+            except (IOError, OSError) as e:
                 err = QtGui.QMessageBox(self)
                 err.setText(str(e))
                 err.exec_()

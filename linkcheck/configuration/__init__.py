@@ -473,7 +473,7 @@ def get_user_config():
                     userdir += "."
                 os.mkdir(userdir, 0700)
             shutil.copy(initialconf, userconf)
-        except StandardError, errmsg:
+        except StandardError as errmsg:
             msg = _("could not copy initial configuration file %(src)r to %(dst)r: %(errmsg)r")
             args = dict(src=initialconf, dst=userconf, errmsg=errmsg)
             log.warn(LOG_CHECK, msg % args)
@@ -495,7 +495,7 @@ def get_gconf_http_proxy ():
                 if not port:
                     port = 8080
                 return "%s:%d" % (host, port)
-    except StandardError, msg:
+    except StandardError as msg:
         log.debug(LOG_CHECK, "error getting HTTP proxy from gconf: %s", msg)
     return None
 
@@ -514,7 +514,7 @@ def get_gconf_ftp_proxy ():
             if not port:
                 port = 8080
             return "%s:%d" % (host, port)
-    except StandardError, msg:
+    except StandardError as msg:
         log.debug(LOG_CHECK, "error getting FTP proxy from gconf: %s", msg)
     return None
 
@@ -528,7 +528,7 @@ def get_kde_http_proxy ():
     try:
         data = read_kioslaverc(config_dir)
         return data.get("http_proxy")
-    except StandardError, msg:
+    except StandardError as msg:
         log.debug(LOG_CHECK, "error getting HTTP proxy from KDE: %s", msg)
 
 
@@ -541,7 +541,7 @@ def get_kde_ftp_proxy ():
     try:
         data = read_kioslaverc(config_dir)
         return data.get("ftp_proxy")
-    except StandardError, msg:
+    except StandardError as msg:
         log.debug(LOG_CHECK, "error getting FTP proxy from KDE: %s", msg)
 
 # The following KDE functions are largely ported and ajusted from

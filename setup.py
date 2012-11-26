@@ -33,7 +33,7 @@ It includes the following features:
 Because of all the features, this script is nasty and big.
 Change it very carefully.
 """
-
+from __future__ import print_function
 import sys
 if not (hasattr(sys, 'version_info') or
         sys.version_info < (2, 7, 0, 'final', 0)):
@@ -264,11 +264,11 @@ def generate_dmg_image (dist_dir):
     """Generate .dmg image."""
     imgPath = os.path.join(dist_dir, "%s-%s.dmg" % (AppName, AppVersion))
     tmpImgPath = os.path.join(dist_dir, "%s.tmp.dmg" % AppName)
-    print "*** generating temporary DMG image ***"
+    print("*** generating temporary DMG image ***")
     args = ['hdiutil', 'create', '-srcfolder', dist_dir, '-fs', 'HFSX',
             '-volname', AppName, '-format', 'UDZO', tmpImgPath]
     subprocess.check_call(args)
-    print "*** generating final DMG image ***"
+    print("*** generating final DMG image ***")
     args = ['hdiutil', 'convert', tmpImgPath, '-format', 'UDZO',
             '-imagekey', 'zlib-level=9', '-o', imgPath]
     subprocess.check_call(args)
@@ -279,7 +279,7 @@ def sign_the_code (dist_dir):
     """Sign the OSX application code."""
     app_dir = os.path.join(dist_dir, "%s.app" % AppName)
     args = ['codesign', '-s', myname, '-v', app_dir]
-    print "*** signing the application code ***"
+    print("*** signing the application code ***")
     subprocess.check_call(args)
 
 
@@ -541,7 +541,7 @@ def check_manifest ():
     try:
         f = open('MANIFEST')
     except Exception:
-        print '\n*** SOURCE WARNING: The MANIFEST file is missing!'
+        print('\n*** SOURCE WARNING: The MANIFEST file is missing!')
         return
     try:
         manifest = [l.strip() for l in f.readlines() if not l.startswith('#')]
@@ -550,9 +550,9 @@ def check_manifest ():
     err = [line for line in manifest if not os.path.exists(line)]
     if err:
         n = len(manifest)
-        print '\n*** SOURCE WARNING: There are files missing (%d/%d found)!'%(
-            n - len(err), n)
-        print 'Missing:', '\nMissing: '.join(err)
+        print('\n*** SOURCE WARNING: There are files missing (%d/%d found)!' %
+            (n - len(err), n))
+        print('\nMissing: '.join(err))
 
 
 class MyBuild (build, object):
@@ -709,48 +709,48 @@ class InnoScript:
 
     def write_inno_script (self, fd):
         """Write Inno script contents."""
-        print >> fd, "; WARNING: This script has been created by py2exe. Changes to this script"
-        print >> fd, "; will be overwritten the next time py2exe is run!"
-        print >> fd, "[Setup]"
-        print >> fd, "AppName=%s" % self.name
-        print >> fd, "AppVerName=%s %s" % (self.name, self.version)
-        print >> fd, r"DefaultDirName={pf}\%s" % self.name
-        print >> fd, "DefaultGroupName=%s" % self.name
-        print >> fd, "OutputBaseFilename=%s" % self.distfilebase
-        print >> fd, "OutputDir=.."
-        print >> fd, "SetupIconFile=%s" % self.icon
-        print >> fd, "UninstallDisplayIcon=%s" % self.icon
-        print >> fd
+        print("; WARNING: This script has been created by py2exe. Changes to this script", file=fd)
+        print("; will be overwritten the next time py2exe is run!", file=fd)
+        print("[Setup]", file=fd)
+        print("AppName=%s" % self.name, file=fd)
+        print("AppVerName=%s %s" % (self.name, self.version), file=fd)
+        print(r"DefaultDirName={pf}\%s" % self.name, file=fd)
+        print("DefaultGroupName=%s" % self.name, file=fd)
+        print("OutputBaseFilename=%s" % self.distfilebase, file=fd)
+        print("OutputDir=..", file=fd)
+        print("SetupIconFile=%s" % self.icon, file=fd)
+        print("UninstallDisplayIcon=%s" % self.icon, file=fd)
+        print(file=fd)
         # Customize some messages
-        print >> fd, "[Messages]"
-        print >> fd, "ConfirmUninstall=Are you sure you want to remove %1? Note that user-specific configuration files of %1 are not removed."
-        print >> fd, "BeveledLabel=DON'T PANIC"
-        print >> fd
+        print("[Messages]", file=fd)
+        print("ConfirmUninstall=Are you sure you want to remove %1? Note that user-specific configuration files of %1 are not removed.", file=fd)
+        print("BeveledLabel=DON'T PANIC", file=fd)
+        print(file=fd)
         # List of source files
         files = self.windows_exe_files + \
                 self.console_exe_files + \
                 self.service_exe_files + \
                 self.comserver_files + \
                 self.lib_files
-        print >> fd, '[Files]'
+        print('[Files]', file=fd)
         for path in files:
-            print >> fd, r'Source: "%s"; DestDir: "{app}\%s"; Flags: ignoreversion' % (path, os.path.dirname(path))
-        print >> fd
+            print(r'Source: "%s"; DestDir: "{app}\%s"; Flags: ignoreversion' % (path, os.path.dirname(path)), file=fd)
+        print(file=fd)
         # Set icon filename
-        print >> fd, '[Icons]'
+        print('[Icons]', file=fd)
         for path in self.windows_exe_files:
-            print >> fd, r'Name: "{group}\%s"; Filename: "{app}\%s"' % \
-                  (self.name, path)
-        print >> fd, r'Name: "{group}\Uninstall %s"; Filename: "{uninstallexe}"' % self.name
-        print >> fd
+            print(r'Name: "{group}\%s"; Filename: "{app}\%s"' % \
+                  (self.name, path), file=fd)
+        print(r'Name: "{group}\Uninstall %s"; Filename: "{uninstallexe}"' % self.name, file=fd)
+        print(file=fd)
         # Uninstall registry keys
-        print >> fd, '[Registry]'
-        print >> fd, r'Root: HKCU; Subkey: "Software\Bastian\LinkChecker"; Flags: uninsdeletekey'
-        print >> fd
+        print('[Registry]', file=fd)
+        print(r'Root: HKCU; Subkey: "Software\Bastian\LinkChecker"; Flags: uninsdeletekey', file=fd)
+        print(file=fd)
         # Uninstall optional log files
-        print >> fd, '[UninstallDelete]'
-        print >> fd, r'Type: files; Name: "{pf}\%s\linkchecker*.exe.log"' % self.name
-        print >> fd
+        print('[UninstallDelete]', file=fd)
+        print(r'Type: files; Name: "{pf}\%s\linkchecker*.exe.log"' % self.name, file=fd)
+        print(file=fd)
 
     def compile (self):
         """Compile Inno script with iscc.exe."""
@@ -765,7 +765,7 @@ class InnoScript:
             cmd = ['signtool.exe', 'sign', '/f', pfxfile, self.distfile]
             subprocess.check_call(cmd)
         else:
-            print "No signed installer: certificate %s not found." % pfxfile
+            print("No signed installer: certificate %s not found." % pfxfile)
 
 try:
     from py2exe.build_exe import py2exe as py2exe_build
@@ -778,16 +778,16 @@ try:
             """Generate py2exe installer."""
             # First, let py2exe do it's work.
             py2exe_build.run(self)
-            print "*** preparing the inno setup script ***"
+            print("*** preparing the inno setup script ***")
             lib_dir = self.lib_dir
             dist_dir = self.dist_dir
             # create the Installer, using the files py2exe has created.
             script = InnoScript(lib_dir, dist_dir, self.windows_exe_files,
                 self.console_exe_files, self.service_exe_files,
                 self.comserver_files, self.lib_files)
-            print "*** creating the inno setup script ***"
+            print("*** creating the inno setup script ***")
             script.create()
-            print "*** compiling the inno setup script ***"
+            print("*** compiling the inno setup script ***")
             script.compile()
             script.sign()
 except ImportError:
