@@ -138,16 +138,10 @@ class Buffer (object):
         return data
 
 
-@memoized
-def get_stat(filename):
-    """Return stat(2) data for given filename. Kan raise os.error"""
-    return os.stat(filename)
-
-
 def get_mtime (filename):
     """Return modification time of filename or zero on errors."""
     try:
-        return get_stat(filename)[stat.ST_MTIME]
+        return os.path.getmtime(filename)
     except os.error:
         return 0
 
@@ -155,7 +149,7 @@ def get_mtime (filename):
 def get_size (filename):
     """Return file size in Bytes, or -1 on error."""
     try:
-        return get_stat(filename)[stat.ST_SIZE]
+        return os.path.getsize(filename)
     except os.error:
         return -1
 
@@ -274,7 +268,7 @@ def is_readable(filename):
 
 def is_accessable_by_others(filename):
     """Check if file is group or world accessable."""
-    mode = get_stat(filename)[stat.ST_MODE]
+    mode = os.stat(filename)[stat.ST_MODE]
     return mode & (stat.S_IRWXG | stat.S_IRWXO)
 
 

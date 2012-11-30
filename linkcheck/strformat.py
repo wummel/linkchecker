@@ -34,6 +34,7 @@ import os
 import math
 import time
 import urlparse
+import locale
 import pydoc
 from . import i18n
 
@@ -184,18 +185,18 @@ def strsize (b):
     if b < 0:
         raise ValueError("Invalid negative byte number")
     if b < 1024:
-        return u"%dB" % b
+        return u"%sB" % locale.format("%d", b, True)
     if b < 1024 * 10:
-        return u"%dKB" % (b // 1024)
+        return u"%sKB" % locale.format("%d", (b // 1024), True)
     if b < 1024 * 1024:
-        return u"%.2fKB" % (float(b) / 1024)
+        return u"%sKB" % locale.format("%.2f", (float(b) / 1024), True)
     if b < 1024 * 1024 * 10:
-        return u"%.2fMB" % (float(b) / (1024*1024))
+        return u"%sMB" % locale.format("%.2f", (float(b) / (1024*1024)), True)
     if b < 1024 * 1024 * 1024:
-        return u"%.1fMB" % (float(b) / (1024*1024))
+        return u"%sMB" % locale.format("%.1f", (float(b) / (1024*1024)), True)
     if b < 1024 * 1024 * 1024 * 10:
-        return u"%.2fGB" % (float(b) / (1024*1024*1024))
-    return u"%.1fGB" % (float(b) / (1024*1024*1024))
+        return u"%sGB" % locale.format("%.2f", (float(b) / (1024*1024*1024)), True)
+    return u"%sGB" % locale.format("%.1f", (float(b) / (1024*1024*1024)), True)
 
 
 def strtime (t):
