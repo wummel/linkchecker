@@ -26,6 +26,11 @@ if not (hasattr(sys, 'version_info') or
         sys.version_info < (2, 7, 2, 'final', 0)):
     raise SystemExit("This program requires Python 2.7.2 or later.")
 import os
+# add the custom linkcheck_dns directory to sys.path
+_dnspath = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'linkcheck_dns'))
+if _dnspath not in sys.path:
+    sys.path.insert(0, _dnspath)
+del _dnspath
 import re
 
 from . import i18n

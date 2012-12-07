@@ -1,6 +1,6 @@
 usr/bin/linkchecker
 usr/lib/python*/dist-packages/_LinkChecker_configdata.py
-usr/lib/python*/dist-packages/dns
+usr/lib/python*/dist-packages/linkcheck_dns
 usr/lib/python*/dist-packages/linkcheck/*.py
 usr/lib/python*/dist-packages/linkcheck/HtmlParser
 usr/lib/python*/dist-packages/linkcheck/bookmarks

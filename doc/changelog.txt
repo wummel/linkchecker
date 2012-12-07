@@ -2,6 +2,8 @@
 
 Changes:
 - logging: Print system arguments (sys.argv) in internal error information.
+- installation: Install the dns Python module into linkcheck_dns subdirectory to avoid
+  conflicts with an upstream python-dns installation.
 
 
 8.2 "Belle De Jour" (released 9.11.2012)

@@ -869,7 +869,7 @@ o a command line, GUI and web interface
         'register': MyRegister,
     },
     package_dir = {
-        'dns': 'third_party/dnspython/dns',
+        'linkcheck_dns.dns': 'third_party/dnspython/dns',
     },
     packages = [
         'linkcheck',
@@ -883,10 +883,10 @@ o a command line, GUI and web interface
         'linkcheck.HtmlParser',
         'linkcheck.logger',
         'linkcheck.network',
-        'dns',
-        'dns.rdtypes',
-        'dns.rdtypes.ANY',
-        'dns.rdtypes.IN',
+        'linkcheck_dns.dns',
+        'linkcheck_dns.dns.rdtypes',
+        'linkcheck_dns.dns.rdtypes.ANY',
+        'linkcheck_dns.dns.rdtypes.IN',
     ],
     ext_modules = [
         Extension('linkcheck.HtmlParser.htmlsax',

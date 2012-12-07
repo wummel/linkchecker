@@ -2,6 +2,8 @@ linkchecker (8.3-1) UNRELEASED; urgency=low
 
   * New upstream release.
   * Remove unneeded dependency on pysqlite.
+  * Remove conflict on python-dns.
+    Closes: #694809
 
  -- Bastian Kleineidam <calvin@debian.org>  Wed, 14 Nov 2012 18:49:41 +0100
 
