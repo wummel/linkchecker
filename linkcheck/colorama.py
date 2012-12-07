@@ -32,7 +32,7 @@ STDOUT = -11
 STDERR = -12
 
 from ctypes import (windll, byref, Structure, c_char, c_short, c_uint32,
-  c_ushort, ArgumentError)
+  c_ushort, ArgumentError, WinError)
 
 handles = {
     STDOUT: windll.kernel32.GetStdHandle(STDOUT),
@@ -85,6 +85,8 @@ def GetConsoleScreenBufferInfo(stream_id=STDOUT):
     csbi = CONSOLE_SCREEN_BUFFER_INFO()
     success = windll.kernel32.GetConsoleScreenBufferInfo(
         handle, byref(csbi))
+    if not success:
+        raise WinError()
     return csbi
 
 
