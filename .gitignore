@@ -22,6 +22,7 @@ Changelog.linkchecker*
 /share
 /linkchecker.egg-info
 /tests/checker/data/dir
+/tests/__pycache__
 /linkchecker-out.*
 /lcdump*
 /doc/html/*.qhc
