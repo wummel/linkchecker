@@ -6,14 +6,12 @@ ICNSICONS := logo16x16.png logo32x32.png logo48x48.png logo128x128.png
 
 all:	$(HELPFILES) $(HTMLFILES)
 
-.PHONY: clean
 clean:
 	-rm -f *.qhc *.qch
 
 %.html:	%.txt html.header html.footer
 	(cat html.header; markdown2 $<; cat html.footer) > $@
 
-.PHONY: clean
 test:
 	xmllint --valid --noout $(HTMLFILES)
 
@@ -28,3 +26,5 @@ favicon.ico:	$(ICOICONS)
 
 favicon.icns:	$(ICNSICONS)
 	png2icns favicon.icns $(ICNSICONS)
+
+.PHONY: clean test
