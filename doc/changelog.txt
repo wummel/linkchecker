@@ -5,6 +5,10 @@ Changes:
 - installation: Install the dns Python module into linkcheck_dns subdirectory to avoid
   conflicts with an upstream python-dns installation.
 
+Fixes:
+- gui: Fix storing of ignore lines in options.
+  Closes: SF bug #3587386
+
 
 8.2 "Belle De Jour" (released 9.11.2012)
 

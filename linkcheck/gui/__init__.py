@@ -268,7 +268,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             confvalue = self.config[key]
             if isinstance(confvalue, list):
                 # make copy of lists to avoid unwanted inserted items
-                confvalue = list(confvalue)
+                confvalue = confvalue[:]
             self.config_backup[key] = confvalue
         if value is not None:
             self.config[key] = value
@@ -276,7 +276,11 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
     def restore_config (self):
         """Restore config from backup."""
         for key in self.config_backup:
-            self.config[key] = self.config_backup[key]
+            confvalue = self.config_backup[key]
+            if isinstance(confvalue, list):
+                # make copy of lists to avoid unwanted inserted items
+                confvalue = confvalue[:]
+            self.config[key] = confvalue
 
     def get_status (self):
         """Return current application status."""
