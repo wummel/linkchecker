@@ -1,13 +1,12 @@
 # This Makefile is only used by developers.
 PYVER:=2.7
 PYTHON?=python$(PYVER)
-APPNAME:=LinkChecker
+APPNAME:=$(shell $(PYTHON) setup.py --name)
+LAPPNAME:=$(echo $(APPNAME)|tr "[A-Z]" "[a-z]")
 VERSION:=$(shell $(PYTHON) setup.py --version)
 PLATFORM:=$(shell $(PYTHON) -c "from distutils.util import get_platform; print get_platform()")
 FILESCHECK_URL:=http://localhost/~calvin/
-PYTHONSRC:=${HOME}/src/cpython-hg/Lib
-#PYTHONSRC:=/usr/lib/$(PYTHON)
-SF_FILEPATH=/home/frs/project/l/li/linkchecker
+SRCDIR:=${HOME}/src
 PY_FILES_DIRS:=linkcheck tests *.py linkchecker linkchecker-nagios linkchecker-gui cgi-bin config doc
 TESTS ?= tests
 # set test options, eg. to "--verbose"
@@ -32,7 +31,6 @@ endif
 # Pytest options:
 # - use multiple processors
 # - write test results in file
-# - run all tests found in the "tests" subdirectory
 PYTESTOPTS:=-n $(NUMPROCESSORS) --resultlog=testresults.txt
 
 
@@ -41,7 +39,7 @@ all:
 
 clean:
 	-$(PYTHON) setup.py clean --all
-	rm -f linkchecker-out.* *-stamp*
+	rm -f $(LAPPNAME)-out.* *-stamp*
 	$(MAKE) -C po clean
 	$(MAKE) -C doc/html clean
 	$(MAKE) -C linkcheck/HtmlParser clean
@@ -52,13 +50,13 @@ distclean: clean cleandeb
 	rm -rf build dist $(APPNAME).egg-info
 	rm -f _$(APPNAME)_configdata.py MANIFEST Packages.gz
 # clean aborted dist builds and -out files
-	rm -f linkchecker-out* linkchecker.prof
+	rm -f $(LAPPNAME)-out* $(LAPPNAME).prof
 	rm -f alexa*.log testresults.txt
 	rm -rf $(APPNAME)-$(VERSION)
 	rm -rf coverage dist-stamp python-build-stamp*
 
 cleandeb:
-	rm -rf debian/linkchecker debian/tmp
+	rm -rf debian/$(LAPPNAME) debian/tmp
 	rm -f debian/*.debhelper debian/{files,substvars}
 	rm -f configure-stamp build-stamp
 
@@ -81,19 +79,6 @@ deb_orig:
 	  cp dist/$(APPNAME)-$(VERSION).tar.xz $(DEB_ORIG_TARGET); \
 	fi
 
-upload: dist/README.md
-	rsync -avP -e ssh dist/* calvin,linkchecker@frs.sourceforge.net:$(SF_FILEPATH)/$(VERSION)/
-
-login:
-# login to SSH shell
-	ssh -t sf-linkchecker create
-
-dist/README.md: doc/README-Download.md.tmpl doc/changelog.txt
-# copying readme for sourceforge downloads
-	sed -e 's/{APPNAME}/$(APPNAME)/g' -e 's/{VERSION}/$(VERSION)/g' $< > $@
-# append changelog
-	awk '/released/ {c++}; c==2 {exit}; {print "    " $$0}' doc/changelog.txt >> $@
-
 release: distclean releasecheck filescheck clean dist-stamp sign_distfiles upload
 	git tag v$(VERSION)
 	$(MAKE) homepage
@@ -114,7 +99,7 @@ register:
 
 announce:
 	@echo "Submitting to Freecode..."
-	freecode-submit < linkchecker.freecode
+	freecode-submit < $(LAPPNAME).freecode
 	@echo "done."
 
 chmod:
@@ -125,9 +110,6 @@ dist: locale MANIFEST chmod
 	rm -f dist/$(APPNAME)-$(VERSION).tar.xz
 	$(PYTHON) setup.py sdist --formats=tar
 	xz dist/$(APPNAME)-$(VERSION).tar
-# no rpm buildable with bdist_rpm, presumable due to this bug:
-# https://bugzilla.redhat.com/show_bug.cgi?id=236535
-# too uninvolved to fix it
 
 dist-stamp: changelog config/ca-certificates.crt
 	$(MAKE) dist
@@ -187,7 +169,7 @@ doccheck:
 
 filescheck: localbuild
 	for out in text html gml sql csv xml gxml dot sitemap; do \
-	  ./linkchecker -o$$out -F$$out --complete -r1 -C $(FILESCHECK_URL) || exit 1; \
+	  ./$(LAPPNAME) -o$$out -F$$out --complete -r1 -C $(FILESCHECK_URL) || exit 1; \
 	done
 
 update-copyright:
@@ -197,8 +179,8 @@ releasecheck: check
 	@if egrep -i "xx\.|xxxx|\.xx" doc/changelog.txt > /dev/null; then \
 	  echo "Could not release: edit doc/changelog.txt release date"; false; \
 	fi
-	@if ! grep "Version: $(VERSION)" linkchecker.freecode > /dev/null; then \
-	  echo "Could not release: edit linkchecker.freecode version"; false; \
+	@if ! grep "Version: $(VERSION)" $(LAPPNAME).freecode > /dev/null; then \
+	  echo "Could not release: edit $(LAPPNAME).freecode version"; false; \
 	fi
 	@if grep "UNRELEASED" debian/changelog > /dev/null; then \
 	  echo "Could not release: edit debian/changelog distribution name"; false; \
@@ -225,12 +207,13 @@ pyflakes:
 pep8:
 	pep8 $(PEP8OPTS) $(PY_FILES_DIRS)
 
-# Compare custom Python files with the original ones from subversion.
+# Compare custom Python files with the originals
 diff:
 	@for f in gzip robotparser httplib; do \
 	  echo "Comparing $${f}.py"; \
-	  diff -u linkcheck/$${f}2.py $(PYTHONSRC)/$${f}.py | $(PAGER); \
+	  diff -u linkcheck/$${f}2.py $(SRCDIR)/cpython.hg/Lib/$${f}.py | $(PAGER); \
 	done
+	@diff -u linkcheck/better_exchook.py $(SRCDIR)/py_better_exchook.git/better_exchook.py
 
 # Compare dnspython files with the ones from upstream repository
 dnsdiff:
@@ -239,13 +222,13 @@ dnsdiff:
 	done) | $(PAGER)
 
 changelog:
-	sftrack_changelog linkchecker calvin@users.sourceforge.net doc/changelog.txt $(DRYRUN)
+	github-changelog $(DRYRUN) $(GITUSER) $(GITREPO) doc/changelog.txt
 
 gui:
 	$(MAKE) -C linkcheck/gui
 
 count:
-	@sloccount linkchecker linkchecker-gui linkchecker-nagios linkcheck | grep "Total Physical Source Lines of Code"
+	@sloccount linkchecker linkchecker-gui linkchecker-nagios linkcheck tests
 
 # run eclipse ide
 ide:
