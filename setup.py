@@ -101,7 +101,8 @@ AppVersion = "8.3"
 AppName = "LinkChecker"
 
 # Microsoft Visual C++ runtime version (tested with Python 2.7.2)
-MSVCP90Version = '9.0.21022.8'
+MSVCP90Version = '9.0.30729.6161'
+MSVCP90Suffix = 'x-ww_31a54e43'
 MSVCP90Token = '1fc8b3b9a1e18e3b'
 
 # basic includes for py2exe and py2app
@@ -296,11 +297,11 @@ def add_tidy_files (files):
 def add_msvc_files (files):
     """Add needed MSVC++ runtime files. Only Version 9.0.21022.8 is tested
     and can be downloaded here:
-    http://www.microsoft.com/en-us/download/details.aspx?id=29
+    http://www.microsoft.com/en-us/download/details.aspx?id=5582
     """
     prog_dir, architecture = get_nt_platform_vars()
     dirname = "Microsoft.VC90.CRT"
-    version = "%s_%s_x-ww_d08d0375" % (MSVCP90Token, MSVCP90Version)
+    version = "%s_%s_%s" % (MSVCP90Token, MSVCP90Version, MSVCP90Suffix)
     args = (architecture, dirname, version)
     path = r'C:\Windows\WinSxS\%s_%s_%s\*.*' % args
     files.append((dirname, glob.glob(path)))
