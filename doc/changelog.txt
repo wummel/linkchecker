@@ -1,7 +1,8 @@
 8.3 "" (released xx.xx.xxxx)
 
 Changes:
-- logging: Print system arguments (sys.argv) in internal error information.
+- logging: Print system arguments (sys.argv) and variable values in
+  internal error information.
 - installation: Install the dns Python module into linkcheck_dns subdirectory to avoid
   conflicts with an upstream python-dns installation.
 

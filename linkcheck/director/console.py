@@ -21,8 +21,7 @@ from __future__ import print_function
 import sys
 import os
 import time
-import traceback
-from .. import i18n, configuration, strformat
+from .. import i18n, configuration, strformat, better_exchook
 
 # Output to stdout and stderr, encoded with the default encoding
 stderr = i18n.get_encoded_writer(out=sys.stderr)
@@ -92,10 +91,9 @@ I can work with ;) .
         etype = sys.exc_info()[0]
     if evalue is None:
         evalue = sys.exc_info()[1]
-    print(etype, evalue, file=out)
     if tb is None:
         tb = sys.exc_info()[2]
-    traceback.print_exception(etype, evalue, tb, None, out)
+    better_exchook.better_exchook(etype, evalue, tb, out=out)
     print_app_info(out=out)
     print_proxy_info(out=out)
     print_locale_info(out=out)

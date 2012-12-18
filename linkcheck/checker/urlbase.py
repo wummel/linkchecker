@@ -1122,11 +1122,11 @@ class UrlBase (object):
             fd.close()
         return filename
 
-    def serialized (self):
+    def serialized (self, sep=os.linesep):
         """
         Return serialized url check data as unicode string.
         """
-        sep = unicode_safe(os.linesep)
+        sep = unicode_safe(sep)
         if self.base_url is not None:
             assert isinstance(self.base_url, unicode), self
         if self.parent_url is not None:
@@ -1191,7 +1191,7 @@ class UrlBase (object):
         @return: URL info
         @rtype: unicode
         """
-        return u"<%s >" % self.serialized()
+        return u"<%s>" % self.serialized(sep=u", ")
 
     def to_wire_dict (self):
         """Return a simplified transport object for logging.
