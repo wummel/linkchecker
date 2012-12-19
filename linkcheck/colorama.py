@@ -120,7 +120,7 @@ def init():
     global _default_foreground, _default_background, _default_style
     try:
         attrs = GetConsoleScreenBufferInfo().wAttributes
-    except ArgumentError:
+    except (ArgumentError, WindowsError):
         _default_foreground = GREY
         _default_background = BLACK
         _default_style = NORMAL
