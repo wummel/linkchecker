@@ -2,7 +2,7 @@
 PYVER:=2.7
 PYTHON?=python$(PYVER)
 APPNAME:=$(shell $(PYTHON) setup.py --name)
-LAPPNAME:=$(echo $(APPNAME)|tr "[A-Z]" "[a-z]")
+LAPPNAME:=$(shell echo $(APPNAME)|tr "[A-Z]" "[a-z]")
 VERSION:=$(shell $(PYTHON) setup.py --version)
 PLATFORM:=$(shell $(PYTHON) -c "from distutils.util import get_platform; print get_platform()")
 FILESCHECK_URL:=http://localhost/~calvin/
