@@ -31,7 +31,7 @@ endif
 # Pytest options:
 # - use multiple processors
 # - write test results in file
-PYTESTOPTS:=-n $(NUMPROCESSORS) --resultlog=testresults.txt
+PYTESTOPTS:=-n $(NUMPROCESSORS) --resultlog=testresults.txt --durations=0
 
 
 all:
