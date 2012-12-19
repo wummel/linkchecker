@@ -313,6 +313,16 @@ def add_msvc_files (files):
     files.append((dirname, [target]))
 
 
+def insert_dns_path():
+    """Let py2exe find the dns package."""
+    lib_dir = "lib.%s-%s" % (util.get_platform(), sys.version[0:3])
+    if hasattr(sys, 'gettotalrefcount'):
+        lib_dir += '-pydebug'
+    dnspath = os.path.abspath(os.path.join('build', lib_dir, 'linkcheck_dns'))
+    if dnspath not in sys.path:
+        sys.path.insert(0, dnspath)
+
+
 class MyInstallLib (install_lib, object):
     """Custom library installation."""
 
@@ -664,6 +674,7 @@ elif 'py2exe' in sys.argv[1:]:
     add_qt_plugin_files(data_files)
     add_msvc_files(data_files)
     add_tidy_files(data_files)
+    insert_dns_path()
 elif do_freeze:
     class MyInstallExe (install_exe, object):
         """Install cx_Freeze executables."""
