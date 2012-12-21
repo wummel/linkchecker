@@ -772,12 +772,31 @@ class InnoScript:
 
     def sign (self):
         """Sign InnoSetup installer with local self-signed certificate."""
+        print("*** signing the inno setup installer ***")
         pfxfile = r'C:\linkchecker.pfx'
         if os.path.isfile(pfxfile):
-            cmd = ['signtool.exe', 'sign', '/f', pfxfile, self.distfile]
-            subprocess.check_call(cmd)
+            path = get_windows_sdk_path()
+            signtool = os.path.join(path, "bin", "signtool.exe")
+            if os.path.isfile(signtool):
+                cmd = [signtool, 'sign', '/f', pfxfile, self.distfile]
+                subprocess.check_call(cmd)
+            else:
+                print("No signed installer: signtool.exe not found.")
         else:
             print("No signed installer: certificate %s not found." % pfxfile)
+
+def get_windows_sdk_path():
+    """Return path of Microsoft Windows SDK installation, or None if
+    not found."""
+    try:
+        import _winreg as winreg
+    except ImportError:
+        import winreg
+    sub_key = r"Software\Microsoft\Microsoft SDKs\Windows"
+    with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, sub_key) as key:
+        name = "CurrentInstallFolder"
+        return winreg.QueryValueEx(key, name)[0]
+    return None
 
 try:
     from py2exe.build_exe import py2exe as py2exe_build
