@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2006-2012 Bastian Kleineidam
+# Copyright (C) 2006-2013 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@ from __future__ import print_function
 import sys
 import os
 import time
-from .. import i18n, configuration, strformat, better_exchook
+from .. import i18n, configuration, strformat, better_exchook2
 
 # Output to stdout and stderr, encoded with the default encoding
 stderr = i18n.get_encoded_writer(out=sys.stderr)
@@ -93,7 +93,7 @@ I can work with ;) .
         evalue = sys.exc_info()[1]
     if tb is None:
         tb = sys.exc_info()[2]
-    better_exchook.better_exchook(etype, evalue, tb, out=out)
+    better_exchook2.better_exchook(etype, evalue, tb, out=out)
     print_app_info(out=out)
     print_proxy_info(out=out)
     print_locale_info(out=out)

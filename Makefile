@@ -15,6 +15,35 @@ DEBORIGFILE:=$(DEBUILDDIR)/$(LAPPNAME)_$(VERSION).orig.tar.xz
 FILESCHECK_URL:=http://localhost/~calvin/
 SRCDIR:=${HOME}/src
 PY_FILES_DIRS:=linkcheck tests *.py linkchecker linkchecker-nagios linkchecker-gui cgi-bin config doc
+MYPY_FILES_DIRS:=linkcheck/HtmlParser linkcheck/checker \
+	  linkcheck/cache linkcheck/configuration linkcheck/director \
+	  linkcheck/htmlutil linkcheck/logger linkcheck/network \
+	  linkcheck/bookmarks \
+	  linkcheck/gui/__init__.py \
+	  linkcheck/gui/checker.py \
+	  linkcheck/gui/contextmenu.py \
+	  linkcheck/gui/debug.py \
+	  linkcheck/gui/editor.py \
+	  linkcheck/gui/editor_qsci.py \
+	  linkcheck/gui/editor_qt.py \
+	  linkcheck/gui/lineedit.py \
+	  linkcheck/gui/help.py \
+	  linkcheck/gui/logger.py \
+	  linkcheck/gui/options.py \
+	  linkcheck/gui/properties.py \
+	  linkcheck/gui/settings.py \
+	  linkcheck/gui/statistics.py \
+	  linkcheck/gui/syntax.py \
+	  linkcheck/gui/updater.py \
+	  linkcheck/gui/urlmodel.py \
+	  linkcheck/gui/urlsave.py \
+	  $(filter-out %2.py,$(wildcard linkcheck/*.py)) \
+	  cgi-bin/lc.wsgi \
+	  linkchecker \
+	  linkchecker-gui \
+	  linkchecker-nagios \
+	  *.py
+
 TESTS ?= tests
 # set test options, eg. to "--verbose"
 TESTOPTS=
@@ -137,41 +166,14 @@ rpm:
 check:
 	check-copyright
 	check-pofiles -v
-	py-tabdaddy
+	py-tabdaddy $(MYPY_FILES_DIRS)
 	py-unittest2-compat tests/
 	$(MAKE) -C doc check
 	$(MAKE) doccheck
 	$(MAKE) pyflakes
 
 doccheck:
-	py-check-docstrings --force linkcheck/HtmlParser linkcheck/checker \
-	  linkcheck/cache linkcheck/configuration linkcheck/director \
-	  linkcheck/htmlutil linkcheck/logger linkcheck/network \
-	  linkcheck/bookmarks \
-	  linkcheck/gui/__init__.py \
-	  linkcheck/gui/checker.py \
-	  linkcheck/gui/contextmenu.py \
-	  linkcheck/gui/debug.py \
-	  linkcheck/gui/editor.py \
-	  linkcheck/gui/editor_qsci.py \
-	  linkcheck/gui/editor_qt.py \
-	  linkcheck/gui/lineedit.py \
-	  linkcheck/gui/help.py \
-	  linkcheck/gui/logger.py \
-	  linkcheck/gui/options.py \
-	  linkcheck/gui/properties.py \
-	  linkcheck/gui/settings.py \
-	  linkcheck/gui/statistics.py \
-	  linkcheck/gui/syntax.py \
-	  linkcheck/gui/updater.py \
-	  linkcheck/gui/urlmodel.py \
-	  linkcheck/gui/urlsave.py \
-	  $(filter-out %2.py,$(wildcard linkcheck/*.py)) \
-	  cgi-bin/lc.wsgi \
-	  linkchecker \
-	  linkchecker-gui \
-	  linkchecker-nagios \
-	  *.py
+	py-check-docstrings --force $(MYPY_FILES_DIRS)
 
 filescheck: localbuild
 	for out in text html gml sql csv xml gxml dot sitemap; do \
