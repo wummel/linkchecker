@@ -22,7 +22,7 @@ can be used to check all browser bookmarks.
 ## Options
 
 The commandline client options are documented
-in the [linkchecker(1) manual page](http://linkchecker.sourceforge.net/man1/linkchecker.1.html).
+in the [linkchecker(1) manual page](http://wummel.github.com/linkchecker/man1/linkchecker.1.html).
 
 In the GUI client, the following options are available:
 
@@ -44,7 +44,7 @@ In the GUI client, the following options are available:
   
   Profiles memory usage and writes statistics and a dump file when checking
   stops. The dump file can be examined with
-  [external tools](http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker/linkchecker;a=blob;f=tests/analyze_memdump.py;hb=HEAD).
+  [external tools](https://github.com/wummel/linkchecker/blob/master/tests/analyze_memdump.py).
   This option should only be useful for developers.
   
 - Warning strings
@@ -65,7 +65,7 @@ In the GUI client, the following options are available:
 
 Each user can edit a configuration with advanced options for
 checking or filtering. The
-[linkcheckerrc(5) manual page](http://linkchecker.sourceforge.net/man5/linkcheckerrc.5.html)
+[linkcheckerrc(5) manual page](http://wummel.github.com/linkchecker/man5/linkcheckerrc.5.html)
 documents all the options.
 
 In the GUI client the configuration file can be edited directly from
@@ -141,7 +141,7 @@ checking. All connection check types are described below.
   will be made.
   
   The complete list of recognized, but unsupported links can be seen in the
-  [unknownurl.py](http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker/linkchecker;a=blob;f=linkcheck/checker/unknownurl.py;hb=HEAD)
+  [unknownurl.py](https://github.com/wummel/linkchecker/blob/master/linkcheck/checker/unknownurl.py)
   source file. The most prominent of them are JavaScript links.
 
 ## Recursion

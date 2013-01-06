@@ -25,7 +25,7 @@ from distutils.version import StrictVersion
 
 # Use the Freecode submit file as source since that file gets updated
 # only when releasing a new version.
-UPDATE_URL = "http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker/linkchecker;a=blob_plain;f=linkchecker.freecode;hb=HEAD"
+UPDATE_URL = "https://raw.github.com/wummel/linkchecker/master/linkchecker.freecode"
 VERSION_TAG = 'Version:'
 if os.name == 'nt':
     URL_TAG = 'Windows-installer-URL:'

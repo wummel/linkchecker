@@ -1,10 +1,17 @@
 # This Makefile is only used by developers.
 PYVER:=2.7
 PYTHON?=python$(PYVER)
-APPNAME:=$(shell $(PYTHON) setup.py --name)
-LAPPNAME:=$(shell echo $(APPNAME)|tr "[A-Z]" "[a-z]")
 VERSION:=$(shell $(PYTHON) setup.py --version)
 PLATFORM:=$(shell $(PYTHON) -c "from distutils.util import get_platform; print get_platform()")
+APPNAME:=$(shell $(PYTHON) setup.py --name)
+LAPPNAME:=$(shell echo $(APPNAME)|tr "[A-Z]" "[a-z]")
+ARCHIVE_SOURCE:=$(APPNAME)-$(VERSION).tar.xz
+ARCHIVE_WIN32:=$(APPNAME)-$(VERSION).exe
+GITUSER:=wummel
+GITREPO:=$(LAPPNAME)
+HOMEPAGE:=$(HOME)/public_html/$(LAPPNAME).git
+DEBUILDDIR:=$(HOME)/projects/debian/official
+DEBORIGFILE:=$(DEBUILDDIR)/$(LAPPNAME)_$(VERSION).orig.tar.xz
 FILESCHECK_URL:=http://localhost/~calvin/
 SRCDIR:=${HOME}/src
 PY_FILES_DIRS:=linkcheck tests *.py linkchecker linkchecker-nagios linkchecker-gui cgi-bin config doc
@@ -12,9 +19,6 @@ TESTS ?= tests
 # set test options, eg. to "--verbose"
 TESTOPTS=
 PAGER ?= less
-# build dir for debian package
-BUILDDIR:=$(HOME)/projects/debian/official
-DEB_ORIG_TARGET:=$(BUILDDIR)/linkchecker_$(VERSION).orig.tar.xz
 # original dnspython repository module
 DNSPYTHON:=$(HOME)/src/dnspython-git
 # options to run the pep8 utility
@@ -31,6 +35,7 @@ endif
 # Pytest options:
 # - use multiple processors
 # - write test results in file
+# - log test durations
 PYTESTOPTS:=-n $(NUMPROCESSORS) --resultlog=testresults.txt --durations=0
 
 
@@ -46,7 +51,7 @@ clean:
 	rm -f linkcheck/network/_network*.so
 	find . -name '*.py[co]' -exec rm -f {} \;
 
-distclean: clean cleandeb
+distclean: clean
 	rm -rf build dist $(APPNAME).egg-info
 	rm -f _$(APPNAME)_configdata.py MANIFEST Packages.gz
 # clean aborted dist builds and -out files
@@ -54,11 +59,6 @@ distclean: clean cleandeb
 	rm -f alexa*.log testresults.txt
 	rm -rf $(APPNAME)-$(VERSION)
 	rm -rf coverage dist-stamp python-build-stamp*
-
-cleandeb:
-	rm -rf debian/$(LAPPNAME) debian/tmp
-	rm -f debian/*.debhelper debian/{files,substvars}
-	rm -f configure-stamp build-stamp
 
 MANIFEST: MANIFEST.in setup.py
 	$(PYTHON) setup.py sdist --manifest-only
@@ -74,33 +74,43 @@ localbuild: MANIFEST locale
 	cp -f build/lib.$(PLATFORM)-$(PYVER)*/linkcheck/HtmlParser/htmlsax*.so linkcheck/HtmlParser
 	cp -f build/lib.$(PLATFORM)-$(PYVER)*/linkcheck/network/_network*.so linkcheck/network
 
-deb_orig:
-	if [ ! -e $(DEB_ORIG_TARGET) ]; then \
-	  cp dist/$(APPNAME)-$(VERSION).tar.xz $(DEB_ORIG_TARGET); \
-	fi
+release: distclean releasecheck filescheck
+	$(MAKE) dist sign upload homepage tag register deb
 
-release: distclean releasecheck filescheck clean dist-stamp sign_distfiles upload
-	git tag v$(VERSION)
-	$(MAKE) homepage
-	$(MAKE) register
-	$(MAKE) announce
+tag:
+	git tag upstream/$(VERSION)
+	git push --tags origin upstream/$(VERSION)
+
+upload:
+	github-upload $(GITUSER) $(GITREPO) \
+	  dist/$(ARCHIVE_SOURCE) dist/$(ARCHIVE_WIN32) \
+	  dist/$(ARCHIVE_SOURCE).asc dist/$(ARCHIVE_WIN32).asc
 
 homepage:
-	@echo "Updating $(APPNAME) Homepage..."
+# update documentation and man pages
 	$(MAKE) -C doc man
-	sed -i -e "s/version = '.*'/version = '$(VERSION)'/" ~/public_html/linkchecker.sf.net/source/conf.py
-	$(MAKE) -C ~/public_html/linkchecker.sf.net update upload
-	@echo "done."
+# generate static files
+	make -C $(HOMEPAGE) gen upload
 
 register:
 	@echo "Register at Python Package Index..."
 	$(PYTHON) setup.py register
 	@echo "done."
-
-announce:
 	@echo "Submitting to Freecode..."
 	freecode-submit < $(LAPPNAME).freecode
 	@echo "done."
+
+deb:
+# build a debian package
+	[ -f $(DEBORIGFILE) ] || cp dist/$(ARCHIVE_SOURCE) $(DEBORIGFILE)
+	sed -i -e 's/VERSION_$(LAPPNAME):=.*/VERSION_$(LAPPNAME):=$(VERSION)/' $(DEBUILDDIR)/$(LAPPNAME).mak
+	[ -d $(DEBPACKAGEDIR) ] || (cd $(DEBUILDDIR); \
+	  patool extract $(DEBORIGFILE); \
+	  cd $(CURDIR); \
+	  git checkout debian; \
+	  cp -r debian $(DEBPACKAGEDIR); \
+	  git checkout master)
+	$(MAKE) -C $(DEBUILDDIR) $(LAPPNAME)_clean $(LAPPNAME)
 
 chmod:
 	-chmod -R a+rX,u+w,go-w $(CHMODMINUSMINUS) *
@@ -110,10 +120,7 @@ dist: locale MANIFEST chmod
 	rm -f dist/$(APPNAME)-$(VERSION).tar.xz
 	$(PYTHON) setup.py sdist --formats=tar
 	xz dist/$(APPNAME)-$(VERSION).tar
-
-dist-stamp: changelog config/ca-certificates.crt
-	$(MAKE) dist
-	touch $@
+	[ ! -f ../$(ARCHIVE_WIN32) ] || cp ../$(ARCHIVE_WIN32) dist
 
 # Build OSX installer with py2app
 app: distclean localbuild chmod
@@ -128,7 +135,6 @@ rpm:
 # The check programs used here are mostly local scripts on my private system.
 # So for other developers there is no need to execute this target.
 check:
-	[ ! -d .svn ] || check-nosvneolstyle -v
 	check-copyright
 	check-pofiles -v
 	py-tabdaddy
@@ -175,19 +181,20 @@ filescheck: localbuild
 update-copyright:
 	update-copyright --holder="Bastian Kleineidam"
 
-releasecheck: check
+releasecheck: check update-certificates
 	@if egrep -i "xx\.|xxxx|\.xx" doc/changelog.txt > /dev/null; then \
 	  echo "Could not release: edit doc/changelog.txt release date"; false; \
+	fi
+	@if [ ! -f ../$(ARCHIVE_WIN32) ]; then \
+	  echo "Missing WIN32 distribution archive at ../$(ARCHIVE_WIN32)"; \
+	  false; \
 	fi
 	@if ! grep "Version: $(VERSION)" $(LAPPNAME).freecode > /dev/null; then \
 	  echo "Could not release: edit $(LAPPNAME).freecode version"; false; \
 	fi
-	@if grep "UNRELEASED" debian/changelog > /dev/null; then \
-	  echo "Could not release: edit debian/changelog distribution name"; false; \
-	fi
 	$(PYTHON) setup.py check --restructuredtext
 
-sign_distfiles:
+sign:
 	for f in $(shell find dist -name *.xz -o -name *.exe -o -name *.zip -o -name *.dmg); do \
 	  [ -f $${f}.asc ] || gpg --detach-sign --armor $$f; \
 	done
@@ -240,6 +247,6 @@ config/ca-certificates.crt:	/etc/ssl/certs/ca-certificates.crt
 	cp $< $@
 
 .PHONY: test changelog gui count pyflakes ide login upload all clean distclean
-.PHONY: pep8 cleandeb locale localbuild deb_orig diff dnsdiff sign_distfiles
+.PHONY: pep8 cleandeb locale localbuild deb diff dnsdiff sign
 .PHONY: filescheck update-copyright releasecheck check register announce
 .PHONY: chmod dist app rpm release homepage update-certificates

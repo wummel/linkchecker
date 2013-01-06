@@ -631,7 +631,7 @@ else:
     extra_compile_args.append("-pedantic")
 
 myname = "Bastian Kleineidam"
-myemail = "calvin@users.sourceforge.net"
+myemail = "bastian.kleineidam@web.de"
 
 data_files = [
     ('share/linkchecker',
@@ -868,8 +868,7 @@ args = dict(
     author_email = myemail,
     maintainer = myname,
     maintainer_email = myemail,
-    url = "http://linkchecker.sourceforge.net/",
-    download_url="http://sourceforge.net/project/showfiles.php?group_id=1913",
+    url = "http://wummel.github.com/linkchecker/",
     license = "GPL",
     long_description = """Linkchecker features:
 

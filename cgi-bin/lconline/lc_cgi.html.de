@@ -23,7 +23,7 @@ function gettext (s) {
  alink="#191c83">
 
 <center><h2>LinkChecker Online</h2>
-(läuft mit Öl vom <a href="http://linkchecker.sourceforge.net/"
+(läuft mit Öl vom <a href="http://wummel.github.com/linkchecker/"
 target="_top">LinkChecker</a>)
 </center>
 

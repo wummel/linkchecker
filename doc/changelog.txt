@@ -1,5 +1,9 @@
 8.3 "" (released xx.xx.xxxx)
 
+Features:
+- project: The Project moved to Github.
+  Closes: GH bug #368
+
 Changes:
 - logging: Print system arguments (sys.argv) and variable values in
   internal error information.

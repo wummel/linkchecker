@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 3.4\n"
-"POT-Creation-Date: 2012-11-08 11:13+0100\n"
+"POT-Creation-Date: 2013-01-06 18:09+0100\n"
 "PO-Revision-Date: 2012-11-08 11:14+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
@@ -1805,7 +1805,9 @@ msgstr "AUTHOR"
 # type: Plain text
 #. type: Plain text
 #: en/linkchecker.1:513 en/linkcheckerrc.5:592 en/linkchecker-gui.1:21
-msgid "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
+#, fuzzy
+#| msgid "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
+msgid "Bastian Kleineidam E<lt>bastian.kleineidam@web.deE<gt>"
 msgstr "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
 
 # type: SH

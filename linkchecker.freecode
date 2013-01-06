@@ -2,12 +2,12 @@ Project: LinkChecker
 Version: 8.2
 Release-Focus: Minor bugfixes
 Hide: N
-Website-URL: http://linkchecker.sourceforge.net/
-Changelog-URL: http://linkchecker.git.sourceforge.net/git/gitweb.cgi?p=linkchecker/linkchecker;a=blob;f=doc/changelog.txt;hb=HEAD
-Source-Package-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.tar.xz
+Website-URL: http://wummel.github.com/linkchecker/
+Changelog-URL: https://github.com/wummel/linkchecker/blob/master/doc/changelog.txt
+Source-Package-URL: http://github.com/downloads/wummel/linkchecker/LinkChecker-${version}.tar.xz
 Debian-Package-URL: http://packages.debian.org/linkchecker
-GIT-Tree-URL: http://linkchecker.git.sourceforge.net/
-Windows-installer-URL: http://downloads.sourceforge.net/linkchecker/LinkChecker-${version}.exe
+GIT-Tree-URL: https://github.com/wummel/linkchecker.git
+Windows-installer-URL: http://github.com/downloads/wummel/linkchecker/LinkChecker-${version}.exe
 
 Anchor checking, cookie path matching, non-ASCII exception handling and
 configuration directory creation on Windows systems has been fixed.

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2012-11-08 11:13+0100\n"
+"POT-Creation-Date: 2013-01-06 18:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1420,7 +1420,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/linkchecker.1:513 en/linkcheckerrc.5:592 en/linkchecker-gui.1:21
-msgid "Bastian Kleineidam E<lt>calvin@users.sourceforge.netE<gt>"
+msgid "Bastian Kleineidam E<lt>bastian.kleineidam@web.deE<gt>"
 msgstr ""
 
 #. type: SH

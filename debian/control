@@ -9,9 +9,9 @@ Build-Depends: debhelper (>= 9),
                qt4-dev-tools
 X-Python-Version: >= 2.7
 Standards-Version: 3.9.3.1
-Homepage: http://linkchecker.sourceforge.net/
-Vcs-Git: git://linkchecker.git.sourceforge.net/gitroot/linkchecker/linkchecker
-Vcs-Browser: http://linkchecker.git.sourceforge.net/
+Homepage: http://wummel.github.com/linkchecker/
+XS-Vcs-Git-Upstream: git://github.com/wummel/linkchecker.git
+XS-Vcs-Browser-Upstream: https://github.com/wummel/linkchecker
 
 Package: linkchecker
 Architecture: any
