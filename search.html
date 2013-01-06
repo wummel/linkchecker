@@ -7,9 +7,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta content="link, site, URL, validation, checking, crawling" name="keywords" />
-
-    <title>Check websites for broken links &mdash; LinkChecker</title>
+    
+    <title>Search &mdash; LinkChecker</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -26,8 +25,13 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/searchtools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.ico"/>
-    <link rel="top" title="LinkChecker" href="#" />
+    <link rel="top" title="LinkChecker" href="index.html" />
+  <script type="text/javascript">
+    jQuery(function() { Search.loadIndex("searchindex.js"); });
+  </script>
+  
 <link rel="apple-touch-icon" href="_static/logo57x57.png"/>
 <style type="text/css">
 img { border: 0; }
@@ -46,6 +50,7 @@ img { border: 0; }
     })();
 /* ]]> */
 </script>
+
 
 
   </head>
@@ -96,73 +101,29 @@ Paypal:
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="check-websites-for-broken-links">
-<h1>Check websites for broken links</h1>
-<p>LinkChecker is a free, <a class="reference external" href="http://www.gnu.org/licenses/gpl-2.0.html">GPL</a> licensed website validator.
-LinkChecker checks links in web documents or full websites.</p>
-<div class="section" id="features">
-<h2>Features</h2>
-<ul class="simple">
-<li>recursive and multithreaded checking and site crawling</li>
-<li>output in colored or normal text, HTML, SQL, CSV, XML or a sitemap
-graph in different formats</li>
-<li>HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Telnet and local file
-links support</li>
-<li>restriction of link checking with regular expression filters for URLs</li>
-<li>proxy support</li>
-<li>username/password authorization for HTTP and FTP and Telnet</li>
-<li>honors robots.txt exclusion protocol</li>
-<li>Cookie support</li>
-<li>HTML5 support</li>
-<li>HTML and CSS syntax check</li>
-<li>Antivirus check</li>
-<li>Different interfaces: command line, GUI and web interface</li>
-<li>... and a lot more check options documented in the <a class="reference external" href="man1/linkchecker.1.html">manual page</a>.</li>
-</ul>
-</div>
-<div class="section" id="screenshots">
-<h2>Screenshots</h2>
-<blockquote>
-<div><table border="1" class="docutils">
-<colgroup>
-<col width="33%" />
-<col width="33%" />
-<col width="33%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="first last reference external image-reference" href="_static/shot1.png"><img alt="_images/shot1_thumb.jpg" class="align-center" src="_images/shot1_thumb.jpg" /></a>
-</td>
-<td><a class="first last reference external image-reference" href="_static/shot2.png"><img alt="_images/shot2_thumb.jpg" class="align-center" src="_images/shot2_thumb.jpg" /></a>
-</td>
-<td><a class="first last reference external image-reference" href="_static/shot3.png"><img alt="_images/shot3_thumb.jpg" class="align-center" src="_images/shot3_thumb.jpg" /></a>
-</td>
-</tr>
-<tr class="row-even"><td>Commandline interface</td>
-<td>GUI client</td>
-<td>CGI web interface</td>
-</tr>
-</tbody>
-</table>
-</div></blockquote>
-</div>
-<div class="section" id="basic-usage">
-<h2>Basic usage</h2>
-<p>To check a URL like <tt class="docutils literal"><span class="pre">http://www.example.org/myhomepage/</span></tt> it is enough to
-enter <tt class="docutils literal"><span class="pre">http://www.example.org/myhomepage/</span></tt> in the GUI client or
-web interface, or execute
-<tt class="docutils literal"><span class="pre">linkchecker</span> <span class="pre">http://www.example.org/myhomepage/</span></tt> on the command line.</p>
-<p>This check will validate recursively all pages starting with
-<tt class="docutils literal"><span class="pre">http://www.example.org/myhomepage/</span></tt>. Additionally, all external links
-pointing outside of <tt class="docutils literal"><span class="pre">www.example.org</span></tt> will be checked but not recursed
-into.</p>
-</div>
-<div class="section" id="other-linkcheckers">
-<h2>Other linkcheckers</h2>
-<p>If this software does not fit your requirements, you can check out
-<a class="reference external" href="other.html">other free linkcheckers</a>.</p>
-</div>
-</div>
-
+  <h1 id="search-documentation">Search</h1>
+  <div id="fallback" class="admonition warning">
+  <script type="text/javascript">$('#fallback').hide();</script>
+  <p>
+    Please activate JavaScript to enable the search
+    functionality.
+  </p>
+  </div>
+  <p>
+    From here you can search these documents. Enter your search
+    words into the box below and click "search". Note that the search
+    function will automatically search for all of the words. Pages
+    containing fewer words won't appear in the result list.
+  </p>
+  <form action="" method="get">
+    <input type="text" name="q" value="" />
+    <input type="submit" value="search" />
+    <span id="search-progress" style="padding-left: 10px"></span>
+  </form>
+  
+  <div id="search-results">
+  
+  </div>
 
           </div>
         </div>

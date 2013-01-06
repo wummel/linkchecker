@@ -1,0 +1,68 @@
+===============================
+Donations for LinkChecker
+===============================
+
+Hopefully LinkChecker has been useful for you and your projects.
+In case you are considering to give something back, you can find
+here several options to do so.
+
+Paypal
+=======
+Donating over paypal is the most convenient way if you own a
+paypal account.
+
+.. raw:: html
+
+  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+  <input type="hidden" name="cmd" value="_s-xclick">
+  <input type="hidden" name="hosted_button_id" value="XNUBD7FAG48M6">
+  <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+  <img alt="" border="0" src="https://www.paypalobjects.com/de_DE/i/scr/pixel.gif" width="1" height="1">
+  </form>
+
+Bitcoin
+========
+Transferring some bitcoins to account
+``1Mnm4xxzH9nTnDU3yuJ3UxnEqEniroRWLJ``
+will make the world a more happy place :-)
+
+Amazon wishlist
+================
+Buying me something from `my amazon wishlist`_ will definitely make
+me happy.
+
+.. _my amazon wishlist: http://www.amazon.de/wishlist/19P7KLD7TF0ST
+
+Mac OS X hardware
+==================
+The OS X system I used to develop and generate the `DMG installer`_
+is unfortunately no longer available to me.
+So unless some really nice people sponsor a Mac for development,
+there will be no more DMG installer releases.
+
+.. _DMG installer:
+   http://sourceforge.net/projects/linkchecker/files/7.0/LinkChecker-7.0.dmg/download
+
+Of course you can always install LinkChecker from source or generate the
+installer yourself (see install.txt_). There are also MacPorts_ and
+Fink_ entries.
+
+.. _install.txt:
+   https://github.com/wummel/linkchecker/blob/master/doc/install.txt
+.. _MacPorts:
+   https://trac.macports.org/browser/trunk/dports/www/linkchecker/Portfile
+.. _Fink:
+   http://pdb.finkproject.org/pdb/package.php/linkchecker
+
+Code
+=====
+`Check out the code`_, improve it and send me a pull request.
+Unleash the power of open source!
+
+.. _Check out the code: https://github.com/wummel/linkchecker.git
+
+Thanks
+=======
+Regardless which option you are choosing above - thank you for your
+support.
+It will help me to maintain and improve LinkChecker.

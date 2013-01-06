@@ -1,0 +1,643 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of linkcheckerrc</TITLE>
+</HEAD><BODY>
+<H1>linkcheckerrc</H1>
+Section: File Formats (5)<BR>Updated: 2007-11-30<BR><A HREF="#index">Index</A>
+<A HREF="../index.html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+linkcheckerrc - configuration file for LinkChecker
+<A NAME="lbAC">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<B>linkcheckerrc</B> is the configuration file for LinkChecker.
+The file is written in an INI-style format.
+<BR>
+
+The default file location is <B>~/.linkchecker/linkcheckerrc</B> on Unix,
+<B>%HOMEPATH%\.linkchecker\linkcheckerrc</B> on Windows systems.
+<A NAME="lbAD">&nbsp;</A>
+<H2>SETTINGS</H2>
+
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H3><B>[checking]</B></H3>
+
+<DL COMPACT>
+<DT><B>anchors=</B>[<B>0</B>|<B>1</B>]<DD>
+Check HTTP anchor references. Default is not to check anchors.
+This option enables logging of the warning <B>url-anchor-not-found</B>.
+<BR>
+
+Command line option: <B>--anchors</B>
+<DT><B>checkcss=</B>[<B>0</B>|<B>1</B>]<DD>
+Check syntax of CSS URLs with the cssutils library, falling back to the
+W3C online validator if cssutils is not available.
+<BR>
+
+Command line option: <B>--check-css</B>
+<DT><B>checkhtml=</B>[<B>0</B>|<B>1</B>]<DD>
+Check syntax of HTML URLs with the HTML tidy library, falling back to the
+W3C online validator if HTML tidy is not available..
+<BR>
+
+Command line option: <B>--check-html</B>
+<DT><B>clamavconf=</B><I>filename</I><DD>
+Filename of <B>clamd.conf</B> config file.
+<BR>
+
+Command line option: none
+<DT><B>cookiefile=</B><I>filename</I><DD>
+Read a file with initial cookie data. The cookie data
+format is explained in <A HREF="../man1/linkchecker.1.html">linkchecker</A>(1).
+<BR>
+
+Command line option: <B>--cookiefile</B>
+<DT><B>cookies=</B>[<B>0</B>|<B>1</B>]<DD>
+Accept and send HTTP cookies.
+<BR>
+
+Command line option: <B>--cookies</B>
+<DT><B>debugmemory=</B>[<B>0</B>|<B>1</B>]<DD>
+When checking finishes, write a memory dump to a temporary file.
+The memory dump is written both when checking finishes normally
+and when checking gets canceled.
+<BR>
+
+The memory dump only works if the python-meliae package is installed.
+Otherwise a warning is printed to install it.
+<BR>
+
+Command line option: none
+<DT><B>localwebroot=</B><I>STRING</I><DD>
+When checking absolute URLs inside local files, the given root directory
+is used as base URL.
+<BR>
+
+Note that the given directory must have URL syntax, so it must use a slash
+to join directories instead of a backslash.
+And the given directory must end with a slash.
+<BR>
+
+Command line option: none
+<DT><B>nntpserver=</B><I>STRING</I><DD>
+Specify an NNTP server for <B>news:</B> links. Default is the
+environment variable <B>NNTP_SERVER</B>. If no host is given,
+only the syntax of the link is checked.
+<BR>
+
+Command line option: <B>--nntp-server</B>
+<DT><B>pause=</B><I>NUMBER</I><DD>
+Pause the given number of seconds between two subsequent connection
+requests to the same host.
+<BR>
+
+Command line option: <B>--pause</B>
+<DT><B>recursionlevel=</B><I>NUMBER</I><DD>
+Check recursively all links up to given depth.
+A negative depth will enable infinite recursion.
+Default depth is infinite.
+<BR>
+
+Command line option: <B>--recursion-level</B>
+<DT><B>scanvirus=</B>[<B>0</B>|<B>1</B>]<DD>
+Scan content of URLs for viruses with ClamAV.
+<BR>
+
+Command line option: <B>--scan-virus</B>
+<DT><B>threads=</B><I>NUMBER</I><DD>
+Generate no more than the given number of threads. Default number
+of threads is 100. To disable threading specify a non-positive number.
+<BR>
+
+Command line option: <B>--threads</B>
+<DT><B>timeout=</B><I>NUMBER</I><DD>
+Set the timeout for connection attempts in seconds. The default timeout
+is 60 seconds.
+<BR>
+
+Command line option: <B>--timeout</B>
+<DT><B>useragent=</B><I>STRING</I><DD>
+Specify the User-Agent string to send to the HTTP server, for example
+&quot;Mozilla/4.0&quot;. The default is &quot;LinkChecker/X.Y&quot; where X.Y is the current
+version of LinkChecker.
+<BR>
+
+Command line option: <B>--user-agent</B>
+<DT><B>warningregex=</B>=<I>REGEX</I><DD>
+Define a regular expression which prints a warning if it matches any
+content of the checked link.
+This applies only to valid pages, so we can get their content.
+<BR>
+
+Use this to check for pages that contain some form of error, for example
+&quot;This page has moved&quot; or &quot;Oracle Application Server error&quot;.
+<BR>
+
+Command line option: <B>--warning-regex</B>
+<DT><B>warnsizebytes=</B><I>NUMBER</I><DD>
+Print a warning if content size info is available and exceeds the given
+number of <I>bytes</I>.
+<BR>
+
+Command line option: <B>--warning-size-bytes</B>
+<DT><B>warnsslcertdaysvalid=</B><I>NUMBER</I><DD>
+Check that SSL certificates are at least the given number of days valid.
+The number must not be negative.
+If the number of days is zero a warning is printed only for certificates
+that are already expired.
+<BR>
+
+The default number of days is 14.
+<BR>
+
+Command line option: none
+<DT><B>maxrunseconds=</B><I>NUMBER</I><DD>
+Stop checking new URLs after the given number of seconds. Same as if the
+user stops (by hitting Ctrl-C or clicking the abort buttin in the GUI)
+after the given number of seconds.
+<BR>
+
+The default is not to stop until all URLs are checked.
+<BR>
+
+Command line option: none
+<DT><B>maxnumurls=</B><I>NUMBER</I><DD>
+Maximum number of URLs to check. New URLs will not be queued after the
+given number of URLs is checked.
+<BR>
+
+The default is to queue and check all URLs.
+<BR>
+
+Command line option: none
+</DL>
+<A NAME="lbAF">&nbsp;</A>
+<H3><B>[filtering]</B></H3>
+
+<DL COMPACT>
+<DT><B>ignore=</B><I>REGEX</I> (MULTILINE)<DD>
+Only check syntax of URLs matching the given regular expressions.
+<BR>
+
+Command line option: <B>--ignore-url</B>
+<DT><B>ignorewarnings=</B><I>NAME</I>[<B>,</B><I>NAME</I>...]<DD>
+Ignore the comma-separated list of warnings. See
+<B>WARNIGS</B> for the list of supported warnings.
+<BR>
+
+Command line option: none
+<DT><B>internlinks=</B><I>REGEX</I><DD>
+Regular expression to add more URLs recognized as internal links.
+Default is that URLs given on the command line are internal.
+<BR>
+
+Command line option: none
+<DT><B>nofollow=</B><I>REGEX</I> (MULTILINE)<DD>
+Check but do not recurse into URLs matching the given regular
+expressions.
+<BR>
+
+Command line option: <B>--no-follow-url</B>
+</DL>
+<A NAME="lbAG">&nbsp;</A>
+<H3><B>[authentication]</B></H3>
+
+<DL COMPACT>
+<DT><B>entry=</B><I>REGEX</I> <I>USER</I> [<I>PASS</I>] (MULTILINE)<DD>
+Provide different user/password pairs for different link types.
+Entries are a triple (URL regex, username, password)
+or a tuple (URL regex, username), where the entries are
+separated by whitespace.
+<BR>
+
+The password is optional and if missing it has to be entered at the
+commandline.
+<BR>
+
+If the regular expression matches the checked URL, the given user/password
+pair is used for authentication. The commandline options
+<B>-u</B> and <B>-p</B> match every link and therefore override the entries
+given here. The first match wins. At the moment, authentication is
+used/needed for http[s] and ftp links.
+<BR>
+
+Command line option: <B>-u</B>, <B>-p</B>
+<DT><B>loginurl=</B><I>URL</I><DD>
+A login URL to be visited before checking. Also needs authentication
+data set for it, and implies using cookies because most logins use
+cookies nowadays.
+<DT><B>loginuserfield=</B><I>STRING</I><DD>
+The name of the user CGI field. Default name is <B>login</B>.
+<DT><B>loginpasswordfield=</B><I>STRING</I><DD>
+The name of the password CGI field. Default name is <B>password</B>.
+<DT><B>loginextrafields=</B><I>NAME</I><B>:</B><I>VALUE</I> (MULTILINE)<DD>
+Optionally any additional CGI name/value pairs. Note that the default
+values are submitted automatically.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H3><B>[output]</B></H3>
+
+<DL COMPACT>
+<DT><B>complete=</B>[<B>0</B>|<B>1</B>]<DD>
+If set log all checked URLs, even duplicates. Default is to log
+duplicate URLs only once.
+<BR>
+
+Command line option: <B>--complete</B>
+<DT><B>debug=</B><I>STRING</I>[<B>,</B><I>STRING</I>...]<DD>
+Print debugging output for the given loggers.
+Available loggers are <B>cmdline</B>, <B>checking</B>,
+<B>cache</B>, <B>gui</B>, <B>dns</B>, <B>thread</B> and <B>all</B>.
+Specifying <B>all</B> is an alias for specifying all available loggers.
+<BR>
+
+Command line option: <B>--debug</B>
+<DT><B>fileoutput=</B><I>TYPE</I>[<B>,</B><I>TYPE</I>...]<DD>
+Output to a files <B>linkchecker-out.</B><I>TYPE</I>,
+<B>$HOME/.linkchecker/blacklist</B> for
+<B>blacklist</B> output.
+<BR>
+
+Valid file output types are <B>text</B>, <B>html</B>, <B>sql</B>,
+<B>csv</B>, <B>gml</B>, <B>dot</B>, <B>xml</B>, <B>none</B> or <B>blacklist</B>
+Default is no file output. The various output types are documented
+below. Note that you can suppress all console output
+with <B>output=none</B>.
+<BR>
+
+Command line option: <B>--file-output</B>
+<DT><B>log=</B><I>TYPE</I>[<B>/</B><I>ENCODING</I>]<DD>
+Specify output type as <B>text</B>, <B>html</B>, <B>sql</B>,
+<B>csv</B>, <B>gml</B>, <B>dot</B>, <B>xml</B>, <B>none</B> or <B>blacklist</B>.
+Default type is <B>text</B>. The various output types are documented
+below.
+<BR>
+
+The <I>ENCODING</I> specifies the output encoding, the default is
+that of your locale. Valid encodings are listed at
+<B><A HREF="http://docs.python.org/library/codecs.html#standard-encodings">http://docs.python.org/library/codecs.html#standard-encodings</A></B>.
+<BR>
+
+Command line option: <B>--output</B>
+<DT><B>quiet=</B>[<B>0</B>|<B>1</B>]<DD>
+If set, operate quiet. An alias for <B>log=none</B>.
+This is only useful with <B>fileoutput</B>.
+<BR>
+
+Command line option: <B>--verbose</B>
+<DT><B>status=</B>[<B>0</B>|<B>1</B>]<DD>
+Control printing check status messages. Default is 1.
+<BR>
+
+Command line option: <B>--no-status</B>
+<DT><B>verbose=</B>[<B>0</B>|<B>1</B>]<DD>
+If set log all checked URLs once. Default is to log only errors and warnings.
+<BR>
+
+Command line option: <B>--verbose</B>
+<DT><B>warnings=</B>[<B>0</B>|<B>1</B>]<DD>
+If set log warnings. Default is to log warnings.
+<BR>
+
+Command line option: <B>--no-warnings</B>
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H3><B>[text]</B></H3>
+
+<DL COMPACT>
+<DT><B>filename=</B><I>STRING</I><DD>
+Specify output filename for text logging. Default filename is
+<B>linkchecker-out.txt</B>.
+<BR>
+
+Command line option: <B>--file-output=</B>
+<DT><B>parts=</B><I>STRING</I><DD>
+Comma-separated list of parts that have to be logged.
+See <B>LOGGER PARTS</B> below.
+<BR>
+
+Command line option: none
+<DT><B>encoding=</B><I>STRING</I><DD>
+Valid encodings are listed in
+<B><A HREF="http://docs.python.org/library/codecs.html#standard-encodings">http://docs.python.org/library/codecs.html#standard-encodings</A></B>.
+<BR>
+
+Default encoding is <B>iso-8859-15</B>.
+<DT><I>color*</I><DD>
+Color settings for the various log parts, syntax is <I>color</I> or
+<I>type</I><B>;</B><I>color</I>. The <I>type</I> can be
+<B>bold</B>, <B>light</B>, <B>blink</B>, <B>invert</B>.
+The <I>color</I> can be
+<B>default</B>, <B>black</B>, <B>red</B>, <B>green</B>, <B>yellow</B>, <B>blue</B>,
+<B>purple</B>, <B>cyan</B>, <B>white</B>, <B>Black</B>, <B>Red</B>, <B>Green</B>,
+<B>Yellow</B>, <B>Blue</B>, <B>Purple</B>, <B>Cyan</B> or <B>White</B>.
+<BR>
+
+Command line option: none
+<DT><B>colorparent=</B><I>STRING</I><DD>
+Set parent color. Default is <B>white</B>.
+<DT><B>colorurl=</B><I>STRING</I><DD>
+Set URL color. Default is <B>default</B>.
+<DT><B>colorname=</B><I>STRING</I><DD>
+Set name color. Default is <B>default</B>.
+<DT><B>colorreal=</B><I>STRING</I><DD>
+Set real URL color. Default is <B>cyan</B>.
+<DT><B>colorbase=</B><I>STRING</I><DD>
+Set base URL color. Default is <B>purple</B>.
+<DT><B>colorvalid=</B><I>STRING</I><DD>
+Set valid color. Default is <B>bold;green</B>.
+<DT><B>colorinvalid=</B><I>STRING</I><DD>
+Set invalid color. Default is <B>bold;red</B>.
+<DT><B>colorinfo=</B><I>STRING</I><DD>
+Set info color. Default is <B>default</B>.
+<DT><B>colorwarning=</B><I>STRING</I><DD>
+Set warning color. Default is <B>bold;yellow</B>.
+<DT><B>colordltime=</B><I>STRING</I><DD>
+Set download time color. Default is <B>default</B>.
+<DT><B>colorreset=</B><I>STRING</I><DD>
+Set reset color. Default is <B>deault</B>.
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H3><B>[gml]</B></H3>
+
+<DL COMPACT>
+<DT><B>filename=</B><I>STRING</I><DD>
+See [text] section above.
+<DT><B>parts=</B><I>STRING</I><DD>
+See [text] section above.
+<DT><B>encoding=</B><I>STRING</I><DD>
+See [text] section above.
+</DL>
+<A NAME="lbAK">&nbsp;</A>
+<H3><B>[dot]</B></H3>
+
+<DL COMPACT>
+<DT><B>filename=</B><I>STRING</I><DD>
+See [text] section above.
+<DT><B>parts=</B><I>STRING</I><DD>
+See [text] section above.
+<DT><B>encoding=</B><I>STRING</I><DD>
+See [text] section above.
+</DL>
+<A NAME="lbAL">&nbsp;</A>
+<H3><B>[csv]</B></H3>
+
+<DL COMPACT>
+<DT><B>filename=</B><I>STRING</I><DD>
+See [text] section above.
+<DT><B>parts=</B><I>STRING</I><DD>
+See [text] section above.
+<DT><B>encoding=</B><I>STRING</I><DD>
+See [text] section above.
+<DT><B>separator=</B><I>CHAR</I><DD>
+Set CSV separator. Default is a comma (<B>,</B>).
+<DT><B>quotechar=</B><I>CHAR</I><DD>
+Set CSV quote character. Default is a double quote (<B>&quot;</B>).
+</DL>
+<A NAME="lbAM">&nbsp;</A>
+<H3><B>[sql]</B></H3>
+
+<DL COMPACT>
+<DT><B>filename=</B><I>STRING</I><DD>
+See [text] section above.
+<DT><B>parts=</B><I>STRING</I><DD>
+See [text] section above.
+<DT><B>encoding=</B><I>STRING</I><DD>
+See [text] section above.
+<DT><B>dbname=</B><I>STRING</I><DD>
+Set database name to store into. Default is <B>linksdb</B>.
+<DT><B>separator=</B><I>CHAR</I><DD>
+Set SQL command separator character. Default is a semicolor (<B>;</B>).
+</DL>
+<A NAME="lbAN">&nbsp;</A>
+<H3><B>[html]</B></H3>
+
+<DL COMPACT>
+<DT><B>filename=</B><I>STRING</I><DD>
+See [text] section above.
+<DT><B>parts=</B><I>STRING</I><DD>
+See [text] section above.
+<DT><B>encoding=</B><I>STRING</I><DD>
+See [text] section above.
+<DT><B>colorbackground=</B><I>COLOR</I><DD>
+Set HTML background color. Default is <B>#fff7e5</B>.
+<DT><B>colorurl=</B><DD>
+Set HTML URL color. Default is <B>#dcd5cf</B>.
+<DT><B>colorborder=</B><DD>
+Set HTML border color. Default is <B>#000000</B>.
+<DT><B>colorlink=</B><DD>
+Set HTML link color. Default is <B>#191c83</B>.
+<DT><B>colorwarning=</B><DD>
+Set HTML warning color. Default is <B>#e0954e</B>.
+<DT><B>colorerror=</B><DD>
+Set HTML error color. Default is <B>#db4930</B>.
+<DT><B>colorok=</B><DD>
+Set HTML valid color. Default is <B>#3ba557</B>.
+</DL>
+<A NAME="lbAO">&nbsp;</A>
+<H3><B>[blacklist]</B></H3>
+
+<DL COMPACT>
+<DT><B>filename=</B><I>STRING</I><DD>
+See [text] section above.
+<DT><B>encoding=</B><I>STRING</I><DD>
+See [text] section above.
+</DL>
+<A NAME="lbAP">&nbsp;</A>
+<H3><B>[xml]</B></H3>
+
+<DL COMPACT>
+<DT><B>filename=</B><I>STRING</I><DD>
+See [text] section above.
+<DT><B>parts=</B><I>STRING</I><DD>
+See [text] section above.
+<DT><B>encoding=</B><I>STRING</I><DD>
+See [text] section above.
+</DL>
+<A NAME="lbAQ">&nbsp;</A>
+<H3><B>[gxml]</B></H3>
+
+<DL COMPACT>
+<DT><B>filename=</B><I>STRING</I><DD>
+See [text] section above.
+<DT><B>parts=</B><I>STRING</I><DD>
+See [text] section above.
+<DT><B>encoding=</B><I>STRING</I><DD>
+See [text] section above.
+</DL>
+<A NAME="lbAR">&nbsp;</A>
+<H3><B>[sitemap]</B></H3>
+
+<DL COMPACT>
+<DT><B>filename=</B><I>STRING</I><DD>
+See [text] section above.
+<DT><B>parts=</B><I>STRING</I><DD>
+See [text] section above.
+<DT><B>encoding=</B><I>STRING</I><DD>
+See [text] section above.
+<DT><B>priority=</B><I>FLOAT</I><DD>
+A number between 0.0 and 1.0 determining the priority. The default
+priority for the first URL is 1.0, for all child URLs 0.5.
+<DT><B>frequency=</B>[<B>always</B>|<B>hourly</B>|<B>daily</B>|<B>weekly</B>|<B>monthly</B>|<B>yearly</B>|<B>never</B>]<DD>
+The frequence pages are changing with.
+</DL>
+<A NAME="lbAS">&nbsp;</A>
+<H2>LOGGER PARTS</H2>
+
+<BR>&nbsp;<B>all</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(for&nbsp;all&nbsp;parts)
+<BR>&nbsp;<B>id</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a&nbsp;unique&nbsp;ID&nbsp;for&nbsp;each&nbsp;logentry)
+<BR>&nbsp;<B>realurl</B>&nbsp;&nbsp;&nbsp;(the&nbsp;full&nbsp;url&nbsp;link)
+<BR>&nbsp;<B>result</B>&nbsp;&nbsp;&nbsp;&nbsp;(valid&nbsp;or&nbsp;invalid,&nbsp;with&nbsp;messages)
+<BR>&nbsp;<B>extern</B>&nbsp;&nbsp;&nbsp;&nbsp;(1&nbsp;or&nbsp;0,&nbsp;only&nbsp;in&nbsp;some&nbsp;logger&nbsp;types&nbsp;reported)
+<BR>&nbsp;<B>base</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(base&nbsp;href=...)
+<BR>&nbsp;<B>name</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&lt;a&nbsp;href=...&gt;name&lt;/a&gt;&nbsp;and&nbsp;&lt;img&nbsp;alt=&quot;name&quot;&gt;)
+<BR>&nbsp;<B>parenturl</B>&nbsp;(if&nbsp;any)
+<BR>&nbsp;<B>info</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(some&nbsp;additional&nbsp;info,&nbsp;e.g.&nbsp;FTP&nbsp;welcome&nbsp;messages)
+<BR>&nbsp;<B>warning</B>&nbsp;&nbsp;&nbsp;(warnings)
+<BR>&nbsp;<B>dltime</B>&nbsp;&nbsp;&nbsp;&nbsp;(download&nbsp;time)
+<BR>&nbsp;<B>checktime</B>&nbsp;(check&nbsp;time)
+<BR>&nbsp;<B>url</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(the&nbsp;original&nbsp;url&nbsp;name,&nbsp;can&nbsp;be&nbsp;relative)
+<BR>&nbsp;<B>intro</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(the&nbsp;blurb&nbsp;at&nbsp;the&nbsp;beginning,&nbsp;&quot;starting&nbsp;at&nbsp;...&quot;)
+<BR>&nbsp;<B>outro</B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(the&nbsp;blurb&nbsp;at&nbsp;the&nbsp;end,&nbsp;&quot;found&nbsp;x&nbsp;errors&nbsp;...&quot;)
+<A NAME="lbAT">&nbsp;</A>
+<H2>MULTILINE</H2>
+
+Some option values can span multiple lines. Each line has to be indented
+for that to work. Lines starting with a hash (<B>#</B>) will be ignored,
+though they must still be indented.
+<P>
+<BR>&nbsp;ignore=
+<BR>&nbsp;&nbsp;&nbsp;lconline
+<BR>&nbsp;&nbsp;&nbsp;bookmark
+<BR>&nbsp;&nbsp;&nbsp;#&nbsp;a&nbsp;comment
+<BR>&nbsp;&nbsp;&nbsp;^mailto:
+<A NAME="lbAU">&nbsp;</A>
+<H2>EXAMPLE</H2>
+
+<BR>&nbsp;[output]
+<BR>&nbsp;log=html
+<P>
+<BR>&nbsp;[checking]
+<BR>&nbsp;threads=5
+<P>
+<BR>&nbsp;[filtering]
+<BR>&nbsp;ignorewarnings=http-moved-permanent
+<A NAME="lbAV">&nbsp;</A>
+<H2>WARNINGS</H2>
+
+The following warnings are recognized in the 'ignorewarnings' config
+file entry:
+<BR>
+
+<DL COMPACT>
+<DT><B>file-missing-slash</B><DD>
+The file: URL is missing a trailing slash.
+<DT><B>file-system-path</B><DD>
+The file: path is not the same as the system specific path.
+<DT><B>ftp-missing-slash</B><DD>
+The ftp: URL is missing a trailing slash.
+<DT><B>http-auth-unknonwn</B><DD>
+Unsupported HTTP authentication method.
+<DT><B>http-cookie-store-error</B><DD>
+An error occurred while storing a cookie.
+<DT><B>http-decompress-error</B><DD>
+An error occurred while decompressing the URL content.
+<DT><B>http-empty-content</B><DD>
+The URL had no content.
+<DT><B>http-moved-permanent</B><DD>
+The URL has moved permanently.
+<DT><B>http-robots-denied</B><DD>
+The http: URL checking has been denied.
+<DT><B>http-unsupported-encoding</B><DD>
+The URL content is encoded with an unknown encoding.
+<DT><B>http-wrong-redirect</B><DD>
+The URL has been redirected to an URL of a different type.
+<DT><B>https-certificate-error</B><DD>
+The SSL certificate is invalid or expired.
+<DT><B>ignore-url</B><DD>
+The URL has been ignored.
+<DT><B>mail-no-connection</B><DD>
+No connection to a MX host could be established.
+<DT><B>mail-no-mx-host</B><DD>
+The mail MX host could not be found.
+<DT><B>mail-unverified-address</B><DD>
+The mailto: address could not be verified.
+<DT><B>nntp-no-newsgroup</B><DD>
+The NNTP newsgroup could not be found.
+<DT><B>nntp-no-server</B><DD>
+No NNTP server was found.
+<DT><B>url-anchor-not-found</B><DD>
+URL anchor was not found.
+<DT><B>url-content-size-unequal</B><DD>
+The URL content size and download size are unequal.
+<DT><B>url-content-size-zero</B><DD>
+The URL content size is zero.
+<DT><B>url-content-too-large</B><DD>
+The URL content size is too large.
+<DT><B>url-effective-url</B><DD>
+The effective URL is different from the original.
+<DT><B>url-error-getting-content</B><DD>
+Could not get the content of the URL.
+<DT><B>url-obfuscated-ip</B><DD>
+The IP is obfuscated.
+<DT><B>url-warnregex-found</B><DD>
+The warning regular expression was found in the URL contents.
+<DT><B>url-whitespace</B><DD>
+The URL contains leading or trailing whitespace.
+<P>
+</DL>
+<A NAME="lbAW">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<A HREF="../man1/linkchecker.1.html">linkchecker</A>(1)
+<A NAME="lbAX">&nbsp;</A>
+<H2>AUTHOR</H2>
+
+Bastian Kleineidam &lt;<A HREF="mailto:bastian.kleineidam@googlemail.com">bastian.kleineidam@googlemail.com</A>&gt;
+<A NAME="lbAY">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright &#169; 2000-2012 Bastian Kleineidam
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAD">SETTINGS</A><DD>
+<DL>
+<DT><A HREF="#lbAE"><B>[checking]</B></A><DD>
+<DT><A HREF="#lbAF"><B>[filtering]</B></A><DD>
+<DT><A HREF="#lbAG"><B>[authentication]</B></A><DD>
+<DT><A HREF="#lbAH"><B>[output]</B></A><DD>
+<DT><A HREF="#lbAI"><B>[text]</B></A><DD>
+<DT><A HREF="#lbAJ"><B>[gml]</B></A><DD>
+<DT><A HREF="#lbAK"><B>[dot]</B></A><DD>
+<DT><A HREF="#lbAL"><B>[csv]</B></A><DD>
+<DT><A HREF="#lbAM"><B>[sql]</B></A><DD>
+<DT><A HREF="#lbAN"><B>[html]</B></A><DD>
+<DT><A HREF="#lbAO"><B>[blacklist]</B></A><DD>
+<DT><A HREF="#lbAP"><B>[xml]</B></A><DD>
+<DT><A HREF="#lbAQ"><B>[gxml]</B></A><DD>
+<DT><A HREF="#lbAR"><B>[sitemap]</B></A><DD>
+</DL>
+<DT><A HREF="#lbAS">LOGGER PARTS</A><DD>
+<DT><A HREF="#lbAT">MULTILINE</A><DD>
+<DT><A HREF="#lbAU">EXAMPLE</A><DD>
+<DT><A HREF="#lbAV">WARNINGS</A><DD>
+<DT><A HREF="#lbAW">SEE ALSO</A><DD>
+<DT><A HREF="#lbAX">AUTHOR</A><DD>
+<DT><A HREF="#lbAY">COPYRIGHT</A><DD>
+</DL>
+<HR>
+This document was created by
+man2html,
+using the manual pages.<BR>
+
+</BODY>
+</HTML>

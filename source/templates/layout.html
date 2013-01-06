@@ -1,0 +1,73 @@
+{% extends "!layout.html" %}
+
+{% block extrahead %}
+<link rel="apple-touch-icon" href="_static/logo57x57.png"/>
+<style type="text/css">
+img { border: 0; }
+</style>
+<script type="text/javascript">
+/* <![CDATA[ */
+    (function() {
+        var s = document.createElement('script');
+        var t = document.getElementsByTagName('script')[0];
+
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = '//api.flattr.com/js/0.6/load.js?mode=auto&uid=calvin';
+
+        t.parentNode.insertBefore(s, t);
+    })();
+/* ]]> */
+</script>
+
+{% endblock %}
+
+{% block rootrellink %}
+  <li><a href="/">Home </a> |&nbsp;</li>
+{% endblock %}
+
+{% block relbar1 %}
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<table border="0"><tr>
+ <td><a href="/"><img
+  src="{{ pathto("_static/logo32x32.png", 1) }}" border="0" alt="LinkChecker"/></a></td>
+ <td><h1>LinkChecker</h1></td>
+</tr></table>
+</div>
+{% endblock %}
+{% block relbar2 %}{% endblock %}
+
+{# put the sidebar before the body #}
+{% block sidebarsearch %}{% endblock %}
+{% block sidebar1 %}{{ sidebar() }}{% endblock %}
+{% block sidebar2 %}{% endblock %}
+{% block sidebarlogo %}{% if builder == 'html' %}
+<h3>Download</h3>
+<a href="http://sourceforge.net/projects/linkchecker/files/{{version}}/LinkChecker-{{version}}.exe">LinkChecker&nbsp;{{version}}&nbsp;for&nbsp;Windows</a><br/>
+<a href="http://sourceforge.net/projects/linkchecker/files/7.0/LinkChecker-7.0.dmg">LinkChecker&nbsp;7.0&nbsp;for&nbsp;Mac&nbsp;OS&nbsp;X</a><br/>
+<a href="http://ftp.debian.org/debian/pool/main/l/linkchecker/">LinkChecker&nbsp;{{version}}&nbsp;for&nbsp;Debian</a><br/>
+<a href="http://sourceforge.net/projects/linkchecker/files/{{version}}/LinkChecker-{{version}}.tar.xz">LinkChecker&nbsp;{{version}}&nbsp;source</a><br/>
+<a href="http://sourceforge.net/projects/linkchecker/files/">All&nbsp;downloads</a><br/>
+<a href="https://github.com/wummel/linkchecker/blob/master/doc/changelog.txt">Changelog</a><br/>
+<h3>Support</h3>
+{% if pagename != 'faq' %}
+<a href="{{ pathto('faq') }}">FAQ</a><br/>
+{% endif %}
+<a href="https://github.com/wummel/linkchecker/issues?state=open">Issue&nbsp;tracker</a><br/>
+<a href="https://github.com/wummel/linkchecker">Development info</a><br/>
+<h3>Documentation</h3>
+<a href="man1/linkchecker.1.html">Manual page</a><br/>
+{% if pagename != 'donations' %}
+<h3>Give back</h3>
+Paypal:
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick"/>
+<input type="hidden" name="hosted_button_id" value="XNUBD7FAG48M6"/>
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal"/>
+<img alt="" border="0" src="https://www.paypalobjects.com/de_DE/i/scr/pixel.gif" width="1" height="1"/>
+</form>
+<a href="donations.html">More options to help</a>
+{% endif %}
+{% endif %}
+{% endblock %}
+{% block sidebartoc %}{% endblock %}

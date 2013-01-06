@@ -1,0 +1,190 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Frequently asked questions &mdash; LinkChecker</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '8.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="LinkChecker" href="index.html" />
+<link rel="apple-touch-icon" href="_static/logo57x57.png"/>
+<style type="text/css">
+img { border: 0; }
+</style>
+<script type="text/javascript">
+/* <![CDATA[ */
+    (function() {
+        var s = document.createElement('script');
+        var t = document.getElementsByTagName('script')[0];
+
+        s.type = 'text/javascript';
+        s.async = true;
+        s.src = '//api.flattr.com/js/0.6/load.js?mode=auto&uid=calvin';
+
+        t.parentNode.insertBefore(s, t);
+    })();
+/* ]]> */
+</script>
+
+
+  </head>
+  <body>
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<table border="0"><tr>
+ <td><a href="/"><img
+  src="_static/logo32x32.png" border="0" alt="LinkChecker"/></a></td>
+ <td><h1>LinkChecker</h1></td>
+</tr></table>
+</div>
+
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<h3>Download</h3>
+<a href="http://sourceforge.net/projects/linkchecker/files/8.2/LinkChecker-8.2.exe">LinkChecker&nbsp;8.2&nbsp;for&nbsp;Windows</a><br/>
+<a href="http://sourceforge.net/projects/linkchecker/files/7.0/LinkChecker-7.0.dmg">LinkChecker&nbsp;7.0&nbsp;for&nbsp;Mac&nbsp;OS&nbsp;X</a><br/>
+<a href="http://ftp.debian.org/debian/pool/main/l/linkchecker/">LinkChecker&nbsp;8.2&nbsp;for&nbsp;Debian</a><br/>
+<a href="http://sourceforge.net/projects/linkchecker/files/8.2/LinkChecker-8.2.tar.xz">LinkChecker&nbsp;8.2&nbsp;source</a><br/>
+<a href="http://sourceforge.net/projects/linkchecker/files/">All&nbsp;downloads</a><br/>
+<a href="https://github.com/wummel/linkchecker/blob/master/doc/changelog.txt">Changelog</a><br/>
+<h3>Support</h3>
+
+<a href="https://github.com/wummel/linkchecker/issues?state=open">Issue&nbsp;tracker</a><br/>
+<a href="https://github.com/wummel/linkchecker">Development info</a><br/>
+<h3>Documentation</h3>
+<a href="man1/linkchecker.1.html">Manual page</a><br/>
+
+<h3>Give back</h3>
+Paypal:
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick"/>
+<input type="hidden" name="hosted_button_id" value="XNUBD7FAG48M6"/>
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal"/>
+<img alt="" border="0" src="https://www.paypalobjects.com/de_DE/i/scr/pixel.gif" width="1" height="1"/>
+</form>
+<a href="donations.html">More options to help</a>
+
+
+
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="frequently-asked-questions">
+<h1>Frequently asked questions</h1>
+<p><strong>Q: LinkChecker produced an error, but my web page is ok with
+Mozilla/IE/Opera/...
+Is this a bug in LinkChecker?</strong></p>
+<p>A: Please check your web pages first. Are they really ok?
+Often the major browsers are very forgiving and good at handling HTML
+of HTTP errors, while LinkChecker complains in most cases of invalid
+content.</p>
+<p>Use the <tt class="docutils literal"><span class="pre">--check-html</span></tt> option, or check if you are using a proxy
+which produces the error.</p>
+<p><strong>Q: I still get an error, but the page is definitely ok.</strong></p>
+<p>A: Some servers deny access of automated tools (also called robots)
+like LinkChecker. This is not a bug in LinkChecker but rather a
+policy by the webmaster running the website you are checking. Look in
+the <tt class="docutils literal"><span class="pre">/robots.txt</span></tt> file which follows the <a class="reference external" href="http://www.robotstxt.org/wc/norobots-rfc.html">robots.txt exclusion standard</a>.</p>
+<p>If you yourself are the webmaster, consider allowing LinkChecker to
+check your web pages by adding the following to your robots.txt file:</p>
+<div class="highlight-python"><pre>User-Agent: LinkChecker
+Allow: /</pre>
+</div>
+<p><strong>Q: How can I tell LinkChecker which proxy to use?</strong></p>
+<p>A: LinkChecker works automatically with proxies. In a Unix or Windows
+environment, set the http_proxy, https_proxy, ftp_proxy environment
+variables to a URL that identifies the proxy server before starting
+LinkChecker. For example</p>
+<div class="highlight-python"><pre>$ http_proxy="http://www.example.com:3128"
+$ export http_proxy</pre>
+</div>
+<p><strong>Q: The link &#8220;mailto:john&#64;company.com?subject=Hello John&#8221; is reported
+as an error.</strong></p>
+<p>A: You have to quote special characters (e.g. spaces) in the subject field.
+The correct link should be &#8220;mailto:...?subject=Hello%20John&#8221;
+Unfortunately browsers like IE and Netscape do not enforce this.</p>
+<p><strong>Q: Has LinkChecker JavaScript support?</strong></p>
+<p>A: No, it never will. If your page is only working with JS, it is
+better to use a browser testing tool like <a class="reference external" href="http://seleniumhq.org/">Selenium</a>.</p>
+<p><strong>Q: Is the LinkCheckers cookie feature insecure?</strong></p>
+<p>A: Potentially yes. This depends on what information you specify in the
+cookie file. The cookie information will be sent to the specified
+hosts.</p>
+<p>Also, the following restrictions apply for cookies that LinkChecker
+receives from the hosts it check:</p>
+<ul class="simple">
+<li>Cookies will only be sent back to the originating server (ie. no
+third party cookies are allowed).</li>
+<li>Cookies are only stored in memory. After LinkChecker finishes, they
+are lost.</li>
+<li>The cookie feature is disabled as default.</li>
+</ul>
+<p><strong>Q: LinkChecker retrieves a /robots.txt file for every site it
+checks. What is that about?</strong></p>
+<p>A: LinkChecker follows the <a class="reference external" href="http://www.robotstxt.org/wc/norobots-rfc.html">robots.txt exclusion standard</a>. To avoid
+misuse of LinkChecker, you cannot turn this feature off.
+See the <a class="reference external" href="http://www.robotstxt.org/wc/robots.html">Web Robot pages</a> and the <a class="reference external" href="http://www.w3.org/Search/9605-Indexing-Workshop/ReportOutcomes/Spidering.txt">Spidering report</a> for more info.</p>
+<p>If you yourself are the webmaster, consider allowing LinkChecker to
+check your web pages by adding the following to your robots.txt file:</p>
+<div class="highlight-python"><pre>User-Agent: LinkChecker
+Allow: /</pre>
+</div>
+<p><strong>Q: How do I print unreachable/dead documents of my website with
+LinkChecker?</strong></p>
+<p>A: No can do. This would require file system access to your web
+repository and access to your web server configuration.</p>
+<p><strong>Q: How do I check HTML/XML/CSS syntax with LinkChecker?</strong></p>
+<p>A: Use the <tt class="docutils literal"><span class="pre">--check-html</span></tt> and <tt class="docutils literal"><span class="pre">--check-css</span></tt> options.</p>
+<p><strong>Q: I want to have my own logging class. How can I use it in LinkChecker?</strong></p>
+<p>A: A Python API lets you define new logging classes.
+Define your own logging class as a subclass of StandardLogger or any other
+logging class in the log module.
+Then call the addLogger function in Config.Configuration to register
+your new Logger.
+After this append a new Logging instance to the fileoutput.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">linkcheck</span><span class="o">,</span> <span class="nn">MyLogger</span>
+<span class="n">log_format</span> <span class="o">=</span> <span class="s">&#39;mylog&#39;</span>
+<span class="n">log_args</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;fileoutput&#39;</span><span class="p">:</span> <span class="n">log_format</span><span class="p">,</span> <span class="s">&#39;filename&#39;</span><span class="p">:</span> <span class="s">&#39;foo.txt&#39;</span><span class="p">}</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">linkcheck</span><span class="o">.</span><span class="n">configuration</span><span class="o">.</span><span class="n">Configuration</span><span class="p">()</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">logger_add</span><span class="p">(</span><span class="n">log_format</span><span class="p">,</span> <span class="n">MyLogger</span><span class="o">.</span><span class="n">MyLogger</span><span class="p">)</span>
+<span class="n">cfg</span><span class="p">[</span><span class="s">&#39;fileoutput&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">logger_new</span><span class="p">(</span><span class="n">log_format</span><span class="p">,</span> <span class="n">log_args</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2000-2012, Bastian Kleineidam.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

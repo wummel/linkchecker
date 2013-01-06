@@ -1,0 +1,579 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><HEAD><TITLE>Man page of LINKCHECKER</TITLE>
+</HEAD><BODY>
+<H1>LINKCHECKER</H1>
+Section: LinkChecker commandline usage (1)<BR>Updated: 2010-07-01<BR><A HREF="#index">Index</A>
+<A HREF="../index.html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+linkchecker - command line client to check HTML documents and websites for broken links
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>linkchecker</B> [<I>options</I>] [<I>file-or-url</I>]...
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+
+LinkChecker features
+<DL COMPACT>
+<DT>&bull;<DD>
+recursive and multithreaded checking,
+<DT>&bull;<DD>
+output in colored or normal text, HTML, SQL, CSV, XML or a sitemap graph in different formats,
+<DT>&bull;<DD>
+support for HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Telnet and local file links,
+<DT>&bull;<DD>
+restriction of link checking with URL filters,
+<DT>&bull;<DD>
+proxy support,
+<DT>&bull;<DD>
+username/password authorization for HTTP, FTP and Telnet,
+<DT>&bull;<DD>
+support for robots.txt exclusion protocol,
+<DT>&bull;<DD>
+support for Cookies
+<DT>&bull;<DD>
+support for HTML5
+<DT>&bull;<DD>
+HTML and CSS syntax check
+<DT>&bull;<DD>
+Antivirus check
+<DT>&bull;<DD>
+a command line, GUI and web interface
+</DL>
+<A NAME="lbAE">&nbsp;</A>
+<H2>EXAMPLES</H2>
+
+The most common use checks the given domain recursively, plus any
+URL pointing outside of the domain:
+<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;http://www.example.net/</B>
+<BR>
+
+Beware that this checks the whole site which can have thousands of URLs.
+Use the <B>-r</B> option to restrict the recursion depth.
+<BR>
+
+Don't check <B>mailto:</B> URLs. All other links are checked as usual:
+<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;--ignore-url=^mailto:&nbsp;mysite.example.org</B>
+<BR>
+
+Checking a local HTML file on Unix:
+<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;../bla.html</B>
+<BR>
+
+Checking a local HTML file on Windows:
+<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;c:\temp\test.html</B>
+<BR>
+
+You can skip the <B>http://</B> url part if the domain starts with <B>www.</B>:
+<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;www.example.com</B>
+<BR>
+
+You can skip the <B>ftp://</B> url part if the domain starts with <B>ftp.</B>:
+<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;-r0&nbsp;ftp.example.org</B>
+<BR>
+
+Generate a sitemap graph and convert it with the graphviz dot utility:
+<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;-odot&nbsp;-v&nbsp;www.example.com&nbsp;|&nbsp;dot&nbsp;-Tps&nbsp;&gt;&nbsp;sitemap.ps</B>
+<A NAME="lbAF">&nbsp;</A>
+<H2>OPTIONS</H2>
+
+<A NAME="lbAG">&nbsp;</A>
+<H3>General options</H3>
+
+<DL COMPACT>
+<DT><B>-f</B><I>FILENAME</I>, <B>--config=</B><I>FILENAME</I><DD>
+Use <I>FILENAME</I> as configuration file. As default LinkChecker
+uses <B>~/.linkchecker/linkcheckerrc</B>.
+<DT><B>-h</B>, <B>--help</B><DD>
+Help me! Print usage information for this program.
+<DT><B>--stdin</B><DD>
+Read list of white-space separated URLs to check from stdin.
+<DT><B>-t</B><I>NUMBER</I>, <B>--threads=</B><I>NUMBER</I><DD>
+Generate no more than the given number of threads. Default number
+of threads is 100. To disable threading specify a non-positive number.
+<DT><B>-V</B>, <B>--version</B><DD>
+Print version and exit.
+</DL>
+<A NAME="lbAH">&nbsp;</A>
+<H3>Output options</H3>
+
+<DL COMPACT>
+<DT><B>--check-css</B><DD>
+Check syntax of CSS URLs with cssutils. If it's not installed,
+check with the W3C online validator.
+<DT><B>--check-html</B><DD>
+Check syntax of HTML URLs with HTML tidy. If it's not installed,
+check with the W3C online validator.
+<DT><B>--complete</B><DD>
+Log all URLs, including duplicates. Default is to log duplicate URLs only once.
+<DT><B>-D</B><I>STRING</I>, <B>--debug=</B><I>STRING</I><DD>
+Print debugging output for the given logger.
+Available loggers are <B>cmdline</B>, <B>checking</B>,
+<B>cache</B>, <B>gui</B>, <B>dns</B> and <B>all</B>.
+Specifying <B>all</B> is an alias for specifying all available loggers.
+The option can be given multiple times to debug with more
+than one logger.
+
+For accurate results, threading will be disabled during debug runs.
+<DT><B>-F</B><I>TYPE</I>[<B>/</B><I>ENCODING</I>][<B>/</B><I>FILENAME</I>], <B>--file-output=</B><I>TYPE</I>[<B>/</B><I>ENCODING</I>][<B>/</B><I>FILENAME</I>]<DD>
+Output to a file <B>linkchecker-out.</B><I>TYPE</I>,
+<B>$HOME/.linkchecker/blacklist</B> for
+<B>blacklist</B> output, or <I>FILENAME</I> if specified.
+The <I>ENCODING</I> specifies the output encoding, the default is
+that of your locale.
+Valid encodings are listed at
+<B><A HREF="http://docs.python.org/library/codecs.html#standard-encodings">http://docs.python.org/library/codecs.html#standard-encodings</A></B>.
+<BR>
+
+The <I>FILENAME</I> and <I>ENCODING</I> parts of the <B>none</B> output type
+will be ignored, else if the file already exists, it will be overwritten.
+You can specify this option more than once. Valid file output types
+are <B>text</B>, <B>html</B>, <B>sql</B>,
+<B>csv</B>, <B>gml</B>, <B>dot</B>, <B>xml</B>, <B>sitemap</B>, <B>none</B> or
+<B>blacklist</B>.
+Default is no file output. The various output types are documented
+below. Note that you can suppress all console output
+with the option <B>-o none</B>.
+<DT><B>--no-status</B><DD>
+Do not print check status messages.
+<DT><B>--no-warnings</B><DD>
+Don't log warnings. Default is to log warnings.
+<DT><B>-o</B><I>TYPE</I>[<B>/</B><I>ENCODING</I>], <B>--output=</B><I>TYPE</I>[<B>/</B><I>ENCODING</I>]<DD>
+Specify output type as <B>text</B>, <B>html</B>, <B>sql</B>,
+<B>csv</B>, <B>gml</B>, <B>dot</B>, <B>xml</B>, <B>sitemap</B>, <B>none</B> or
+<B>blacklist</B>.
+Default type is <B>text</B>. The various output types are documented
+below.
+<BR>
+
+The <I>ENCODING</I> specifies the output encoding, the default is
+that of your locale. Valid encodings are listed at
+<B><A HREF="http://docs.python.org/library/codecs.html#standard-encodings">http://docs.python.org/library/codecs.html#standard-encodings</A></B>.
+<DT><B>-q</B>, <B>--quiet</B><DD>
+Quiet operation, an alias for <B>-o none</B>.
+This is only useful with <B>-F</B>.
+<DT><B>--scan-virus</B><DD>
+Scan content of URLs for viruses with ClamAV.
+<DT><B>--trace</B><DD>
+Print tracing information.
+<DT><B>-v</B>, <B>--verbose</B><DD>
+Log all checked URLs. Default is to log only errors and warnings.
+<DT><B>-W</B><I>REGEX</I>, <B>--warning-regex=</B><I>REGEX</I><DD>
+Define a regular expression which prints a warning if it matches any
+content of the checked link.
+This applies only to valid pages, so we can get their content.
+<BR>
+
+Use this to check for pages that contain some form of error, for example
+&quot;This page has moved&quot; or &quot;Oracle Application error&quot;.
+<BR>
+
+Note that multiple values can be combined in the regular expression,
+for example &quot;(This page has moved|Oracle Application error)&quot;.
+<BR>
+
+See section <B>REGULAR EXPRESSIONS</B> for more info.
+<DT><B>--warning-size-bytes=</B><I>NUMBER</I><DD>
+Print a warning if content size info is available and exceeds the given
+number of <I>bytes</I>.
+</DL>
+<A NAME="lbAI">&nbsp;</A>
+<H3>Checking options</H3>
+
+<DL COMPACT>
+<DT><B>-a</B>, <B>--anchors</B><DD>
+Check HTTP anchor references. Default is not to check anchors.
+This option enables logging of the warning <B>url-anchor-not-found</B>.
+<DT><B>-C</B>, <B>--cookies</B><DD>
+Accept and send HTTP cookies according to RFC 2109. Only cookies
+which are sent back to the originating server are accepted.
+Sent and accepted cookies are provided as additional logging
+information.
+<DT><B>--cookiefile=</B><I>FILENAME</I><DD>
+Read a file with initial cookie data. The cookie data
+format is explained below.
+<DT><B>--ignore-url=</B><I>REGEX</I><DD>
+URLs matching the given regular expression will be ignored and not checked.
+<BR>
+
+This option can be given multiple times.
+<BR>
+
+See section <B>REGULAR EXPRESSIONS</B> for more info.
+<DT><B>-N</B><I>STRING</I>, <B>--nntp-server=</B><I>STRING</I><DD>
+Specify an NNTP server for <B>news:</B> links. Default is the
+environment variable <B>NNTP_SERVER</B>. If no host is given,
+only the syntax of the link is checked.
+<DT><B>--no-follow-url=</B><I>REGEX</I><DD>
+Check but do not recurse into URLs matching the given regular
+expression.
+<BR>
+
+This option can be given multiple times.
+<BR>
+
+See section <B>REGULAR EXPRESSIONS</B> for more info.
+<DT><B>-p</B>, <B>--password</B><DD>
+Read a password from console and use it for HTTP and FTP authorization.
+For FTP the default password is <B>anonymous@</B>. For HTTP there is
+no default password. See also <B>-u</B>.
+<DT><B>-P</B><I>NUMBER</I>, <B>--pause=</B><I>NUMBER</I><DD>
+Pause the given number of seconds between two subsequent connection
+requests to the same host. Default is no pause between requests.
+<DT><B>-r</B><I>NUMBER</I>, <B>--recursion-level=</B><I>NUMBER</I><DD>
+Check recursively all links up to given depth.
+A negative depth will enable infinite recursion.
+Default depth is infinite.
+<DT><B>--timeout=</B><I>NUMBER</I><DD>
+Set the timeout for connection attempts in seconds. The default timeout
+is 60 seconds.
+<DT><B>-u</B><I>STRING</I>, <B>--user=</B><I>STRING</I><DD>
+Try the given username for HTTP and FTP authorization.
+For FTP the default username is <B>anonymous</B>. For HTTP there is
+no default username. See also <B>-p</B>.
+<DT><B>--user-agent=</B><I>STRING</I><DD>
+Specify the User-Agent string to send to the HTTP server, for example
+&quot;Mozilla/4.0&quot;. The default is &quot;LinkChecker/X.Y&quot; where X.Y is the current
+version of LinkChecker.
+<P>
+</DL>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>CONFIGURATION FILES</H2>
+
+Configuration files can specify all options above. They can also
+specify some options that cannot be set on the command line.
+See <B><A HREF="../man5/linkcheckerrc.5.html">linkcheckerrc</A></B>(5) for more info.
+<P>
+<A NAME="lbAK">&nbsp;</A>
+<H2>OUTPUT TYPES</H2>
+
+Note that by default only errors and warnings are logged.
+You should use the <B>--verbose</B> option to get the complete URL list,
+especially when outputting a sitemap graph format.
+<P>
+<DL COMPACT>
+<DT><B>text</B><DD>
+Standard text logger, logging URLs in keyword: argument fashion.
+<DT><B>html</B><DD>
+Log URLs in keyword: argument fashion, formatted as HTML.
+Additionally has links to the referenced pages. Invalid URLs have
+HTML and CSS syntax check links appended.
+<DT><B>csv</B><DD>
+Log check result in CSV format with one URL per line.
+<DT><B>gml</B><DD>
+Log parent-child relations between linked URLs as a GML sitemap graph.
+<DT><B>dot</B><DD>
+Log parent-child relations between linked URLs as a DOT sitemap graph.
+<DT><B>gxml</B><DD>
+Log check result as a GraphXML sitemap graph.
+<DT><B>xml</B><DD>
+Log check result as machine-readable XML.
+<DT><B>sitemap</B><DD>
+Log check result as an XML sitemap whose protocol is documented at
+<B><A HREF="http://www.sitemaps.org/protocol.html">http://www.sitemaps.org/protocol.html</A></B>.
+<DT><B>sql</B><DD>
+Log check result as SQL script with INSERT commands. An example
+script to create the initial SQL table is included as create.sql.
+<DT><B>blacklist</B><DD>
+Suitable for cron jobs. Logs the check result into a file
+<B>~/.linkchecker/blacklist</B> which only contains entries with invalid
+URLs and the number of times they have failed.
+<DT><B>none</B><DD>
+Logs nothing. Suitable for debugging or checking the exit code.
+</DL>
+<A NAME="lbAL">&nbsp;</A>
+<H2>REGULAR EXPRESSIONS</H2>
+
+LinkChecker accepts Python regular expressions.
+See <B><A HREF="http://docs.python.org/howto/regex.html">http://docs.python.org/howto/regex.html</A></B> for an introduction.
+<P>
+An addition is that a leading exclamation mark negates the regular
+expression.
+<A NAME="lbAM">&nbsp;</A>
+<H2>COOKIE FILES</H2>
+
+A cookie file contains standard HTTP header (RFC 2616) data with the
+following possible names:
+<DL COMPACT>
+<DT><B>Scheme</B> (optional)<DD>
+Sets the scheme the cookies are valid for; default scheme is <B>http</B>.
+<DT><B>Host</B> (required)<DD>
+Sets the domain the cookies are valid for.
+<DT><B>Path</B> (optional)<DD>
+Gives the path the cookies are value for; default path is <B>/</B>.
+<DT><B>Set-cookie</B> (optional)<DD>
+Set cookie name/value. Can be given more than once.
+</DL>
+<P>
+
+Multiple entries are separated by a blank line.
+The example below will send two cookies to all URLs starting with
+<B>http://example.com/hello/</B> and one to all URLs starting
+with <B>https://example.org/</B>:
+<P>
+<BR>&nbsp;Host:&nbsp;example.com
+<BR>&nbsp;Path:&nbsp;/hello
+<BR>&nbsp;Set-cookie:&nbsp;ID=&quot;smee&quot;
+<BR>&nbsp;Set-cookie:&nbsp;spam=&quot;egg&quot;
+<P>
+<BR>&nbsp;Scheme:&nbsp;https
+<BR>&nbsp;Host:&nbsp;example.org
+<BR>&nbsp;Set-cookie:&nbsp;baggage=&quot;elitist&quot;;&nbsp;comment=&quot;hologram&quot;
+<P>
+<A NAME="lbAN">&nbsp;</A>
+<H2>PROXY SUPPORT</H2>
+
+To use a proxy on Unix or Windows set the $http_proxy, $https_proxy or $ftp_proxy
+environment variables to the proxy URL. The URL should be of the form
+<B>http://</B>[<I>user</I><B>:</B><I>pass</I><B>@</B>]<I>host</I>[<B>:</B><I>port</I>].
+LinkChecker also detects manual proxy settings of Internet Explorer under
+Windows systems. On a Mac use the Internet Config to select a proxy.
+You can also set a comma-separated domain list in the $no_proxy environment
+variables to ignore any proxy settings for these domains.
+Setting a HTTP proxy on Unix for example looks like this:
+<P>
+<BR>&nbsp;&nbsp;export&nbsp;http_proxy=&quot;http://proxy.example.com:8080&quot;
+<P>
+Proxy authentication is also supported:
+<P>
+<BR>&nbsp;&nbsp;export&nbsp;http_proxy=&quot;http://user1:mypass@proxy.example.org:8081&quot;
+<P>
+Setting a proxy on the Windows command prompt:
+<P>
+<BR>&nbsp;&nbsp;set&nbsp;http_proxy=http://proxy.example.com:8080
+<P>
+<A NAME="lbAO">&nbsp;</A>
+<H2>PERFORMED CHECKS</H2>
+
+All URLs have to pass a preliminary syntax test. Minor quoting
+mistakes will issue a warning, all other invalid syntax issues
+are errors.
+After the syntax check passes, the URL is queued for connection
+checking. All connection check types are described below.
+<DL COMPACT>
+<DT>HTTP links (<B>http:</B>, <B>https:</B>)<DD>
+After connecting to the given HTTP server the given path
+or query is requested. All redirections are followed, and
+if user/password is given it will be used as authorization
+when necessary.
+Permanently moved pages issue a warning.
+All final HTTP status codes other than 2xx are errors.
+HTML page contents are checked for recursion.
+<DT>Local files (<B>file:</B>)<DD>
+A regular, readable file that can be opened is valid. A readable
+directory is also valid. All other files, for example device files,
+unreadable or non-existing files are errors.
+HTML or other parseable file contents are checked for recursion.
+<DT>Mail links (<B>mailto:</B>)<DD>
+A mailto: link eventually resolves to a list of email addresses.
+If one address fails, the whole list will fail.
+For each mail address we check the following things:
+<BR>&nbsp;&nbsp;1)&nbsp;Check&nbsp;the&nbsp;adress&nbsp;syntax,&nbsp;both&nbsp;of&nbsp;the&nbsp;part&nbsp;before&nbsp;and&nbsp;after
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;@&nbsp;sign.
+<BR>&nbsp;&nbsp;2)&nbsp;Look&nbsp;up&nbsp;the&nbsp;MX&nbsp;DNS&nbsp;records.&nbsp;If&nbsp;we&nbsp;found&nbsp;no&nbsp;MX&nbsp;record,
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;an&nbsp;error.
+<BR>&nbsp;&nbsp;3)&nbsp;Check&nbsp;if&nbsp;one&nbsp;of&nbsp;the&nbsp;mail&nbsp;hosts&nbsp;accept&nbsp;an&nbsp;SMTP&nbsp;connection.
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Check&nbsp;hosts&nbsp;with&nbsp;higher&nbsp;priority&nbsp;first.
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;no&nbsp;host&nbsp;accepts&nbsp;SMTP,&nbsp;we&nbsp;print&nbsp;a&nbsp;warning.
+<BR>&nbsp;&nbsp;4)&nbsp;Try&nbsp;to&nbsp;verify&nbsp;the&nbsp;address&nbsp;with&nbsp;the&nbsp;VRFY&nbsp;command.&nbsp;If&nbsp;we&nbsp;got
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;an&nbsp;answer,&nbsp;print&nbsp;the&nbsp;verified&nbsp;address&nbsp;as&nbsp;an&nbsp;info.
+<DT>FTP links (<B>ftp:</B>)<DD>
+<BR>&nbsp;&nbsp;
+<BR>&nbsp;&nbsp;For&nbsp;FTP&nbsp;links&nbsp;we&nbsp;do:
+<BR>&nbsp;&nbsp;
+<BR>&nbsp;&nbsp;1)&nbsp;connect&nbsp;to&nbsp;the&nbsp;specified&nbsp;host
+<BR>&nbsp;&nbsp;2)&nbsp;try&nbsp;to&nbsp;login&nbsp;with&nbsp;the&nbsp;given&nbsp;user&nbsp;and&nbsp;password.&nbsp;The&nbsp;default
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user&nbsp;is&nbsp;``anonymous``,&nbsp;the&nbsp;default&nbsp;password&nbsp;is&nbsp;``anonymous@``.
+<BR>&nbsp;&nbsp;3)&nbsp;try&nbsp;to&nbsp;change&nbsp;to&nbsp;the&nbsp;given&nbsp;directory
+<BR>&nbsp;&nbsp;4)&nbsp;list&nbsp;the&nbsp;file&nbsp;with&nbsp;the&nbsp;NLST&nbsp;command
+<P>
+<DT>Telnet links (``telnet:``)<DD>
+<BR>&nbsp;&nbsp;
+<BR>&nbsp;&nbsp;We&nbsp;try&nbsp;to&nbsp;connect&nbsp;and&nbsp;if&nbsp;user/password&nbsp;are&nbsp;given,&nbsp;login&nbsp;to&nbsp;the
+<BR>&nbsp;&nbsp;given&nbsp;telnet&nbsp;server.
+<P>
+<DT>NNTP links (``news:``, ``snews:``, ``nntp``)<DD>
+<BR>&nbsp;&nbsp;
+<BR>&nbsp;&nbsp;We&nbsp;try&nbsp;to&nbsp;connect&nbsp;to&nbsp;the&nbsp;given&nbsp;NNTP&nbsp;server.&nbsp;If&nbsp;a&nbsp;news&nbsp;group&nbsp;or
+<BR>&nbsp;&nbsp;article&nbsp;is&nbsp;specified,&nbsp;try&nbsp;to&nbsp;request&nbsp;it&nbsp;from&nbsp;the&nbsp;server.
+<P>
+<DT>Unsupported links (``javascript:``, etc.)<DD>
+<BR>&nbsp;&nbsp;
+<BR>&nbsp;&nbsp;An&nbsp;unsupported&nbsp;link&nbsp;will&nbsp;only&nbsp;print&nbsp;a&nbsp;warning.&nbsp;No&nbsp;further&nbsp;checking
+<BR>&nbsp;&nbsp;will&nbsp;be&nbsp;made.
+<BR>&nbsp;&nbsp;
+<BR>&nbsp;&nbsp;The&nbsp;complete&nbsp;list&nbsp;of&nbsp;recognized,&nbsp;but&nbsp;unsupported&nbsp;links&nbsp;can&nbsp;be&nbsp;found
+<BR>&nbsp;&nbsp;in&nbsp;the&nbsp;<B>unknownurl.py</B>&nbsp;source&nbsp;file.&nbsp;The&nbsp;most&nbsp;prominent&nbsp;of&nbsp;them
+<BR>&nbsp;&nbsp;should&nbsp;be&nbsp;JavaScript&nbsp;links.
+<P>
+</DL>
+<A NAME="lbAP">&nbsp;</A>
+<H2>RECURSION</H2>
+
+Before descending recursively into a URL, it has to fulfill several
+conditions. They are checked in this order:
+<P>
+1. A URL must be valid.
+<P>
+2. A URL must be parseable. This currently includes HTML files,
+<BR>&nbsp;&nbsp;&nbsp;Opera&nbsp;bookmarks&nbsp;files,&nbsp;and&nbsp;directories.&nbsp;If&nbsp;a&nbsp;file&nbsp;type&nbsp;cannot
+<BR>&nbsp;&nbsp;&nbsp;be&nbsp;determined&nbsp;(for&nbsp;example&nbsp;it&nbsp;does&nbsp;not&nbsp;have&nbsp;a&nbsp;common&nbsp;HTML&nbsp;file
+<BR>&nbsp;&nbsp;&nbsp;extension,&nbsp;and&nbsp;the&nbsp;content&nbsp;does&nbsp;not&nbsp;look&nbsp;like&nbsp;HTML),&nbsp;it&nbsp;is&nbsp;assumed
+<BR>&nbsp;&nbsp;&nbsp;to&nbsp;be&nbsp;non-parseable.
+<P>
+3. The URL content must be retrievable. This is usually the case
+<BR>&nbsp;&nbsp;&nbsp;except&nbsp;for&nbsp;example&nbsp;mailto:&nbsp;or&nbsp;unknown&nbsp;URL&nbsp;types.
+<P>
+4. The maximum recursion level must not be exceeded. It is configured
+<BR>&nbsp;&nbsp;&nbsp;with&nbsp;the&nbsp;``--recursion-level``&nbsp;option&nbsp;and&nbsp;is&nbsp;unlimited&nbsp;per&nbsp;default.
+<P>
+5. It must not match the ignored URL list. This is controlled with
+<BR>&nbsp;&nbsp;&nbsp;the&nbsp;``--ignore-url``&nbsp;option.
+<P>
+6. The Robots Exclusion Protocol must allow links in the URL to be
+<BR>&nbsp;&nbsp;&nbsp;followed&nbsp;recursively.&nbsp;This&nbsp;is&nbsp;checked&nbsp;by&nbsp;searching&nbsp;for&nbsp;a
+<BR>&nbsp;&nbsp;&nbsp;&quot;nofollow&quot;&nbsp;directive&nbsp;in&nbsp;the&nbsp;HTML&nbsp;header&nbsp;data.
+<P>
+Note that the directory recursion reads all files in that
+directory, not just a subset like ``index.htm*``.
+<P>
+<A NAME="lbAQ">&nbsp;</A>
+<H2>NOTES</H2>
+
+URLs on the commandline starting with <B>ftp.</B> are treated like
+<B>ftp://ftp.</B>, URLs starting with <B>www.</B> are treated like
+<B>http://www.</B>.
+You can also give local files as arguments.
+<P>
+If you have your system configured to automatically establish a
+connection to the internet (e.g. with diald), it will connect when
+checking links not pointing to your local host.
+Use the <B>--ignore-url</B> option to prevent this.
+<P>
+Javascript links are not supported.
+<P>
+If your platform does not support threading, LinkChecker disables it
+automatically.
+<P>
+You can supply multiple user/password pairs in a configuration file.
+<P>
+When checking <B>news:</B> links the given NNTP host doesn't need to be the
+same as the host of the user browsing your pages.
+<A NAME="lbAR">&nbsp;</A>
+<H2>ENVIRONMENT</H2>
+
+<B>NNTP_SERVER</B> - specifies default NNTP server
+<BR>
+
+<B>http_proxy</B> - specifies default HTTP proxy server
+<BR>
+
+<B>ftp_proxy</B> - specifies default FTP proxy server
+<BR>
+
+<B>no_proxy</B> - comma-separated list of domains to not contact over a proxy server
+<BR>
+
+<B>LC_MESSAGES</B>, <B>LANG</B>, <B>LANGUAGE</B> - specify output language
+<A NAME="lbAS">&nbsp;</A>
+<H2>RETURN VALUE</H2>
+
+The return value is 2 when
+<DL COMPACT>
+<DT>&bull;<DD>
+a program error occurred.
+</DL>
+<P>
+
+The return value is 1 when
+<DL COMPACT>
+<DT>&bull;<DD>
+invalid links were found or
+<DT>&bull;<DD>
+link warnings were found and warnings are enabled
+</DL>
+<P>
+
+Else the return value is zero.
+<A NAME="lbAT">&nbsp;</A>
+<H2>LIMITATIONS</H2>
+
+LinkChecker consumes memory for each queued URL to check. With thousands
+of queued URLs the amount of consumed memory can become quite large. This
+might slow down the program or even the whole system.
+<A NAME="lbAU">&nbsp;</A>
+<H2>FILES</H2>
+
+<B>~/.linkchecker/linkcheckerrc</B> - default configuration file
+<BR>
+
+<B>~/.linkchecker/blacklist</B> - default blacklist logger output filename
+<BR>
+
+<B>linkchecker-out.</B><I>TYPE</I> - default logger file output name
+<BR>
+
+<B><A HREF="http://docs.python.org/library/codecs.html#standard-encodings">http://docs.python.org/library/codecs.html#standard-encodings</A></B> - valid output encodings
+<BR>
+
+<B><A HREF="http://docs.python.org/howto/regex.html">http://docs.python.org/howto/regex.html</A></B> - regular expression documentation
+<BR>
+
+<B><A HREF="http://linkchecker.git.sf.net/git/gitweb.cgi?p=linkchecker/linkchecker;:a=blob;f=linkcheck/checker/unknownurl.py;hb=HEAD">http://linkchecker.git.sf.net/git/gitweb.cgi?p=linkchecker/linkchecker;:a=blob;f=linkcheck/checker/unknownurl.py;hb=HEAD</A></B> - the unknown.py source file
+<P>
+<A NAME="lbAV">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+<B><A HREF="../man5/linkcheckerrc.5.html">linkcheckerrc</A></B>(5)
+<A NAME="lbAW">&nbsp;</A>
+<H2>AUTHOR</H2>
+
+Bastian Kleineidam &lt;<A HREF="mailto:bastian.kleineidam@googlemail.com">bastian.kleineidam@googlemail.com</A>&gt;
+<A NAME="lbAX">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright &#169; 2000-2012 Bastian Kleineidam
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">EXAMPLES</A><DD>
+<DT><A HREF="#lbAF">OPTIONS</A><DD>
+<DL>
+<DT><A HREF="#lbAG">General options</A><DD>
+<DT><A HREF="#lbAH">Output options</A><DD>
+<DT><A HREF="#lbAI">Checking options</A><DD>
+</DL>
+<DT><A HREF="#lbAJ">CONFIGURATION FILES</A><DD>
+<DT><A HREF="#lbAK">OUTPUT TYPES</A><DD>
+<DT><A HREF="#lbAL">REGULAR EXPRESSIONS</A><DD>
+<DT><A HREF="#lbAM">COOKIE FILES</A><DD>
+<DT><A HREF="#lbAN">PROXY SUPPORT</A><DD>
+<DT><A HREF="#lbAO">PERFORMED CHECKS</A><DD>
+<DT><A HREF="#lbAP">RECURSION</A><DD>
+<DT><A HREF="#lbAQ">NOTES</A><DD>
+<DT><A HREF="#lbAR">ENVIRONMENT</A><DD>
+<DT><A HREF="#lbAS">RETURN VALUE</A><DD>
+<DT><A HREF="#lbAT">LIMITATIONS</A><DD>
+<DT><A HREF="#lbAU">FILES</A><DD>
+<DT><A HREF="#lbAV">SEE ALSO</A><DD>
+<DT><A HREF="#lbAW">AUTHOR</A><DD>
+<DT><A HREF="#lbAX">COPYRIGHT</A><DD>
+</DL>
+<HR>
+This document was created by
+man2html,
+using the manual pages.<BR>
+
+</BODY>
+</HTML>

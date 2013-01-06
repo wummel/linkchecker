@@ -1,0 +1,32 @@
+Other free link checkers
+========================
+
+All of the programs below have an `Open Source license`_ like LinkChecker.
+Programs without an Open Source license are not mentioned here for
+security and copyright reasons.
+
+.. _`Open Source license`:
+   http://www.opensource.org/licenses/
+
+Also not mentioned are programs which have not been updated for more than 10 years.
+
+
+- `gURLChecker`_ written in C, last updated February 22, 2011 (version 0.13.1)
+  
+  .. _gURLChecker:
+     http://labs.libre-entreprise.org/projects/gurlchecker/
+
+- `W3C Link Checker`_ is an online service, but source is available, last updated 2011
+
+  .. _W3C Link Checker:
+     http://validator.w3.org/checklink/
+
+- `webcheck`_ written in Python, last updated September 11, 2010 (version 1.10.4)
+  
+  .. _webcheck:
+     http://arthurdejong.org/webcheck/
+
+- `webgrep`_ written in Perl, last updated April 2004 (version 2.12)
+  
+  .. _webgrep:
+     http://cgi.linuxfocus.org/~guido/index.html#webgrep
