@@ -6,30 +6,6 @@ include config/linkchecker.apache2.conf install-rpm.sh
 include linkchecker.freecode
 include cgi-bin/lc.wsgi cgi-bin/README
 include Makefile
-include debian/rules
-include debian/changelog
-include debian/copyright
-include debian/control
-include debian/linkchecker.dirs
-include debian/linkchecker.docs
-include debian/linkchecker.examples
-include debian/linkchecker.links
-include debian/linkchecker.postinst
-include debian/linkchecker.postrm
-include debian/linkchecker.install
-include debian/linkchecker-gui.install
-include debian/linkchecker-gui.menu
-include debian/linkchecker-web.dirs
-include debian/linkchecker-web.docs
-include debian/linkchecker-web.install
-include debian/linkchecker-web.postinst
-include debian/linkchecker-web.postrm
-include debian/compat
-include debian/pycompat
-include debian/NEWS
-include debian/README.Debian.web
-include debian/watch
-include debian/source/format
 include cgi-bin/lconline/*.html cgi-bin/lconline/*.de cgi-bin/lconline/*.en
 include cgi-bin/lconline/*.js cgi-bin/lconline/*.css cgi-bin/lconline/*.ico
 include linkcheck/HtmlParser/Makefile
