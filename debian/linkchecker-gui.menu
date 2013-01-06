@@ -1,6 +1,0 @@
-?package(linkchecker-gui):\
-	needs="X11"\
-	section="Applications/Web Development"\
-	hints="KDE"\
-	title="LinkChecker"\
-	command="/usr/bin/linkchecker-gui"

@@ -1,9 +1,0 @@
-/files
-/*.debhelper
-/*.debhelper.log
-/linkchecker
-/linkchecker-gui
-/linkchecker-web
-/tmp
-/*.substvars
-/python-module-stampdir
