@@ -12,6 +12,7 @@ GITREPO:=$(LAPPNAME)
 HOMEPAGE:=$(HOME)/public_html/$(LAPPNAME).git
 DEBUILDDIR:=$(HOME)/projects/debian/official
 DEBORIGFILE:=$(DEBUILDDIR)/$(LAPPNAME)_$(VERSION).orig.tar.xz
+DEBPACKAGEDIR:=$(DEBUILDDIR)/$(APPNAME)-$(VERSION)
 FILESCHECK_URL:=http://localhost/~calvin/
 SRCDIR:=${HOME}/src
 PY_FILES_DIRS:=linkcheck tests *.py linkchecker linkchecker-nagios linkchecker-gui cgi-bin config doc
