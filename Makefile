@@ -4,13 +4,13 @@
 SPHINXOPTS =
 SPHINXBUILD = sphinx-build
 
-.PHONY: all update html test
+.PHONY: all gen html test upload
 
-all: update
+all: gen
 
 include ../chmod.mak
 
-update: html compress chmod
+gen: html compress chmod
 
 html:
 	$(SPHINXBUILD) -b html $(SPHINXOPTS) source .
@@ -27,3 +27,7 @@ test:	html
 
 compress:
 	python $(HOME)/src/mediacompress.py --overwrite=png,jpg,gif,js,css _images _static
+
+upload:
+	git add .
+	git push

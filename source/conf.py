@@ -42,14 +42,14 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'LinkChecker'
-copyright = u'2000-2012, Bastian Kleineidam'
+copyright = u'2000-2013, Bastian Kleineidam'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The short X.Y version.
-version = '8.2'
+version = '8.3'
 # The full version, including alpha/beta/rc tags.
 release = version
 
