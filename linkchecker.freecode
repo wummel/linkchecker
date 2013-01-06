@@ -1,5 +1,5 @@
 Project: LinkChecker
-Version: 8.2
+Version: 8.3
 Release-Focus: Minor bugfixes
 Hide: N
 Website-URL: http://wummel.github.com/linkchecker/
@@ -9,8 +9,5 @@ Debian-Package-URL: http://packages.debian.org/linkchecker
 GIT-Tree-URL: https://github.com/wummel/linkchecker.git
 Windows-installer-URL: http://github.com/downloads/wummel/linkchecker/LinkChecker-${version}.exe
 
-Anchor checking, cookie path matching, non-ASCII exception handling and
-configuration directory creation on Windows systems has been fixed.
-
-Checking speed has been improved and checking of local files included in
-online pages is now forbidden. The GUI documentation has also been improved.
+Storing of ignore lines in the GUI configuration has been fixed.
+Also the project moved to Github.

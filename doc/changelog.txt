@@ -1,4 +1,4 @@
-8.3 "" (released xx.xx.xxxx)
+8.3 "Mahna Mahna Killer" (released 6.1.2013)
 
 Features:
 - project: The Project moved to Github.
