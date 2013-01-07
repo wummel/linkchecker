@@ -1,3 +1,10 @@
+8.4 "" (released xx.xx.2013)
+
+Fixes:
+- checking: Fix a crash when closing a Word document after scanning failed.
+  Closes: GH bug #369
+
+
 8.3 "Mahna Mahna Killer" (released 6.1.2013)
 
 Features:

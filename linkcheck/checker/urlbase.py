@@ -1094,6 +1094,8 @@ class UrlBase (object):
             app = winutil.get_word_app()
             try:
                 doc = winutil.open_wordfile(app, filename)
+                if doc is None:
+                    raise winutil.Error("could not open word file %r" % filename)
                 try:
                     for link in doc.Hyperlinks:
                         self.add_url(link.Address, name=link.TextToDisplay)
