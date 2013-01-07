@@ -84,7 +84,8 @@ def close_word_app (app):
 
 def open_wordfile (app, filename):
     """Open given Word file with application object."""
-    return app.Documents.Open(filename)
+    return app.Documents.Open(filename, ReadOnly=True,
+      AddToRecentFiles=False, Visible=False, NoEncodingDialog=True)
 
 
 def close_wordfile (doc):
