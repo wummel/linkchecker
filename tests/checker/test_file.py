@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2004-2012 Bastian Kleineidam
+# Copyright (C) 2004-2013 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@ Test file parsing.
 import os
 import sys
 import zipfile
+from tests import need_word
 from . import LinkCheckTest, get_file
 
 
@@ -61,6 +62,10 @@ class TestFile (LinkCheckTest):
 
     def test_php (self):
         self.file_test("file.php")
+
+    @need_word
+    def test_word (self):
+        self.file_test("file.doc")
 
     def test_urllist (self):
         self.file_test("urllist.txt")

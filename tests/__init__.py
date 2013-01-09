@@ -21,7 +21,7 @@ import sys
 import socket
 import pytest
 from contextlib import contextmanager
-from linkcheck import LinkCheckerInterrupt
+from linkcheck import LinkCheckerInterrupt, winutil
 
 
 class memoized (object):
@@ -218,6 +218,14 @@ def has_x11 ():
     return os.getenv('DISPLAY') is not None
 
 need_x11 = _need_func(has_x11, 'X11')
+
+
+@memoized
+def has_word():
+    """Test if Word is available."""
+    return winutil.has_word()
+
+need_word = _need_func(has_word, 'Word')
 
 
 @contextmanager
