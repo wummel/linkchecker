@@ -1,5 +1,8 @@
 8.4 "" (released xx.xx.2013)
 
+Features:
+- checking: Support <link rel="dns-prefetch"> URLs.
+
 Fixes:
 - checking: Fix a crash when closing a Word document after scanning failed.
   Closes: GH bug #369
