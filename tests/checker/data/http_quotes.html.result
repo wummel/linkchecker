@@ -6,9 +6,10 @@ valid
 
 url http://example.com/
 cache key http://example.com/
-real url http://www.iana.org/domains/example/
+real url http://www.iana.org/domains/example
 name unquoted
 info Redirected to `http://www.iana.org/domains/example/'.
+info Redirected to `http://www.iana.org/domains/example'.
 valid
 
 url /stalter&sohn
@@ -19,7 +20,8 @@ error
 
 url http://www.example.com/
 cache key http://www.example.com/
-real url http://www.iana.org/domains/example/
+real url http://www.iana.org/domains/example
 name no beginning quote example
 info Redirected to `http://www.iana.org/domains/example/'.
+info Redirected to `http://www.iana.org/domains/example'.
 valid

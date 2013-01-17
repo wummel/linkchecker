@@ -6,9 +6,10 @@ valid
 
 url http://www.example.com/1
 cache key http://www.example.com/1
-real url http://www.iana.org/domains/example/
+real url http://www.iana.org/domains/example
 name ok example
 info Redirected to `http://www.iana.org/domains/example/'.
+info Redirected to `http://www.iana.org/domains/example'.
 valid
 
 url http:/www.example.com/2
@@ -25,9 +26,10 @@ error
 
 url //www.example.com/4
 cache key http://www.example.com/4
-real url http://www.iana.org/domains/example/
+real url http://www.iana.org/domains/example
 name no scheme example
 info Redirected to `http://www.iana.org/domains/example/'.
+info Redirected to `http://www.iana.org/domains/example'.
 valid
 
 url http://
