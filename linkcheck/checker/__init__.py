@@ -136,6 +136,8 @@ def get_urlclass_from (url, assume_local_file=False):
         klass = httpsurl.HttpsUrl
     elif url.startswith(("nntp:", "news:", "snews:")):
         klass = nntpurl.NntpUrl
+    elif url.startswith('dns:'):
+        klass = dnsurl.DnsUrl
     elif unknownurl.is_unknown_url(url):
         klass = unknownurl.UnknownUrl
     elif assume_local_file:
@@ -184,5 +186,5 @@ class StoringHandler (logging.Handler):
 
 
 # all the URL classes
-from . import (fileurl, unknownurl, ftpurl, httpurl,
+from . import (fileurl, unknownurl, ftpurl, httpurl, dnsurl,
     httpsurl, mailtourl, telneturl, nntpurl, ignoreurl)

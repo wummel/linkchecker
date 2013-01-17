@@ -1,7 +1,17 @@
 url http://localhost:%(port)d/%(datadir)s/http.html
 cache key http://localhost:%(port)d/%(datadir)s/http.html
 real url http://localhost:%(port)d/%(datadir)s/http.html
-info 11 URLs parsed.
+info 13 URLs parsed.
+valid
+
+url dns://www.example.org
+cache key dns://www.example.org
+real url dns://www.example.org
+valid
+
+url dns://www.example.com
+cache key dns://www.example.com
+real url dns://www.example.com
 valid
 
 url http://www.garantiertnixgutt.bla/
@@ -60,8 +70,9 @@ valid
 
 url http://example.org/foo/ #a=1,2,3
 cache key http://example.org/foo/%%20#a%%3D1%%2C2%%2C3
-real url http://www.iana.org/domains/example/#a%%3D1%%2C2%%2C3
+real url http://www.iana.org/domains/example#a%%3D1%%2C2%%2C3
 info Redirected to `http://www.iana.org/domains/example/'.
-warning Anchor `a%%3D1%%2C2%%2C3' not found. Available anchors: `body', `body-container', `footer', `footer-beta-feedback', `footer-frame', `header', `header-frame', `header-logo', `header-nav', `iana-footer-first', `iana-footer-icann'.
+info Redirected to `http://www.iana.org/domains/example'.
+warning Anchor `a%%3D1%%2C2%%2C3' not found. Available anchors: -.
 valid
 

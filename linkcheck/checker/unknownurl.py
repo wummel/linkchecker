@@ -33,7 +33,6 @@ aaas?       # Diameter Protocol
 |data       # data
 |dav        # dav
 |dict       # dictionary service protocol
-|dns        # Domain Name System
 |geo        # Geographic Locations
 |go         # go
 |gopher     # Gopher
