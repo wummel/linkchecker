@@ -1,8 +1,10 @@
 This is linkchecker, written and maintained by Bastian Kleineidam
 <calvin@debian.org> on Sat,  8 Jan 2000 11:00:35 +0100.
 
-The original source can always be found at:
-	http://wummel.github.com/linkchecker/
+Upstream VCS:
+	git://github.com/wummel/linkchecker.git
+Upstream VCS browser:
+	https://github.com/wummel/linkchecker
 
 Copyright (C) 2000-2012 Bastian Kleineidam
 

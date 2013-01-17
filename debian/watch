@@ -1,3 +1,4 @@
 # watch control file for uscan
 version=3
-http://sf.net/linkchecker/LinkChecker-(.*).tar.xz debian uupdate
+http://wummel.github.com/linkchecker/ \
+  http://github.com/downloads/wummel/linkchecker/LinkChecker-(.*).tar.xz
