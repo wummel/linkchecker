@@ -22,9 +22,12 @@ paypal account.
 
 Bitcoin
 ========
-Transferring some bitcoins to account
-``1Mnm4xxzH9nTnDU3yuJ3UxnEqEniroRWLJ``
+Transferring 1 BT to `bitcoin account`_
 will make the world a more happy place :-)
+
+.. _bitcoin account:
+   bitcoin:1Mnm4xxzH9nTnDU3yuJ3UxnEqEniroRWLJ?amount=1&label=LinkChecker&message=Donation%20for%20project%20LinkChecker
+
 
 Amazon wishlist
 ================
