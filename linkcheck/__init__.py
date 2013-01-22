@@ -179,18 +179,18 @@ def find_third_party_modules ():
 
 find_third_party_modules()
 
-# install SIGUSR1 handler
-from .decorators import signal_handler
-@signal_handler(signal.SIGUSR1)
-def print_threadstacks(sig, frame):
-    """Print stack traces of all running threads."""
-    log.warn(LOG_THREAD, "*** STACKTRACE START ***")
-    for threadId, stack in sys._current_frames().items():
-        log.warn(LOG_THREAD, "# ThreadID: %s" % threadId)
-        for filename, lineno, name, line in traceback.extract_stack(stack):
-            log.warn(LOG_THREAD, 'File: "%s", line %d, in %s' % (filename, lineno, name))
-            line = line.strip()
-            if line:
-                log.warn(LOG_THREAD, "  %s" % line)
-    log.warn(LOG_THREAD, "*** STACKTRACE END ***")
-
+if hasattr(signal, "SIGUSR1"):
+    # install SIGUSR1 handler
+    from .decorators import signal_handler
+    @signal_handler(signal.SIGUSR1)
+    def print_threadstacks(sig, frame):
+        """Print stack traces of all running threads."""
+        log.warn(LOG_THREAD, "*** STACKTRACE START ***")
+        for threadId, stack in sys._current_frames().items():
+            log.warn(LOG_THREAD, "# ThreadID: %s" % threadId)
+            for filename, lineno, name, line in traceback.extract_stack(stack):
+                log.warn(LOG_THREAD, 'File: "%s", line %d, in %s' % (filename, lineno, name))
+                line = line.strip()
+                if line:
+                    log.warn(LOG_THREAD, "  %s" % line)
+        log.warn(LOG_THREAD, "*** STACKTRACE END ***")
