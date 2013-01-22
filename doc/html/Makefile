@@ -16,7 +16,7 @@ test:
 	xmllint --valid --noout $(HTMLFILES)
 
 %.qhc:	%.qhcp lcdoc.qhp $(HTMLFILES)
-	qcollectiongenerator $< -o $@
+	-qcollectiongenerator $< -o $@
 
 logo%.png:	$(OXYGEN)/%/categories/applications-development-web.png
 	cp $< $@
