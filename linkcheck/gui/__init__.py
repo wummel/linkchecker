@@ -578,13 +578,14 @@ Version 2 or later.
         url = mime.urls()[0]
         if url.scheme() != 'file':
             return event.ignore()
-        if not url.path().toLower().endsWith(ProjectExt):
-            return event.ignore()
         event.accept()
 
     def handleDropEvent(self, event):
-        """Handle drop event."""
+        """Handle drop event. Detects and loads project files, else sets the URL."""
         mime = event.mimeData()
         url = mime.urls()[0]
-        filename = unicode(url.toLocalFile())
-        loadproject(self, filename)
+        if url.path().toLower().endswith(ProjectExt):
+            filename = unicode(url.toLocalFile())
+            loadproject(self, filename)
+        else:
+            self.urlinput.setText(url)
