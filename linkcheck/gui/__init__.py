@@ -584,8 +584,8 @@ Version 2 or later.
         """Handle drop event. Detects and loads project files, else sets the URL."""
         mime = event.mimeData()
         url = mime.urls()[0]
-        if url.path().toLower().endswith(ProjectExt):
+        if url.path().toLower().endsWith(ProjectExt):
             filename = unicode(url.toLocalFile())
             loadproject(self, filename)
         else:
-            self.urlinput.setText(url)
+            self.urlinput.setText(url.toString())
