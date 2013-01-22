@@ -31,8 +31,8 @@ ConnectionTypes = ("ftp", "http", "https")
 ConnectionState = enum("available", "busy")
 
 DefaultLimits = dict(
-    http=4,
-    https=4,
+    http=10,
+    https=10,
     ftp=2,
 )
 

@@ -8,6 +8,9 @@ Features:
   a LinkChecker project (.lcp) it is loaded automatically, else the check
   URL is set to the local file URL.
 
+Changes:
+- checking: Increase per-host connection limits to speed up checking.
+
 Fixes:
 - checking: Fix a crash when closing a Word document after scanning failed.
   Closes: GH bug #369
