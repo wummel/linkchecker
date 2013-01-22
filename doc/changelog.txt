@@ -2,6 +2,8 @@
 
 Features:
 - checking: Support <link rel="dns-prefetch"> URLs.
+- logging: Sending SIGUSR1 signal prints the stack trace of all current
+  running threads. This makes it easier to debug deadlocks.
 
 Fixes:
 - checking: Fix a crash when closing a Word document after scanning failed.
