@@ -29,11 +29,13 @@ class TestURLLength(LinkCheckTest):
         url = u"http://www.example.org/%s" % (u"a" * 256)
         attrs = self.get_attrs(url=url)
         attrs['nurl'] = u"http://www.iana.org/domains/example/"
+        attrs['rurl'] = u"http://www.iana.org/domains/example"
         resultlines = [
             u"url %(url)s" % attrs,
             u"cache key %(url)s" % attrs,
-            u"real url %(nurl)s" % attrs,
+            u"real url %(rurl)s" % attrs,
             u"info Redirected to `%(nurl)s'." % attrs,
+            u"info Redirected to `%(rurl)s'." % attrs,
             u"warning URL length 279 is longer than 255.",
             u"valid",
         ]
