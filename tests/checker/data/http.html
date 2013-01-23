@@ -21,3 +21,6 @@
 <object classid="clsid:12345-67890" codebase="http://example.org/foo/ #a=1,2,3">
 
 <!-- <a href=http://nocheckin> no check because of comment -->
+
+<!-- throws UnicodeError from idna.encode() -->
+<a href="http://.example.org/">UnicodeError</a>

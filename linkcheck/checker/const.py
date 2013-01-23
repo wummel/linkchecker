@@ -53,6 +53,8 @@ ExcCacheList = [
     ftplib.error_temp,
     ftplib.error_perm,
     ftplib.error_proto,
+    # idna.encode(), called from socket.create_connection()
+    UnicodeError,
 ]
 
 # Exceptions that do not put the URL in the cache so that the URL can

@@ -1,7 +1,7 @@
 url http://localhost:%(port)d/%(datadir)s/http.html
 cache key http://localhost:%(port)d/%(datadir)s/http.html
 real url http://localhost:%(port)d/%(datadir)s/http.html
-info 13 URLs parsed.
+info 14 URLs parsed.
 valid
 
 url dns://www.example.org
@@ -76,3 +76,9 @@ info Redirected to `http://www.iana.org/domains/example'.
 warning Anchor `a%%3D1%%2C2%%2C3' not found. Available anchors: -.
 valid
 
+url http://.example.org/
+cache key http://.example.org/
+real url http://.example.org/
+name UnicodeError
+warning Access denied by robots.txt, skipping content checks.
+error

@@ -3,9 +3,9 @@
 Features:
 - checking: Support <link rel="dns-prefetch"> URLs.
 - logging: Sending SIGUSR1 signal prints the stack trace of all current
-  running threads. This makes it easier to debug deadlocks.
-- gui: Added support of Drag-and-Drop of local files. If the local file is
-  a LinkChecker project (.lcp) it is loaded automatically, else the check
+  running threads. This makes debugging deadlocks easier.
+- gui: Support Drag-and-Drop of local files. If the local file is
+  a LinkChecker project (.lcp) file it is loaded, else the check
   URL is set to the local file URL.
 
 Changes:
@@ -14,6 +14,8 @@ Changes:
 Fixes:
 - checking: Fix a crash when closing a Word document after scanning failed.
   Closes: GH bug #369
+- checking: Catch UnicodeError from idna.encode() fixing an internal error when
+  trying to connect to certain invalid hostnames.
 
 
 8.3 "Mahna Mahna Killer" (released 6.1.2013)

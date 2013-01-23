@@ -526,14 +526,17 @@ class UrlBase (object):
             self.check_connection()
             self.add_size_info()
             self.add_country_info()
-        except tuple(ExcList):
+        except tuple(ExcList) as exc:
             value = self.handle_exception()
             # make nicer error msg for unknown hosts
-            if isinstance(value, socket.error) and value.args[0] == -2:
+            if isinstance(exc, socket.error) and exc.args[0] == -2:
                 value = _('Hostname not found')
             # make nicer error msg for bad status line
-            if isinstance(value, httplib.BadStatusLine):
+            elif isinstance(exc, httplib.BadStatusLine):
                 value = _('Bad HTTP response %(line)r') % {"line": str(value)}
+            elif isinstance(exc, UnicodeError):
+                # idna.encode(host) failed
+                value = _('Bad hostname %(host)r: %(msg)s') % {'host': self.host, 'msg': str(value)}
             self.set_result(unicode_safe(value), valid=False)
         self.checktime = time.time() - check_start
         if self.do_check_content:
