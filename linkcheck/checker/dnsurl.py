@@ -38,6 +38,7 @@ class DnsUrl (urlbase.UrlBase):
         return False
 
     def check_connection(self):
+        """Resolve hostname."""
         host = self.urlparts[1]
         addresses = socket.getaddrinfo(host, 80, 0, 0, socket.SOL_TCP)
         args = {'host': host}
