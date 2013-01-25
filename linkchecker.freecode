@@ -1,6 +1,6 @@
 Project: LinkChecker
-Version: 8.3
-Release-Focus: Minor bugfixes
+Version: 8.4
+Release-Focus: Minor feature enhancements
 Hide: N
 Website-URL: http://wummel.github.com/linkchecker/
 Changelog-URL: https://github.com/wummel/linkchecker/blob/master/doc/changelog.txt
@@ -9,5 +9,5 @@ Debian-Package-URL: http://packages.debian.org/linkchecker
 GIT-Tree-URL: https://github.com/wummel/linkchecker.git
 Windows-installer-URL: http://github.com/downloads/wummel/linkchecker/LinkChecker-${version}.exe
 
-Storing of ignore lines in the GUI configuration has been fixed.
-Also the project moved to Github.
+Links with dns-prefetch are now supported and the GUI supports
+drag-and-drop of local files. Also some bugs were fixed.
