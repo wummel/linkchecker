@@ -1,3 +1,9 @@
+linkchecker (8.4-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Bastian Kleineidam <calvin@debian.org>  Fri, 25 Jan 2013 07:21:21 +0100
+
 linkchecker (8.3-2) unstable; urgency=low
 
   * Move custom control fields to debian/copyright
