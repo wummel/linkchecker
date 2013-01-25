@@ -49,7 +49,7 @@ copyright = u'2000-2013, Bastian Kleineidam'
 # built documents.
 #
 # The short X.Y version.
-version = '8.3'
+version = '8.4'
 # The full version, including alpha/beta/rc tags.
 release = version
 
