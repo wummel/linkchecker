@@ -53,10 +53,6 @@ First, install the required software.
 4. *Optional, for bash-completion:*
    optcomplete Python module from http://furius.ca/optcomplete/
 
-5. *Optional, for HTML/CSS syntax checks:*
-   HTML tidy from http://utidylib.berlios.de/
-   cssutils from http://cthedot.de/cssutils/
-
 6. *Optional, for displaying country codes:*
    GeoIP from http://www.maxmind.com/app/python
 

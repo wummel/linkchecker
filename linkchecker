@@ -1,6 +1,6 @@
 #!/usr/bin/python -u
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2012 Bastian Kleineidam
+# Copyright (C) 2000-2013 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -279,12 +279,10 @@ optparser.add_option_group(group)
 group = optparse.OptionGroup(optparser, _("Output options"))
 group.add_option("--check-css", action="store_true", dest="checkcss",
                  help=_(
-"""Check syntax of CSS URLs with cssutils. If it's not installed,
-check with the W3C online validator."""))
+"""Check syntax of CSS URLs with the W3C online validator."""))
 group.add_option("--check-html", action="store_true", dest="checkhtml",
                  help=_(
-"""Check syntax of HTML URLs with HTML tidy. If it's not installed,
-check with the W3C online validator."""))
+"""Check syntax of HTML URLs with the W3C online validator."""))
 group.add_option("--complete", action="store_true", dest="complete",
                  help=_("""Log all URLs, including duplicates.
 Default is to log duplicate URLs only once."""))

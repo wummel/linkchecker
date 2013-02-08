@@ -64,8 +64,6 @@ def normpath (path):
 Modules = (
     ("PyQt4.Qsci", u"QScintilla"),
     ("optcomplete", u"Optcomplete"),
-    ("tidy", u"HTMLtidy"),
-    ("cssutils", u"CSSutils"),
     ("GeoIP", u"GeoIP"),   # on Unix systems
     ("pygeoip", u"GeoIP"), # on Windows systems
     ("twill", u"Twill"),

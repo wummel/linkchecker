@@ -1,3 +1,9 @@
+8.5 "" (released xx.xx.2013)
+
+Changes:
+- checking: Always use the W3C validator to check HTML or CSS syntax.
+
+
 8.4 "Frankenweenie" (released 25.01.2013)
 
 Features:

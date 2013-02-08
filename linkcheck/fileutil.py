@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2005-2012 Bastian Kleineidam
+# Copyright (C) 2005-2013 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -60,17 +60,20 @@ def write_file (filename, content, backup=False, callback=None):
         os.remove(filename+".bak")
 
 
-def has_module (name):
+def has_module (name, without_error=True):
     """Test if given module can be imported.
+    @param without_error: True if module must not throw any errors when importing
     @return: flag if import is successful
     @rtype: bool
     """
     try:
         importlib.import_module(name)
         return True
-    except (OSError, ImportError):
-        # some modules (for example HTMLtidy) raise OSError
+    except ImportError:
         return False
+    except Exception:
+        # some modules raise errors when intitializing
+        return not without_error
 
 
 class GlobDirectoryWalker (object):

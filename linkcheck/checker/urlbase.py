@@ -19,7 +19,6 @@ Base URL handler.
 """
 import sys
 import os
-import logging
 import urlparse
 import urllib2
 import urllib
@@ -28,7 +27,7 @@ import errno
 import socket
 import select
 
-from . import absolute_url, StoringHandler, get_url_from
+from . import absolute_url, get_url_from
 from .. import (log, LOG_CHECK, LOG_CACHE, httputil, httplib2 as httplib,
   strformat, LinkCheckerError, url as urlutil, trace, clamav, winutil, geoip,
   fileutil, get_link_pat)
@@ -41,7 +40,8 @@ from .const import (WARN_URL_EFFECTIVE_URL,
     WARN_URL_CONTENT_SIZE_TOO_LARGE, WARN_URL_CONTENT_SIZE_ZERO,
     WARN_URL_CONTENT_SIZE_UNEQUAL, WARN_URL_WHITESPACE,
     WARN_URL_TOO_LONG, URL_MAX_LENGTH, URL_WARN_LENGTH,
-    WARN_URL_CONTENT_DUPLICATE,
+    WARN_URL_CONTENT_DUPLICATE, WARN_SYNTAX_HTML,
+    WARN_SYNTAX_CSS,
     ExcList, ExcSyntaxList, ExcNoCacheList)
 
 # helper alias
@@ -852,58 +852,6 @@ class UrlBase (object):
                          "size": self.size},
                           tag=WARN_URL_CONTENT_SIZE_UNEQUAL)
 
-    def check_html (self):
-        """Check HTML syntax of this page (which is supposed to be HTML)
-        with the local HTML tidy module."""
-        if not fileutil.has_module("tidy"):
-            return self.check_html_w3()
-        import tidy
-        options = dict(output_html=0, show_warnings=1, quiet=True,
-            input_encoding='utf8', output_encoding='utf8', tidy_mark=0)
-        try:
-            doc = tidy.parseString(self.get_content(), **options)
-            errors = filter_tidy_errors(doc.errors)
-            if errors:
-                for err in errors:
-                    self.add_warning(u"HTMLTidy: %s" % err)
-            else:
-                self.add_info(u"HTMLTidy: %s" % _("valid HTML syntax"))
-        except Exception:
-            # catch _all_ exceptions since we dont want third party module
-            # errors to propagate into this library
-            err = str(sys.exc_info()[1])
-            log.warn(LOG_CHECK,
-                _("tidy HTML parsing caused error: %(msg)s ") %
-                {"msg": err})
-
-    def check_css (self):
-        """Check CSS syntax of this page (which is supposed to be CSS)
-        with the local cssutils module."""
-        if not fileutil.has_module("cssutils"):
-            return self.check_css_w3()
-        import cssutils
-        try:
-            csslog = logging.getLogger('cssutils')
-            csslog.propagate = 0
-            del csslog.handlers[:]
-            handler = StoringHandler()
-            csslog.addHandler(handler)
-            csslog.setLevel(logging.WARN)
-            cssparser = cssutils.CSSParser(log=csslog)
-            cssparser.parseString(self.get_content(), href=self.url)
-            if handler.storage:
-                for record in handler.storage:
-                    self.add_warning(u"cssutils: %s" % record.getMessage())
-            else:
-                self.add_info(u"cssutils: %s" % _("valid CSS syntax"))
-        except Exception:
-            # catch _all_ exceptions since we dont want third party module
-            # errors to propagate into this library
-            err = str(sys.exc_info()[1])
-            log.warn(LOG_CHECK,
-                _("cssutils parsing caused error: %(msg)s") %
-                {"msg": err})
-
     def check_w3_errors (self, xml, w3type):
         """Add warnings for W3C HTML or CSS errors in xml format.
         w3type is either "W3C HTML" or "W3C CSS"."""
@@ -917,26 +865,24 @@ class UrlBase (object):
                 "column": getXmlText(error, "m:col"),
                 "msg": getXmlText(error, "m:message"),
             }
-            self.add_warning(warnmsg % attrs)
+            tag = WARN_SYNTAX_HTML if w3type == "W3C HTML" else WARN_SYNTAX_CSS
+            self.add_warning(warnmsg % attrs, tag=tag)
 
-    def check_html_w3 (self):
+    def check_html (self):
         """Check HTML syntax of this page (which is supposed to be HTML)
         with the online W3C HTML validator documented at
         http://validator.w3.org/docs/api.html
         """
         self.aggregate.check_w3_time()
         try:
-            u = urllib2.urlopen('http://validator.w3.org/check',
-                urllib.urlencode({
-                    'fragment': self.get_content(),
-                    'output': 'soap12',
-                }))
+            body = {'fragment': self.get_content(), 'output': 'soap12'}
+            data = urllib.urlencode(body)
+            u = urllib2.urlopen('http://validator.w3.org/check', data)
             if u.headers.get('x-w3c-validator-status', 'Invalid') == 'Valid':
                 self.add_info(u"W3C Validator: %s" % _("valid HTML syntax"))
                 return
             self.check_w3_errors(u.read(), "W3C HTML")
         except Exception:
-            raise
             # catch _all_ exceptions since we dont want third party module
             # errors to propagate into this library
             err = str(sys.exc_info()[1])
@@ -944,7 +890,7 @@ class UrlBase (object):
                 _("HTML W3C validation caused error: %(msg)s ") %
                 {"msg": err})
 
-    def check_css_w3 (self):
+    def check_css (self):
         """Check CSS syntax of this page (which is supposed to be CSS)
         with the online W3C CSS validator documented at
         http://jigsaw.w3.org/css-validator/manual.html#expert
@@ -1266,12 +1212,6 @@ class UrlBase (object):
         """Return compact UrlData object with information from to_wire_dict().
         """
         return CompactUrlData(self.to_wire_dict())
-
-
-def filter_tidy_errors (errors):
-    """Filter certain errors from HTML tidy run."""
-    return [x for x in errors if not \
-        (x.severity=='W' and x.message=='<table> lacks "summary" attribute')]
 
 
 urlDataAttr = [

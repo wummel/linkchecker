@@ -109,12 +109,13 @@ MSVCP90Token = '1fc8b3b9a1e18e3b'
 py_includes = ['dns.rdtypes.IN.*', 'dns.rdtypes.ANY.*',
     'twill.extensions.*', 'twill.extensions.match_parse.*',
     'twill.other_packages.*', 'twill.other_packages._mechanize_dist.*',
-    'cssutils.scripts.*']
+]
 # basic excludes for py2exe and py2app
 py_excludes = ['doctest', 'unittest', 'optcomplete', 'Tkinter',
     'PyQt4.QtDesigner', 'PyQt4.QtNetwork', 'PyQt4.QtOpenGL',
     'PyQt4.QtScript', 'PyQt4.QtTest', 'PyQt4.QtWebKit', 'PyQt4.QtXml',
-    'PyQt4.phonon']
+    'PyQt4.phonon',
+]
 # py2exe options for Windows packaging
 py2exe_options = dict(
     packages=["encodings"],
@@ -282,16 +283,6 @@ def sign_the_code (dist_dir):
     args = ['codesign', '-s', myname, '-v', app_dir]
     print("*** signing the application code ***")
     subprocess.check_call(args)
-
-
-def add_tidy_files (files):
-    """Add C tidy library used with ctypes."""
-    libname = "cygtidy"
-    libver = "0-99-0"
-    lib = "%s-%s.dll" % (libname, libver)
-    import tidy
-    filename = os.path.join(os.path.dirname(tidy.__file__), lib)
-    files.append(('', [filename]))
 
 
 def add_msvc_files (files):
@@ -673,7 +664,6 @@ elif 'py2exe' in sys.argv[1:]:
         raise SystemExit("py2exe module could not be imported")
     add_qt_plugin_files(data_files)
     add_msvc_files(data_files)
-    add_tidy_files(data_files)
     insert_dns_path()
 elif do_freeze:
     class MyInstallExe (install_exe, object):
@@ -958,8 +948,6 @@ o a command line, GUI and web interface
     # Commented out since they are untested and not officially supported.
     # See also doc/install.txt for more detailed dependency documentation.
     #extra_requires = {
-    #    "HTML syntax check": ['tidy'], # http://utidylib.berlios.de/
-    #    "CSS syntax check": ['cssutils'], # http://cthedot.de/cssutils/
     #    "IP country info": ['GeoIP'], # http://www.maxmind.com/app/python
     #    "Login form": ['twill'], # http://twill.idyll.org/
     #    "GNOME proxies": ['pygtk'], # http://www.pygtk.org/downloads.html

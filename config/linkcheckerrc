@@ -141,8 +141,7 @@
 # warn if size info exceeds given maximum of bytes
 #warnsizebytes=2000
 #nntpserver=
-# check HTML or CSS syntax locally with HTML tidy or cssutils, falling
-# back to the W3C online validator
+# check HTML or CSS syntax with the W3C online validator
 #checkhtml=1
 #checkcss=1
 # scan URL content for viruses with ClamAV

@@ -20,7 +20,6 @@ Main functions for link checking.
 
 import os
 import cgi
-import logging
 import urllib
 from .. import strformat, url as urlutil, log, LOG_CHECK
 
@@ -165,24 +164,6 @@ def get_index_html (urls):
         lines.append('<a href="%s">%s</a>' % (url, name))
     lines.extend(["</body>", "</html>"])
     return os.linesep.join(lines)
-
-
-class StoringHandler (logging.Handler):
-    """Store all emitted log messages in a size-limited list.
-    Used by the CSS syntax checker."""
-
-    def __init__ (self, maxrecords=100):
-        """Initialize site-limited list."""
-        logging.Handler.__init__(self)
-        self.storage = []
-        self.maxrecords = maxrecords
-
-    def emit (self, record):
-        """Save message record. If storage site is exceeded, remove
-        oldest message record."""
-        if len(self.storage) >= self.maxrecords:
-            self.storage.pop()
-        self.storage.append(record)
 
 
 # all the URL classes
