@@ -1,7 +1,8 @@
-#!/bin/sh -e
+#!/bin/sh
 # postrm script for linkchecker-web
 #
 # see: dh_installdeb(1)
+set -e
 
 #DEBHELPER#
 

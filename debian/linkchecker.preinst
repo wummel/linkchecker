@@ -1,7 +1,8 @@
-#!/bin/sh -e
+#!/bin/sh
 # preinst script for linkchecker
 #
 # see: dh_installdeb(1)
+set -e
 
 # summary of how this script can be called:
 #        * <new-preinst> `install'

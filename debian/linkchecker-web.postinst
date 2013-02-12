@@ -1,7 +1,8 @@
-#!/bin/sh -e
+#!/bin/sh
 # postinst script for linkchecker-web
 #
 # see: dh_installdeb(1)
+set -e
 
 case "$1" in
 configure|reconfigure|abort-upgrade|abort-remove|abort-deconfigure)
