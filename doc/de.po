@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 3.4\n"
-"POT-Creation-Date: 2013-02-05 14:55+0100\n"
+"POT-Creation-Date: 2013-02-13 13:16+0100\n"
 "PO-Revision-Date: 2013-01-06 18:11+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
@@ -1529,18 +1529,24 @@ msgstr "3. Der URL-Inhalt muss ladbar sein. Dies ist normalerweise der Fall, mit
 
 #. type: Plain text
 #: en/linkchecker.1:432
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "4. The maximum recursion level must not be exceeded. It is configured\n"
+#| "   with the ``--recursion-level`` option and is unlimited per default.\n"
 msgid ""
 "4. The maximum recursion level must not be exceeded. It is configured\n"
-"   with the ``--recursion-level`` option and is unlimited per default.\n"
+"   with the B<--recursion-level> option and is unlimited per default.\n"
 msgstr "4. Die maximale Rekursionstiefe darf nicht überschritten werden. Diese wird mit der Option ``--recursion-level`` konfiguriert und ist standardmäßig nicht limitiert.\n"
 
 #. type: Plain text
 #: en/linkchecker.1:435
-#, no-wrap
+#, fuzzy, no-wrap
+#| msgid ""
+#| "5. It must not match the ignored URL list. This is controlled with\n"
+#| "   the ``--ignore-url`` option.\n"
 msgid ""
 "5. It must not match the ignored URL list. This is controlled with\n"
-"   the ``--ignore-url`` option.\n"
+"   the B<--ignore-url> option.\n"
 msgstr "5. Die URL darf nicht in der Liste von ignorierten URLs sein. Die ignorierten URLs werden mit der Option ``--ignore-url`` konfiguriert.\n"
 
 #. type: Plain text
@@ -1554,9 +1560,13 @@ msgstr "6. Das Robots Exclusion Protocol muss es erlauben, dass Verknüpfungen i
 
 #. type: Plain text
 #: en/linkchecker.1:442
+#, fuzzy
+#| msgid ""
+#| "Note that the directory recursion reads all files in that directory, not "
+#| "just a subset like ``index.htm*``."
 msgid ""
 "Note that the directory recursion reads all files in that directory, not "
-"just a subset like ``index.htm*``."
+"just a subset like B<index.htm*>."
 msgstr ""
 "Beachten Sie, dass die Verzeichnisrekursion alle Dateien in diesem "
 "Verzeichnis liest, nicht nur eine Untermenge wie bspw. ``index.html*``."

@@ -428,17 +428,17 @@ conditions. They are checked in this order:
    except for example mailto: or unknown URL types.
 
 4. The maximum recursion level must not be exceeded. It is configured
-   with the ``--recursion-level`` option and is unlimited per default.
+   with the \fB\-\-recursion\-level\fP option and is unlimited per default.
 
 5. It must not match the ignored URL list. This is controlled with
-   the ``--ignore-url`` option.
+   the \fB\-\-ignore\-url\fP option.
 
 6. The Robots Exclusion Protocol must allow links in the URL to be
    followed recursively. This is checked by searching for a
    "nofollow" directive in the HTML header data.
 
 Note that the directory recursion reads all files in that
-directory, not just a subset like ``index.htm*``.
+directory, not just a subset like \fBindex.htm*\fP.
 
 .SH NOTES
 URLs on the commandline starting with \fBftp.\fP are treated like

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-02-05 14:55+0100\n"
+"POT-Creation-Date: 2013-02-13 13:16+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1198,7 +1198,7 @@ msgstr ""
 #, no-wrap
 msgid ""
 "4. The maximum recursion level must not be exceeded. It is configured\n"
-"   with the ``--recursion-level`` option and is unlimited per default.\n"
+"   with the B<--recursion-level> option and is unlimited per default.\n"
 msgstr ""
 
 #. type: Plain text
@@ -1206,7 +1206,7 @@ msgstr ""
 #, no-wrap
 msgid ""
 "5. It must not match the ignored URL list. This is controlled with\n"
-"   the ``--ignore-url`` option.\n"
+"   the B<--ignore-url> option.\n"
 msgstr ""
 
 #. type: Plain text
@@ -1222,7 +1222,7 @@ msgstr ""
 #: en/linkchecker.1:442
 msgid ""
 "Note that the directory recursion reads all files in that directory, not "
-"just a subset like ``index.htm*``."
+"just a subset like B<index.htm*>."
 msgstr ""
 
 #. type: SH
