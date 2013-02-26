@@ -139,6 +139,7 @@ deb:
 	  cd $(CURDIR); \
 	  git checkout debian; \
 	  cp -r debian $(DEBPACKAGEDIR); \
+	  rm -f $(DEBPACKAGEDIR)/debian/.gitignore; \
 	  git checkout master)
 	$(MAKE) -C $(DEBUILDDIR) $(LAPPNAME)_clean $(LAPPNAME)
 
