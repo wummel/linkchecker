@@ -30,11 +30,6 @@ _wait_lock = get_lock("connwait")
 ConnectionTypes = ("ftp", "http", "https")
 ConnectionState = enum("available", "busy")
 
-DefaultLimits = dict(
-    http=10,
-    https=10,
-    ftp=2,
-)
 
 def get_connection_id(connection):
     """Return unique id for connection object."""
@@ -49,7 +44,7 @@ def is_expired(curtime, conn_data):
 class ConnectionPool (object):
     """Thread-safe cache, storing a set of connections for URL retrieval."""
 
-    def __init__ (self, wait=0, limits=None):
+    def __init__ (self, limits, wait=0):
         """
         Initialize an empty connection dictionary which will have the form:
         {(type, host, port) -> (lock, {id -> [connection, state, expiration time]})}
@@ -62,8 +57,8 @@ class ConnectionPool (object):
         The type is the connection type and an either 'ftp' or 'http'.
         The host is the hostname as string, port the port number as an integer.
 
-        For each type, the maximum number of connection can be defined. The default
-        is 4 for http/1.0, 2 for http/1.1 and 2 for ftp.
+        For each type, the maximum number of connections to one single host is defined
+        in limits.
         """
         # open connections
         self.connections = {}
@@ -74,12 +69,8 @@ class ConnectionPool (object):
         if wait < 0:
             raise ValueError("negative wait value %d" % wait)
         self.wait = wait
-        if limits is None:
-            self.limits = DefaultLimits
-        else:
-            self.limits = {}
-            for type in ConnectionTypes:
-                self.limits[type] = limits.get(type, DefaultLimits[type])
+        # {connection type -> max number of connections to one host}
+        self.limits = limits
 
     @synchronized(_wait_lock)
     def host_wait (self, host, wait):

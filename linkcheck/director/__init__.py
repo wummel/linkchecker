@@ -214,7 +214,7 @@ def abort_now ():
 def get_aggregate (config):
     """Get an aggregator instance with given configuration."""
     _urlqueue = urlqueue.UrlQueue(max_allowed_puts=config["maxnumurls"])
-    connections = connection.ConnectionPool(wait=config["wait"], limits=config["connectionlimits"])
+    connections = connection.ConnectionPool(config.get_connectionlimits(), wait=config["wait"])
     cookies = cookie.CookieJar()
     _robots_txt = robots_txt.RobotsTxt()
     return aggregator.Aggregate(config, _urlqueue, connections,

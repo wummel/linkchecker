@@ -227,7 +227,9 @@ class Configuration (dict):
         self["warnsslcertdaysvalid"] = 14
         self["maxrunseconds"] = None
         self["maxnumurls"] = None
-        self["connectionlimits"] = {}
+        self["maxconnectionshttp"] = 10
+        self["maxconnectionshttps"] = 10
+        self["maxconnectionsftp"] = 2
         from ..logger import Loggers
         self.loggers = dict(**Loggers)
 
@@ -350,6 +352,10 @@ class Configuration (dict):
             if auth['pattern'].match(url):
                 return (auth['user'], auth['password'])
         return (None, None)
+
+    def get_connectionlimits(self):
+        """Get dict with limit per connection type."""
+        return {key: self['maxconnections%s' % key] for key in ('http', 'https', 'ftp')}
 
     def sanitize (self):
         "Make sure the configuration is consistent."

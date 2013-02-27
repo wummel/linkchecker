@@ -184,6 +184,10 @@
 # Maximum number of URLs to check. New URLs will not be queued after the
 # given number of URLs is checked.
 #maxnumurls=153
+# Maximum number of connections to one single host for different connection types.
+#maxconnectionshttp=10
+#maxconnectionshttps=10
+#maxconnectionsftp=2
 
 ##################### filtering options ##########################
 [filtering]

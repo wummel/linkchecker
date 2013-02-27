@@ -149,6 +149,8 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         self.read_string_option(section, "nntpserver")
         self.read_string_option(section, "useragent")
         self.read_int_option(section, "pause", key="wait", min=0)
+        for name in ("http", "https", "ftp"):
+            self.read_int_option(section, "maxconnections%s" % name, min=1)
         self.read_check_options(section)
 
     def read_check_options (self, section):

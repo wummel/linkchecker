@@ -1,5 +1,8 @@
 8.5 "" (released xx.xx.2013)
 
+Features:
+- checking: Make per-host connection limits configurable.
+
 Changes:
 - checking: Always use the W3C validator to check HTML or CSS syntax.
 - cmdline: Replace argument parsing. No changes in functionality, only
