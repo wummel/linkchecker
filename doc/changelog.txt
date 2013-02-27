@@ -2,6 +2,8 @@
 
 Changes:
 - checking: Always use the W3C validator to check HTML or CSS syntax.
+- cmdline: Replace argument parsing. No changes in functionality, only
+  the help text will be formatted different.
 
 
 8.4 "Frankenweenie" (released 25.01.2013)

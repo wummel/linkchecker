@@ -111,7 +111,7 @@ py_includes = ['dns.rdtypes.IN.*', 'dns.rdtypes.ANY.*',
     'twill.other_packages.*', 'twill.other_packages._mechanize_dist.*',
 ]
 # basic excludes for py2exe and py2app
-py_excludes = ['doctest', 'unittest', 'optcomplete', 'Tkinter',
+py_excludes = ['doctest', 'unittest', 'argcomplete', 'Tkinter',
     'PyQt4.QtDesigner', 'PyQt4.QtNetwork', 'PyQt4.QtOpenGL',
     'PyQt4.QtScript', 'PyQt4.QtTest', 'PyQt4.QtWebKit', 'PyQt4.QtXml',
     'PyQt4.phonon',
@@ -951,7 +951,7 @@ o a command line, GUI and web interface
     #    "IP country info": ['GeoIP'], # http://www.maxmind.com/app/python
     #    "Login form": ['twill'], # http://twill.idyll.org/
     #    "GNOME proxies": ['pygtk'], # http://www.pygtk.org/downloads.html
-    #    "Bash completion": ['optcomplete'], # http://furius.ca/optcomplete/
+    #    "Bash completion": ['argcomplete'], # https://pypi.python.org/pypi/argcomplete
     #    "Memory debugging": ['meliae'], # https://launchpad.net/meliae
     #}
 )

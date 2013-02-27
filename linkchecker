@@ -25,15 +25,14 @@ import codecs
 import re
 import os
 import pprint
-import optparse
+import argparse
 import getpass
 # installs _() and _n() gettext functions into global namespace
 import linkcheck
-# override optparse gettext method with the one from linkcheck.init_i18n()
-optparse._ = _
+# override argparse gettext method with the one from linkcheck.init_i18n()
+#argparse._ = _
 # now import the rest of the linkchecker gang
-from linkcheck.cmdline import print_version, print_usage, LCOptionParser, \
-  aggregate_url
+from linkcheck.cmdline import print_version, print_usage, aggregate_url
 from linkcheck import log, LOG_CMDLINE, i18n, strformat
 import linkcheck.checker
 import linkcheck.configuration
@@ -42,7 +41,7 @@ import linkcheck.logger
 import linkcheck.ansicolor
 from linkcheck.director import console, check_urls, get_aggregate
 # optional modules
-has_optcomplete = linkcheck.fileutil.has_module("optcomplete")
+has_argcomplete = linkcheck.fileutil.has_module("argcomplete")
 has_profile = linkcheck.fileutil.has_module("cProfile")
 has_pstats = linkcheck.fileutil.has_module("pstats")
 has_meliae = linkcheck.fileutil.has_module("meliae")
@@ -53,8 +52,6 @@ _username = None
 _password = None
 
 # usage texts
-Usage = _("""USAGE\tlinkchecker [options] [file-or-url]...""")
-
 Notes = _("""NOTES
  o URLs on the command line starting with "ftp." are treated like
    "ftp://ftp.", URLs starting with "www." are treated like "http://www.".
@@ -195,8 +192,10 @@ file entry:
 "\n".join([u" o %s - %s" % (tag, desc) \
            for tag, desc in sorted(linkcheck.checker.const.Warnings.items())])
 
+Epilog = u"\n".join((Examples, LoggerTypes, RegularExpressions, CookieFormat, ProxySupport, Notes, Retval, Warnings))
 
-def viewprof ():
+
+def viewprof():
     """Print profiling data and exit."""
     if not has_pstats:
         log.error(LOG_CMDLINE,
@@ -235,59 +234,45 @@ def has_encoding (encoding):
         return False
 
 # instantiate option parser and configure options
-class MyOptionParser (LCOptionParser):
-    """Option parser for LinkChecker commandline client."""
+argparser = argparse.ArgumentParser(
+  epilog=Epilog,
+  formatter_class=argparse.RawDescriptionHelpFormatter
+)
 
-    def get_usage (self):
-        """Return translated usage text."""
-        return Usage
-
-    def print_help (self, file=None):
-        """Print translated help text."""
-        s = u"%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" % (self.format_help(),
-                 Examples, LoggerTypes, RegularExpressions, CookieFormat,
-                 ProxySupport, Notes, Retval, Warnings)
-        self.print_help_msg(s, file)
-
-# instantiate option parser and configure options
-optparser = MyOptionParser()
 
 # build a config object for this check session
 config = linkcheck.configuration.Configuration()
 
 ################# general options ##################
-group = optparse.OptionGroup(optparser, _("General options"))
-group.add_option("-f", "--config", type="string", dest="configfile",
+group = argparser.add_argument_group(_("General options"))
+group.add_argument("-f", "--config", dest="configfile",
                  metavar="FILENAME",
                  help=_(
 """Use FILENAME as configuration file. Per default LinkChecker uses
 ~/.linkchecker/linkcheckerrc (under Windows
-%HOMEPATH%\\.linkchecker\\linkcheckerrc)."""))
-group.add_option("-t", "--threads", type="int", dest="threads",
-                 metavar="NUMBER",
+%%HOMEPATH%%\\.linkchecker\\linkcheckerrc)."""))
+group.add_argument("-t", "--threads", type=int, metavar="NUMBER",
                  help=_(
 """Generate no more than the given number of threads. Default number
 of threads is 10. To disable threading specify a non-positive number."""))
-group.add_option("-V", "--version", action="store_true", dest="version",
+group.add_argument("-V", "--version", action="store_true",
                  help=_("""Print version and exit."""))
-group.add_option("--stdin", action="store_true", dest="stdin",
+group.add_argument("--stdin", action="store_true",
                  help=_(
 """Read list of white-space separated URLs to check from stdin."""))
-optparser.add_option_group(group)
 
 ################# output options ##################
-group = optparse.OptionGroup(optparser, _("Output options"))
-group.add_option("--check-css", action="store_true", dest="checkcss",
+group = argparser.add_argument_group(_("Output options"))
+group.add_argument("--check-css", action="store_true", dest="checkcss",
                  help=_(
 """Check syntax of CSS URLs with the W3C online validator."""))
-group.add_option("--check-html", action="store_true", dest="checkhtml",
+group.add_argument("--check-html", action="store_true", dest="checkhtml",
                  help=_(
 """Check syntax of HTML URLs with the W3C online validator."""))
-group.add_option("--complete", action="store_true", dest="complete",
+group.add_argument("--complete", action="store_true", dest="complete",
                  help=_("""Log all URLs, including duplicates.
 Default is to log duplicate URLs only once."""))
-group.add_option("-D", "--debug", type="string", action="append",
-                 metavar="STRING",
+group.add_argument("-D", "--debug", action="append", metavar="STRING",
                  help=_("""Print debugging output for the given logger.
 Available loggers are %(lognamelist)s.
 Specifying 'all' is an alias for specifying all available loggers.
@@ -296,8 +281,8 @@ than one logger.
 
 For accurate results, threading will be disabled during debug runs.""") % \
 {"lognamelist": linkcheck.lognamelist})
-group.add_option("-F", "--file-output", type="string", action="append",
-                 dest="fileoutput", metavar="TYPE[/ENCODING][/FILENAME]",
+group.add_argument("-F", "--file-output", action="append",
+                 dest="fileoutput", metavar="TYPE[/ENCODING[/FILENAME]]",
                  help=_(
 """Output to a file linkchecker-out.TYPE, $HOME/.linkchecker/blacklist for
 'blacklist' output, or FILENAME if specified.
@@ -311,13 +296,12 @@ are %(loggertypes)s. You can specify this option multiple times to output
 to more than one file. Default is no file output. Note that you can
 suppress all console output with the option '-o none'.""") % \
 {'loggertypes': linkcheck.logger.LoggerKeys})
-group.add_option("--no-status", action="store_false", dest="status",
+group.add_argument("--no-status", action="store_false", dest="status",
                  default=True, help=_(
 """Do not print check status messages."""))
-group.add_option("--no-warnings", action="store_false", dest="warnings",
+group.add_argument("--no-warnings", action="store_false", dest="warnings",
                 help=_("""Don't log warnings. Default is to log warnings."""))
-group.add_option("-o", "--output", type="string", dest="output",
-                 metavar="TYPE[/ENCODING]",
+group.add_argument("-o", "--output", dest="output", metavar="TYPE[/ENCODING]",
                  help=_(
 """Specify output as %(loggertypes)s. Default output type is text.
 The ENCODING specifies the output encoding, the default is that of your
@@ -325,23 +309,23 @@ locale.
 Valid encodings are listed at """ \
 """http://docs.python.org/lib/standard-encodings.html.""") % \
 {'loggertypes': linkcheck.logger.LoggerKeys})
-group.add_option("--profile", action="store_true", dest="profile",
-                 help=optparse.SUPPRESS_HELP)
-group.add_option("-q", "--quiet", action="store_true", dest="quiet",
+group.add_argument("--profile", action="store_true", dest="profile",
+                 help=argparse.SUPPRESS)
+group.add_argument("-q", "--quiet", action="store_true", dest="quiet",
                  help=_(
 """Quiet operation, an alias for '-o none'.
 This is only useful with -F."""))
-group.add_option("--scan-virus", action="store_true", dest="scanvirus",
+group.add_argument("--scan-virus", action="store_true", dest="scanvirus",
                  help=_(
 """Scan content of URLs with ClamAV virus scanner."""))
-group.add_option("--trace", action="store_true", dest="trace",
+group.add_argument("--trace", action="store_true", dest="trace",
                  help=_("""Print tracing information."""))
-group.add_option("-v", "--verbose", action="store_true", dest="verbose",
+group.add_argument("-v", "--verbose", action="store_true", dest="verbose",
                  help=_(
 """Log all URLs. Default is to log only errors and warnings."""))
-group.add_option("--viewprof", action="store_true", dest="viewprof",
-                 help=optparse.SUPPRESS_HELP)
-group.add_option("-W", "--warning-regex", type="string", dest="warningregex",
+group.add_argument("--viewprof", action="store_true", dest="viewprof",
+                 help=argparse.SUPPRESS)
+group.add_argument("-W", "--warning-regex", dest="warningregex",
                  metavar="REGEX",
                  help=_(
 """Define a regular expression which prints a warning if it matches
@@ -354,99 +338,79 @@ Application error'.
 
 Note that multiple values can be combined in the regular expression,
 for example "(This page has moved|Oracle Application error)"."""))
-group.add_option("--warning-size-bytes", dest="warningsizebytes",
+group.add_argument("--warning-size-bytes", dest="warningsizebytes",
                  metavar="NUMBER",
                  help=_(
 """Print a warning if content size info is available and exceeds the
 given number of bytes."""))
-optparser.add_option_group(group)
 
 
 ################# checking options ##################
-group = optparse.OptionGroup(optparser, _("Checking options"))
-group.add_option("-a", "--anchors", action="store_true", dest="anchors",
+group = argparser.add_argument_group(_("Checking options"))
+group.add_argument("-a", "--anchors", action="store_true", dest="anchors",
                  help=_(
 """Check HTTP anchor references. Default is not to check anchors.
 This option enables logging of the warning 'url-anchor-not-found'."""))
-group.add_option("-C", "--cookies", action="store_true", dest="cookies",
+group.add_argument("-C", "--cookies", action="store_true", dest="cookies",
                  help=_(
 """Accept and send HTTP cookies according to RFC 2109. Only cookies
 which are sent back to the originating server are accepted.
 Sent and accepted cookies are provided as additional logging
 information."""))
-group.add_option("--cookiefile", type="string", dest="cookiefile",
-                 metavar="FILENAME",
+group.add_argument("--cookiefile", dest="cookiefile", metavar="FILENAME",
                  help=_(
 """Read a file with initial cookie data. The cookie data format is
 explained below."""))
-group.add_option("--ignore-url", type="string", action="append",
-                 metavar="REGEX",
+group.add_argument("--ignore-url", action="append", metavar="REGEX",
                  dest="externstrict", help=_(
 """Only check syntax of URLs matching the given regular expression.
  This option can be given multiple times."""))
-group.add_option("--no-follow-url", type="string", action="append",
-                 metavar="REGEX",
+group.add_argument("--no-follow-url", action="append", metavar="REGEX",
                  dest="extern", help=_(
 """Check but do not recurse into URLs matching the given regular
 expression. This option can be given multiple times."""))
-group.add_option("-N", "--nntp-server", type="string", dest="nntpserver",
-                 metavar="STRING",
+group.add_argument("-N", "--nntp-server", dest="nntpserver", metavar="STRING",
                  help=_(
 """Specify an NNTP server for 'news:...' links. Default is the
 environment variable NNTP_SERVER. If no host is given,
 only the syntax of the link is checked."""))
-group.add_option("-p", "--password", action="store_false", dest="password",
+group.add_argument("-p", "--password", action="store_false", dest="password",
                  default=False,
                  help=_(
 """Read a password from console and use it for HTTP and FTP authorization.
 For FTP the default password is 'anonymous@'. For HTTP there is
 no default password. See also -u."""))
-group.add_option("-P", "--pause", type="int", dest="pause",
+group.add_argument("-P", "--pause", type=int, dest="pause",
                  metavar="NUMBER",
                  help=_(
 """Pause the given number of seconds between two subsequent connection
 requests to the same host. Default is no pause between requests."""))
-group.add_option("-r", "--recursion-level", type="int", dest="recursionlevel",
-                 metavar="NUMBER",
+group.add_argument("-r", "--recursion-level", type=int,
+                 dest="recursionlevel", metavar="NUMBER",
                  help=_(
 """Check recursively all links up to given depth. A negative depth
 will enable infinite recursion. Default depth is infinite."""))
-group.add_option("--timeout", type="int", dest="timeout",
+group.add_argument("--timeout", type=int, dest="timeout",
                  metavar="NUMBER",
                  help=_(
 """Set the timeout for connection attempts in seconds. The default
 timeout is %d seconds.""") % config["timeout"])
-group.add_option("-u", "--user", type="string", dest="username",
-                 metavar="STRING",
+group.add_argument("-u", "--user", dest="username", metavar="STRING",
                  help=_(
 """Try the given username for HTTP and FTP authorization.
 For FTP the default username is 'anonymous'. For HTTP there is
 no default username. See also -p."""))
-group.add_option("--user-agent", type="string", dest="useragent",
-                 metavar="STRING",
+group.add_argument("--user-agent", dest="useragent", metavar="STRING",
                  help=_(
 """Specify the User-Agent string to send to the HTTP server, for example
 "Mozilla/4.0". The default is "LinkChecker/X.Y" where X.Y is the current
 version of LinkChecker."""))
-optparser.add_option_group(group)
 
+argparser.add_argument('url', nargs='*')
 ################# auto completion #####################
-if has_optcomplete:
-    import optcomplete
-
-    def FileCompleter (cwd, line, point, prefix, suffix):
-        """Completes by listing all possible files, here or matching
-        substrings"""
-        startdir = os.path.dirname(prefix)
-        lhs = os.path.basename(prefix)
-        if startdir:
-            listdir = startdir
-        else:
-            listdir = cwd
-        return [os.path.join(startdir, f)
-                for f in os.listdir(os.path.expanduser(listdir))
-                if f.startswith(lhs)]
-    optcomplete.autocomplete(optparser, arg_completer=FileCompleter)
+if has_argcomplete:
+    import argcomplete
+    argcomplete.autocomplete(argparser)
 
 
 def read_stdin_urls ():
@@ -465,7 +429,8 @@ def read_stdin_urls ():
 
 
 # read and parse command line options and arguments
-(options, args) = optparser.parse_args()
+options = argparser.parse_args()
+
 # initialize logging
 if options.debug:
     allowed_debugs = linkcheck.lognames.keys()
@@ -496,9 +461,9 @@ if options.debug and not __debug__:
 # apply commandline options and arguments to configuration
 constructauth = False
 do_profile = False
-if options.warnings is not None:
+if options.warnings:
     config["warnings"] = options.warnings
-if options.anchors is not None:
+if options.anchors:
     config["anchors"] = options.anchors
 if options.externstrict:
     pats = [linkcheck.get_link_pat(arg, strict=True) \
@@ -560,7 +525,7 @@ if options.fileoutput:
         config['fileoutput'].append(logger)
 if options.nntpserver:
     config["nntpserver"] = options.nntpserver
-if options.username is not None:
+if options.username:
     _username = options.username
     constructauth = True
 if options.password:
@@ -577,13 +542,13 @@ if options.pause is not None:
     else:
         print_usage(_("Illegal argument %(arg)r for option %(option)s") % \
                     {"arg": options.pause, "option": "'-P, --pause'"})
-if options.profile is not None:
+if options.profile:
     do_profile = options.profile
-if options.quiet is not None:
+if options.quiet:
     config['logger'] = config.logger_new('none')
 if options.recursionlevel is not None:
     config["recursionlevel"] = options.recursionlevel
-if options.status is not None:
+if options.status:
     config['status'] = options.status
 if options.threads is not None:
     if options.threads < 1:
@@ -595,13 +560,13 @@ if options.timeout is not None:
     else:
         print_usage(_("Illegal argument %(arg)r for option %(option)s") % \
                     {"arg": options.timeout, "option": "'--timeout'"})
-if options.version is not None:
+if options.version:
     print_version()
-if options.verbose is not None:
+if options.verbose:
     if options.verbose:
         config["verbose"] = True
         config["warnings"] = True
-if options.complete is not None:
+if options.complete:
     if options.complete:
         config["complete"] = True
         config["verbose"] = True
@@ -613,18 +578,16 @@ if options.warningregex is not None:
     config["warnings"] = True
 if options.warningsizebytes is not None:
     config["warnsizebytes"] = options.warningsizebytes
-if options.cookies is not None:
+if options.cookies:
     config['storecookies'] = config['sendcookies'] = options.cookies
 if options.cookiefile is not None:
     config['cookiefile'] = options.cookiefile
     config['storecookies'] = config['sendcookies'] = True
 if constructauth:
     config.add_auth(pattern=".+", user=_username, password=_password)
-if options.scanvirus is not None:
-    config["scanvirus"] = options.scanvirus
-# boolean options for syntaxcheck
-for option in ("checkhtml", "checkcss"):
-    if getattr(options, option) is not None:
+# boolean options
+for option in ("checkhtml", "checkcss", "scanvirus"):
+    if getattr(options, option):
         config[option] = getattr(options, option)
 # read missing passwords
 for entry in config["authentication"]:
@@ -663,8 +626,8 @@ if options.trace:
 if options.stdin:
     for url in read_stdin_urls():
         aggregate_url(aggregate, url)
-elif args:
-    for url in args:
+elif options.url:
+    for url in options.url:
         aggregate_url(aggregate, strformat.stripurl(url))
 else:
     log.warn(LOG_CMDLINE, _("no files or URLs given"))

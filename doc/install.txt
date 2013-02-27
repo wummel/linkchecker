@@ -51,7 +51,7 @@ First, install the required software.
    On Redhat systems, install the package qt-devel.
 
 4. *Optional, for bash-completion:*
-   optcomplete Python module from http://furius.ca/optcomplete/
+   argcomplete Python module from https://pypi.python.org/pypi/argcomplete
 
 6. *Optional, for displaying country codes:*
    GeoIP from http://www.maxmind.com/app/python

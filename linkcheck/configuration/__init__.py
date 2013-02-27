@@ -63,7 +63,7 @@ def normpath (path):
 # List optional Python modules in the form (module, name)
 Modules = (
     ("PyQt4.Qsci", u"QScintilla"),
-    ("optcomplete", u"Optcomplete"),
+    ("argcomplete", u"Argcomplete"),
     ("GeoIP", u"GeoIP"),   # on Unix systems
     ("pygeoip", u"GeoIP"), # on Windows systems
     ("twill", u"Twill"),

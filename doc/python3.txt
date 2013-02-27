@@ -6,7 +6,8 @@ Date: 08.08.2012
 OK   Python
 OK   Qt/PyQt
 OK   mod_wsgi from http://code.google.com/p/modwsgi/
-TODO optcomplete from http://furius.ca/optcomplete/
-TODO GeoIP from http://www.maxmind.com/app/python
-TODO Twill from http://twill.idyll.org/
-TODO Python Gtk from http://www.pygtk.org/downloads.html
+OK   argcomplete from https://pypi.python.org/pypi/argcomplete
+OK   dnspython (as dnspython3)
+TODO(optional) GeoIP from http://www.maxmind.com/app/python
+TODO(optional) Twill from http://twill.idyll.org/
+TODO(optional) Python Gtk from http://www.pygtk.org/downloads.html

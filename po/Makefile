@@ -2,11 +2,11 @@ XGETTEXT := xgettext
 MSGFMT := msgfmt
 MSGMERGE := msgmerge
 POSOURCES = $(shell find ../linkcheck -name \*.py) \
-	../linkchecker ../linkchecker-gui /usr/lib/python2.7/optparse.py
+	../linkchecker ../linkchecker-gui /usr/lib/python2.7/argparse.py
 LDIR = ../share/locale
 PACKAGE = linkchecker
 TEMPLATE = $(PACKAGE).pot
-MYMAIL := calvin@users.sourceforge.net
+MYMAIL := bastian.kleineidam@web.de
 LFILE = LC_MESSAGES/$(PACKAGE).mo
 # defined language (add new languages here)
 LANGUAGES = de fr es
