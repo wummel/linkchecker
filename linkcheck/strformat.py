@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2012 Bastian Kleineidam
+# Copyright (C) 2000-2013 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -179,24 +179,24 @@ def remove_markup (s):
     return s
 
 
-def strsize (b):
+def strsize (b, grouping=True):
     """Return human representation of bytes b. A negative number of bytes
     raises a value error."""
     if b < 0:
         raise ValueError("Invalid negative byte number")
     if b < 1024:
-        return u"%sB" % locale.format("%d", b, True)
+        return u"%sB" % locale.format("%d", b, grouping)
     if b < 1024 * 10:
-        return u"%sKB" % locale.format("%d", (b // 1024), True)
+        return u"%sKB" % locale.format("%d", (b // 1024), grouping)
     if b < 1024 * 1024:
-        return u"%sKB" % locale.format("%.2f", (float(b) / 1024), True)
+        return u"%sKB" % locale.format("%.2f", (float(b) / 1024), grouping)
     if b < 1024 * 1024 * 10:
-        return u"%sMB" % locale.format("%.2f", (float(b) / (1024*1024)), True)
+        return u"%sMB" % locale.format("%.2f", (float(b) / (1024*1024)), grouping)
     if b < 1024 * 1024 * 1024:
-        return u"%sMB" % locale.format("%.1f", (float(b) / (1024*1024)), True)
+        return u"%sMB" % locale.format("%.1f", (float(b) / (1024*1024)), grouping)
     if b < 1024 * 1024 * 1024 * 10:
-        return u"%sGB" % locale.format("%.2f", (float(b) / (1024*1024*1024)), True)
-    return u"%sGB" % locale.format("%.1f", (float(b) / (1024*1024*1024)), True)
+        return u"%sGB" % locale.format("%.2f", (float(b) / (1024*1024*1024)), grouping)
+    return u"%sGB" % locale.format("%.1f", (float(b) / (1024*1024*1024)), grouping)
 
 
 def strtime (t):

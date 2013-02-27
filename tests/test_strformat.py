@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2004-2012 Bastian Kleineidam
+# Copyright (C) 2004-2013 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -85,7 +85,7 @@ class TestStrFormat (unittest.TestCase):
         self.assertEqual(linkcheck.strformat.strsize(0), "0B")
         self.assertEqual(linkcheck.strformat.strsize(1), "1B")
         self.assertEqual(linkcheck.strformat.strsize(2), "2B")
-        self.assertEqual(linkcheck.strformat.strsize(1023), "1023B")
+        self.assertEqual(linkcheck.strformat.strsize(1023, grouping=False), "1023B")
         self.assertEqual(linkcheck.strformat.strsize(1024), "1KB")
         self.assertEqual(linkcheck.strformat.strsize(1024*25), "25.00KB")
         self.assertEqual(linkcheck.strformat.strsize(1024*1024), "1.00MB")
