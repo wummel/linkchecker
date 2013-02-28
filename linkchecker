@@ -32,7 +32,7 @@ import linkcheck
 # override argparse gettext method with the one from linkcheck.init_i18n()
 #argparse._ = _
 # now import the rest of the linkchecker gang
-from linkcheck.cmdline import print_version, print_usage, aggregate_url
+from linkcheck.cmdline import print_version, print_usage, aggregate_url, LCArgumentParser
 from linkcheck import log, LOG_CMDLINE, i18n, strformat
 import linkcheck.checker
 import linkcheck.configuration
@@ -234,7 +234,7 @@ def has_encoding (encoding):
         return False
 
 # instantiate option parser and configure options
-argparser = argparse.ArgumentParser(
+argparser = LCArgumentParser(
   epilog=Epilog,
   formatter_class=argparse.RawDescriptionHelpFormatter
 )

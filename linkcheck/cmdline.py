@@ -19,8 +19,20 @@ Utility functions suitable for command line clients.
 """
 from __future__ import print_function
 import sys
-from . import checker
+import argparse
+from . import checker, fileutil, strformat
 from .director import console
+
+
+class LCArgumentParser(argparse.ArgumentParser):
+
+    def print_help(self, file=None):
+        """Print a help message to stdout."""
+        msg = console.encode(self.format_help())
+        if fileutil.is_tty(file):
+            strformat.paginate(msg)
+        else:
+            print(msg, file=file)
 
 
 def print_version(exit_code=0):
