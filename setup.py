@@ -751,7 +751,9 @@ class InnoScript:
         print(file=fd)
         # Uninstall optional log files
         print('[UninstallDelete]', file=fd)
-        print(r'Type: files; Name: "{pf}\%s\linkchecker*.exe.log"' % self.name, file=fd)
+        for path in (self.windows_exe_files + self.console_exe_files):
+            exename = os.path.basename(path)
+            print(r'Type: files; Name: "{pf}\%s\%s.log"' % (self.name, exename), file=fd)
         print(file=fd)
 
     def compile (self):
