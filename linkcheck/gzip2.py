@@ -68,9 +68,10 @@ class GzipFile:
         Be aware that only the 'rb', 'ab', and 'wb' values should be used
         for cross-platform portability.
 
-        The compresslevel argument is an integer from 1 to 9 controlling the
+        The compresslevel argument is an integer from 0 to 9 controlling the
         level of compression; 1 is fastest and produces the least compression,
-        and 9 is slowest and produces the most compression.  The default is 9.
+        and 9 is slowest and produces the most compression. 0 is no compression
+        at all. The default is 9.
 
         The mtime argument is an optional numeric timestamp to be written
         to the stream when compressing.  All gzip compressed streams
@@ -83,6 +84,10 @@ class GzipFile:
 
         """
 
+        # Make sure we don't inadvertently enable universal newlines on the
+        # underlying file object - in read mode, this causes data corruption.
+        if mode:
+            mode = mode.replace('U', '')
         # guarantee the file is opened in binary mode on platforms
         # that care about that sort of thing
         if mode and 'b' not in mode:
@@ -131,7 +136,7 @@ class GzipFile:
     @property
     def filename(self):
         import warnings
-        warnings.warn("use the name attribute", DeprecationWarning)
+        warnings.warn("use the name attribute", DeprecationWarning, 2)
         if self.mode == WRITE and self.name[-3:] != ".gz":
             return self.name + ".gz"
         return self.name
@@ -428,7 +433,7 @@ class GzipFile:
             if offset < self.offset:
                 raise IOError('Negative seek in write mode')
             count = offset - self.offset
-            for i in range(count // 1024):
+            for i in xrange(count // 1024):
                 self.write(1024 * '\0')
             self.write((count % 1024) * '\0')
         elif self.mode == READ:
@@ -436,7 +441,7 @@ class GzipFile:
                 # for negative seek, rewind and do positive seek
                 self.rewind()
             count = offset - self.offset
-            for i in range(count // 1024):
+            for i in xrange(count // 1024):
                 self.read(1024)
             self.read(count % 1024)
 

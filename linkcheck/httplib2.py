@@ -1,7 +1,7 @@
 # -*- coding: iso-8859-1 -*-
 # Copied from Python source; License: Python License
 # Copyright Guido van Rossum <guido@cwi.nl> and others
-"""HTTP/1.1 client library
+r"""HTTP/1.1 client library
 
 <intro stuff goes here>
 <other stuff, too>
@@ -551,7 +551,11 @@ class HTTPResponse:
             if self.length is None:
                 s = self.fp.read()
             else:
-                s = self._safe_read(self.length)
+                try:
+                    s = self._safe_read(self.length)
+                except IncompleteRead:
+                    self.close()
+                    raise
                 self.length = 0
             self.close()        # we read everything
             return s
@@ -565,13 +569,15 @@ class HTTPResponse:
         # connection, and the user is reading more bytes than will be provided
         # (for example, reading in 1k chunks)
         s = self.fp.read(amt)
+        if not s:
+            # Ideally, we would raise IncompleteRead if the content-length
+            # wasn't satisfied, but it might break compatibility.
+            self.close()
         if self.length is not None:
             self.length -= len(s)
             if not self.length:
                 self.close()
-        else:
-            if not s:
-                self.close()
+
         return s
 
     def _read_chunked(self, amt):
