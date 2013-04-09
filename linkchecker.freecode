@@ -2,7 +2,7 @@ Project: LinkChecker
 Version: 8.4
 Release-Focus: Minor feature enhancements
 Hide: N
-Website-URL: http://wummel.github.com/linkchecker/
+Website-URL: http://wummel.github.io/linkchecker/
 Changelog-URL: https://github.com/wummel/linkchecker/blob/master/doc/changelog.txt
 Source-Package-URL: http://github.com/downloads/wummel/linkchecker/LinkChecker-${version}.tar.xz
 Debian-Package-URL: http://packages.debian.org/linkchecker

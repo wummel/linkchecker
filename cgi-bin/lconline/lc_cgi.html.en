@@ -17,7 +17,7 @@ function gettext (s) {
  alink="#191c83">
 
 <center><h2>LinkChecker Online</h2>
-(powered by <a href="http://wummel.github.com/linkchecker/"
+(powered by <a href="http://wummel.github.io/linkchecker/"
 target="_top">LinkChecker</a>)
 </center>
 

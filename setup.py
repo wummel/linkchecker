@@ -861,7 +861,7 @@ args = dict(
     author_email = myemail,
     maintainer = myname,
     maintainer_email = myemail,
-    url = "http://wummel.github.com/linkchecker/",
+    url = "http://wummel.github.io/linkchecker/",
     license = "GPL",
     long_description = """Linkchecker features:
 
