@@ -105,7 +105,7 @@ localbuild: MANIFEST locale
 	cp -f build/lib.$(PLATFORM)-$(PYVER)*/linkcheck/network/_network*.so linkcheck/network
 
 release: distclean releasecheck filescheck
-	$(MAKE) dist sign upload homepage tag register deb
+	$(MAKE) dist sign upload homepage tag register changelog deb
 
 tag:
 	git tag upstream/$(VERSION)
