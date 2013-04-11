@@ -34,7 +34,7 @@ from . import (internpaturl, proxysupport, httpheaders as headers, urlbase,
     get_url_from, pooledconnection)
 # import warnings
 from .const import WARN_HTTP_ROBOTS_DENIED, \
-    WARN_HTTP_WRONG_REDIRECT, WARN_HTTP_MOVED_PERMANENT, \
+    WARN_HTTP_MOVED_PERMANENT, \
     WARN_HTTP_EMPTY_CONTENT, WARN_HTTP_COOKIE_STORE_ERROR, \
     WARN_HTTP_DECOMPRESS_ERROR, WARN_HTTP_UNSUPPORTED_ENCODING, \
     WARN_HTTP_AUTH_UNKNOWN, WARN_HTTP_AUTH_UNAUTHORIZED
@@ -435,16 +435,12 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
                   redirected, self.recursion_level, self.aggregate,
                   parent_url=self.parent_url, base_ref=self.base_ref,
                   line=self.line, column=self.column, name=self.name)
-            msg = _("Redirection to URL `%(newurl)s' with different scheme"
-                   " found; the original URL was `%(url)s'.") % \
-                 {"url": self.url, "newurl": newobj.url}
             if set_result:
-                self.add_warning(msg, tag=WARN_HTTP_WRONG_REDIRECT)
                 self.set_result(_("syntax OK"))
                 # append new object to queue
                 self.aggregate.urlqueue.put(newobj)
                 return False
-            raise LinkCheckerError(msg)
+            raise LinkCheckerError(_('Cannot redirect to different scheme without result'))
         return True
 
     def check301status (self):

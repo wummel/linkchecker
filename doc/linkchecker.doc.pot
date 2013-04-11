@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-02-27 17:20+0100\n"
+"POT-Creation-Date: 2013-04-11 14:16+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1152,8 +1152,8 @@ msgstr ""
 #, no-wrap
 msgid ""
 "  The complete list of recognized, but unsupported links can be found\n"
-"  in the B<unknownurl.py> source file. The most prominent of them\n"
-"  should be JavaScript links.\n"
+"  in the B<linkcheck/checker/unknownurl.py> source file.\n"
+"  The most prominent of them should be JavaScript links.\n"
 msgstr ""
 
 #. type: SH
@@ -1390,43 +1390,36 @@ msgid ""
 "documentation"
 msgstr ""
 
-#. type: Plain text
-#: en/linkchecker.1:505
-msgid ""
-"B<http://linkchecker.git.sf.net/\\:git/gitweb.cgi?p=linkchecker/linkchecker;\\:a=blob;f=linkcheck/checker/unknownurl.py;hb=HEAD> "
-"- the unknown.py source file"
-msgstr ""
-
 #. type: SH
-#: en/linkchecker.1:506 en/linkcheckerrc.5:606 en/linkchecker-gui.1:16
+#: en/linkchecker.1:504 en/linkcheckerrc.5:606 en/linkchecker-gui.1:16
 #, no-wrap
 msgid "SEE ALSO"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:508
+#: en/linkchecker.1:506
 msgid "B<linkcheckerrc>(5)"
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:509 en/linkcheckerrc.5:609 en/linkchecker-gui.1:19
+#: en/linkchecker.1:507 en/linkcheckerrc.5:609 en/linkchecker-gui.1:19
 #, no-wrap
 msgid "AUTHOR"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:511 en/linkcheckerrc.5:611 en/linkchecker-gui.1:21
+#: en/linkchecker.1:509 en/linkcheckerrc.5:611 en/linkchecker-gui.1:21
 msgid "Bastian Kleineidam E<lt>bastian.kleineidam@web.deE<gt>"
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:512 en/linkcheckerrc.5:612 en/linkchecker-gui.1:22
+#: en/linkchecker.1:510 en/linkcheckerrc.5:612 en/linkchecker-gui.1:22
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:513 en/linkcheckerrc.5:613
+#: en/linkchecker.1:511 en/linkcheckerrc.5:613
 msgid "Copyright \\(co 2000-2013 Bastian Kleineidam"
 msgstr ""
 

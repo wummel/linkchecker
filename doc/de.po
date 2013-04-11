@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 3.4\n"
-"POT-Creation-Date: 2013-02-27 17:20+0100\n"
-"PO-Revision-Date: 2013-01-06 18:11+0100\n"
+"POT-Creation-Date: 2013-04-11 14:16+0300\n"
+"PO-Revision-Date: 2013-04-11 18:32+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
 "Language: \n"
@@ -367,14 +367,8 @@ msgstr "B<--check-css>"
 # type: Plain text
 #. type: Plain text
 #: en/linkchecker.1:85 en/linkcheckerrc.5:23
-#, fuzzy
-#| msgid ""
-#| "Check syntax of CSS URLs with cssutils. If it's not installed, check with "
-#| "the W3C online validator."
 msgid "Check syntax of CSS URLs with the W3C online validator."
-msgstr ""
-"Prüfe Syntax von CSS URLs mit cssutils. Wenn es nicht installiert ist, prüfe "
-"mit dem W3C Online Validator."
+msgstr "Prüfe Syntax von CSS URLs mit dem W3C Online Validator."
 
 # type: TP
 #. type: TP
@@ -386,14 +380,8 @@ msgstr "B<--check-html>"
 # type: Plain text
 #. type: Plain text
 #: en/linkchecker.1:88 en/linkcheckerrc.5:28
-#, fuzzy
-#| msgid ""
-#| "Check syntax of HTML URLs with HTML tidy. If it's not installed, check "
-#| "with the W3C online validator."
 msgid "Check syntax of HTML URLs with the W3C online validator."
-msgstr ""
-"Prüfe Syntax von HTML URLs mit HTML tidy. Wenn es nicht installiert ist, "
-"prüfe mit dem W3C Online Validator."
+msgstr "Prüfe Syntax von HTML URLs mit dem W3C Online Validator."
 
 # type: TP
 #. type: TP
@@ -1481,11 +1469,11 @@ msgstr "  Ein nicht unterstützter Link wird nur eine Warnung ausgeben. Weitere 
 #, no-wrap
 msgid ""
 "  The complete list of recognized, but unsupported links can be found\n"
-"  in the B<unknownurl.py> source file. The most prominent of them\n"
-"  should be JavaScript links.\n"
+"  in the B<linkcheck/checker/unknownurl.py> source file.\n"
+"  The most prominent of them should be JavaScript links.\n"
 msgstr ""
 "  Die komplette Liste von erkannten, aber nicht unterstützten Links ist in der\n"
-"  Quelldatei B<unknownurl.py>. Die bekanntesten davon dürften JavaScript-Links sein.\n"
+"  Quelldatei B<linkcheck/checker/unknownurl.py>. Die bekanntesten davon dürften JavaScript-Links sein.\n"
 
 # type: SH
 #. type: SH
@@ -1529,25 +1517,19 @@ msgstr "3. Der URL-Inhalt muss ladbar sein. Dies ist normalerweise der Fall, mit
 
 #. type: Plain text
 #: en/linkchecker.1:432
-#, fuzzy, no-wrap
-#| msgid ""
-#| "4. The maximum recursion level must not be exceeded. It is configured\n"
-#| "   with the ``--recursion-level`` option and is unlimited per default.\n"
+#, no-wrap
 msgid ""
 "4. The maximum recursion level must not be exceeded. It is configured\n"
 "   with the B<--recursion-level> option and is unlimited per default.\n"
-msgstr "4. Die maximale Rekursionstiefe darf nicht überschritten werden. Diese wird mit der Option ``--recursion-level`` konfiguriert und ist standardmäßig nicht limitiert.\n"
+msgstr "4. Die maximale Rekursionstiefe darf nicht überschritten werden. Diese wird mit der Option B<--recursion-level> konfiguriert und ist standardmäßig nicht limitiert.\n"
 
 #. type: Plain text
 #: en/linkchecker.1:435
-#, fuzzy, no-wrap
-#| msgid ""
-#| "5. It must not match the ignored URL list. This is controlled with\n"
-#| "   the ``--ignore-url`` option.\n"
+#, no-wrap
 msgid ""
 "5. It must not match the ignored URL list. This is controlled with\n"
 "   the B<--ignore-url> option.\n"
-msgstr "5. Die URL darf nicht in der Liste von ignorierten URLs sein. Die ignorierten URLs werden mit der Option ``--ignore-url`` konfiguriert.\n"
+msgstr "5. Die URL darf nicht in der Liste von ignorierten URLs sein. Die ignorierten URLs werden mit der Option B<--ignore-url> konfiguriert.\n"
 
 #. type: Plain text
 #: en/linkchecker.1:439
@@ -1560,16 +1542,12 @@ msgstr "6. Das Robots Exclusion Protocol muss es erlauben, dass Verknüpfungen i
 
 #. type: Plain text
 #: en/linkchecker.1:442
-#, fuzzy
-#| msgid ""
-#| "Note that the directory recursion reads all files in that directory, not "
-#| "just a subset like ``index.htm*``."
 msgid ""
 "Note that the directory recursion reads all files in that directory, not "
 "just a subset like B<index.htm*>."
 msgstr ""
 "Beachten Sie, dass die Verzeichnisrekursion alle Dateien in diesem "
-"Verzeichnis liest, nicht nur eine Untermenge wie bspw. ``index.html*``."
+"Verzeichnis liest, nicht nur eine Untermenge wie bspw. B<index.html*>."
 
 # type: SH
 #. type: SH
@@ -1785,53 +1763,42 @@ msgstr ""
 "B<http://docs.python.org/howto/regex.html> - Dokumentation zu regulären "
 "Ausdrücken"
 
-#. type: Plain text
-#: en/linkchecker.1:505
-msgid ""
-"B<http://linkchecker.git.sf.net/\\:git/gitweb.cgi?p=linkchecker/linkchecker;"
-"\\:a=blob;f=linkcheck/checker/unknownurl.py;hb=HEAD> - the unknown.py source "
-"file"
-msgstr ""
-"B<http://linkchecker.git.sf.net/\\:git/gitweb.cgi?p=linkchecker/linkchecker;"
-"\\:a=blob;f=linkcheck/checker/unknownurl.py;hb=HEAD> - die unknown.py "
-"Quelldatei"
-
 # type: SH
 #. type: SH
-#: en/linkchecker.1:506 en/linkcheckerrc.5:606 en/linkchecker-gui.1:16
+#: en/linkchecker.1:504 en/linkcheckerrc.5:606 en/linkchecker-gui.1:16
 #, no-wrap
 msgid "SEE ALSO"
 msgstr "SIEHE AUCH"
 
 # type: TH
 #. type: Plain text
-#: en/linkchecker.1:508
+#: en/linkchecker.1:506
 msgid "B<linkcheckerrc>(5)"
 msgstr "B<linkcheckerrc>(5)"
 
 # type: SH
 #. type: SH
-#: en/linkchecker.1:509 en/linkcheckerrc.5:609 en/linkchecker-gui.1:19
+#: en/linkchecker.1:507 en/linkcheckerrc.5:609 en/linkchecker-gui.1:19
 #, no-wrap
 msgid "AUTHOR"
 msgstr "AUTHOR"
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:511 en/linkcheckerrc.5:611 en/linkchecker-gui.1:21
+#: en/linkchecker.1:509 en/linkcheckerrc.5:611 en/linkchecker-gui.1:21
 msgid "Bastian Kleineidam E<lt>bastian.kleineidam@web.deE<gt>"
 msgstr "Bastian Kleineidam E<lt>bastian.kleineidam@web.deE<gt>"
 
 # type: SH
 #. type: SH
-#: en/linkchecker.1:512 en/linkcheckerrc.5:612 en/linkchecker-gui.1:22
+#: en/linkchecker.1:510 en/linkcheckerrc.5:612 en/linkchecker-gui.1:22
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr "COPYRIGHT"
 
 # type: Plain text
 #. type: Plain text
-#: en/linkchecker.1:513 en/linkcheckerrc.5:613
+#: en/linkchecker.1:511 en/linkcheckerrc.5:613
 msgid "Copyright \\(co 2000-2013 Bastian Kleineidam"
 msgstr "Copyright \\(co 2000-2013 Bastian Kleineidam"
 
@@ -2256,55 +2223,48 @@ msgstr "Standard ist alle URLs anzunehmen und zu prüfen."
 # type: TP
 #. type: TP
 #: en/linkcheckerrc.5:153
-#, fuzzy, no-wrap
-#| msgid "B<maxrunseconds=>I<NUMBER>"
+#, no-wrap
 msgid "B<maxconnectionshttp=>I<NUMBER>"
-msgstr "B<maxrunseconds=>I<NUMBER>"
+msgstr "B<maxconnectionshttp=>I<NUMBER>"
 
 #. type: Plain text
 #: en/linkcheckerrc.5:156
 msgid "Maximum number of connections to HTTP servers."
-msgstr ""
+msgstr "Maximale Anzahl an HTTP-Verbindungen."
 
 #. type: Plain text
 #: en/linkcheckerrc.5:158 en/linkcheckerrc.5:165
-#, fuzzy
-#| msgid "The default number of days is 14."
 msgid "The default is 10."
-msgstr "The Standardanzahl an Tagen ist 14."
+msgstr "Der Standard ist 10."
 
 # type: TP
 #. type: TP
 #: en/linkcheckerrc.5:160
-#, fuzzy, no-wrap
-#| msgid "B<maxrunseconds=>I<NUMBER>"
+#, no-wrap
 msgid "B<maxconnectionshttps=>I<NUMBER>"
-msgstr "B<maxrunseconds=>I<NUMBER>"
+msgstr "B<maxconnectionshttps=>I<NUMBER>"
 
 #. type: Plain text
 #: en/linkcheckerrc.5:163
 msgid "Maximum number of connections to HTTPS servers."
-msgstr ""
+msgstr "Maximale Anzahl an HTTPS-Verbindungen."
 
 # type: TP
 #. type: TP
 #: en/linkcheckerrc.5:167
-#, fuzzy, no-wrap
-#| msgid "B<maxrunseconds=>I<NUMBER>"
+#, no-wrap
 msgid "B<maxconnectionsftp=>I<NUMBER>"
-msgstr "B<maxrunseconds=>I<NUMBER>"
+msgstr "B<maxconnectionsftp=>I<NUMBER>"
 
 #. type: Plain text
 #: en/linkcheckerrc.5:170
 msgid "Maximum number of connections to FTP servers."
-msgstr ""
+msgstr "Maximale Anzahl an FTP-Verbindungen."
 
 #. type: Plain text
 #: en/linkcheckerrc.5:172
-#, fuzzy
-#| msgid "The default number of days is 14."
 msgid "The default is 2."
-msgstr "The Standardanzahl an Tagen ist 14."
+msgstr "Der Standard ist 2."
 
 # type: SS
 #. type: SS
@@ -3721,93 +3681,11 @@ msgstr "B<linkchecker>(1)"
 msgid "Copyright \\(co 2009-2013 Bastian Kleineidam"
 msgstr "Copyright \\(co 2009-2013 Bastian Kleineidam"
 
-# type: Plain text
 #~ msgid ""
-#~ "Check syntax of CSS URLs with the cssutils library, falling back to the "
-#~ "W3C online validator if cssutils is not available."
+#~ "B<http://linkchecker.git.sf.net/\\:git/gitweb.cgi?p=linkchecker/"
+#~ "linkchecker;\\:a=blob;f=linkcheck/checker/unknownurl.py;hb=HEAD> - the "
+#~ "unknown.py source file"
 #~ msgstr ""
-#~ "Prüfe Syntax von CSS URLs mit cssutils. Wenn cssutils nicht installiert "
-#~ "ist, prüfe mit dem W3C Online Validator."
-
-# type: Plain text
-#~ msgid ""
-#~ "Check syntax of HTML URLs with the HTML tidy library, falling back to the "
-#~ "W3C online validator if HTML tidy is not available.."
-#~ msgstr ""
-#~ "Prüfe Syntax von HTML URLs mit HTML tidy. Wenn HTML tidy nicht "
-#~ "installiert ist, prüfe mit dem W3C Online Validator."
-
-#~ msgid ""
-#~ "  - ``acap:``      (application configuration access protocol)\n"
-#~ "  - ``afs:``       (Andrew File System global file names)\n"
-#~ "  - ``chrome:``    (Mozilla specific)\n"
-#~ "  - ``cid:``       (content identifier)\n"
-#~ "  - ``clsid:``     (Microsoft specific)\n"
-#~ "  - ``data:``      (data)\n"
-#~ "  - ``dav:``       (dav)\n"
-#~ "  - ``fax:``       (fax)\n"
-#~ "  - ``feed:``      (News feeds)\n"
-#~ "  - ``find:``      (Mozilla specific)\n"
-#~ "  - ``gopher:``    (Gopher)\n"
-#~ "  - ``imap:``      (internet message access protocol)\n"
-#~ "  - ``isbn:``      (ISBN (int. book numbers))\n"
-#~ "  - ``javascript:`` (JavaScript)\n"
-#~ "  - ``ldap:``      (Lightweight Directory Access Protocol)\n"
-#~ "  - ``mailserver:`` (Access to data available from mail servers)\n"
-#~ "  - ``mid:``       (message identifier)\n"
-#~ "  - ``mms:``       (multimedia stream)\n"
-#~ "  - ``modem:``     (modem)\n"
-#~ "  - ``nfs:``       (network file system protocol)\n"
-#~ "  - ``opaquelocktoken:`` (opaquelocktoken)\n"
-#~ "  - ``pop:``       (Post Office Protocol v3)\n"
-#~ "  - ``prospero:``  (Prospero Directory Service)\n"
-#~ "  - ``rsync:``     (rsync protocol)\n"
-#~ "  - ``rtsp:``      (real time streaming protocol)\n"
-#~ "  - ``service:``   (service location)\n"
-#~ "  - ``shttp:``     (secure HTTP)\n"
-#~ "  - ``sip:``       (session initiation protocol)\n"
-#~ "  - ``steam:``     (Steam browser protocol)\n"
-#~ "  - ``tel:``       (telephone)\n"
-#~ "  - ``tip:``       (Transaction Internet Protocol)\n"
-#~ "  - ``tn3270:``    (Interactive 3270 emulation sessions)\n"
-#~ "  - ``vemmi:``     (versatile multimedia interface)\n"
-#~ "  - ``wais:``      (Wide Area Information Servers)\n"
-#~ "  - ``z39.50r:``   (Z39.50 Retrieval)\n"
-#~ "  - ``z39.50s:``   (Z39.50 Session)\n"
-#~ msgstr ""
-#~ "  - ``acap:``      (application configuration access protocol)\n"
-#~ "  - ``afs:``       (Andrew File System global file names)\n"
-#~ "  - ``chrome:``    (Mozilla specific)\n"
-#~ "  - ``cid:``       (content identifier)\n"
-#~ "  - ``clsid:``     (Microsoft specific)\n"
-#~ "  - ``data:``      (data)\n"
-#~ "  - ``dav:``       (dav)\n"
-#~ "  - ``fax:``       (fax)\n"
-#~ "  - ``feed:``      (News feeds)\n"
-#~ "  - ``find:``      (Mozilla specific)\n"
-#~ "  - ``gopher:``    (Gopher)\n"
-#~ "  - ``imap:``      (internet message access protocol)\n"
-#~ "  - ``isbn:``      (ISBN (int. book numbers))\n"
-#~ "  - ``javascript:`` (JavaScript)\n"
-#~ "  - ``ldap:``      (Lightweight Directory Access Protocol)\n"
-#~ "  - ``mailserver:`` (Access to data available from mail servers)\n"
-#~ "  - ``mid:``       (message identifier)\n"
-#~ "  - ``mms:``       (multimedia stream)\n"
-#~ "  - ``modem:``     (modem)\n"
-#~ "  - ``nfs:``       (network file system protocol)\n"
-#~ "  - ``opaquelocktoken:`` (opaquelocktoken)\n"
-#~ "  - ``pop:``       (Post Office Protocol v3)\n"
-#~ "  - ``prospero:``  (Prospero Directory Service)\n"
-#~ "  - ``rsync:``     (rsync protocol)\n"
-#~ "  - ``rtsp:``      (real time streaming protocol)\n"
-#~ "  - ``service:``   (service location)\n"
-#~ "  - ``shttp:``     (secure HTTP)\n"
-#~ "  - ``sip:``       (session initiation protocol)\n"
-#~ "  - ``steam:``     (Steam browser protocol)\n"
-#~ "  - ``tel:``       (telephone)\n"
-#~ "  - ``tip:``       (Transaction Internet Protocol)\n"
-#~ "  - ``tn3270:``    (Interactive 3270 emulation sessions)\n"
-#~ "  - ``vemmi:``     (versatile multimedia interface)\n"
-#~ "  - ``wais:``      (Wide Area Information Servers)\n"
-#~ "  - ``z39.50r:``   (Z39.50 Retrieval)\n"
-#~ "  - ``z39.50s:``   (Z39.50 Session)\n"
+#~ "B<http://linkchecker.git.sf.net/\\:git/gitweb.cgi?p=linkchecker/"
+#~ "linkchecker;\\:a=blob;f=linkcheck/checker/unknownurl.py;hb=HEAD> - die "
+#~ "unknown.py Quelldatei"

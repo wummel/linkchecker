@@ -92,10 +92,10 @@ Gebe die Version aus und beende das Programm.
 .SS Ausgabeoptionen
 .TP 
 \fB\-\-check\-css\fP
-Check syntax of CSS URLs with the W3C online validator.
+Prüfe Syntax von CSS URLs mit dem W3C Online Validator.
 .TP 
 \fB\-\-check\-html\fP
-Check syntax of HTML URLs with the W3C online validator.
+Prüfe Syntax von HTML URLs mit dem W3C Online Validator.
 .TP 
 \fB\-\-complete\fP
 Gebe alle geprüften URLs aus. Standard ist es, doppelte URLs nur einmal
@@ -416,7 +416,7 @@ Nicht unterstützte Links (\*(lqjavascript:\*(lq, etc.)
   Ein nicht unterstützter Link wird nur eine Warnung ausgeben. Weitere Prüfungen werden nicht durchgeführt.
   
   Die komplette Liste von erkannten, aber nicht unterstützten Links ist in der
-  Quelldatei \fBunknownurl.py\fP. Die bekanntesten davon dürften JavaScript\-Links sein.
+  Quelldatei \fBlinkcheck/checker/unknownurl.py\fP. Die bekanntesten davon dürften JavaScript\-Links sein.
 
 .SH Rekursion
 Bevor eine URL rekursiv geprüft wird, hat diese mehrere Bedingungen zu
@@ -428,16 +428,14 @@ erfüllen. Diese werden in folgender Reihenfolge geprüft:
 
 3. Der URL\-Inhalt muss ladbar sein. Dies ist normalerweise der Fall, mit Ausnahme von mailto: oder unbekannten URL\-Typen.
 
-4. The maximum recursion level must not be exceeded. It is configured
-   with the \fB\-\-recursion\-level\fP option and is unlimited per default.
+4. Die maximale Rekursionstiefe darf nicht überschritten werden. Diese wird mit der Option \fB\-\-recursion\-level\fP konfiguriert und ist standardmäßig nicht limitiert.
 
-5. It must not match the ignored URL list. This is controlled with
-   the \fB\-\-ignore\-url\fP option.
+5. Die URL darf nicht in der Liste von ignorierten URLs sein. Die ignorierten URLs werden mit der Option \fB\-\-ignore\-url\fP konfiguriert.
 
 6. Das Robots Exclusion Protocol muss es erlauben, dass Verknüpfungen in der URL rekursiv verfolgt werden können. Dies wird geprüft, indem in den HTML Kopfdaten nach der "nofollow"\-Direktive gesucht wird.
 
-Note that the directory recursion reads all files in that directory, not
-just a subset like \fBindex.htm*\fP.
+Beachten Sie, dass die Verzeichnisrekursion alle Dateien in diesem
+Verzeichnis liest, nicht nur eine Untermenge wie bspw. \fBindex.html*\fP.
 
 .SH BEMERKUNGEN
 URLs von der Kommandozeile die mit \fBftp.\fP beginnen werden wie \fBftp://ftp.\fP
@@ -504,9 +502,6 @@ Ausgabe Enkodierungen
 .br
 \fBhttp://docs.python.org/howto/regex.html\fP \- Dokumentation zu regulären
 Ausdrücken
-.br
-\fBhttp://linkchecker.git.sf.net/\:git/gitweb.cgi?p=linkchecker/linkchecker;\:a=blob;f=linkcheck/checker/unknownurl.py;hb=HEAD\fP
-\- die unknown.py Quelldatei
 
 .SH "SIEHE AUCH"
 \fBlinkcheckerrc\fP(5)

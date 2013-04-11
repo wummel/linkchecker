@@ -35,7 +35,6 @@ class TestHttpsRedirect (HttpServerTest):
             u"cache key %s" % nurl,
             u"real url %s" % url,
             u"info Redirected to `%s'." % rurl.replace('http:', 'https:'),
-            u"warning Redirection to URL `%s' with different scheme found; the original URL was `%s'." % (rurl.replace('http:', 'https:'), nurl),
             u"valid",
             u"url %s" % rurl,
             u"cache key %s" % rurl,

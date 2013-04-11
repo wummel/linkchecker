@@ -94,7 +94,6 @@ WARN_FILE_SYSTEM_PATH = "file-system-path"
 WARN_FTP_MISSING_SLASH = "ftp-missing-slash"
 WARN_HTTP_ROBOTS_DENIED = "http-robots-denied"
 WARN_HTTP_MOVED_PERMANENT = "http-moved-permanent"
-WARN_HTTP_WRONG_REDIRECT = "http-wrong-redirect"
 WARN_HTTP_EMPTY_CONTENT = "http-empty-content"
 WARN_HTTP_COOKIE_STORE_ERROR = "http-cookie-store-error"
 WARN_HTTP_DECOMPRESS_ERROR = "http-decompress-error"
@@ -132,8 +131,6 @@ Warnings = {
     WARN_FTP_MISSING_SLASH: _("The ftp: URL is missing a trailing slash."),
     WARN_HTTP_ROBOTS_DENIED: _("The http: URL checking has been denied."),
     WARN_HTTP_MOVED_PERMANENT: _("The URL has moved permanently."),
-    WARN_HTTP_WRONG_REDIRECT:
-        _("The URL has been redirected to an URL of a different type."),
     WARN_HTTP_EMPTY_CONTENT: _("The URL had no content."),
     WARN_HTTP_COOKIE_STORE_ERROR:
         _("An error occurred while storing a cookie."),

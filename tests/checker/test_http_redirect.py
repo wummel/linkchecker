@@ -82,7 +82,6 @@ class TestHttpRedirect (HttpServerTest):
             u"cache key %s" % nurl,
             u"real url %s" % nurl,
             u"info Redirected to `%s'." % rurl,
-            u"warning Redirection to URL `%s' with different scheme found; the original URL was `%s'." % (rurl, nurl),
             u"valid",
             u"url %s" % rurl,
             u"cache key %s" % rurl,
