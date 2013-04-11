@@ -105,11 +105,9 @@ Print version and exit.
 
 <DL COMPACT>
 <DT><B>--check-css</B><DD>
-Check syntax of CSS URLs with cssutils. If it's not installed,
-check with the W3C online validator.
+Check syntax of CSS URLs with the W3C online validator.
 <DT><B>--check-html</B><DD>
-Check syntax of HTML URLs with HTML tidy. If it's not installed,
-check with the W3C online validator.
+Check syntax of HTML URLs with the W3C online validator.
 <DT><B>--complete</B><DD>
 Log all URLs, including duplicates. Default is to log duplicate URLs only once.
 <DT><B>-D</B><I>STRING</I>, <B>--debug=</B><I>STRING</I><DD>
@@ -409,8 +407,8 @@ For each mail address we check the following things:
 <BR>&nbsp;&nbsp;will&nbsp;be&nbsp;made.
 <BR>&nbsp;&nbsp;
 <BR>&nbsp;&nbsp;The&nbsp;complete&nbsp;list&nbsp;of&nbsp;recognized,&nbsp;but&nbsp;unsupported&nbsp;links&nbsp;can&nbsp;be&nbsp;found
-<BR>&nbsp;&nbsp;in&nbsp;the&nbsp;<B>unknownurl.py</B>&nbsp;source&nbsp;file.&nbsp;The&nbsp;most&nbsp;prominent&nbsp;of&nbsp;them
-<BR>&nbsp;&nbsp;should&nbsp;be&nbsp;JavaScript&nbsp;links.
+<BR>&nbsp;&nbsp;in&nbsp;the&nbsp;<B>linkcheck/checker/unknownurl.py</B>&nbsp;source&nbsp;file.
+<BR>&nbsp;&nbsp;The&nbsp;most&nbsp;prominent&nbsp;of&nbsp;them&nbsp;should&nbsp;be&nbsp;JavaScript&nbsp;links.
 <P>
 </DL>
 <A NAME="lbAP">&nbsp;</A>
@@ -431,17 +429,17 @@ conditions. They are checked in this order:
 <BR>&nbsp;&nbsp;&nbsp;except&nbsp;for&nbsp;example&nbsp;mailto:&nbsp;or&nbsp;unknown&nbsp;URL&nbsp;types.
 <P>
 4. The maximum recursion level must not be exceeded. It is configured
-<BR>&nbsp;&nbsp;&nbsp;with&nbsp;the&nbsp;``--recursion-level``&nbsp;option&nbsp;and&nbsp;is&nbsp;unlimited&nbsp;per&nbsp;default.
+<BR>&nbsp;&nbsp;&nbsp;with&nbsp;the&nbsp;<B>--recursion-level</B>&nbsp;option&nbsp;and&nbsp;is&nbsp;unlimited&nbsp;per&nbsp;default.
 <P>
 5. It must not match the ignored URL list. This is controlled with
-<BR>&nbsp;&nbsp;&nbsp;the&nbsp;``--ignore-url``&nbsp;option.
+<BR>&nbsp;&nbsp;&nbsp;the&nbsp;<B>--ignore-url</B>&nbsp;option.
 <P>
 6. The Robots Exclusion Protocol must allow links in the URL to be
 <BR>&nbsp;&nbsp;&nbsp;followed&nbsp;recursively.&nbsp;This&nbsp;is&nbsp;checked&nbsp;by&nbsp;searching&nbsp;for&nbsp;a
 <BR>&nbsp;&nbsp;&nbsp;&quot;nofollow&quot;&nbsp;directive&nbsp;in&nbsp;the&nbsp;HTML&nbsp;header&nbsp;data.
 <P>
 Note that the directory recursion reads all files in that
-directory, not just a subset like ``index.htm*``.
+directory, not just a subset like <B>index.htm*</B>.
 <P>
 <A NAME="lbAQ">&nbsp;</A>
 <H2>NOTES</H2>
@@ -523,9 +521,6 @@ might slow down the program or even the whole system.
 <BR>
 
 <B><A HREF="http://docs.python.org/howto/regex.html">http://docs.python.org/howto/regex.html</A></B> - regular expression documentation
-<BR>
-
-<B><A HREF="http://linkchecker.git.sf.net/git/gitweb.cgi?p=linkchecker/linkchecker;:a=blob;f=linkcheck/checker/unknownurl.py;hb=HEAD">http://linkchecker.git.sf.net/git/gitweb.cgi?p=linkchecker/linkchecker;:a=blob;f=linkcheck/checker/unknownurl.py;hb=HEAD</A></B> - the unknown.py source file
 <P>
 <A NAME="lbAV">&nbsp;</A>
 <H2>SEE ALSO</H2>
