@@ -1,4 +1,4 @@
-HTMLDIR:=$(HOME)/public_html/linkchecker.git/source
+HTMLDIR:=web/media
 MANHTMLFILES:= \
 	$(HTMLDIR)/man1/linkchecker.1.html \
 	$(HTMLDIR)/man5/linkcheckerrc.5.html \

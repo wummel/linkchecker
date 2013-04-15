@@ -4,12 +4,15 @@ PYTHON?=python$(PYVER)
 VERSION:=$(shell $(PYTHON) setup.py --version)
 PLATFORM:=$(shell $(PYTHON) -c "from distutils.util import get_platform; print get_platform()")
 APPNAME:=$(shell $(PYTHON) setup.py --name)
+AUTHOR:=$(shell $(PYTHON) setup.py --author)
+MAINTAINER:=$(shell $(PYTHON) setup.py --maintainer)
 LAPPNAME:=$(shell echo $(APPNAME)|tr "[A-Z]" "[a-z]")
 ARCHIVE_SOURCE:=$(APPNAME)-$(VERSION).tar.xz
 ARCHIVE_WIN32:=$(APPNAME)-$(VERSION).exe
 GITUSER:=wummel
 GITREPO:=$(LAPPNAME)
 HOMEPAGE:=$(HOME)/public_html/$(LAPPNAME)-webpage.git
+WEB_META:=doc/web/app.yaml
 DEBUILDDIR:=$(HOME)/projects/debian/official
 DEBORIGFILE:=$(DEBUILDDIR)/$(LAPPNAME)_$(VERSION).orig.tar.xz
 DEBPACKAGEDIR:=$(DEBUILDDIR)/$(APPNAME)-$(VERSION)
@@ -114,10 +117,15 @@ upload:
 	  dist/$(ARCHIVE_SOURCE).asc dist/$(ARCHIVE_WIN32).asc
 
 homepage:
+# update metadata
+	@echo "version: \"$(VERSION)\"" > $(WEB_META)
+	@echo "name: \"$(APPNAME)\"" >> $(WEB_META)
+	@echo "lname: \"$(LAPPNAME)\"" >> $(WEB_META)
+	@echo "maintainer: \"$(MAINTAINER)\"" >> $(WEB_META)
+	@echo "author: \"$(AUTHOR)\"" >> $(WEB_META)
 # update documentation and man pages
 	$(MAKE) -C doc man
-# generate static files
-	make -C $(HOMEPAGE) gen upload
+	$(MAKE) -C doc/web release
 
 register:
 	@echo "Register at Python Package Index..."
