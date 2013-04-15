@@ -57,16 +57,13 @@ PEP8OPTS:=--repeat --ignore=E211,E501,E225,E301,E302,E241 \
 PY2APPOPTS ?=
 ifeq ($(shell uname),Darwin)
   CHMODMINUSMINUS:=
-  NUMPROCESSORS:=$(shell sysctl -n hw.ncpu)
 else
   CHMODMINUSMINUS:=--
-  NUMPROCESSORS:=$(shell grep -c processor /proc/cpuinfo)
 endif
 # Pytest options:
-# - use multiple processors
+# - use multiple processes
 # - write test results in file
-# - log test durations
-PYTESTOPTS:=-n $(NUMPROCESSORS) --resultlog=testresults.txt --durations=0
+PYTESTOPTS:=-n 4 --resultlog=testresults.txt
 
 
 all:
