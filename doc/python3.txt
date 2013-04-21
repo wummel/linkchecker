@@ -1,13 +1,13 @@
 Porting status of dependent Python packages
 ============================================
 
-Date: 08.08.2012
+Date: 18.04.2013
 
 OK   Python
 OK   Qt/PyQt
 OK   mod_wsgi from http://code.google.com/p/modwsgi/
 OK   argcomplete from https://pypi.python.org/pypi/argcomplete
 OK   dnspython (as dnspython3)
-TODO(optional) GeoIP from http://www.maxmind.com/app/python
+OK   pygeoip from https://pypi.python.org/pypi/pygeoip/
+OK   Port Python Gtk stuff to PyGObject https://live.gnome.org/PyGObject/IntrospectionPorting
 TODO(optional) Twill from http://twill.idyll.org/
-TODO(optional) Python Gtk from http://www.pygtk.org/downloads.html
