@@ -48,7 +48,7 @@ has_embedded_dot = re.compile(r"[a-zA-Z0-9]\.[a-zA-Z]").search
 
 # Pattern for finding cookie snatched from Pythons Cookie.py
 # Modification: allow whitespace in values.
-LegalChars = r"\w\d!#%&'~_`><@,:/\$\*\+\-\.\^\|\)\(\?\}\{\="
+LegalChars = r"\w\d!#%&'~_`><@,:/\"\$\*\+\-\.\^\|\)\(\?\}\{\="
 CookiePattern = re.compile(r"""
     (?P<key>                   # Start of group 'key'
     [%(legalchars)s]+?         # Any word of at least one letter, nongreedy
@@ -303,7 +303,7 @@ class HttpCookie (object):
         parts = []
         if "version" in self.attributes:
             parts.append("$Version=%s" % quote(self.attributes["version"]))
-        parts.append("%s=%s" % (self.name, quote(self.value)))
+        parts.append("%s=%s" % (self.name, self.value))
         parts.extend(["$%s=%s"% (self.attribute_names[k], self.quote(k, v)) \
                   for k, v in self.attributes.items() if k != "version"])
         return "; ".join(parts)
