@@ -104,9 +104,6 @@ class UrlBase (object):
         "text/vnd.wap.wml": "wml",
     }
 
-    # Set maximum file size for downloaded files in bytes.
-    MaxFilesizeBytes = 1024*1024*5
-
     def __init__ (self, base_url, recursion_level, aggregate,
                   parent_url=None, base_ref=None, line=-1, column=-1,
                   name=u"", url_encoding=None, extern=None):
@@ -756,10 +753,10 @@ class UrlBase (object):
     def read_content (self):
         """Return data and data size for this URL.
         Can be overridden in subclasses."""
-        if self.size > self.MaxFilesizeBytes:
+        if self.size > self.aggregate.config["maxfilesize"]:
             raise LinkCheckerError(_("File size too large"))
-        data = self.url_connection.read(self.MaxFilesizeBytes+1)
-        if len(data) > self.MaxFilesizeBytes:
+        data = self.url_connection.read(self.aggregate.config["maxfilesize"]+1)
+        if len(data) > self.aggregate.config["maxfilesize"]:
             raise LinkCheckerError(_("File size too large"))
         if not self.is_local():
             urls = self.aggregate.add_download_data(self.cache_content_key, data)

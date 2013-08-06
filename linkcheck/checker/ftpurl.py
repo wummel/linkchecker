@@ -220,7 +220,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledco
                 urls = self.aggregate.add_download_data(self.cache_content_key, s)
                 self.warn_duplicate_content(urls)
                 # limit the download size
-                if (buf.tell() + len(s)) > self.MaxFilesizeBytes:
+                if (buf.tell() + len(s)) > self.aggregate.config["maxfilesize"]:
                     raise LinkCheckerError(_("FTP file size too large"))
                 buf.write(s)
             self.url_connection.retrbinary(ftpcmd, stor_data)
