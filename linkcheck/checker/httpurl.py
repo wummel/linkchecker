@@ -279,6 +279,10 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
                 # Zope or IIS server could not get Content-Type with HEAD
                 # http://intermapper.com.dev4.silvertech.net/bogus.aspx
                 return True
+            contenttype = self.getheader('Content-Type', u'')
+            if (self.aggregate.config["textplainfallback"]
+             and contenttype.startswith("text/plain")):
+                return True
         return False
 
     def fallback_to_get(self):

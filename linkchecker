@@ -405,6 +405,11 @@ group.add_argument("--user-agent", dest="useragent", metavar="STRING",
 """Specify the User-Agent string to send to the HTTP server, for example
 "Mozilla/4.0". The default is "LinkChecker/X.Y" where X.Y is the current
 version of LinkChecker."""))
+group.add_argument("--text-plain-fallback", action="store_true",
+                 dest="textplainfallback", default=False,
+                 help=_(
+"""Fallback straight to GET requests if a HEAD request returns
+text/plain as the content type."""))
 
 argparser.add_argument('url', nargs='*')
 ################# auto completion #####################
@@ -586,7 +591,7 @@ if options.cookiefile is not None:
 if constructauth:
     config.add_auth(pattern=".+", user=_username, password=_password)
 # boolean options
-for option in ("checkhtml", "checkcss", "scanvirus"):
+for option in ("checkhtml", "checkcss", "scanvirus", "textplainfallback"):
     if getattr(options, option):
         config[option] = getattr(options, option)
 # read missing passwords
