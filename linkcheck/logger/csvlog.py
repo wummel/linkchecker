@@ -129,3 +129,12 @@ class CSVLogger (Logger):
         if self.has_part("outro"):
             self.write_outro()
         self.close_fileoutput()
+
+Loggers = {"csv": CSVLogger}
+LoggerArgs = {
+    "csv": {
+        "filename": "linkchecker-out.csv",
+        'separator': ';',
+        "quotechar": '"',
+    }
+}

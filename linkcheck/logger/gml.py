@@ -70,3 +70,10 @@ class GMLLogger (GraphLogger):
     def end_graph (self):
         """Write end of graph marker."""
         self.writeln(u"]")
+
+Loggers = {"gml": GMLLogger}
+LoggerArgs = {
+    "gml": {
+        "filename": "linkchecker-out.gml",
+    }
+}

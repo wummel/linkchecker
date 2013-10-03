@@ -131,3 +131,12 @@ class SQLLogger (Logger):
         if self.has_part("outro"):
             self.write_outro()
         self.close_fileoutput()
+
+Loggers = {"sql": SQLLogger}
+LoggerArgs = {
+    "sql": {
+        "filename": "linkchecker-out.sql",
+        'separator': ';',
+        'dbname': 'linksdb',
+    }
+}

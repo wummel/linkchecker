@@ -96,3 +96,10 @@ class CustomXMLLogger (xmllog.XMLLogger):
         self.xml_endtag(u"linkchecker")
         self.xml_end_output()
         self.close_fileoutput()
+
+Loggers = {"xml": CustomXMLLogger}
+LoggerArgs = {
+    "xml": {
+        "filename": "linkchecker-out.xml",
+    }
+}

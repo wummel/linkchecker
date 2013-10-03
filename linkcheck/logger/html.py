@@ -319,3 +319,17 @@ class HtmlLogger (Logger):
         if self.has_part("outro"):
             self.write_outro()
         self.close_fileoutput()
+
+Loggers = {"html": HtmlLogger}
+LoggerArgs = {
+    "html": {
+        "filename":        "linkchecker-out.html",
+        'colorbackground': '#fff7e5',
+        'colorurl':        '#dcd5cf',
+        'colorborder':     '#000000',
+        'colorlink':       '#191c83',
+        'colorwarning':    '#e0954e',
+        'colorerror':      '#db4930',
+        'colorok':         '#3ba557',
+    }
+}

@@ -446,34 +446,22 @@ class Logger (object):
             return modified.isoformat(sep)
         return u""
 
+Loggers = {}
+LoggerArgs = {}
 
-# the standard URL logger implementations
-from .text import TextLogger
-from .html import HtmlLogger
-from .gml import GMLLogger
-from .dot import DOTLogger
-from .sql import SQLLogger
-from .csvlog import CSVLogger
-from .blacklist import BlacklistLogger
-from .gxml import GraphXMLLogger
-from .customxml import CustomXMLLogger
-from .none import NoneLogger
-from .sitemapxml import SitemapXmlLogger
+# load up any logger plugins
+cur_dir = os.path.dirname(globals()['__file__'])
+for filename in os.listdir(cur_dir):
+    if len(filename) > 0 and filename[0] in ['.','_']:
+       continue
+    if len(filename) <= 3 or filename[-3:] != '.py':
+       continue
+    module_name = filename[:-3]
+    m = __import__(module_name, globals=globals(), level=1)
+    if hasattr(m, 'Loggers'):
+        Loggers.update(m.Loggers)
+    if hasattr(m, 'LoggerArgs'):
+        LoggerArgs.update(m.LoggerArgs)
 
-
-# default URL logger classes
-Loggers = {
-    "text": TextLogger,
-    "html": HtmlLogger,
-    "gml": GMLLogger,
-    "dot": DOTLogger,
-    "sql": SQLLogger,
-    "csv": CSVLogger,
-    "blacklist": BlacklistLogger,
-    "gxml": GraphXMLLogger,
-    "xml": CustomXMLLogger,
-    "sitemap": SitemapXmlLogger,
-    "none": NoneLogger,
-}
 # for easy printing: a comma separated logger list
 LoggerKeys = ", ".join(repr(name) for name in Loggers)

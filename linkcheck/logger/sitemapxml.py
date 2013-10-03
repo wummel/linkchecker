@@ -110,3 +110,11 @@ class SitemapXmlLogger (xmllog.XMLLogger):
         self.xml_endtag(u"urlset")
         self.xml_end_output()
         self.close_fileoutput()
+
+Loggers = {"sitemap": SitemapXmlLogger}
+LoggerArgs = {
+    "sitemap": {
+        "filename": "linkchecker-out.sitemap.xml",
+        "encoding": "utf-8",
+    }
+}

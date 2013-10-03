@@ -89,3 +89,10 @@ class BlacklistLogger (Logger):
         self.close_fileoutput()
         # restore umask
         os.umask(oldmask)
+
+Loggers = {"blacklist": BlacklistLogger}
+LoggerArgs = {
+    "blacklist": {
+        "filename": "~/.linkchecker/blacklist",
+    }
+}

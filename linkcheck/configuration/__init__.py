@@ -152,62 +152,6 @@ class Configuration (dict):
         self["status_wait_seconds"] = 5
         self["fileoutput"] = []
         # Logger configurations
-        self["text"] = {
-            "filename": "linkchecker-out.txt",
-            'colorparent':  "default",
-            'colorurl':     "default",
-            'colorname':    "default",
-            'colorreal':    "cyan",
-            'colorbase':    "purple",
-            'colorvalid':   "bold;green",
-            'colorinvalid': "bold;red",
-            'colorinfo':    "default",
-            'colorwarning': "bold;yellow",
-            'colordltime':  "default",
-            'colordlsize':  "default",
-            'colorreset':   "default",
-        }
-        self['html'] = {
-            "filename":        "linkchecker-out.html",
-            'colorbackground': '#fff7e5',
-            'colorurl':        '#dcd5cf',
-            'colorborder':     '#000000',
-            'colorlink':       '#191c83',
-            'colorwarning':    '#e0954e',
-            'colorerror':      '#db4930',
-            'colorok':         '#3ba557',
-        }
-        self['gml'] = {
-            "filename": "linkchecker-out.gml",
-        }
-        self['sql'] = {
-            "filename": "linkchecker-out.sql",
-            'separator': ';',
-            'dbname': 'linksdb',
-        }
-        self['csv'] = {
-            "filename": "linkchecker-out.csv",
-            'separator': ';',
-            "quotechar": '"',
-        }
-        self['blacklist'] = {
-            "filename": "~/.linkchecker/blacklist",
-        }
-        self['xml'] = {
-            "filename": "linkchecker-out.xml",
-        }
-        self['gxml'] = {
-            "filename": "linkchecker-out.gxml",
-        }
-        self['dot'] = {
-            "filename": "linkchecker-out.dot",
-            "encoding": "ascii",
-        }
-        self['sitemap'] = {
-            "filename": "linkchecker-out.sitemap.xml",
-            "encoding": "utf-8",
-        }
-        self['none'] = {}
         self['output'] = 'text'
         self['logger'] = None
         self["warningregex"] = None
@@ -230,8 +174,9 @@ class Configuration (dict):
         self["maxconnectionshttp"] = 10
         self["maxconnectionshttps"] = 10
         self["maxconnectionsftp"] = 2
-        from ..logger import Loggers
+        from ..logger import Loggers, LoggerArgs
         self.loggers = dict(**Loggers)
+        self.loggerargs = dict(**LoggerArgs)
 
     def init_logging (self, status_logger, debug=None, handler=None):
         """
@@ -289,7 +234,7 @@ class Configuration (dict):
         Instantiate new logger and return it.
         """
         args = {}
-        args.update(self[loggertype])
+        args.update(self.loggerargs[loggertype])
         args.update(kwargs)
         return self.loggers[loggertype](**args)
 
