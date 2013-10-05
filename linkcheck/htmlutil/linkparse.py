@@ -108,6 +108,7 @@ class TitleFinder (object):
         super(TitleFinder, self).__init__()
         log.debug(LOG_CHECK, "HTML title parser")
         self.title = None
+        self.h1 = None
 
     def start_element (self, tag, attrs):
         """Search for <title> tag."""
@@ -115,9 +116,12 @@ class TitleFinder (object):
             data = self.parser.peek(MAX_TITLELEN)
             data = data.decode(self.parser.encoding, "ignore")
             self.title = linkname.title_name(data)
-            raise StopParse("found <title> tag")
-        elif tag == 'body':
-            raise StopParse("found <body> tag")
+        elif tag == 'h1':
+            data = self.parser.peek(MAX_TITLELEN)
+            data = data.decode(self.parser.encoding, "ignore")
+            self.h1 = linkname.h1_name(data)
+        if self.h1:
+            raise StopParse("found <h1> tag")
 
 
 class TagFinder (object):
