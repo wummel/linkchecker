@@ -34,14 +34,12 @@ This option enables logging of the warning <B>url-anchor-not-found</B>.
 
 Command line option: <B>--anchors</B>
 <DT><B>checkcss=</B>[<B>0</B>|<B>1</B>]<DD>
-Check syntax of CSS URLs with the cssutils library, falling back to the
-W3C online validator if cssutils is not available.
+Check syntax of CSS URLs with the W3C online validator.
 <BR>
 
 Command line option: <B>--check-css</B>
 <DT><B>checkhtml=</B>[<B>0</B>|<B>1</B>]<DD>
-Check syntax of HTML URLs with the HTML tidy library, falling back to the
-W3C online validator if HTML tidy is not available..
+Check syntax of HTML URLs with the W3C online validator.
 <BR>
 
 Command line option: <B>--check-html</B>
@@ -171,6 +169,30 @@ given number of URLs is checked.
 <BR>
 
 The default is to queue and check all URLs.
+<BR>
+
+Command line option: none
+<DT><B>maxconnectionshttp=</B><I>NUMBER</I><DD>
+Maximum number of connections to HTTP servers.
+<BR>
+
+The default is 10.
+<BR>
+
+Command line option: none
+<DT><B>maxconnectionshttps=</B><I>NUMBER</I><DD>
+Maximum number of connections to HTTPS servers.
+<BR>
+
+The default is 10.
+<BR>
+
+Command line option: none
+<DT><B>maxconnectionsftp=</B><I>NUMBER</I><DD>
+Maximum number of connections to FTP servers.
+<BR>
+
+The default is 2.
 <BR>
 
 Command line option: none
