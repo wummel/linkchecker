@@ -1,0 +1,5 @@
+app: !include app.yaml
+output_dir: ~/public_html/linkchecker-webpage.git
+output_exclude: ["todo"]
+keywords: "link,URL,validation,crawler"
+extra_plugins_markdown: ["tables"]
