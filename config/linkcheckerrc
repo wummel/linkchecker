@@ -188,6 +188,9 @@
 #maxconnectionshttp=10
 #maxconnectionshttps=10
 #maxconnectionsftp=2
+# Maximum size in bytes for downloaded files. Any URL with a larger file size
+# will be skipped. 
+#maxfilesize=1500000
 
 ##################### filtering options ##########################
 [filtering]

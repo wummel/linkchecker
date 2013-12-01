@@ -666,15 +666,15 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
             # Re-read size info, since the GET request result could be different
             # than a former HEAD request.
             self.add_size_info()
-        if self.size > self.MaxFilesizeBytes:
+        if self.size > self.aggregate.config["maxfilesize"]:
             raise LinkCheckerError(_("File size too large"))
         self.charset = headers.get_charset(self.headers)
         return self._read_content()
 
     def _read_content (self):
         """Read URL contents."""
-        data = self.response.read(self.MaxFilesizeBytes+1)
-        if len(data) > self.MaxFilesizeBytes:
+        data = self.response.read(self.aggregate.config["maxfilesize"]+1)
+        if len(data) > self.aggregate.config["maxfilesize"]:
             raise LinkCheckerError(_("File size too large"))
         dlsize = len(data)
         urls = self.aggregate.add_download_data(self.cache_content_key, data)

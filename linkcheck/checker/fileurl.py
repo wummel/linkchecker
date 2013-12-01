@@ -203,7 +203,7 @@ class FileUrl (urlbase.UrlBase):
     def read_content (self):
         """Return file content, or in case of directories a dummy HTML file
         with links to the files."""
-        if self.size > self.MaxFilesizeBytes:
+        if self.size > self.aggregate.config["maxfilesize"]:
             raise LinkCheckerError(_("File size too large"))
         if self.is_directory():
             data = get_index_html(get_files(self.get_os_filename()))

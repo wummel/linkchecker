@@ -167,6 +167,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         self.read_string_option(section, "localwebroot")
         self.read_int_option(section, "warnsslcertdaysvalid", min=1)
         self.read_int_option(section, "maxrunseconds", min=0)
+        self.read_int_option(section, "maxfilesize", min=1)
 
     def read_authentication_config (self):
         """Read configuration options in section "authentication"."""
