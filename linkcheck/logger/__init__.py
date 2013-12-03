@@ -436,14 +436,14 @@ class Logger (object):
         self.stats.downloaded_bytes = download_stats
 
     def format_modified(self, modified, sep=" "):
-        """Format modification date if it's not None.
-        @param modified: modification date
+        """Format modification date in UTC if it's not None.
+        @param modified: modification date in UTC
         @ptype modified: datetime or None
         @return: formatted date or empty string
         @rtype: unicode
         """
         if modified is not None:
-            return modified.isoformat(sep)
+            return modified.strftime("%Y-%m-%d{0}%H:%M:%S.%fZ".format(sep))
         return u""
 
 
