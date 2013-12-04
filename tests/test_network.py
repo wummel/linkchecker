@@ -39,7 +39,8 @@ class TestNetwork (unittest.TestCase):
     @need_network
     @need_linux
     def test_iputils (self):
-        host = "www.golem.de"
+        # note: need a hostname whose reverse lookup of the IP is the same host
+        host = "dinsdale.python.org"
         ips = iputil.resolve_host(host)
         self.assertTrue(len(ips) > 0)
         obfuscated = iputil.obfuscate_ip(ips.pop())
