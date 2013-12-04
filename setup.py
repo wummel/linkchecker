@@ -283,7 +283,10 @@ def sign_the_code (dist_dir):
     app_dir = os.path.join(dist_dir, "%s.app" % AppName)
     args = ['codesign', '-s', myname, '-v', app_dir]
     print("*** signing the application code ***")
-    subprocess.check_call(args)
+    try:
+        subprocess.check_call(args)
+    except subprocess.CalledProcessError, msg:
+        print("WARN: codesigning failed", msg)
 
 
 def add_msvc_files (files):
