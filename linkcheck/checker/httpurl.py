@@ -678,7 +678,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
             raise LinkCheckerError(_("File size too large"))
         dlsize = len(data)
         urls = self.aggregate.add_download_data(self.cache_content_key, data)
-        self.warn_duplicate_content(urls)
         encoding = headers.get_content_encoding(self.headers)
         if encoding in SUPPORTED_ENCODINGS:
             try:

@@ -30,14 +30,12 @@ url /?d=directory&p=page1
 cache key http://localhost:%(port)d/?d=directory&p=page1
 real url http://localhost:%(port)d/?d=directory&p=page1
 name should not be cached
-warning Content with 309B is the same as in URLs (http://localhost:%(port)d/?d=directory&p=page).
 valid
 
 url /?q=ü
 cache key http://localhost:%(port)d/?q=%%C3%%BC
 real url http://localhost:%(port)d/?q=%%C3%%BC
 name html entities
-warning Content with 309B is the same as in URLs (http://localhost:%(port)d/?d=directory&p=page,http://localhost:%(port)d/?d=directory&p=page1).
 valid
 
 url file.css
@@ -70,9 +68,7 @@ valid
 
 url http://example.org/foo/ #a=1,2,3
 cache key http://example.org/foo/%%20#a%%3D1%%2C2%%2C3
-real url http://www.iana.org/domains/example#a%%3D1%%2C2%%2C3
-info Redirected to `http://www.iana.org/domains/example/'.
-info Redirected to `http://www.iana.org/domains/example'.
+real url http://example.org/foo/%%20#a%%3D1%%2C2%%2C3
 warning Anchor `a%%3D1%%2C2%%2C3' not found. Available anchors: -.
 valid
 

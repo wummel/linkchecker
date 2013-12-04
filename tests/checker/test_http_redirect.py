@@ -63,7 +63,6 @@ class TestHttpRedirect (HttpServerTest):
             u"real url %s" % rurl,
             u"name Recursive Redirect",
             u"info 1 URL parsed.",
-            u"warning Content with 45B is the same as in URLs (%s)." % nurl,
             u"valid",
         ]
         self.direct(url, resultlines, recursionlevel=99)

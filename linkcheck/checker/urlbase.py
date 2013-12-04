@@ -40,8 +40,7 @@ from .const import (WARN_URL_EFFECTIVE_URL,
     WARN_URL_CONTENT_SIZE_TOO_LARGE, WARN_URL_CONTENT_SIZE_ZERO,
     WARN_URL_CONTENT_SIZE_UNEQUAL, WARN_URL_WHITESPACE,
     WARN_URL_TOO_LONG, URL_MAX_LENGTH, URL_WARN_LENGTH,
-    WARN_URL_CONTENT_DUPLICATE, WARN_SYNTAX_HTML,
-    WARN_SYNTAX_CSS,
+    WARN_SYNTAX_HTML, WARN_SYNTAX_CSS,
     ExcList, ExcSyntaxList, ExcNoCacheList)
 
 # helper alias
@@ -763,23 +762,7 @@ class UrlBase (object):
             raise LinkCheckerError(_("File size too large"))
         if not self.is_local():
             urls = self.aggregate.add_download_data(self.cache_content_key, data)
-            self.warn_duplicate_content(urls)
         return data, len(data)
-
-    def warn_duplicate_content(self, urls):
-        """If given URL list is not empty, warn about duplicate URL content.
-        @param urls: URLs with duplicate content
-        @ptype urls: list of unicode
-        """
-        if not urls or self.size <= 0:
-            return
-        if urlutil.is_duplicate_content_url(self.url, urls[0]):
-            return
-        args = dict(
-            urls=u",".join(urls),
-            size=_(" with %s") % strformat.strsize(self.size),
-        )
-        self.add_warning(_("Content%(size)s is the same as in URLs (%(urls)s).") % args, tag=WARN_URL_CONTENT_DUPLICATE)
 
     def check_content (self):
         """Check content data for warnings, syntax errors, viruses etc."""
