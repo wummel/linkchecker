@@ -1,4 +1,5 @@
 language:
+- objective-c
 - python
 python:
   - "2.7"
@@ -8,13 +9,13 @@ branches:
     - travis
 # install required programs
 before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq python-dev qt4-dev-tools
+  - brew update
+  - brew install pyqt
 # command to install dependencies
 install:
   - pip install -r requirements.txt --use-mirrors
 # command to run tests
-script: make test PYTESTOPTS="--tb=short" TESTS=tests/test_network.py
+script: make app
 # do not send emails of broken builds
 notifications:
   email: false
