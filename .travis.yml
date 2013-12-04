@@ -9,7 +9,7 @@ branches:
 # install some archive programs
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install -qq python-dev libqt4-dev
+  - sudo apt-get install -qq python-dev qt4-dev-tools
 # command to install dependencies
 install:
   - pip install -r requirements.txt --use-mirrors
