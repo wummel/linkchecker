@@ -1,0 +1,21 @@
+language:
+- python
+python:
+  - "2.7"
+# whitelist of git branches to build
+branches:
+  only:
+    - travis
+# install some archive programs
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq python-dev libqt4-dev
+# command to install dependencies
+install:
+  - pip install -r requirements.txt --use-mirrors
+# command to run tests
+# XXX for now only one test
+script: make test PYTESTOPTS="--tb=short -n10" TESTS=tests/test_network.py::TestNetwork::test_ifreq_size
+# do not send emails of broken builds
+notifications:
+  email: false
