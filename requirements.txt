@@ -4,3 +4,5 @@ argcomplete
 twill
 # for testing:
 pyftpdlib
+# for building on osx:
+py2app
