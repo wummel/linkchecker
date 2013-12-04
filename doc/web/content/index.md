@@ -51,3 +51,13 @@ Other linkcheckers
 -------------------
 If this software does not fit your requirements, you can check out
 [other free linkcheckers](other.html).
+
+
+Test suite status
+------------------
+Linkchecker has extensive unit tests to ensure the code quality.
+[Travis CI](https://travis-ci.org/) is used for continuous build
+and test integration.
+
+[![Build Status](https://travis-ci.org/wummel/linkchecker.png)](https://travis-ci.org/wummel/linkchecker)
+
