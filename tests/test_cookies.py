@@ -58,8 +58,9 @@ class TestCookies (unittest.TestCase):
         self.assertTrue(cookie.is_expired())
 
     def test_netscape_cookie3 (self):
+        # invalid port
         data = (
-            ("Foo", "Bar\""),
+            ("Foo", "Bar"),
             ("Port", "hul,la"),
         )
         value = "; ".join('%s="%s"' % (key, value) for key, value in data)
@@ -71,7 +72,7 @@ class TestCookies (unittest.TestCase):
 
     def test_netscape_cookie4 (self):
         data = (
-            ("Foo", "Bar\""),
+            ("Foo", "Bar"),
             ("Domain", "localhost"),
             ("Port", "100,555,76"),
         )
@@ -200,8 +201,9 @@ class TestCookies (unittest.TestCase):
         self.assertTrue(cookie.is_expired())
 
     def test_rfc_cookie3 (self):
+        # invalid port
         data = (
-            ("Foo", "Bar\""),
+            ("Foo", "Bar"),
             ("Port", "hul,la"),
         )
         value = "; ".join('%s="%s"' % (key, value) for key, value in data)
@@ -213,7 +215,7 @@ class TestCookies (unittest.TestCase):
 
     def test_rfc_cookie4 (self):
         data = (
-            ("Foo", "Bar\""),
+            ("Foo", "Bar"),
             ("Port", "100,555,76"),
         )
         value = "; ".join('%s="%s"' % (key, value) for key, value in data)

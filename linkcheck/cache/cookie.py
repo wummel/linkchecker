@@ -38,8 +38,9 @@ class CookieJar (object):
         errors = []
         for h in headers.getallmatchingheaders("Set-Cookie"):
             # RFC 2109 (Netscape) cookie type
+            name, value = h.split(':', 1)
             try:
-                cookie = cookies.NetscapeCookie(h, scheme, host, path)
+                cookie = cookies.NetscapeCookie(value, scheme, host, path)
                 if cookie in self.cache:
                     self.cache.remove(cookie)
                 if not cookie.is_expired():
@@ -50,8 +51,9 @@ class CookieJar (object):
                 errors.append(errmsg)
         for h in headers.getallmatchingheaders("Set-Cookie2"):
             # RFC 2965 cookie type
+            name, value = h.split(':', 1)
             try:
-                cookie = cookies.Rfc2965Cookie(h, scheme, host, path)
+                cookie = cookies.Rfc2965Cookie(value, scheme, host, path)
                 if cookie in self.cache:
                     self.cache.remove(cookie)
                 if not cookie.is_expired():

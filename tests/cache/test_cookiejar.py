@@ -39,33 +39,36 @@ class TestCookieJar (unittest.TestCase):
         jar = linkcheck.cache.cookie.CookieJar()
         data = (
             ("Foo", "Bar"),
-            ("Domain", "example.org"),
+            ("Domain", host),
             ("Path", "/"),
         )
         value = "; ".join('%s=%s' % (key, value) for key, value in data)
         headers = get_headers('Set-Cookie', value)
-        jar.add(headers, scheme, host, path)
+        errors = jar.add(headers, scheme, host, path)
+        self.assertFalse(errors, str(errors))
         self.assertEqual(len(jar.cache), 1)
         # add updated cookie
         data = (
             ("FOO", "Baz"),
-            ("Domain", "example.org"),
+            ("Domain", host),
             ("Path", "/"),
         )
         value = "; ".join('%s=%s' % (key, value) for key, value in data)
         headers = get_headers('Set-Cookie', value)
-        jar.add(headers, scheme, host, path)
+        errors = jar.add(headers, scheme, host, path)
+        self.assertFalse(errors, str(errors))
         self.assertEqual(len(jar.cache), 1)
         # remove cookie
         data = (
             ("FOO", "Baz"),
-            ("Domain", "example.org"),
+            ("Domain", host),
             ("Path", "/"),
             ("Max-Age", "0"),
         )
         value = "; ".join('%s=%s' % (key, value) for key, value in data)
         headers = get_headers('Set-Cookie', value)
-        jar.add(headers, scheme, host, path)
+        errors = jar.add(headers, scheme, host, path)
+        self.assertFalse(errors, str(errors))
         self.assertEqual(len(jar.cache), 0)
 
     def test_cookie_cache2 (self):
@@ -75,31 +78,34 @@ class TestCookieJar (unittest.TestCase):
         jar = linkcheck.cache.cookie.CookieJar()
         data = (
             ("Foo", "Bar"),
-            ("Domain", "example.org"),
+            ("Domain", host),
             ("Path", "/"),
         )
         value = "; ".join('%s=%s' % (key, value) for key, value in data)
         headers = get_headers('Set-Cookie2', value)
-        jar.add(headers, scheme, host, path)
+        errors = jar.add(headers, scheme, host, path)
+        self.assertFalse(errors, str(errors))
         self.assertEqual(len(jar.cache), 1)
         # add updated cookie
         data = (
             ("Foo", "Baz"),
-            ("Domain", "EXAMPLE.org"),
+            ("Domain", host.upper()),
             ("Path", "/"),
         )
         value = "; ".join('%s=%s' % (key, value) for key, value in data)
         headers = get_headers('Set-Cookie2', value)
-        jar.add(headers, scheme, host, path)
+        errors = jar.add(headers, scheme, host, path)
+        self.assertFalse(errors, str(errors))
         self.assertEqual(len(jar.cache), 1)
         # remove cookie
         data = (
             ("FOO", "Baz"),
-            ("Domain", "example.org"),
+            ("Domain", host),
             ("Path", "/"),
             ("Max-Age", "0"),
         )
         value = "; ".join('%s=%s' % (key, value) for key, value in data)
         headers = get_headers('Set-Cookie2', value)
-        jar.add(headers, scheme, host, path)
+        errors = jar.add(headers, scheme, host, path)
+        self.assertFalse(errors, str(errors))
         self.assertEqual(len(jar.cache), 0)
