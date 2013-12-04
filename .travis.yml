@@ -10,10 +10,10 @@ branches:
 # install required programs
 before_install:
   - brew update
-  - brew install gettext
-  - brew link --force gettext
   - brew install python
   - brew install pyqt
+  - brew install gettext
+  - brew link --force gettext
 # command to install dependencies
 install:
   - pip install -r requirements.txt --use-mirrors
