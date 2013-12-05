@@ -165,7 +165,6 @@ app: distclean localbuild chmod
 appinstall:	app
 	mkdir -p dist/mnt
 	hdiutil attach -mountpoint dist/mnt dist/$(APPNAME)-$(VERSION).dmg
-	ls -laR dist/mnt
 	-find / -name find_modules.py 2>/dev/null
 	-find / -name sip.py 2>/dev/null
 	-open -n dist/mnt/$(APPNAME).app
