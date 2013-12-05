@@ -165,8 +165,9 @@ app: distclean localbuild chmod
 appinstall:	app
 	mkdir -p dist/mnt
 	hdiutil attach -mountpoint dist/mnt dist/$(APPNAME)-$(VERSION).dmg
-	ls -la dist/mnt
-
+	ls -la dist/mnt /Applications
+	-cp dist/mnt/$(APPNAME).app /Applications
+	hdiutil detach dist/mnt
 
 # Build RPM installer with cx_Freeze
 rpm:
