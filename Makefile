@@ -165,10 +165,11 @@ app: distclean localbuild chmod
 appinstall:	app
 	mkdir -p dist/mnt
 	hdiutil attach -mountpoint dist/mnt dist/$(APPNAME)-$(VERSION).dmg
-	-find / -name find_modules.py 2>/dev/null
-	-find / -name sip.py 2>/dev/null
-	-open -n dist/mnt/$(APPNAME).app
-	hdiutil detach dist/mnt
+	cat /usr/local/lib/python2.7/site-packages/modulegraph/find_modules.py
+	cat /usr/local/lib/python2.7/site-packages/py2app/recipes/sip.py
+	-man open
+	open -n dist/mnt/$(APPNAME).app
+	-hdiutil detach dist/mnt
 
 # Build RPM installer with cx_Freeze
 rpm:
