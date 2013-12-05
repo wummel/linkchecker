@@ -18,7 +18,7 @@ before_install:
 install:
   - pip install -r requirements.txt --use-mirrors
 # command to run tests
-script: make app
+script: make appinstall
 # do not send emails of broken builds
 notifications:
   email: false

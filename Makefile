@@ -162,6 +162,12 @@ dist: locale MANIFEST chmod
 app: distclean localbuild chmod
 	$(PYTHON) setup.py py2app $(PY2APPOPTS)
 
+appinstall:	app
+	mkdir -p dist/mnt
+	hdiutil attach -mountpoint dist/mnt dist/$(APPNAME)-$(VERSION).dmg
+	ls -la dist/mnt
+
+
 # Build RPM installer with cx_Freeze
 rpm:
 	$(MAKE) -C doc/html
