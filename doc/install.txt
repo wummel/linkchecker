@@ -116,15 +116,33 @@ Manual setup for OSX systems
 
 1. Install the XCode developer tools
 
-2. Install homebrew_ and then install pyqt.
+2. Install homebrew_
    
    .. _homebrew: http://mxcl.github.com/homebrew/
 
+3. Install dependencies
+
+   brew update
+   brew install python
+   brew install pyqt
+   brew install gettext
+   # link gettext or put the msgfmt binary in your PATH
+   brew link --force gettext
+   pip install -r requirements.txt --use-mirrors
+
 3. Run ``make app``.
-   
-   Note: this appears not to be working due to bugs
-   in third-party libraries (but it worked the last time I had
-   an OSX system available).
+
+4. Install the resulting .dmg
+
+   # mount DMG
+   mkdir -p dist/mnt
+   hdiutil attach -mountpoint dist/mnt dist/LinkChecker-x.y.z.dmg
+   # to run directly
+   open -n dist/mnt/LinkChecker.app --args http://www.example.org
+   # install the app
+   sudo cp -r dist/mnt/LinkChecker.app /Applications
+   # unmount DMG
+   hdiutil detach dist/mnt
 
 
 WSGI web interface

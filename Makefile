@@ -162,16 +162,6 @@ dist: locale MANIFEST chmod
 app: distclean localbuild chmod
 	$(PYTHON) setup.py py2app $(PY2APPOPTS)
 
-appinstall:	app
-	mkdir -p dist/mnt
-	hdiutil attach -mountpoint dist/mnt dist/$(APPNAME)-$(VERSION).dmg
-#	cat /usr/local/lib/python2.7/site-packages/modulegraph/find_modules.py
-#	cat /usr/local/lib/python2.7/site-packages/py2app/recipes/sip.py
-	man -P cat open
-	open -n dist/mnt/$(APPNAME).app --args http://www.example.org
-	sleep 10
-	-hdiutil detach dist/mnt
-
 # Build RPM installer with cx_Freeze
 rpm:
 	$(MAKE) -C doc/html
