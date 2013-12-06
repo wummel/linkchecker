@@ -5,7 +5,7 @@ python:
 # whitelist of git branches to build
 branches:
   only:
-    - travis
+    - master
 # install required programs
 before_install:
   - sudo apt-get update -qq
