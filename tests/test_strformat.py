@@ -20,6 +20,7 @@ Test string formatting operations.
 
 import unittest
 import os
+import time
 import linkcheck.strformat
 
 
@@ -120,8 +121,8 @@ class TestStrFormat (unittest.TestCase):
 
     def test_strtime (self):
         zone = linkcheck.strformat.strtimezone()
-        t = linkcheck.strformat.strtime(0)
-        self.assertEqual(t, "1970-01-01 01:00:00"+zone)
+        t = linkcheck.strformat.strtime(0, func=time.gmtime)
+        self.assertEqual(t, "1970-01-01 00:00:00"+zone)
 
     def test_duration (self):
         duration = linkcheck.strformat.strduration

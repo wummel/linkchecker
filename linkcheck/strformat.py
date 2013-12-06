@@ -199,10 +199,9 @@ def strsize (b, grouping=True):
     return u"%sGB" % locale.format("%.1f", (float(b) / (1024*1024*1024)), grouping)
 
 
-def strtime (t):
+def strtime (t, func=time.localtime):
     """Return ISO 8601 formatted time."""
-    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(t)) + \
-           strtimezone()
+    return time.strftime("%Y-%m-%d %H:%M:%S", func(t)) + strtimezone()
 
 
 # from quodlibet
