@@ -11,6 +11,12 @@ Changes:
 - cmdline: Replace argument parsing. No changes in functionality, only
   the help text will be formatted different.
 
+Fixes:
+- checking: Apache Coyote (the HTTP server of Tomcat) sends the wrong
+  Content-Type on HEAD requests. Automatically fallback to GET in this
+  case.
+  Closes: GH bug #414
+
 
 8.4 "Frankenweenie" (released 25.01.2013)
 

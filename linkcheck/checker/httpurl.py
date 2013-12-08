@@ -274,10 +274,11 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
             # Other sites send 200 with HEAD, but 404 with GET. Bummer.
             poweredby = self.getheader('X-Powered-By', u'')
             server = self.getheader('Server', u'')
+            # Some servers (Zope, Apache Coyote/Tomcat, IIS have wrong
+            # content type with HEAD. This seems to be a common problem.
             if (poweredby.startswith('Zope') or server.startswith('Zope')
+             or server.startswith('Apache-Coyote')
              or ('ASP.NET' in poweredby and 'Microsoft-IIS' in server)):
-                # Zope or IIS server could not get Content-Type with HEAD
-                # http://intermapper.com.dev4.silvertech.net/bogus.aspx
                 return True
         return False
 
