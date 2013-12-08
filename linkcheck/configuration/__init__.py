@@ -230,6 +230,7 @@ class Configuration (dict):
         self["maxconnectionshttp"] = 10
         self["maxconnectionshttps"] = 10
         self["maxconnectionsftp"] = 2
+        self["textplainfallback"] = False
         from ..logger import Loggers
         self.loggers = dict(**Loggers)
 

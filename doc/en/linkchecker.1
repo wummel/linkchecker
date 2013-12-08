@@ -228,6 +228,11 @@ no default username. See also \fB\-p\fP.
 Specify the User-Agent string to send to the HTTP server, for example
 "Mozilla/4.0". The default is "LinkChecker/X.Y" where X.Y is the current
 version of LinkChecker.
+.TP
+\fB\-\-text\-plain\-fallback\fP
+Fallback straight to GET requests if a HEAD request returns text/plain
+as the content type. This is useful with misconfigured web servers
+that respond to a HEAD request with the wrong Content-Type header.
 
 .SH "CONFIGURATION FILES"
 Configuration files can specify all options above. They can also

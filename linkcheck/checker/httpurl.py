@@ -280,6 +280,10 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
              or server.startswith('Apache-Coyote')
              or ('ASP.NET' in poweredby and 'Microsoft-IIS' in server)):
                 return True
+            contenttype = self.getheader('Content-Type', u'')
+            if (self.aggregate.config["textplainfallback"]
+             and contenttype.startswith("text/plain")):
+                return True
         return False
 
     def fallback_to_get(self):
