@@ -681,6 +681,7 @@ elif do_freeze:
             cmd_obj = self.distribution.get_command_obj("install_lib")
             cmd_obj.ensure_finalized()
             self.outfiles.append(cmd_obj.get_conf_output()+"c")
+    insert_dns_path()
 
 
 class InnoScript:

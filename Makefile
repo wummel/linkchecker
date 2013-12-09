@@ -168,6 +168,10 @@ rpm:
 	$(MAKE) -C linkcheck/HtmlParser
 	$(PYTHON) setup.py bdist_rpm
 
+# Build portable Linux app
+binary:	distclean localbuild chmod
+	LINKCHECKER_FREEZE=1 $(PYTHON) setup.py bdist
+
 # The check programs used here are mostly local scripts on my private system.
 # So for other developers there is no need to execute this target.
 check:
