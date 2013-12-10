@@ -3,8 +3,6 @@
 Features:
 - checking: Make per-host connection limits configurable.
 - checking: Avoid DoS in SSL certificate host matcher.
-- checking: Do not use GET on POST forms.
-  Closes: GH bug #405
 
 Changes:
 - checking: Always use the W3C validator to check HTML or CSS syntax.
@@ -20,6 +18,10 @@ Fixes:
   Content-Type on HEAD requests. Automatically fallback to GET in this
   case.
   Closes: GH bug #414
+- checking: Do not use GET on POST forms.
+  Closes: GH bug #405
+- scripts: Fix argument parsing in linkchecker-nagios
+  Closes: GH bug #404
 
 
 8.4 "Frankenweenie" (released 25.01.2013)

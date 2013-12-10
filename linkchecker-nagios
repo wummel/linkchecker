@@ -28,10 +28,9 @@ import pprint
 # installs _() and _n() gettext functions into global namespace
 import linkcheck
 # override argparse gettext method with the one from linkcheck.init_i18n()
-argparse._ = _
+#argparse._ = _
 # now import the rest of the linkchecker gang
-from linkcheck.cmdline import print_version, print_usage, LCHelpFormatter, \
-  aggregate_url
+from linkcheck.cmdline import print_version, print_usage, aggregate_url, LCArgumentParser
 from linkcheck import log, LOG_CMDLINE, strformat
 import linkcheck.checker
 import linkcheck.configuration
@@ -55,12 +54,15 @@ Epilog = u"\n".join((Retval, Examples))
 
 
 # instantiate option parser and configure options
-class ArgumentParser(argparse.ArgumentParser):
+class ArgumentParser(LCArgumentParser):
     def error(self, message):
         self.print_usage(sys.stderr)
         self.exit(3, _('%s: error: %s\n') % (self.prog, message))
 
-argparser = ArgumentParser(formatter_class=LCHelpFormatter, epilog=Epilog)
+argparser = ArgumentParser(
+  epilog=Epilog,
+  formatter_class=argparse.RawDescriptionHelpFormatter
+)
 
 # build a config object for this check session
 config = linkcheck.configuration.Configuration()
