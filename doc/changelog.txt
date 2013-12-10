@@ -3,6 +3,8 @@
 Features:
 - checking: Make per-host connection limits configurable.
 - checking: Avoid DoS in SSL certificate host matcher.
+- checking: Do not use GET on POST forms.
+  Closes: GH bug #405
 
 Changes:
 - checking: Always use the W3C validator to check HTML or CSS syntax.

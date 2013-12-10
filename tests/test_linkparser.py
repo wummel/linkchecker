@@ -40,14 +40,28 @@ class TestLinkparser (unittest.TestCase):
             pass
         h.parser = None
         p.handler = None
+        self.assertEqual(self.count_url, 1)
 
     def _test_one_url (self, origurl):
         """Return parser callback function."""
         def callback (url, line, column, name, base):
             self.count_url += 1
-            self.assertEqual(self.count_url, 1)
             self.assertEqual(origurl, url)
         return callback
+
+    def _test_no_link (self, content):
+        def callback (url, line, column, name, base):
+            self.assertTrue(False, 'URL %r found' % url)
+        h = linkparse.LinkFinder(callback)
+        p = linkcheck.HtmlParser.htmlsax.parser(h)
+        h.parser = p
+        try:
+            p.feed(content)
+            p.flush()
+        except linkparse.StopParse:
+            pass
+        h.parser = None
+        p.handler = None
 
     def test_href_parsing (self):
         # Test <a href> parsing.
@@ -60,6 +74,15 @@ class TestLinkparser (unittest.TestCase):
         self._test_one_link(content % url, url)
         url = u" alink "
         self._test_one_link(content % url, url)
+
+    def test_form_parsing(self):
+        # Test <form action> parsing
+        content = u'<form action="%s">'
+        url = u"alink"
+        self._test_one_link(content % url, url)
+        content = u'<form action="%s" method="POST">'
+        url = u"alink"
+        self._test_no_link(content % url)
 
     def test_css_parsing (self):
         # Test css style attribute parsing.

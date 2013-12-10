@@ -174,6 +174,15 @@ def is_meta_url (attr, attrs):
     return res
 
 
+def is_form_get(attr, attrs):
+    """Check if this is a GET form action URL."""
+    res = False
+    if attr == "action":
+        method = attrs.get_true('method', u'').lower()
+        res = method != 'post'
+    return res
+
+
 class LinkFinder (TagFinder):
     """Find HTML links, and apply them to the callback function with the
     format (url, lineno, column, name, codebase)."""
@@ -207,6 +216,8 @@ class LinkFinder (TagFinder):
             if attr not in attrs:
                 continue
             if tag == "meta" and not is_meta_url(attr, attrs):
+                continue
+            if tag == "form" and not is_form_get(attr, attrs):
                 continue
             # name of this link
             name = self.get_link_name(tag, attrs, attr)
