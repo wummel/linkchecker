@@ -761,7 +761,7 @@ class UrlBase (object):
         if len(data) > self.MaxFilesizeBytes:
             raise LinkCheckerError(_("File size too large"))
         if not self.is_local():
-            urls = self.aggregate.add_download_data(self.cache_content_key, data)
+            self.aggregate.add_download_data(self.cache_content_key, data)
         return data, len(data)
 
     def check_content (self):

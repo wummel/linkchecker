@@ -21,7 +21,7 @@ import time
 import threading
 from .. import log, LOG_CHECK, strformat
 from ..decorators import synchronized
-from ..cache import urlqueue, content
+from ..cache import urlqueue
 from . import logger, status, checker, cleanup
 
 
@@ -141,11 +141,8 @@ class Aggregate (object):
         @ptype url: unicode
         @param data: downloaded data
         @ptype data: string
-        @return: URLs with duplicate contents
-        @rtype: list of unicode
         """
         self.downloaded_bytes += len(data)
-        return content.get_checksum_urls(url, data)
 
     def gather_statistics(self):
         """Gather download and cache statistics and send them to the
