@@ -10,6 +10,8 @@ Changes:
 - checking: Remove the url-content-duplicate warning.
 - cmdline: Replace argument parsing. No changes in functionality, only
   the help text will be formatted different.
+- gui: Check early if help files are not found.
+  Closes: GH bug #437
 
 Fixes:
 - checking: Apache Coyote (the HTTP server of Tomcat) sends the wrong

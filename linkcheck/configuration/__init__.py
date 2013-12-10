@@ -96,7 +96,8 @@ def get_share_file (devel_dir, filename):
     @param filename: filename to search for
     @ptype filename: string
     @return: the found filename or None
-    @rtype: string or None
+    @rtype: string
+    @raises: ValueError if not found
     """
     paths = [
         # when developing
@@ -112,7 +113,8 @@ def get_share_file (devel_dir, filename):
         if os.path.isfile(fullpath):
             return fullpath
     # not found
-    return None
+    msg = "%s not found in %s; check your installation" % (filename, paths)
+    raise ValueError(msg)
 
 
 # dynamic options
