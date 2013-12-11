@@ -1,5 +1,10 @@
 Upgrading
 =========
+Migrating from 8.4 to 8.5
+--------------------------
+Custom output loggers have been changed.
+See doc/web/content/faq.md for an example with custom loggers.
+
 Migrating from 8.0 to 8.1
 -------------------------
 All loggers have an additional output field "modified".
