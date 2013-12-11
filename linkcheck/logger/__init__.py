@@ -135,7 +135,7 @@ class LogStatistics (object):
         self.internal_errors += 1
 
 
-class Logger (object):
+class _Logger (object):
     """
     Base class for logging of checked urls. It defines the public API
     (see below) and offers basic functionality for all loggers.
@@ -164,6 +164,12 @@ class Logger (object):
     """
     __metaclass__ = abc.ABCMeta
 
+    # A lowercase name for this logger, usable for option values
+    LoggerName = None
+
+    # Default log configuration
+    LoggerArgs = {}
+
     def __init__ (self, **args):
         """
         Initialize a logger, looking for part restrictions in kwargs.
@@ -191,6 +197,12 @@ class Logger (object):
         self.codec_errors = "replace"
         # Flag to see if logger is active. Can be deactivated on errors.
         self.is_active = True
+
+    def get_args(self, kwargs):
+        """Construct log configuration from default and user args."""
+        args = dict(self.LoggerArgs)
+        args.update(kwargs)
+        return args
 
     def get_charset_encoding (self):
         """Translate the output encoding to a charset encoding name."""
@@ -446,34 +458,13 @@ class Logger (object):
             return modified.strftime("%Y-%m-%d{0}%H:%M:%S.%fZ".format(sep))
         return u""
 
-
-# the standard URL logger implementations
-from .text import TextLogger
-from .html import HtmlLogger
-from .gml import GMLLogger
-from .dot import DOTLogger
-from .sql import SQLLogger
-from .csvlog import CSVLogger
-from .blacklist import BlacklistLogger
-from .gxml import GraphXMLLogger
-from .customxml import CustomXMLLogger
-from .none import NoneLogger
-from .sitemapxml import SitemapXmlLogger
+def _get_loggers():
+    """Return list of Logger classes."""
+    from .. import loader
+    modules = loader.get_modules('logger')
+    return list(loader.get_plugins(modules, _Logger))
 
 
-# default URL logger classes
-Loggers = {
-    "text": TextLogger,
-    "html": HtmlLogger,
-    "gml": GMLLogger,
-    "dot": DOTLogger,
-    "sql": SQLLogger,
-    "csv": CSVLogger,
-    "blacklist": BlacklistLogger,
-    "gxml": GraphXMLLogger,
-    "xml": CustomXMLLogger,
-    "sitemap": SitemapXmlLogger,
-    "none": NoneLogger,
-}
-# for easy printing: a comma separated logger list
-LoggerKeys = ", ".join(repr(name) for name in Loggers)
+LoggerClasses = _get_loggers()
+LoggerNames = [x.LoggerName for x in LoggerClasses]
+LoggerKeys = ", ".join(repr(x) for x in LoggerNames)

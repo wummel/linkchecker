@@ -20,20 +20,25 @@ A blacklist logger.
 
 import os
 import codecs
-from . import Logger
+from . import _Logger
 
 
-class BlacklistLogger (Logger):
+class BlacklistLogger (_Logger):
     """
     Updates a blacklist of wrong links. If a link on the blacklist
     is working (again), it is removed from the list. So after n days
     we have only links on the list which failed for n days.
     """
 
-    def __init__ (self, **args):
-        """
-        Intialize with old blacklist data (if found, else not).
-        """
+    LoggerName = "blacklist"
+
+    LoggerArgs = {
+        "filename": "~/.linkchecker/blacklist",
+    }
+
+    def __init__ (self, **kwargs):
+        """Intialize with old blacklist data (if found, else not)."""
+        args = self.get_args(kwargs)
         super(BlacklistLogger, self).__init__(**args)
         self.init_fileoutput(args)
         self.blacklist = {}

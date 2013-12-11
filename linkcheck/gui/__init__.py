@@ -221,8 +221,8 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         # dictionary holding overwritten values
         self.config_backup = {}
         # set standard GUI configuration values
-        self.config.logger_add("gui", SignalLogger)
-        self.config["logger"] = self.config.logger_new('gui',
+        self.config.logger_add(SignalLogger)
+        self.config["logger"] = self.config.logger_new(SignalLogger.LoggerName,
             signal=self.log_url_signal, stats=self.log_stats_signal)
         self.config["status"] = True
         self.config["status_wait_seconds"] = 2

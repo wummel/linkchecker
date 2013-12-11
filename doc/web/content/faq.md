@@ -98,17 +98,21 @@ A: Use the `--check-html` and `--check-css` options.
 **Q: I want to have my own logging class. How can I use it in LinkChecker?**
 
 A: A Python API lets you define new logging classes.
-Define your own logging class as a subclass of StandardLogger or any other
+Define your own logging class as a subclass of _Logger or any other
 logging class in the log module.
-Then call the addLogger function in Config.Configuration to register
+Then call the add_logger function in Config.Configuration to register
 your new Logger.
 After this append a new Logging instance to the fileoutput.
 
 ```python
-import linkcheck, MyLogger
-log_format = 'mylog'
-log_args = {'fileoutput': log_format, 'filename': 'foo.txt'}
+import linkcheck
+class MyLogger(linkcheck.logger._Logger):
+    LoggerName = 'mylog'
+    LoggerArgs = {'fileoutput': log_format, 'filename': 'foo.txt'}
+
+    # ...
+
 cfg = linkcheck.configuration.Configuration()
-cfg.logger_add(log_format, MyLogger.MyLogger)
-cfg['fileoutput'].append(cfg.logger_new(log_format, log_args)) 
+cfg.logger_add(MyLogger)
+cfg['fileoutput'].append(cfg.logger_new(MyLogger.LoggerName)) 
 ```

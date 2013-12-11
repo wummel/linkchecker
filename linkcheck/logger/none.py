@@ -17,13 +17,15 @@
 """
 A dummy logger.
 """
-from . import Logger
+from . import _Logger
 
 
-class NoneLogger (Logger):
+class NoneLogger (_Logger):
     """
     Dummy logger printing nothing.
     """
+
+    LoggerName = 'none'
 
     def comment (self, s, **args):
         """

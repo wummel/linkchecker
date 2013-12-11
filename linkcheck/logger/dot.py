@@ -18,13 +18,20 @@
 A DOT graph format logger. The specification has been taken from
 http://www.graphviz.org/doc/info/lang.html
 """
-from .graph import GraphLogger
+from .graph import _GraphLogger
 
 
-class DOTLogger (GraphLogger):
+class DOTLogger (_GraphLogger):
     """
     Generates .dot sitemap graphs. Use graphviz to see the sitemap graph.
     """
+
+    LoggerName = "dot"
+
+    LoggerArgs = {
+        "filename": "linkchecker-out.dot",
+        "encoding": "ascii",
+    }
 
     def start_output (self):
         """Write start of checking info as DOT comment."""

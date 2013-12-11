@@ -18,16 +18,23 @@
 A GraphXML logger.
 """
 
-from .xmllog import XMLLogger
-from .graph import GraphLogger
+from .xmllog import _XMLLogger
+from .graph import _GraphLogger
 
 
-class GraphXMLLogger (XMLLogger, GraphLogger):
+class GraphXMLLogger (_XMLLogger, _GraphLogger):
     """XML output mirroring the GML structure. Easy to parse with any XML
     tool."""
 
-    def __init__ (self, **args):
+    LoggerName = 'gxml'
+
+    LoggerArgs =  {
+        "filename": "linkchecker-out.gxml",
+    }
+
+    def __init__ (self, **kwargs):
         """Initialize graph node list and internal id counter."""
+        args = self.get_args(kwargs)
         super(GraphXMLLogger, self).__init__(**args)
         self.nodes = {}
         self.nodeid = 0

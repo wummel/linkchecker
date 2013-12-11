@@ -32,19 +32,22 @@ from .. import get_file
 get_url_from = linkcheck.checker.get_url_from
 
 
-class TestLogger (linkcheck.logger.Logger):
+class TestLogger (linkcheck.logger._Logger):
     """
     Output logger for automatic regression tests.
     """
+
+    LoggerName = 'test'
 
     def __init__ (self, **kwargs):
         """
         The kwargs must have "expected" keyword with the expected logger
         output lines.
         """
-        super(TestLogger, self).__init__(**kwargs)
+        args = self.get_args(kwargs)
+        super(TestLogger, self).__init__(**args)
         # list of expected output lines
-        self.expected = kwargs['expected']
+        self.expected = args['expected']
         # list of real output lines
         self.result = []
         # diff between expected and real output
@@ -108,7 +111,7 @@ def add_fileoutput_config (config):
         devnull = 'NUL'
     else:
         return
-    for ftype in linkcheck.logger.Loggers.keys():
+    for ftype in linkcheck.logger.LoggerNames:
         if ftype in ('test', 'blacklist'):
             continue
         logger = config.logger_new(ftype, fileoutput=1, filename=devnull)
@@ -118,9 +121,9 @@ def add_fileoutput_config (config):
 def get_test_aggregate (confargs, logargs):
     """Initialize a test configuration object."""
     config = linkcheck.configuration.Configuration()
-    config.logger_add('test', TestLogger)
+    config.logger_add(TestLogger)
     config['recursionlevel'] = 1
-    config['logger'] = config.logger_new('test', **logargs)
+    config['logger'] = config.logger_new(TestLogger.LoggerName, **logargs)
     add_fileoutput_config(config)
     # uncomment for debugging
     #config.init_logging(None, debug=["all"])

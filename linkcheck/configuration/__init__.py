@@ -153,63 +153,6 @@ class Configuration (dict):
         self["status"] = False
         self["status_wait_seconds"] = 5
         self["fileoutput"] = []
-        # Logger configurations
-        self["text"] = {
-            "filename": "linkchecker-out.txt",
-            'colorparent':  "default",
-            'colorurl':     "default",
-            'colorname':    "default",
-            'colorreal':    "cyan",
-            'colorbase':    "purple",
-            'colorvalid':   "bold;green",
-            'colorinvalid': "bold;red",
-            'colorinfo':    "default",
-            'colorwarning': "bold;yellow",
-            'colordltime':  "default",
-            'colordlsize':  "default",
-            'colorreset':   "default",
-        }
-        self['html'] = {
-            "filename":        "linkchecker-out.html",
-            'colorbackground': '#fff7e5',
-            'colorurl':        '#dcd5cf',
-            'colorborder':     '#000000',
-            'colorlink':       '#191c83',
-            'colorwarning':    '#e0954e',
-            'colorerror':      '#db4930',
-            'colorok':         '#3ba557',
-        }
-        self['gml'] = {
-            "filename": "linkchecker-out.gml",
-        }
-        self['sql'] = {
-            "filename": "linkchecker-out.sql",
-            'separator': ';',
-            'dbname': 'linksdb',
-        }
-        self['csv'] = {
-            "filename": "linkchecker-out.csv",
-            'separator': ';',
-            "quotechar": '"',
-        }
-        self['blacklist'] = {
-            "filename": "~/.linkchecker/blacklist",
-        }
-        self['xml'] = {
-            "filename": "linkchecker-out.xml",
-        }
-        self['gxml'] = {
-            "filename": "linkchecker-out.gxml",
-        }
-        self['dot'] = {
-            "filename": "linkchecker-out.dot",
-            "encoding": "ascii",
-        }
-        self['sitemap'] = {
-            "filename": "linkchecker-out.sitemap.xml",
-            "encoding": "utf-8",
-        }
-        self['none'] = {}
         self['output'] = 'text'
         self['logger'] = None
         self["warningregex"] = None
@@ -232,8 +175,12 @@ class Configuration (dict):
         self["maxconnectionshttp"] = 10
         self["maxconnectionshttps"] = 10
         self["maxconnectionsftp"] = 2
-        from ..logger import Loggers
-        self.loggers = dict(**Loggers)
+        self.loggers = {}
+        from ..logger import LoggerClasses
+        for c in LoggerClasses:
+            key = c.LoggerName
+            self[key] = {}
+            self.loggers[key] = c
 
     def init_logging (self, status_logger, debug=None, handler=None):
         """
@@ -286,23 +233,13 @@ class Configuration (dict):
         for key in loggers:
             logging.getLogger(lognames[key]).setLevel(level)
 
-    def logger_new (self, loggertype, **kwargs):
-        """
-        Instantiate new logger and return it.
-        """
-        args = {}
-        args.update(self[loggertype])
-        args.update(kwargs)
-        return self.loggers[loggertype](**args)
+    def logger_new (self, loggername, **kwargs):
+        """Instantiate new logger and return it."""
+        return self.loggers[loggername](**kwargs)
 
-    def logger_add (self, loggertype, loggerclass, loggerargs=None):
-        """
-        Add a new logger type to the known loggers.
-        """
-        if loggerargs is None:
-            loggerargs = {}
-        self.loggers[loggertype] = loggerclass
-        self[loggertype] = loggerargs
+    def logger_add (self, loggerclass):
+        """Add a new logger type to the known loggers."""
+        self.loggers[loggerclass.LoggerName] = loggerclass
 
     def read (self, files=None):
         """

@@ -20,7 +20,7 @@ A CSV logger.
 import csv
 import os
 import sys
-from . import Logger
+from . import _Logger
 from .. import strformat
 
 Columns = (
@@ -30,14 +30,23 @@ Columns = (
 )
 
 
-class CSVLogger (Logger):
+class CSVLogger (_Logger):
     """
     CSV output, consisting of one line per entry. Entries are
     separated by a separator (a semicolon per default).
     """
 
-    def __init__ (self, **args):
+    LoggerName = "csv"
+
+    LoggerArgs = {
+        "filename": "linkchecker-out.csv",
+        'separator': ';',
+        "quotechar": '"',
+    }
+
+    def __init__ (self, **kwargs):
         """Store default separator and (os dependent) line terminator."""
+        args = self.get_args(kwargs)
         super(CSVLogger, self).__init__(**args)
         # due to a limitation of the csv module, all output has to be
         # utf-8 encoded

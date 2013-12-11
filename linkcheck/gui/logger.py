@@ -16,7 +16,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 from logging import Handler
-from ..logger import Logger
+from ..logger import _Logger
 
 
 class GuiLogHandler (Handler, object):
@@ -32,8 +32,10 @@ class GuiLogHandler (Handler, object):
         self.signal.emit(self.format(record))
 
 
-class SignalLogger (Logger):
+class SignalLogger (_Logger):
     """Use Qt signals for logged URLs and statistics."""
+
+    LoggerName = "gui"
 
     def __init__ (self, **args):
         """Store signals for URL and statistic data."""

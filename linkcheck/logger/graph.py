@@ -17,17 +17,18 @@
 """
 Base class for graph loggers.
 """
-from . import Logger
+from . import _Logger
 from ..decorators import notimplemented
 import re
 
 
-class GraphLogger (Logger):
+class _GraphLogger (_Logger):
     """Provide base method to get node data."""
 
-    def __init__ (self, **args):
+    def __init__ (self, **kwargs):
         """Initialize graph node list and internal id counter."""
-        super(GraphLogger, self).__init__(**args)
+        args = self.get_args(kwargs)
+        super(_GraphLogger, self).__init__(**args)
         self.init_fileoutput(args)
         self.nodes = {}
         self.nodeid = 0

@@ -17,12 +17,18 @@
 """
 A gml logger.
 """
-from .graph import GraphLogger
+from .graph import _GraphLogger
 
 
-class GMLLogger (GraphLogger):
+class GMLLogger (_GraphLogger):
     """GML means Graph Modeling Language. Use a GML tool to see
     the sitemap graph."""
+
+    LoggerName = 'gml'
+
+    LoggerArgs = {
+        "filename": "linkchecker-out.gml",
+    }
 
     def start_output (self):
         """Write start of checking info as gml comment."""

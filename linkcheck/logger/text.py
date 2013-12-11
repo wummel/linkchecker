@@ -18,11 +18,11 @@
 The default text logger.
 """
 import time
-from . import Logger
+from . import _Logger
 from .. import ansicolor, strformat, configuration, i18n
 
 
-class TextLogger (Logger):
+class TextLogger (_Logger):
     """
     A text logger, colorizing the output if possible.
 
@@ -34,10 +34,27 @@ class TextLogger (Logger):
     Unknown keywords will be ignored.
     """
 
-    def __init__ (self, **args):
-        """
-        Initialize error counter and optional file output.
-        """
+    LoggerName = 'text'
+
+    LoggerArgs = {
+        "filename": "linkchecker-out.txt",
+        'colorparent':  "default",
+        'colorurl':     "default",
+        'colorname':    "default",
+        'colorreal':    "cyan",
+        'colorbase':    "purple",
+        'colorvalid':   "bold;green",
+        'colorinvalid': "bold;red",
+        'colorinfo':    "default",
+        'colorwarning': "bold;yellow",
+        'colordltime':  "default",
+        'colordlsize':  "default",
+        'colorreset':   "default",
+    }
+
+    def __init__ (self, **kwargs):
+        """Initialize error counter and optional file output."""
+        args = self.get_args(kwargs)
         super(TextLogger, self).__init__(**args)
         self.output_encoding = args.get("encoding", i18n.default_encoding)
         self.init_fileoutput(args)

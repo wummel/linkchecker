@@ -21,10 +21,16 @@ from . import xmllog
 from .. import strformat
 
 
-class CustomXMLLogger (xmllog.XMLLogger):
+class CustomXMLLogger (xmllog._XMLLogger):
     """
     XML custom output for easy post-processing.
     """
+
+    LoggerName = "xml"
+
+    LoggerArgs = {
+        "filename": "linkchecker-out.xml",
+    }
 
     def start_output (self):
         """

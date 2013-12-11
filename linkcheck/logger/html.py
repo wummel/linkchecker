@@ -20,7 +20,7 @@ A HTML logger.
 import time
 import cgi
 import os
-from . import Logger
+from . import _Logger
 from .. import strformat, configuration
 
 
@@ -50,11 +50,25 @@ HTML_HEADER = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 """
 
 
-class HtmlLogger (Logger):
+class HtmlLogger (_Logger):
     """Logger with HTML output."""
 
-    def __init__ (self, **args):
+    LoggerName = 'html'
+
+    LoggerArgs =  {
+        "filename":        "linkchecker-out.html",
+        'colorbackground': '#fff7e5',
+        'colorurl':        '#dcd5cf',
+        'colorborder':     '#000000',
+        'colorlink':       '#191c83',
+        'colorwarning':    '#e0954e',
+        'colorerror':      '#db4930',
+        'colorok':         '#3ba557',
+    }
+
+    def __init__ (self, **kwargs):
         """Initialize default HTML color values."""
+        args = self.get_args(kwargs)
         super(HtmlLogger, self).__init__(**args)
         self.init_fileoutput(args)
         self.colorbackground = args['colorbackground']

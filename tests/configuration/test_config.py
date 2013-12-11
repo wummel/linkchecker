@@ -78,7 +78,7 @@ class TestConfig (unittest.TestCase):
         # output section
         self.assertTrue(linkcheck.log.is_debug(linkcheck.LOG_THREAD))
         self.assertFalse(config["status"])
-        self.assertTrue(isinstance(config["logger"], linkcheck.logger.Loggers["xml"]))
+        self.assertTrue(isinstance(config["logger"], linkcheck.logger.customxml.CustomXMLLogger))
         self.assertTrue(config["verbose"])
         self.assertTrue(config["complete"])
         self.assertTrue(config["warnings"])

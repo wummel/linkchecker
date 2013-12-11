@@ -91,8 +91,9 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
     def read_output_config (self):
         """Read configuration options in section "output"."""
         section = "output"
-        from ..logger import Loggers
-        for key in Loggers.keys():
+        from ..logger import LoggerClasses
+        for c in LoggerClasses:
+            key = c.LoggerName
             if self.has_section(key):
                 for opt in self.options(key):
                     self.config[key][opt] = self.get(key, opt)
@@ -127,7 +128,8 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             # strip names from whitespace
             loggers = (x.strip().lower() for x in loggers)
             # no file output for the blacklist and none Logger
-            loggers = (x for x in loggers if x in Loggers and
+            from ..logger import LoggerNames
+            loggers = (x for x in loggers if x in LoggerNames and
                        x not in ("blacklist", "none"))
             for val in loggers:
                 output = self.config.logger_new(val, fileoutput=1)

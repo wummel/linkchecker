@@ -19,7 +19,7 @@ A SQL logger.
 """
 
 import os
-from . import Logger
+from . import _Logger
 from .. import url as urlutil
 
 
@@ -46,15 +46,22 @@ def intify (s):
     return 0
 
 
-class SQLLogger (Logger):
+class SQLLogger (_Logger):
     """
     SQL output, should work with any SQL database (not tested).
     """
 
-    def __init__ (self, **args):
-        """
-        Initialize database access data.
-        """
+    LoggerName = 'sql'
+
+    LoggerArgs = {
+        "filename": "linkchecker-out.sql",
+        'separator': ';',
+        'dbname': 'linksdb',
+    }
+
+    def __init__ (self, **kwargs):
+        """Initialize database access data."""
+        args = self.get_args(kwargs)
         super(SQLLogger, self).__init__(**args)
         self.init_fileoutput(args)
         self.dbname = args['dbname']

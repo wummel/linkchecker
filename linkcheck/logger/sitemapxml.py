@@ -33,12 +33,20 @@ ChangeFreqs = (
 HTTP_SCHEMES = (u'http:', u'https:')
 HTML_TYPES = ('text/html', "application/xhtml+xml")
 
-class SitemapXmlLogger (xmllog.XMLLogger):
+class SitemapXmlLogger (xmllog._XMLLogger):
     """Sitemap XML output according to http://www.sitemaps.org/protocol.html
     """
 
-    def __init__ (self, **args):
+    LoggerName = 'sitemap'
+
+    LoggerArgs = {
+        "filename": "linkchecker-out.sitemap.xml",
+        "encoding": "utf-8",
+    }
+
+    def __init__ (self, **kwargs):
         """Initialize graph node list and internal id counter."""
+        args = self.get_args(kwargs)
         super(SitemapXmlLogger, self).__init__(**args)
         # All URLs must have the given prefix, which is determined
         # by the first logged URL.
