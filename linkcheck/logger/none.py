@@ -52,3 +52,8 @@ class NoneLogger (Logger):
         Do nothing.
         """
         pass
+
+Loggers = {"none": NoneLogger}
+LoggerArgs = {
+    "none": {}
+}

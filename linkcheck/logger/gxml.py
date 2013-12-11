@@ -81,3 +81,10 @@ class GraphXMLLogger (XMLLogger, GraphLogger):
         self.xml_endtag(u"GraphXML")
         self.xml_end_output()
         self.close_fileoutput()
+
+Loggers = {"gxml": GraphXMLLogger}
+LoggerArgs = {
+    "gxml": {
+        "filename": "linkchecker-out.gxml",
+    }
+}

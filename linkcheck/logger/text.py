@@ -268,3 +268,22 @@ class TextLogger (Logger):
         if self.has_part('outro'):
             self.write_outro()
         self.close_fileoutput()
+
+Loggers = {"text": TextLogger}
+LoggerArgs = {
+    "text": {
+        "filename": "linkchecker-out.txt",
+        'colorparent':  "default",
+        'colorurl':     "default",
+        'colorname':    "default",
+        'colorreal':    "cyan",
+        'colorbase':    "purple",
+        'colorvalid':   "bold;green",
+        'colorinvalid': "bold;red",
+        'colorinfo':    "default",
+        'colorwarning': "bold;yellow",
+        'colordltime':  "default",
+        'colordlsize':  "default",
+        'colorreset':   "default",
+    }
+}

@@ -78,3 +78,11 @@ class DOTLogger (GraphLogger):
 def dotquote (s):
     """Quote string for usage in DOT output format."""
     return s.replace('"', '\\"')
+
+Loggers = {"dot": DOTLogger}
+LoggerArgs = {
+    "dot": {
+        "filename": "linkchecker-out.dot",
+        "encoding": "ascii",
+    }
+}
