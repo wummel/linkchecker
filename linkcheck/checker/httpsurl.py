@@ -52,8 +52,6 @@ class HttpsUrl (httpurl.HttpUrl):
         cert = ssl_sock.getpeercert()
         log.debug(LOG_CHECK, "Got SSL certificate %s", cert)
         if not cert:
-            msg = _('empty or no certificate found')
-            self.add_ssl_warning(ssl_sock, msg)
             return
         if 'subject' in cert:
             self.check_ssl_hostname(ssl_sock, cert, host)

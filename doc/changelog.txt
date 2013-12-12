@@ -8,6 +8,9 @@ Changes:
 - checking: Always use the W3C validator to check HTML or CSS syntax.
 - checking: Remove the http-wrong-redirect warning.
 - checking: Remove the url-content-duplicate warning.
+- checking: Make SSL certificate verificate optional and allow
+  user-specified certificate files.
+  Closes: GH bug #387
 - cmdline: Replace argument parsing. No changes in functionality, only
   the help text will be formatted different.
 - gui: Check early if help files are not found.

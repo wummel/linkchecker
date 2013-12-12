@@ -639,7 +639,12 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
                 h = httplib.HTTPConnection(host, **kwargs)
             elif scheme == "https" and supportHttps:
                 devel_dir = os.path.join(configuration.configdata.install_data, "config")
-                kwargs["ca_certs"] = configuration.get_share_file(devel_dir, 'ca-certificates.crt')
+                sslverify = self.aggregate.config["sslverify"]
+                if sslverify:
+                    if sslverify is not True:
+                        kwargs["ca_certs"] = sslverify
+                    else:
+                        kwargs["ca_certs"] = configuration.get_share_file(devel_dir, 'ca-certificates.crt')
                 h = httplib.HTTPSConnection(host, **kwargs)
             else:
                 msg = _("Unsupported HTTP url scheme `%(scheme)s'") % {"scheme": scheme}

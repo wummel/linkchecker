@@ -124,6 +124,14 @@ number of \fIbytes\fP.
 .br
 Command line option: \fB\-\-warning\-size\-bytes\fP
 .TP
+\fBsslverify=\fP[\fB0\fP|\fB1\fP|\fIfilename\fP]
+If set to zero disables SSL certificate checking.
+If set to one (the default) enables SSL certificate checking with
+the provided CA certificate file. If a filename is specified, it
+will be used as the certificate file.
+.br
+Command line option: none
+.TP
 \fBwarnsslcertdaysvalid=\fP\fINUMBER\fP
 Check that SSL certificates are at least the given number of days valid.
 The number must not be negative.

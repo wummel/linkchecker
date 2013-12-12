@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2012 Bastian Kleineidam
+# Copyright (C) 2000-2013 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -167,6 +167,10 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                 self.getboolean(section, "cookies")
         self.read_string_option(section, "cookiefile")
         self.read_string_option(section, "localwebroot")
+        try:
+            self.read_boolean_option(section, "sslverify")
+        except ValueError:
+            self.read_string_option(section, "sslverify")
         self.read_int_option(section, "warnsslcertdaysvalid", min=1)
         self.read_int_option(section, "maxrunseconds", min=0)
 

@@ -53,6 +53,7 @@ class TestConfig (unittest.TestCase):
         self.assertEqual(config["wait"], 99)
         self.assertEqual(config["debugmemory"], 1)
         self.assertEqual(config["localwebroot"], "foo")
+        self.assertEqual(config["sslverify"], "/path/to/cacerts.crt")
         self.assertEqual(config["warnsslcertdaysvalid"], 99)
         # filtering section
         patterns = [x["pattern"].pattern for x in config["externlinks"]]

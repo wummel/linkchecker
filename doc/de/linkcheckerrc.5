@@ -132,6 +132,14 @@ Anzahl von Bytes übersteigt.
 .br
 Kommandozeilenoption: \fB\-\-warning\-size\-bytes\fP
 .TP 
+\fBsslverify=\fP[\fB0\fP|\fB1\fP|\fIdateiname\fP]
+Falls der Wert Null ist werden SSL Zertifikate nicht überprüft. Falls er auf
+Eins gesetzt wird (der Standard) werden SSL Zertifikate mit der gelieferten
+CA Zertifikatsdatei geprüft. Falls ein Dateiname angegeben ist wird dieser
+zur Prüfung verwendet.
+.br
+Kommandozeilenoption: keine
+.TP 
 \fBwarnsslcertdaysvalid=\fP\fINUMBER\fP
 Prüfe ob SSL\-Zertifikate mindestens die angegebene Anzahl an Tagen gültig
 sind. Die Anzahl darf nicht negativ sein. Falls die Anzahl Null ist wird
