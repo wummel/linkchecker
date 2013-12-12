@@ -137,6 +137,23 @@ class Settings (object):
         self.settings.setValue('documents', QtCore.QVariant(data))
         self.settings.endGroup()
 
+    def read_misc(self):
+        """Get misc options."""
+        data = dict(saveresultas=None)
+        self.settings.beginGroup('misc')
+        key = 'saveresultas'
+        value = self.settings.value(key).toString()
+        data[key] = unicode(value)
+        self.settings.endGroup()
+        return data
+
+    def save_misc(self, data):
+        """Save misc options."""
+        self.settings.beginGroup('misc')
+        key = 'saveresultas'
+        self.settings.setValue(key, QtCore.QVariant(data[key]))
+        self.settings.endGroup()
+
     def sync (self):
         """Synchronize QSettings object to disk."""
         self.settings.sync()

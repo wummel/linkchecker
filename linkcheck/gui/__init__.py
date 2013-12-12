@@ -159,6 +159,8 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         else:
             msg = self.config_error or _("Ready.")
             self.set_statusmsg(msg)
+        data = self.settings.read_misc()
+        self.saveresultas = data['saveresultas']
 
     def get_qhcpath (self):
         """Helper function to search for the QHC help file in different
@@ -347,6 +349,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.settings.save_treeviewcols(self.get_treeviewcols())
         self.settings.save_options(self.options.get_options())
         self.settings.save_recent_documents(self.recent.get_documents())
+        self.settings.save_misc(dict(saveresultas=self.saveresultas))
         self.settings.sync()
         self.config.remove_loghandler(self.handler)
         if e is not None:
@@ -399,7 +402,9 @@ Version 2 or later.
     @QtCore.pyqtSlot()
     def on_actionSave_triggered (self):
         """Save URL results."""
-        urlsave(self, self.config, self.model.urls)
+        saveresultas = urlsave(self, self.config, self.model.urls)
+        if saveresultas:
+            self.saveresultas = saveresultas
 
     @QtCore.pyqtSlot()
     def on_actionCheckUpdates_triggered (self):

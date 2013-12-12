@@ -14,33 +14,42 @@
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-import os
-from PyQt4 import QtGui
+from PyQt4 import QtGui, QtCore
 
-LoggerFilters = ";;".join((
-    _("HTML output (*.html)"),
-    _("Text output (*.txt)"),
-    _("XML output (*.xml)"),
-    _("CSV output (*.csv)"),
-))
+FilterHtml = _("HTML output (*.html)")
+FilterText = _("Text output (*.txt)")
+FilterXml = _("XML output (*.xml)")
+FilterCsv = _("CSV output (*.csv)")
 
-FileExt2LogType = {
-    ".html": "html",
-    ".txt": "text",
-    ".xml": "xml",
-    ".csv": "csv",
+LoggerFilters = (
+    FilterHtml,
+    FilterText,
+    FilterXml,
+    FilterCsv,
+)
+
+Logtype2Filter = {
+    'html': FilterHtml,
+    'text': FilterText,
+    'xml': FilterXml,
+    'csv': FilterCsv,
+}
+Filter2Logtype = {v: k for k, v in Logtype2Filter.items()}
+
+Logtype2FileExt = {
+    "html": ".html",
+    "text": ".txt",
+    "xml": ".xml",
+    "csv": ".csv",
 }
 
 def urlsave (parent, config, urls):
     """Save URL results in file."""
-    filename = get_save_filename(parent)
+    filename, logtype = get_save_filename(parent)
     if not filename:
         # user canceled
         return
     filename = unicode(filename)
-    logtype = FileExt2LogType.get(os.path.splitext(filename)[1])
-    if not logtype:
-        return
     kwargs = dict(fileoutput=1, filename=filename, encoding="utf_8_sig")
     logger = config.logger_new(logtype, **kwargs)
     logger.start_output()
@@ -50,12 +59,29 @@ def urlsave (parent, config, urls):
     # inject the saved statistics before printing them
     logger.stats = config['logger'].stats
     logger.end_output()
+    return logtype
 
 
 def get_save_filename (parent):
     """Open file save dialog for given parent window and base directory.
     Return dialog result."""
-    filename = "linkchecker-out.html"
     title = _("Save check results")
     func = QtGui.QFileDialog.getSaveFileName
-    return func(parent, title, filename, LoggerFilters)
+    logtype = parent.saveresultas if parent.saveresultas else 'html'
+    filters = ";;".join(sortwithfirst(LoggerFilters, Logtype2Filter[logtype]))
+    filename = "linkchecker-out" + Logtype2FileExt[logtype]
+    selectedFilter = QtCore.QString()
+    res = func(parent, title, filename, filters, selectedFilter)
+    logtype = Filter2Logtype.get(unicode(selectedFilter))
+    return res, logtype
+
+
+def sortwithfirst(sequence, firstelement):
+    """Move firstelement in a sequence to the first position."""
+    res = []
+    for elem in sequence:
+        if elem == firstelement:
+            res.insert(0, elem)
+        else:
+            res.append(elem)
+    return res

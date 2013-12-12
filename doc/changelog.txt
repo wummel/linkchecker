@@ -12,6 +12,8 @@ Changes:
   the help text will be formatted different.
 - gui: Check early if help files are not found.
   Closes: GH bug #437
+- gui: Remember the last "Save result as" selection.
+  Closes: GH bug #380
 
 Fixes:
 - checking: Apache Coyote (the HTTP server of Tomcat) sends the wrong
