@@ -236,7 +236,9 @@ class Configuration (dict):
 
     def logger_new (self, loggername, **kwargs):
         """Instantiate new logger and return it."""
-        return self.loggers[loggername](**kwargs)
+        args = self[loggername]
+        args.update(kwargs)
+        return self.loggers[loggername](**args)
 
     def logger_add (self, loggerclass):
         """Add a new logger type to the known loggers."""
