@@ -666,6 +666,7 @@ if 'py2app' in sys.argv[1:]:
     add_qt_plugin_files(data_files)
     # needed for Qt to load the plugins
     data_files.append(('', ['osx/qt.conf']))
+    insert_dns_path()
 elif 'py2exe' in sys.argv[1:]:
     if not has_py2exe:
         raise SystemExit("py2exe module could not be imported")
