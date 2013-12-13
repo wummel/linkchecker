@@ -243,6 +243,7 @@ class Configuration (dict):
     def logger_add (self, loggerclass):
         """Add a new logger type to the known loggers."""
         self.loggers[loggerclass.LoggerName] = loggerclass
+        self[loggerclass.LoggerName] = {}
 
     def read (self, files=None):
         """
