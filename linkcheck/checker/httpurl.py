@@ -284,8 +284,12 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
 
     def fallback_to_get(self):
         """Set method to GET and clear aliases."""
+        self.close_response()
+        self.close_connection()
         self.method = "GET"
         self.aliases = []
+        self.urlparts = strformat.url_unicode_split(self.url)
+        self.build_url_parts()
 
     def construct_auth (self):
         """Construct HTTP Basic authentication credentials if there
