@@ -309,7 +309,7 @@ def add_msvc_files (files):
 
 
 def insert_dns_path():
-    """Let py2exe find the dns package."""
+    """Let py2exe, py2app and cx_Freeze find the dns package."""
     lib_dir = "lib.%s-%s" % (util.get_platform(), sys.version[0:3])
     if hasattr(sys, 'gettotalrefcount'):
         lib_dir += '-pydebug'
