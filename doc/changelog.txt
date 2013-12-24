@@ -27,6 +27,7 @@ Fixes:
   Closes: GH bug #405
 - scripts: Fix argument parsing in linkchecker-nagios
   Closes: GH bug #404
+- installation: Fix building on OS X systems.
 
 
 8.4 "Frankenweenie" (released 25.01.2013)
