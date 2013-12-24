@@ -25,6 +25,7 @@ from .director import console
 
 
 class LCArgumentParser(argparse.ArgumentParser):
+    """Custom argument parser to format help text."""
 
     def print_help(self, file=None):
         """Print a help message to stdout."""

@@ -55,7 +55,10 @@ Epilog = u"\n".join((Retval, Examples))
 
 # instantiate option parser and configure options
 class ArgumentParser(LCArgumentParser):
+    """Custom argument parser for error reporting."""
+
     def error(self, message):
+        """Print error and exit with error code 3."""
         self.print_usage(sys.stderr)
         self.exit(3, _('%s: error: %s\n') % (self.prog, message))
 

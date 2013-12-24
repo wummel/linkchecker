@@ -127,6 +127,7 @@ _OctalPatt = re.compile(r"\\[0-3][0-7][0-7]")
 _QuotePatt = re.compile(r"[\\].")
 
 def unquote(str):
+    """Remove string quoting."""
     # If there aren't any doublequotes,
     # then there can't be any special characters.  See RFC 2109.
     if len(str) < 2:
