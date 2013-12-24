@@ -1,5 +1,5 @@
 Project: LinkChecker
-Version: 8.4
+Version: 8.5
 Hide: N
 Website-URL: http://wummel.github.io/linkchecker/
 Changelog-URL: https://github.com/wummel/linkchecker/blob/master/doc/changelog.txt
@@ -8,5 +8,6 @@ Debian-Package-URL: http://packages.debian.org/linkchecker
 GIT-Tree-URL: https://github.com/wummel/linkchecker.git
 Windows-installer-URL: http://github.com/downloads/wummel/linkchecker/LinkChecker-${version}.exe
 
-Links with dns-prefetch are now supported and the GUI supports
-drag-and-drop of local files. Also some bugs were fixed.
+This release makes per-host connection limits configurable
+and avoid a DoS in the SSL certificate host matcher. Some bugs
+have also been fixed.
