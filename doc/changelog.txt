@@ -1,4 +1,4 @@
-8.5 "" (released xx.xx.2013)
+8.5 "Christmas Vacation" (released 24.12.2013)
 
 Features:
 - checking: Make per-host connection limits configurable.
