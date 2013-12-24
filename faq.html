@@ -108,36 +108,41 @@ repository and access to your web server configuration.</p>
 <p>A: Use the <code>--check-html</code> and <code>--check-css</code> options.</p>
 <p><strong>Q: I want to have my own logging class. How can I use it in LinkChecker?</strong></p>
 <p>A: A Python API lets you define new logging classes.
-Define your own logging class as a subclass of StandardLogger or any other
+Define your own logging class as a subclass of _Logger or any other
 logging class in the log module.
-Then call the addLogger function in Config.Configuration to register
+Then call the add_logger function in Config.Configuration to register
 your new Logger.
 After this append a new Logging instance to the fileoutput.</p>
-<div class="codehilite"><pre><span class="kn">import</span> <span class="nn">linkcheck</span><span class="o">,</span> <span class="nn">MyLogger</span>
-<span class="n">log_format</span> <span class="o">=</span> <span class="s">&#39;mylog&#39;</span>
-<span class="n">log_args</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;fileoutput&#39;</span><span class="p">:</span> <span class="n">log_format</span><span class="p">,</span> <span class="s">&#39;filename&#39;</span><span class="p">:</span> <span class="s">&#39;foo.txt&#39;</span><span class="p">}</span>
+<div class="codehilite"><pre><span class="kn">import</span> <span class="nn">linkcheck</span>
+<span class="k">class</span> <span class="nc">MyLogger</span><span class="p">(</span><span class="n">linkcheck</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">_Logger</span><span class="p">):</span>
+    <span class="n">LoggerName</span> <span class="o">=</span> <span class="s">&#39;mylog&#39;</span>
+    <span class="n">LoggerArgs</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;fileoutput&#39;</span><span class="p">:</span> <span class="n">log_format</span><span class="p">,</span> <span class="s">&#39;filename&#39;</span><span class="p">:</span> <span class="s">&#39;foo.txt&#39;</span><span class="p">}</span>
+
+    <span class="c"># ...</span>
+
 <span class="n">cfg</span> <span class="o">=</span> <span class="n">linkcheck</span><span class="o">.</span><span class="n">configuration</span><span class="o">.</span><span class="n">Configuration</span><span class="p">()</span>
-<span class="n">cfg</span><span class="o">.</span><span class="n">logger_add</span><span class="p">(</span><span class="n">log_format</span><span class="p">,</span> <span class="n">MyLogger</span><span class="o">.</span><span class="n">MyLogger</span><span class="p">)</span>
-<span class="n">cfg</span><span class="p">[</span><span class="s">&#39;fileoutput&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">logger_new</span><span class="p">(</span><span class="n">log_format</span><span class="p">,</span> <span class="n">log_args</span><span class="p">))</span> 
+<span class="n">cfg</span><span class="o">.</span><span class="n">logger_add</span><span class="p">(</span><span class="n">MyLogger</span><span class="p">)</span>
+<span class="n">cfg</span><span class="p">[</span><span class="s">&#39;fileoutput&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">logger_new</span><span class="p">(</span><span class="n">MyLogger</span><span class="o">.</span><span class="n">LoggerName</span><span class="p">))</span> 
 </pre></div>
 </section>
 
 <aside id="sidebar">
 <h2>Downloads</h2>
 <p>
-<!-- <a href="http://wummel.github.io/linkchecker/dist/linkchecker-8.4.tar.gz"
+<!-- <a href="http://wummel.github.io/linkchecker/dist/linkchecker-8.5.tar.gz"
   title="Download source .tar.gz package"
-  class="button"><span>Source linkchecker-8.4.tar.gz</span></a>
+  class="button"><span>Source linkchecker-8.5.tar.gz</span></a>
 -->
-<a href="http://github.com/downloads/wummel/linkchecker/LinkChecker-8.4.exe"
+
+<a href="http://wummel.github.io/linkchecker/dist/LinkChecker-8.5.exe"
   title="Download Windows .exe installer"
-  class="button"><span>LinkChecker-8.4.exe</span></a>
+  class="button"><span>LinkChecker-8.5.exe</span></a>
 <a href="http://ftp.debian.org/debian/pool/main/l/linkchecker/"
   title="Download Debian installer"
-  class="button"><span>LinkChecker-8.4.deb</span></a>
-<a href="http://github.com/downloads/wummel/linkchecker/LinkChecker-8.4.tar.xz"
+  class="button"><span>LinkChecker-8.5.deb</span></a>
+<a href="http://wummel.github.io/linkchecker/dist/LinkChecker-8.5.tar.xz"
   title="Download Source .tar.xz package"
-  class="button"><span>LinkChecker-8.4.tar.xz</span></a>
+  class="button"><span>LinkChecker-8.5.tar.xz</span></a>
 </p>
 <p><a href="https://github.com/wummel/linkchecker/blob/master/doc/changelog.txt">Changelog</a></p>
 <p class="repo-owner"><a href="https://github.com/wummel/linkchecker">LinkChecker</a> is
