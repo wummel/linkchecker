@@ -112,9 +112,9 @@ tag:
 	git push --tags origin upstream/$(VERSION)
 
 upload:
-	github-upload $(GITUSER) $(GITREPO) \
-	  dist/$(ARCHIVE_SOURCE) dist/$(ARCHIVE_WIN32) \
-	  dist/$(ARCHIVE_SOURCE).asc dist/$(ARCHIVE_WIN32).asc
+	cp dist/$(ARCHIVE_SOURCE) dist/$(ARCHIVE_WIN32) \
+	  dist/$(ARCHIVE_SOURCE).asc dist/$(ARCHIVE_WIN32).asc \
+	  $(HOMEPAGE)/dist
 
 homepage:
 # update metadata
