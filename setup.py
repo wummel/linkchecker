@@ -97,7 +97,7 @@ except ImportError:
     has_py2app = False
 
 # the application version
-AppVersion = "8.5"
+AppVersion = "8.6"
 # the application name
 AppName = "LinkChecker"
 
@@ -110,6 +110,7 @@ MSVCP90Token = '1fc8b3b9a1e18e3b'
 py_includes = ['dns.rdtypes.IN.*', 'dns.rdtypes.ANY.*',
     'twill.extensions.*', 'twill.extensions.match_parse.*',
     'twill.other_packages.*', 'twill.other_packages._mechanize_dist.*',
+    'linkcheck.logger.*',
 ]
 # basic excludes for py2exe and py2app
 py_excludes = ['doctest', 'unittest', 'argcomplete', 'Tkinter',

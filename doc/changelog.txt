@@ -4,6 +4,11 @@ Changes:
 - checking: Add "Accept" HTTP header.
   Closes: GH bug #395
 
+Fixes:
+- installer: Include missing logger classes for Windows and
+  OSX installer.
+  Closes: GH bug #448
+
 
 8.5 "Christmas Vacation" (released 24.12.2013)
 
