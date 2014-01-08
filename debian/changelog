@@ -1,9 +1,9 @@
-linkchecker (8.6-1) UNRELEASED; urgency=low
+linkchecker (8.6-1) unstable; urgency=low
 
   * New upstream release.
   * Updated Standards version to 3.9.5
 
- -- Bastian Kleineidam <calvin@debian.org>  Wed, 08 Jan 2014 18:11:49 +0100
+ -- Bastian Kleineidam <calvin@debian.org>  Wed, 08 Jan 2014 22:44:41 +0100
 
 linkchecker (8.5-1) unstable; urgency=low
 
