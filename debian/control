@@ -8,7 +8,7 @@ Build-Depends: debhelper (>= 9),
                python-all-dev (>= 2.7),
                qt4-dev-tools
 X-Python-Version: >= 2.7
-Standards-Version: 3.9.4
+Standards-Version: 3.9.5
 Homepage: http://wummel.github.io/linkchecker/
 
 Package: linkchecker
