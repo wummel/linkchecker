@@ -1799,8 +1799,8 @@ msgstr "COPYRIGHT"
 # type: Plain text
 #. type: Plain text
 #: en/linkchecker.1:511 en/linkcheckerrc.5:621
-msgid "Copyright \\(co 2000-2013 Bastian Kleineidam"
-msgstr "Copyright \\(co 2000-2013 Bastian Kleineidam"
+msgid "Copyright \\(co 2000-2014 Bastian Kleineidam"
+msgstr "Copyright \\(co 2000-2014 Bastian Kleineidam"
 
 # type: TH
 #. type: TH
@@ -3697,8 +3697,8 @@ msgstr "B<linkchecker>(1)"
 # type: Plain text
 #. type: Plain text
 #: en/linkchecker-gui.1:23
-msgid "Copyright \\(co 2009-2013 Bastian Kleineidam"
-msgstr "Copyright \\(co 2009-2013 Bastian Kleineidam"
+msgid "Copyright \\(co 2009-2014 Bastian Kleineidam"
+msgstr "Copyright \\(co 2009-2014 Bastian Kleineidam"
 
 #~ msgid ""
 #~ "B<http://linkchecker.git.sf.net/\\:git/gitweb.cgi?p=linkchecker/"
