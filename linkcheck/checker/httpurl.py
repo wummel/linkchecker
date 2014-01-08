@@ -53,6 +53,8 @@ SUPPORTED_ENCODINGS = ('x-gzip', 'gzip', 'deflate')
 ACCEPT_ENCODING = ",".join(SUPPORTED_ENCODINGS)
 # Accept-Charset header value
 ACCEPT_CHARSET = "utf-8,ISO-8859-1;q=0.7,*;q=0.3"
+# Accept mime type header value
+ACCEPT = "Accept:text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
 
 
 class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledconnection.PooledConnection):
@@ -571,6 +573,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport, pooledc
         self.url_connection.putheader("Accept-Encoding", ACCEPT_ENCODING)
         # prefer UTF-8 encoding
         self.url_connection.putheader("Accept-Charset", ACCEPT_CHARSET)
+        # prefer parseable mime types
+        self.url_connection.putheader("Accept", ACCEPT)
         # send do-not-track header
         self.url_connection.putheader("DNT", "1")
         if self.aggregate.config['sendcookies']:
