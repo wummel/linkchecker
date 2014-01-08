@@ -1,5 +1,5 @@
 Project: LinkChecker
-Version: 8.5
+Version: 8.6
 Hide: N
 Website-URL: http://wummel.github.io/linkchecker/
 Changelog-URL: https://github.com/wummel/linkchecker/blob/master/doc/changelog.txt
@@ -8,6 +8,4 @@ Debian-Package-URL: http://packages.debian.org/linkchecker
 GIT-Tree-URL: https://github.com/wummel/linkchecker.git
 Windows-installer-URL: http://wummel.github.io/linkchecker/dist/LinkChecker-${version}.exe
 
-This release makes per-host connection limits configurable
-and avoid a DoS in the SSL certificate host matcher. Some bugs
-have also been fixed.
+This release adds missing logger classes and sends an HTTP Accept header.
