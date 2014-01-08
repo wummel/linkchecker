@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 3.4\n"
-"POT-Creation-Date: 2014-01-08 22:33+0100\n"
+"POT-Creation-Date: 2014-01-08 22:34+0100\n"
 "PO-Revision-Date: 2013-12-12 21:51+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
@@ -3698,9 +3698,15 @@ msgstr "B<linkchecker>(1)"
 #. type: Plain text
 #: en/linkchecker-gui.1:23
 #, fuzzy
-#| msgid "Copyright \\(co 2009-2014 Bastian Kleineidam"
-msgid "Copyright \\(co 2009-2013 Bastian Kleineidam"
-msgstr "Copyright \\(co 2009-2014 Bastian Kleineidam"
+#| msgid "Copyright \\(co 2000-2014 Bastian Kleineidam"
+msgid "Copyright \\(co 2009-2014 Bastian Kleineidam"
+msgstr "Copyright \\(co 2000-2014 Bastian Kleineidam"
+
+# type: Plain text
+#, fuzzy
+#~| msgid "Copyright \\(co 2009-2014 Bastian Kleineidam"
+#~ msgid "Copyright \\(co 2009-2013 Bastian Kleineidam"
+#~ msgstr "Copyright \\(co 2009-2014 Bastian Kleineidam"
 
 #~ msgid ""
 #~ "B<http://linkchecker.git.sf.net/\\:git/gitweb.cgi?p=linkchecker/"

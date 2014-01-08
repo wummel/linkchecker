@@ -1,4 +1,4 @@
-8.6 "" (released xx.xx.2014)
+8.6 "About Time" (released 8.1.2014)
 
 Changes:
 - checking: Add "Accept" HTTP header.
