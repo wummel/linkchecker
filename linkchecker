@@ -461,7 +461,7 @@ if options.debug and not __debug__:
 # apply commandline options and arguments to configuration
 constructauth = False
 do_profile = False
-if options.warnings:
+if not options.warnings:
     config["warnings"] = options.warnings
 if options.anchors:
     config["anchors"] = options.anchors
