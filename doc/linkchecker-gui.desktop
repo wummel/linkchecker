@@ -1,10 +1,10 @@
 [Desktop Entry]
-Name=LinkChecker Gui
+Name=LinkChecker GUI
 GenericName=URL validator
 GenericName[de]=URL Validator
 Version=1.0
 Type=Application
 Exec=linkchecker-gui
 Terminal=false
-Categories=Network;WebDevelopment
+Categories=Network;WebDevelopment;
 Icon=logo48x48
