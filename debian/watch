@@ -1,4 +1,5 @@
+# LinkChecker-(.*)\.tar\.xz
 # watch control file for uscan
 version=3
-http://wummel.github.com/linkchecker/ \
-  http://github.com/downloads/wummel/linkchecker/LinkChecker-(.*).tar.xz
+http://wummel.github.io/linkchecker/ \
+  http://wummel.github.io/linkchecker/dist/LinkChecker-(.*)\.tar\.xz
