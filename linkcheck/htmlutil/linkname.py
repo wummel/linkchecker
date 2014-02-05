@@ -33,6 +33,7 @@ def endtag_re (tag):
 
 a_end_search = endtag_re("a").search
 title_end_search = endtag_re("title").search
+h1_end_search = endtag_re("h1").search
 
 
 def _unquote (txt):
@@ -65,6 +66,15 @@ def title_name (txt):
     """Return the part of the first <title>name</title> in txt."""
     name = u""
     endtag = title_end_search(txt)
+    if not endtag:
+        return name
+    name = txt[:endtag.start()]
+    return _unquote(name)
+
+def h1_name (txt):
+    """Return the part of the first <title>name</title> in txt."""
+    name = u""
+    endtag = h1_end_search(txt)
     if not endtag:
         return name
     name = txt[:endtag.start()]

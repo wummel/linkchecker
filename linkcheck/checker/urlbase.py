@@ -207,6 +207,8 @@ class UrlBase (object):
         self.caching = True
         # title is either the URL or parsed from content
         self.title = None
+        # h1 is the content of the first h1 tag, or None
+        self.h1 = None
         # flag if content should be checked or not
         self.do_check_content = True
         # MIME content type
@@ -246,6 +248,11 @@ class UrlBase (object):
                     self.title = title
         return self.title
 
+    def get_h1 (self):
+        """Return first h1 title of the page the URL refers to.
+        This may be None if no h1 tag has been found."""
+        return self.h1
+
     def set_title_from_content (self):
         """Set title of page the URL refers to.from page content."""
         if not self.valid:
@@ -269,6 +276,8 @@ class UrlBase (object):
         parser.handler = None
         if handler.title:
             self.title = handler.title
+        if handler.h1:
+            self.h1 = handler.h1
 
     def is_parseable (self):
         """
@@ -1174,6 +1183,7 @@ class UrlBase (object):
           warnings=self.warnings[:],
           name=self.name or u"",
           title=self.get_title(),
+          h1=self.get_h1() or u"",
           parent_url=self.parent_url or u"",
           base_ref=self.base_ref or u"",
           base_url=self.base_url or u"",
@@ -1204,6 +1214,7 @@ urlDataAttr = [
     'warnings',
     'name',
     'title',
+    'h1',
     'parent_url',
     'base_ref',
     'base_url',
