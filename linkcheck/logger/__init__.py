@@ -61,7 +61,6 @@ class LogStatistics (object):
     """Gather log statistics:
     - number of errors, warnings and valid links
     - type of contents (image, video, audio, text, ...)
-    - number of different domains
     - URL lengths
     """
 
@@ -83,8 +82,6 @@ class LogStatistics (object):
         self.warnings_printed = 0
         # number of internal errors
         self.internal_errors = 0
-        # the set of checked domains
-        self.domains = set()
         # link types
         self.link_types = ContentTypes.copy()
         # URL length statistics
@@ -92,10 +89,6 @@ class LogStatistics (object):
         self.min_url_length = 0
         self.avg_url_length = 0.0
         self.avg_number = 0
-        # download stats
-        self.downloaded_bytes = None
-        # cache stats
-        self.robots_txt_stats = None
 
     def log_url (self, url_data, do_print):
         """Log URL statistics."""
@@ -108,7 +101,6 @@ class LogStatistics (object):
         self.warnings += num_warnings
         if do_print:
             self.warnings_printed += num_warnings
-        self.domains.add(url_data.domain)
         if url_data.content_type:
             key = url_data.content_type.split('/', 1)[0].lower()
             if key not in self.link_types:
@@ -442,11 +434,6 @@ class _Logger (object):
         log.warn(LOG_CHECK, "internal error occurred")
         self.stats.log_internal_error()
 
-    def add_statistics(self, robots_txt_stats, download_stats):
-        """Add cache and download statistics."""
-        self.stats.robots_txt_stats = robots_txt_stats
-        self.stats.downloaded_bytes = download_stats
-
     def format_modified(self, modified, sep=" "):
         """Format modification date in UTC if it's not None.
         @param modified: modification date in UTC
@@ -461,8 +448,8 @@ class _Logger (object):
 def _get_loggers():
     """Return list of Logger classes."""
     from .. import loader
-    modules = loader.get_modules('logger')
-    return list(loader.get_plugins(modules, _Logger))
+    modules = loader.get_package_modules('logger')
+    return list(loader.get_plugins(modules, [_Logger]))
 
 
 LoggerClasses = _get_loggers()

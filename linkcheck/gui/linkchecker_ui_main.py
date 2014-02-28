@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main.ui'
 #
-# Created: Tue Nov  6 21:47:39 2012
+# Created: Fri Feb 28 21:24:58 2014
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -679,29 +679,6 @@ class Ui_MainWindow(object):
         self.stats_url_maxlen.setOpenExternalLinks(True)
         self.stats_url_maxlen.setObjectName(_fromUtf8("stats_url_maxlen"))
         self.gridLayout_3.addWidget(self.stats_url_maxlen, 1, 1, 1, 1)
-        self.label_14 = QtGui.QLabel(self.groupBox_2)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_14.sizePolicy().hasHeightForWidth())
-        self.label_14.setSizePolicy(sizePolicy)
-        self.label_14.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.label_14.setObjectName(_fromUtf8("label_14"))
-        self.gridLayout_3.addWidget(self.label_14, 1, 2, 1, 1)
-        self.stats_domains = QtGui.QLabel(self.groupBox_2)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.stats_domains.sizePolicy().hasHeightForWidth())
-        self.stats_domains.setSizePolicy(sizePolicy)
-        self.stats_domains.setMinimumSize(QtCore.QSize(30, 0))
-        self.stats_domains.setFrameShape(QtGui.QFrame.StyledPanel)
-        self.stats_domains.setFrameShadow(QtGui.QFrame.Sunken)
-        self.stats_domains.setText(_fromUtf8(""))
-        self.stats_domains.setTextFormat(QtCore.Qt.RichText)
-        self.stats_domains.setOpenExternalLinks(True)
-        self.stats_domains.setObjectName(_fromUtf8("stats_domains"))
-        self.gridLayout_3.addWidget(self.stats_domains, 1, 3, 1, 1)
         self.verticalLayout_2.addWidget(self.groupBox_2)
         self.horizontalLayout.addWidget(self.statistics)
         self.verticalLayout.addLayout(self.horizontalLayout)
@@ -831,7 +808,6 @@ class Ui_MainWindow(object):
         self.label_18.setText(_("Min. length"))
         self.label_20.setText(_("Avg. length"))
         self.label_19.setText(_("Max. length"))
-        self.label_14.setText(_("Domains"))
         self.menuEdit.setTitle(_("&Edit"))
         self.menuFile.setTitle(_("&File"))
         self.menuHelp.setTitle(_("&Help"))

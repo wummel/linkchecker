@@ -2,7 +2,6 @@ url file://%(curdir)s/%(datadir)s/base4.html
 cache key file://%(curdir)s/%(datadir)s/base4.html
 real url file://%(curdir)s/%(datadir)s/base4.html
 name %(datadir)s/base4.html
-info 1 URL parsed.
 valid
 
 url test.txt

@@ -58,8 +58,8 @@ class GraphXMLLogger (_XMLLogger, _GraphLogger):
             self.xml_starttag(u"data")
             if node["dltime"] >= 0 and self.has_part("dltime"):
                 self.xml_tag(u"dltime", u"%f" % node["dltime"])
-            if node["dlsize"] >= 0 and self.has_part("dlsize"):
-                self.xml_tag(u"dlsize", u"%d" % node["dlsize"])
+            if node["size"] >= 0 and self.has_part("dlsize"):
+                self.xml_tag(u"size", u"%d" % node["size"])
             if node["checktime"] and self.has_part("checktime"):
                 self.xml_tag(u"checktime", u"%f" % node["checktime"])
             if self.has_part("extern"):

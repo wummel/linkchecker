@@ -17,7 +17,7 @@ create table linksdb (
     name           varchar(256),
     checktime      int,
     dltime         int,
-    dlsize         int,
+    size           int,
     cached         int,
     level          int not null,
     modified       varchar(256)

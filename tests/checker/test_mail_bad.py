@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2004-2012 Bastian Kleineidam
+# Copyright (C) 2004-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 Test mail checking of bad mail addresses.
 """
 from . import MailTest
+from linkcheck.checker.const import URL_WARN_LENGTH
 
 
 class TestMailBad (MailTest):
@@ -28,11 +29,11 @@ class TestMailBad (MailTest):
         self.mail_error(u"mailto:@")
         self.mail_error(u"mailto:@example.org")
         self.mail_error(u"mailto:a@")
-        url_too_long = "URL length %d is longer than 255."
-        url = u"mailto:%s@%s" % (u"a"*60, u"b"*200)
+        url_too_long = "URL length %%d is longer than %d." % URL_WARN_LENGTH
+        url = u"mailto:%s@%s" % (u"a"*60, u"b"*(URL_WARN_LENGTH - 60))
         warning = url_too_long % len(url)
         self.mail_error(url, warning=warning)
-        url = u"mailto:a@%s" % (u"a"*256)
+        url = u"mailto:a@%s" % (u"a"*URL_WARN_LENGTH)
         warning = url_too_long % len(url)
         self.mail_error(url, warning=warning)
         self.mail_error(u"mailto:%s@example.org" % (u"a"*65))

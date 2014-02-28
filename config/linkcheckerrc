@@ -131,32 +131,18 @@
 #threads=100
 # connection timeout in seconds
 #timeout=60
-# check anchors?
-#anchors=0
+# Time to wait for checks to finish after the user aborts the first time
+# (with Ctrl-C or the abort button).
+#aborttimeout=300
+# The recursion level determines how many times links inside pages are followed.
 #recursionlevel=1
-# supply a regular expression for which warnings are printed if found
-# in any HTML files.
-#warningregex=(Oracle DB Error|Page Not Found|badsite\.example\.com)
 # Basic NNTP server. Overrides NNTP_SERVER environment variable.
-# warn if size info exceeds given maximum of bytes
-#warnsizebytes=2000
 #nntpserver=
-# check HTML or CSS syntax with the W3C online validator
-#checkhtml=1
-#checkcss=1
-# scan URL content for viruses with ClamAV
-#scanvirus=1
-# ClamAV config file
-#clamavconf=/etc/clamav/clamd.conf
-# Send and store cookies
-#cookies=1
 # parse a cookiefile for initial cookie data
 #cookiefile=/path/to/cookies.txt
 # User-Agent header string to send to HTTP web servers
+# Note that robots.txt are always checked with the original User-Agent.
 #useragent=Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)
-# Pause the given number of seconds between two subsequent connection
-# requests to the same host.
-#pause=0
 # When checking finishes, write a memory dump to a temporary file.
 # The memory dump is written both when checking finishes normally
 # and when checking gets canceled.
@@ -175,22 +161,16 @@
 # Check SSL certificates. Set to an absolute pathname for a custom
 # CA cert bundle to use. Set to zero to disable SSL certificate verification.
 #sslverify=1
-# Check that SSL certificates are at least the given number of days valid.
-# The number must not be negative.
-# If the number of days is zero a warning is printed only for certificates
-# that are already expired.
-# The default number of days is 14.
-#sslcertwarndays=14
 # Stop checking new URLs after the given number of seconds. Same as if the
 # user hits Ctrl-C after X seconds.
 #maxrunseconds=600
 # Maximum number of URLs to check. New URLs will not be queued after the
 # given number of URLs is checked.
 #maxnumurls=153
-# Maximum number of connections to one single host for different connection types.
-#maxconnectionshttp=10
-#maxconnectionshttps=10
-#maxconnectionsftp=2
+# Maximum number of requests per second to one host.
+#maxrequestspersecond=10
+# Allowed URL schemes as a comma-separated list.
+#allowedschemes=http,https
 
 ##################### filtering options ##########################
 [filtering]
@@ -211,11 +191,12 @@
 # recognized warnings). Add a comma-separated list of warnings here
 # that prevent a valid URL from being logged. Note that the warning
 # will be logged in invalid URLs.
-#ignorewarnings=url-unicode-domain,anchor-not-found
+#ignorewarnings=url-unicode-domain
 # Regular expression to add more URLs recognized as internal links.
 # Default is that URLs given on the command line are internal.
-
 #internlinks=^http://www\.example\.net/
+# Check external links
+#checkextern=1
 
 
 ##################### password authentication ##########################
@@ -247,3 +228,30 @@
 #loginextrafields=
 #  name1:value1
 #  name 2:value 2
+
+############################ Plugins ###################################
+#
+# uncomment sections to enable plugins
+
+# Check HTML anchors
+#[AnchorCheck]
+
+# Add country info to URLs
+#[LocationInfo]
+
+# Run W3C syntax checks
+#[CssSyntaxCheck]
+#[HtmlSyntaxCheck]
+
+# Search for regular expression in page contents
+#[RegexCheck]
+#warningregex=Oracle Error
+
+# Search for viruses in page contents
+#[VirusCheck]
+#clamavconf=/etc/clamav/clam.conf
+
+# Check that SSL certificates are at least the given number of days valid.
+#[SslCertificateCheck]
+#sslcertwarndays=14
+

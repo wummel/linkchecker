@@ -123,8 +123,8 @@ class TextLogger (_Logger):
             self.write_checktime(url_data)
         if url_data.dltime >= 0 and self.has_part('dltime'):
             self.write_dltime(url_data)
-        if url_data.dlsize >= 0 and self.has_part('dlsize'):
-            self.write_dlsize(url_data)
+        if url_data.size >= 0 and self.has_part('dlsize'):
+            self.write_size(url_data)
         if url_data.info and self.has_part('info'):
             self.write_info(url_data)
         if url_data.modified and self.has_part('modified'):
@@ -176,10 +176,10 @@ class TextLogger (_Logger):
         self.writeln(_("%.3f seconds") % url_data.dltime,
                      color=self.colordltime)
 
-    def write_dlsize (self, url_data):
-        """Write url_data.dlsize."""
+    def write_size (self, url_data):
+        """Write url_data.size."""
         self.write(self.part("dlsize") + self.spaces("dlsize"))
-        self.writeln(strformat.strsize(url_data.dlsize),
+        self.writeln(strformat.strsize(url_data.size),
                      color=self.colordlsize)
 
     def write_checktime (self, url_data):
@@ -260,12 +260,6 @@ class TextLogger (_Logger):
         """Write check statistic info."""
         self.writeln()
         self.writeln(_("Statistics:"))
-        if self.stats.downloaded_bytes > 0:
-            self.writeln(_("Downloaded: %s") % strformat.strsize(self.stats.downloaded_bytes))
-        hitsmisses = strformat.str_cache_stats(*self.stats.robots_txt_stats)
-        self.writeln(_("Robots.txt cache: %s") % hitsmisses)
-        if len(self.stats.domains) > 1:
-            self.writeln(_("Number of domains: %d") % len(self.stats.domains))
         if self.stats.number > 0:
             self.writeln(_(
               "Content types: %(image)d image, %(text)d text, %(video)d video, "

@@ -101,43 +101,46 @@ def get_url_from (base_url, recursion_level, aggregate,
         base_ref = strformat.unicode_safe(base_ref)
     name = strformat.unicode_safe(name)
     url = absolute_url(base_url_stripped, base_ref, parent_url).lower()
+    scheme = None
     if not (url or name):
         # use filename as base url, with slash as path seperator
         name = base_url.replace("\\", "/")
-    if parent_content_type == 'application/x-httpd-php' and \
-       '<?' in base_url and '?>' in base_url and url.startswith('file:'):
-        # ignore but warn about URLs from local PHP files with execution directives
+    elif ":" in url:
+        scheme = url.split(":", 1)[0].lower()
+    allowed_schemes = aggregate.config["allowedschemes"]
+    # ignore local PHP files with execution directives
+    local_php = (parent_content_type == 'application/x-httpd-php' and
+       '<?' in base_url and '?>' in base_url and scheme == 'file')
+    if local_php or (allowed_schemes and scheme not in allowed_schemes):
         klass = ignoreurl.IgnoreUrl
     else:
-        assume_local_file = recursion_level == 0
-        klass = get_urlclass_from(url, assume_local_file=assume_local_file)
+        assume_local_file = (recursion_level == 0)
+        klass = get_urlclass_from(scheme, assume_local_file=assume_local_file)
     log.debug(LOG_CHECK, "%s handles url %s", klass.__name__, base_url)
     return klass(base_url, recursion_level, aggregate,
                  parent_url=parent_url, base_ref=base_ref,
                  line=line, column=column, name=name, extern=extern)
 
 
-def get_urlclass_from (url, assume_local_file=False):
-    """Return checker class for given URL. If URL does not start
-    with a URL scheme and assume_local_file is True, assume that
-    the given URL is a local file."""
-    if url.startswith("http:"):
+def get_urlclass_from (scheme, assume_local_file=False):
+    """Return checker class for given URL scheme. If the scheme
+    cannot be matched and assume_local_file is True, assume a local file.
+    """
+    if scheme in ("http", "https"):
         klass = httpurl.HttpUrl
-    elif url.startswith("ftp:"):
+    elif scheme == "ftp":
         klass = ftpurl.FtpUrl
-    elif url.startswith("file:"):
+    elif scheme == "file":
         klass = fileurl.FileUrl
-    elif url.startswith("telnet:"):
+    elif scheme == "telnet":
         klass = telneturl.TelnetUrl
-    elif url.startswith("mailto:"):
+    elif scheme == "mailto":
         klass = mailtourl.MailtoUrl
-    elif url.startswith("https:"):
-        klass = httpsurl.HttpsUrl
-    elif url.startswith(("nntp:", "news:", "snews:")):
+    elif scheme in ("nntp", "news", "snews"):
         klass = nntpurl.NntpUrl
-    elif url.startswith('dns:'):
+    elif scheme == "dns":
         klass = dnsurl.DnsUrl
-    elif unknownurl.is_unknown_url(url):
+    elif scheme and unknownurl.is_unknown_scheme(scheme):
         klass = unknownurl.UnknownUrl
     elif assume_local_file:
         klass = fileurl.FileUrl
@@ -168,4 +171,4 @@ def get_index_html (urls):
 
 # all the URL classes
 from . import (fileurl, unknownurl, ftpurl, httpurl, dnsurl,
-    httpsurl, mailtourl, telneturl, nntpurl, ignoreurl)
+    mailtourl, telneturl, nntpurl, ignoreurl)

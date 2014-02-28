@@ -39,30 +39,31 @@ class TestConfig (unittest.TestCase):
         files = [get_file("config0.ini")]
         config.read(files)
         # checking section
+        for scheme in ("http", "https", "ftp"):
+            self.assertTrue(scheme in config["allowedschemes"])
         self.assertEqual(config["threads"], 5)
         self.assertEqual(config["timeout"], 42)
-        self.assertFalse(config["anchors"])
+        self.assertEqual(config["aborttimeout"], 99)
         self.assertEqual(config["recursionlevel"], 1)
-        self.assertEqual(config["warningregex"].pattern, "Oracle DB Error")
-        self.assertEqual(config["warnsizebytes"], 2000)
         self.assertEqual(config["nntpserver"], "example.org")
-        self.assertTrue(config["sendcookies"])
-        self.assertTrue(config["storecookies"])
         self.assertEqual(config["cookiefile"], "blablabla")
         self.assertEqual(config["useragent"], "Example/0.0")
-        self.assertEqual(config["wait"], 99)
         self.assertEqual(config["debugmemory"], 1)
         self.assertEqual(config["localwebroot"], "foo")
         self.assertEqual(config["sslverify"], "/path/to/cacerts.crt")
-        self.assertEqual(config["warnsslcertdaysvalid"], 99)
+        self.assertEqual(config["maxnumurls"], 1000)
+        self.assertEqual(config["maxrunseconds"], 1)
+        self.assertEqual(config["maxfilesizeparse"], 100)
+        self.assertEqual(config["maxfilesizedownload"], 100)
         # filtering section
         patterns = [x["pattern"].pattern for x in config["externlinks"]]
         for prefix in ("ignore_", "nofollow_"):
             for suffix in ("1", "2"):
                 key = "%simadoofus%s" % (prefix, suffix)
                 self.assertTrue(key in patterns)
-        for key in ("url-unicode-domain", "anchor-not-found"):
+        for key in ("url-unicode-domain",):
             self.assertTrue(key in config["ignorewarnings"])
+        self.assertTrue(config["checkextern"])
         # authentication section
         patterns = [x["pattern"].pattern for x in config["authentication"]]
         for suffix in ("1", "2"):
@@ -81,10 +82,12 @@ class TestConfig (unittest.TestCase):
         self.assertFalse(config["status"])
         self.assertTrue(isinstance(config["logger"], linkcheck.logger.customxml.CustomXMLLogger))
         self.assertTrue(config["verbose"])
-        self.assertTrue(config["complete"])
         self.assertTrue(config["warnings"])
         self.assertFalse(config["quiet"])
         self.assertEqual(len(config["fileoutput"]), 8)
+        # plugins
+        for plugin in ("AnchorCheck", "CssSyntaxCheck", "HtmlSyntaxCheck", "LocationInfo", "RegexCheck", "SslCertificateCheck", "VirusCheck"):
+            self.assertTrue(plugin in config["enabledplugins"])
         # text logger section
         self.assertEqual(config["text"]["filename"], "imadoofus.txt")
         self.assertEqual(config["text"]["parts"], ["realurl"])

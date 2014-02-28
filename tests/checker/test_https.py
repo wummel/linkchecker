@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2004-2012 Bastian Kleineidam
+# Copyright (C) 2004-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -28,11 +28,13 @@ class TestHttps (LinkCheckTest):
 
     @need_network
     def test_https (self):
-        url = u"https://www.amazon.de/"
+        url = u"https://www.amazon.com/"
+        rurl = u"http://www.amazon.com/"
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % url,
-            u"real url %s" % url,
+            u"real url %s" % rurl,
+            u"info Redirected to `%s'." % rurl,
             u"valid",
         ]
-        self.direct(url, resultlines)
+        self.direct(url, resultlines, recursionlevel=0)

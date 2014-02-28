@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2012 Bastian Kleineidam
+# Copyright (C) 2012-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -57,9 +57,6 @@ class ProjectParser (confparse.LCConfigParser):
             return
         data = {}
         option = "debug"
-        if self.has_option(section, option):
-             data[option] = self.getboolean(section, option)
-        option = "debugmemory"
         if self.has_option(section, option):
              data[option] = self.getboolean(section, option)
         option = "verbose"

@@ -1,5 +1,43 @@
 Upgrading
 =========
+Migrating from 8.x to 9.0
+-------------------------
+The Python requests module is now required.
+
+Several checks have been moved to plugins (see below).
+Plugins have to be enabled in the configuration file.
+
+The following commandline and configuration options have been deprecated
+and do not have any effect:
+--anchors, anchors: moved to plugin AnchorCheck
+--check-css, checkcss: moved to plugin CssSyntaxCheck
+--check-html, checkhtml: moved to plugin HtmlSyntaxCheck
+--complete: feature removed
+--cookies, sendcookies, storecookies: cookies are sent/stored per default
+--pause, wait: replaced with numrequestspersecond
+--scan-virus, scanvirus: moved to plugin VirusCheck
+--warning-regex: moved to plugin RegexCheck
+--warning-size-bytes, warnsizebytes: feature removed
+warnsslcertdaysvalid: moved to plugin SslCertificationCheck
+
+The "html" logger generates HTML5 documents now.
+
+The following warnings have been removed:
+- http-auth-unauthorized: removed
+- http-auth-unknonwn: removed
+- http-decompress-error: removed
+- http-robots-denied: downgraded to info
+- http-moved-permanent: downgraded to info
+- http-unsupported-encoding: removed
+- https-certificate-error: is an error now
+- mail-unverified-address: removed
+- mail-no-connection: removed
+- syntax-css: moved to plugin
+- syntax-html: moved to plugin
+- url-anchor-not-found: moved to plugin
+- url-content-size-unequal: removed
+- url-warnregex-found: moved to plugin
+
 Migrating from 8.4 to 8.5
 --------------------------
 Custom output loggers have been changed.

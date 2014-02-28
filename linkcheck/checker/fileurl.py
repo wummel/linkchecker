@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2012 Bastian Kleineidam
+# Copyright (C) 2000-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ import urllib
 import urllib2
 from datetime import datetime
 
-from . import urlbase, get_index_html, get_url_from
+from . import urlbase, get_index_html
 from .. import log, LOG_CHECK, fileutil, LinkCheckerError, url as urlutil
 from ..bookmarks import firefox
 from .const import WARN_FILE_MISSING_SLASH, WARN_FILE_SYSTEM_PATH
@@ -163,8 +163,6 @@ class FileUrl (urlbase.UrlBase):
             return
         filename = self.get_os_filename()
         self.size = fileutil.get_size(filename)
-        if self.dlsize == -1:
-            self.dlsize = self.size
         self.modified = datetime.utcfromtimestamp(fileutil.get_mtime(filename))
 
     def check_connection (self):
@@ -203,16 +201,13 @@ class FileUrl (urlbase.UrlBase):
     def read_content (self):
         """Return file content, or in case of directories a dummy HTML file
         with links to the files."""
-        if self.size > self.MaxFilesizeBytes:
-            raise LinkCheckerError(_("File size too large"))
         if self.is_directory():
             data = get_index_html(get_files(self.get_os_filename()))
             if isinstance(data, unicode):
                 data = data.encode("iso8859-1", "ignore")
-            size = len(data)
         else:
-            data, size = super(FileUrl, self).read_content()
-        return data, size
+            data = super(FileUrl, self).read_content()
+        return data
 
     def is_html (self):
         """Check if file is a HTML file."""
@@ -272,27 +267,6 @@ class FileUrl (urlbase.UrlBase):
         log.debug(LOG_CHECK, "File with content type %r is not parseable.", ctype)
         return False
 
-    def parse_url (self):
-        """Parse file contents for new links to check."""
-        if self.is_directory():
-            self.parse_html()
-        elif firefox.has_sqlite and firefox.extension.search(self.url):
-            self.parse_firefox()
-        else:
-            mime = self.get_content_type()
-            key = self.ContentMimetypes[mime]
-            getattr(self, "parse_"+key)()
-        self.add_num_url_info()
-
-    def parse_firefox (self):
-        """Parse a Firefox3 bookmark file."""
-        log.debug(LOG_CHECK, "Parsing Firefox bookmarks %s", self)
-        filename = self.get_os_filename()
-        for url, name in firefox.parse_bookmark_file(filename):
-            url_data = get_url_from(url, self.recursion_level+1,
-                self.aggregate, parent_url=self.url, name=name)
-            self.aggregate.urlqueue.put(url_data)
-
     def get_content_type (self):
         """Return URL content type, or an empty string if content
         type could not be found."""
@@ -326,6 +300,5 @@ class FileUrl (urlbase.UrlBase):
         webroot = self.aggregate.config["localwebroot"]
         if webroot and url and url.startswith(u"/"):
             url = webroot + url[1:]
-            log.debug(LOG_CHECK, "Applied local webroot `%s' to `%s'.",
-                webroot, url)
+            log.debug(LOG_CHECK, "Applied local webroot `%s' to `%s'.", webroot, url)
         super(FileUrl, self).add_url(url, line=line, column=column, name=name, base=base)

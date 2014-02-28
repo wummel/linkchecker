@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2004-2012 Bastian Kleineidam
+# Copyright (C) 2004-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -235,7 +235,7 @@ class CookieRedirectHttpRequestHandler (NoQueryHttpRequestHandler):
     def redirect_newscheme (self):
         """Redirect request to a new scheme."""
         if "file" in self.path:
-            path = "file:README"
+            path = "file:README.md"
         else:
             path = "ftp://example.com/"
         self.send_response(302)

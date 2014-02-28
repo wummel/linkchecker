@@ -2612,7 +2612,7 @@ static yyconst flex_int32_t yy_rule_linenum[131] =
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 #line 1 "htmllex.l"
-/* Copyright (C) 2000-2012 Bastian Kleineidam
+/* Copyright (C) 2000-2014 Bastian Kleineidam
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -2951,6 +2951,10 @@ int yyget_lineno (yyscan_t yyscanner );
 
 void yyset_lineno (int line_number ,yyscan_t yyscanner );
 
+int yyget_column  (yyscan_t yyscanner );
+
+void yyset_column (int column_no ,yyscan_t yyscanner );
+
 /* %if-bison-bridge */
 
 YYSTYPE * yyget_lval (yyscan_t yyscanner );
@@ -3132,7 +3136,7 @@ YY_DECL
 
 
   /*********************** EOF ************************/
-#line 3135 "htmllex.c"
+#line 3139 "htmllex.c"
 
     yylval = yylval_param;
 
@@ -4683,7 +4687,7 @@ YY_RULE_SETUP
 #line 1091 "htmllex.l"
 ECHO;
 	YY_BREAK
-#line 4686 "htmllex.c"
+#line 4690 "htmllex.c"
 
 	case YY_END_OF_BUFFER:
 		{

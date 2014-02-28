@@ -21,8 +21,9 @@ Features
 - honors robots.txt exclusion protocol
 - Cookie support
 - HTML5 support
-- HTML and CSS syntax check
-- Antivirus check
+- [Plugin support](plugins.html)
+  allowing custom page checks. Currently available are 
+  HTML and CSS syntax checks, Antivirus checks, and more.
 - Different interfaces: command line, GUI and web interface
 - ... and a lot more check options documented in the
   [manual page](man1/linkchecker.1.html).

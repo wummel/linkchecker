@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2009-2012 Bastian Kleineidam
+# Copyright (C) 2009-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@ import os
 from PyQt4 import QtGui
 from .linkchecker_ui_options import Ui_Options
 from .editor import EditorWindow
-from ..fileutil import is_writable, has_module
+from ..fileutil import is_writable
 from .. import configuration
 
 
@@ -46,11 +46,6 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
         self.recursionlevel.setValue(-1)
         self.verbose.setChecked(False)
         self.debug.setChecked(False)
-        self.debugmemory.setChecked(False)
-        if not has_module("meliae"):
-            self.debugmemory.setEnabled(False)
-            from ..memoryutil import MemoryDebugMsg
-            self.debugmemory.setToolTip(MemoryDebugMsg)
         self.warninglines.setPlainText(u"")
         self.ignorelines.setPlainText(u"")
 
@@ -69,7 +64,6 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
         """Return option data as dictionary."""
         return dict(
             debug=self.debug.isChecked(),
-            debugmemory=self.debugmemory.isChecked(),
             verbose=self.verbose.isChecked(),
             recursionlevel=self.recursionlevel.value(),
             warninglines=unicode(self.warninglines.toPlainText()),
@@ -80,8 +74,6 @@ class LinkCheckerOptions (QtGui.QDialog, Ui_Options):
         """Set GUI options from given data."""
         if data.get("debug") is not None:
             self.debug.setChecked(data["debug"])
-        if data.get("debugmemory") is not None:
-            self.debugmemory.setChecked(data["debugmemory"])
         if data.get("verbose") is not None:
             self.verbose.setChecked(data["verbose"])
         if data.get("recursionlevel") is not None:

@@ -2,7 +2,6 @@ url file://%(curdir)s/%(datadir)s/file.doc
 cache key file://%(curdir)s/%(datadir)s/file.doc
 real url file://%(curdir)s/%(datadir)s/file.doc
 name %(datadir)s/file.doc
-info 1 URL parsed.
 valid
 
 url http://www.example.org/

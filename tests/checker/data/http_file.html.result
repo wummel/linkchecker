@@ -1,7 +1,6 @@
 url http://localhost:%(port)d/%(datadir)s/http_file.html
 cache key http://localhost:%(port)d/%(datadir)s/http_file.html
 real url http://localhost:%(port)d/%(datadir)s/http_file.html
-info 1 URL parsed.
 valid
 
 url file:///example/file

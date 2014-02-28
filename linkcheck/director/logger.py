@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2006-2012 Bastian Kleineidam
+# Copyright (C) 2006-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,7 +29,6 @@ class Logger (object):
         self.loggers = [config['logger']]
         self.loggers.extend(config['fileoutput'])
         self.verbose = config["verbose"]
-        self.complete = config["complete"]
         self.warnings = config["warnings"]
 
     def start_log_output (self):
@@ -46,15 +45,8 @@ class Logger (object):
         for logger in self.loggers:
             logger.end_output()
 
-    def add_statistics(self, robots_txt_stats, download_stats):
-        """Add statistics to logger."""
-        for logger in self.loggers:
-            logger.add_statistics(robots_txt_stats, download_stats)
-
     def do_print (self, url_data):
         """Determine if URL entry should be logged or not."""
-        if self.complete:
-            return True
         if self.verbose:
             return True
         if self.warnings and url_data.warnings:

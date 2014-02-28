@@ -66,8 +66,8 @@ class CustomXMLLogger (xmllog._XMLLogger):
             self.xml_tag(u"extern", u"%d" % (1 if url_data.extern else 0))
         if url_data.dltime >= 0 and self.has_part("dltime"):
             self.xml_tag(u"dltime", u"%f" % url_data.dltime)
-        if url_data.dlsize >= 0 and self.has_part("dlsize"):
-            self.xml_tag(u"dlsize", u"%d" % url_data.dlsize)
+        if url_data.size >= 0 and self.has_part("dlsize"):
+            self.xml_tag(u"dlsize", u"%d" % url_data.size)
         if url_data.checktime and self.has_part("checktime"):
             self.xml_tag(u"checktime", u"%f" % url_data.checktime)
         if self.has_part("level"):

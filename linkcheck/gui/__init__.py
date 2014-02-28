@@ -23,7 +23,7 @@ from PyQt4 import QtCore, QtGui
 from .linkchecker_ui_main import Ui_MainWindow
 from .properties import set_properties, clear_properties
 from .statistics import set_statistics, clear_statistics
-from .debug import LinkCheckerDebug, LinkCheckerDebugMemory
+from .debug import LinkCheckerDebug
 from .logger import SignalLogger, GuiLogHandler, StatusLogger
 from .help import HelpWindow
 from .options import LinkCheckerOptions
@@ -37,7 +37,7 @@ from .settings import Settings
 from .recentdocs import RecentDocumentModel
 from .projects import openproject, saveproject, loadproject, ProjectExt
 from .. import configuration, checker, director, get_link_pat, \
-    strformat, fileutil, LinkCheckerError, memoryutil
+    strformat, fileutil, LinkCheckerError
 from ..containers import enum
 from .. import url as urlutil
 from ..checker import httpheaders
@@ -99,7 +99,6 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         # init subdialogs
         self.options = LinkCheckerOptions(parent=self)
         self.debug = LinkCheckerDebug(parent=self)
-        self.debugmemory = LinkCheckerDebugMemory(parent=self)
         self.checker = CheckerThread(parent=self)
         self.contextmenu = ContextMenu(parent=self)
         self.editor = EditorWindow(parent=self)
@@ -175,8 +174,6 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         def set_idle ():
             """Set application status to idle."""
             self.status = Status.idle
-            if self.config["debugmemory"]:
-                self.dump_memory()
             self.set_statusmsg(_("Check finished."))
             self.controlButton.clicked.disconnect(self.checker.cancel)
         self.checker.finished.connect(set_idle)
@@ -250,7 +247,6 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             self.config["threads"] = 1
         else:
             self.config.reset_loglevel()
-        self.config["debugmemory"] = data["debugmemory"]
         if data["warninglines"]:
             lines = data["warninglines"].splitlines()
             ro = re.compile(warninglines2regex(lines))
@@ -313,7 +309,6 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         elif status == Status.checking:
             self.treeView.setSortingEnabled(False)
             self.debug.reset()
-            self.debugmemory.reset()
             self.set_statusmsg(u"Checking site...")
             # disable commands
             self.menubar.setEnabled(False)
@@ -423,7 +418,7 @@ Version 2 or later.
     def cancel (self):
         """Note that checking is canceled."""
         self.controlButton.setEnabled(False)
-        duration = strformat.strduration_long(self.config["timeout"])
+        duration = strformat.strduration_long(self.config["aborttimeout"])
         self.set_statusmsg(_(u"Closing active URLs with timeout %s...") % duration)
 
     @QtCore.pyqtSlot()
@@ -435,16 +430,6 @@ Version 2 or later.
             self.cancel()
         else:
             raise ValueError("Invalid application status %r" % self.status)
-
-    def dump_memory (self):
-        """Dump memory to temporary file and inform user with a modal
-        dialog where the file is."""
-        self.set_statusmsg(_(u"Dumping memory statistics..."))
-        filename = memoryutil.write_memory_dump()
-        title = _(u"LinkChecker memory dump written")
-        message = _(u"The memory dump has been written to `%(filename)s'.")
-        attrs = dict(filename=filename)
-        QtGui.QMessageBox.information(self, title, message % attrs)
 
     def get_url (self):
         """Return URL to check from the urlinput widget."""
@@ -524,9 +509,10 @@ Version 2 or later.
         """View URL source in editor window."""
         self.editor.setWindowTitle(u"View %s" % url)
         self.editor.setUrl(url)
-        info, data = urlutil.get_content(url, proxy=self.config["proxy"])
-        if (info, data) == (None, None):
-            self.editor.setText(u"An error occurred retreiving URL `%s'." % url)
+        data, info = urlutil.get_content(url, proxy=self.config["proxy"])
+        if data is None:
+            msg = u"An error occurred retreiving URL `%s': %s." % (url, info)
+            self.editor.setText(msg)
         else:
             content_type = httpheaders.get_content_type(info)
             if not content_type:

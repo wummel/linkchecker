@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2011 Bastian Kleineidam
+# Copyright (C) 2000-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,13 +17,28 @@
 """
 Store and retrieve country names for IPs.
 """
+from . import _ConnectionPlugin
 import os
 import sys
 import socket
-from .lock import get_lock
-from .decorators import synchronized
-from .strformat import unicode_safe
-from . import log, LOG_CHECK
+from ..lock import get_lock
+from ..decorators import synchronized
+from ..strformat import unicode_safe
+from .. import log, LOG_PLUGIN
+
+class LocationInfo(_ConnectionPlugin):
+    """Adds the country and if possible city name of the URL host as info.
+    Needs GeoIP or pygeoip and a local country or city lookup DB installed."""
+
+    def check(self, url_data):
+        """Try to ask GeoIP database for country info."""
+        if not url_data.valid:
+            return
+        if url_data.host and geoip:
+            location = get_location(url_data.host)
+            if location:
+                url_data.add_info(_("URL is located in %(location)s.") %
+                {"location": _(location)})
 
 # It is unknown if the geoip library is already thread-safe, so
 # no risks should be taken here by using a lock.
@@ -64,8 +79,8 @@ if geoip_dat:
 
 
 @synchronized(_lock)
-def get_country (host):
-    """Get translated country name.
+def get_location (host):
+    """Get translated country and optional city name.
 
     @return: country with optional city or an boolean False if not found
     """
@@ -75,7 +90,7 @@ def get_country (host):
     try:
         record = get_geoip_record(host)
     except (geoip_error, socket.error):
-        log.debug(LOG_CHECK, "Geoip error for %r", host, exception=True)
+        log.debug(LOG_PLUGIN, "Geoip error for %r", host, exception=True)
         # ignore lookup errors
         return None
     value = u""

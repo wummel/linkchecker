@@ -2,7 +2,6 @@ url file://%(curdir)s/%(datadir)s/frames.html
 cache key file://%(curdir)s/%(datadir)s/frames.html
 real url file://%(curdir)s/%(datadir)s/frames.html
 name %(datadir)s/frames.html
-info 2 URLs parsed.
 valid
 
 url file.html

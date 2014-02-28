@@ -2,7 +2,6 @@ url file://%(curdir)s/%(datadir)s/file.wml
 cache key file://%(curdir)s/%(datadir)s/file.wml
 real url file://%(curdir)s/%(datadir)s/file.wml
 name %(datadir)s/file.wml
-info 2 URLs parsed.
 valid
 
 url file.html

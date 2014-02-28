@@ -22,7 +22,6 @@ client. Run this file with the -h option to see how it's done.
 
 import sys
 import codecs
-import re
 import os
 import pprint
 import argparse
@@ -32,7 +31,8 @@ import linkcheck
 # override argparse gettext method with the one from linkcheck.init_i18n()
 #argparse._ = _
 # now import the rest of the linkchecker gang
-from linkcheck.cmdline import print_version, print_usage, aggregate_url, LCArgumentParser
+from linkcheck.cmdline import print_version, print_usage, aggregate_url, \
+  LCArgumentParser, print_plugins
 from linkcheck import log, LOG_CMDLINE, i18n, strformat
 import linkcheck.checker
 import linkcheck.configuration
@@ -163,7 +163,7 @@ You can skip the "ftp://" url part if the domain starts with "ftp.":
 LoggerTypes = _(r"""OUTPUT TYPES
 Note that by default only errors and warnings are logged.
 You should use the --verbose option to see valid URLs,
-and --complete when outputting a sitemap graph format.
+and when outputting a sitemap graph format.
 
 text    Standard text output, logging URLs in keyword: argument fashion.
 html    Log URLs in keyword: argument fashion, formatted as HTML.
@@ -214,17 +214,6 @@ def viewprof():
     sys.exit(0)
 
 
-def try_compile_re (arg):
-    """Try to compile the regular expression. On error print an error
-    message and exit."""
-    try:
-        return re.compile(arg)
-    except re.error as msg:
-        log.error(LOG_CMDLINE,
-           _("Syntax error in %(arg)r: %(msg)s") % {"arg": arg, "msg": msg})
-        sys.exit(1)
-
-
 def has_encoding (encoding):
     """Detect if Python can encode in a certain encoding."""
     try:
@@ -257,21 +246,24 @@ group.add_argument("-t", "--threads", type=int, metavar="NUMBER",
 of threads is 10. To disable threading specify a non-positive number."""))
 group.add_argument("-V", "--version", action="store_true",
                  help=_("""Print version and exit."""))
+group.add_argument("--list-plugins", action="store_true", dest="listplugins",
+                 help=_(
+"""Print available check plugins and exit."""))
 group.add_argument("--stdin", action="store_true",
                  help=_(
 """Read list of white-space separated URLs to check from stdin."""))
 
 ################# output options ##################
 group = argparser.add_argument_group(_("Output options"))
+# XXX deprecated: --check-css moved to plugin CssSyntaxCheck
 group.add_argument("--check-css", action="store_true", dest="checkcss",
-                 help=_(
-"""Check syntax of CSS URLs with the W3C online validator."""))
+                 help=argparse.SUPPRESS)
+# XXX deprecated: --check-html moved to plugin HtmlSyntaxCheck
 group.add_argument("--check-html", action="store_true", dest="checkhtml",
-                 help=_(
-"""Check syntax of HTML URLs with the W3C online validator."""))
+                 help=argparse.SUPPRESS)
+# XXX deprecated: --complete is removed
 group.add_argument("--complete", action="store_true", dest="complete",
-                 help=_("""Log all URLs, including duplicates.
-Default is to log duplicate URLs only once."""))
+                 help=argparse.SUPPRESS)
 group.add_argument("-D", "--debug", action="append", metavar="STRING",
                  help=_("""Print debugging output for the given logger.
 Available loggers are %(lognamelist)s.
@@ -315,52 +307,40 @@ group.add_argument("-q", "--quiet", action="store_true", dest="quiet",
                  help=_(
 """Quiet operation, an alias for '-o none'.
 This is only useful with -F."""))
+# XXX deprecated: moved to plugin VirusCheck
 group.add_argument("--scan-virus", action="store_true", dest="scanvirus",
-                 help=_(
-"""Scan content of URLs with ClamAV virus scanner."""))
+                 help=argparse.SUPPRESS)
 group.add_argument("--trace", action="store_true", dest="trace",
-                 help=_("""Print tracing information."""))
+                 help=argparse.SUPPRESS)
 group.add_argument("-v", "--verbose", action="store_true", dest="verbose",
                  help=_(
 """Log all URLs. Default is to log only errors and warnings."""))
 group.add_argument("--viewprof", action="store_true", dest="viewprof",
                  help=argparse.SUPPRESS)
+# XXX deprecated: moved to plugin RegexCheck
 group.add_argument("-W", "--warning-regex", dest="warningregex",
                  metavar="REGEX",
-                 help=_(
-"""Define a regular expression which prints a warning if it matches
-any content of the checked link. This applies only to valid pages,
-so we can get their content.
-
-Use this to check for pages that contain some form of error
-message, for example 'This page has moved' or 'Oracle
-Application error'.
-
-Note that multiple values can be combined in the regular expression,
-for example "(This page has moved|Oracle Application error)"."""))
+                 help=argparse.SUPPRESS)
+# XXX deprecated: removed
 group.add_argument("--warning-size-bytes", dest="warningsizebytes",
                  metavar="NUMBER",
-                 help=_(
-"""Print a warning if content size info is available and exceeds the
-given number of bytes."""))
+                 help=argparse.SUPPRESS)
 
 
 ################# checking options ##################
 group = argparser.add_argument_group(_("Checking options"))
+# XXX deprecated: moved to plugin AnchorCheck
 group.add_argument("-a", "--anchors", action="store_true", dest="anchors",
-                 help=_(
-"""Check HTTP anchor references. Default is not to check anchors.
-This option enables logging of the warning 'url-anchor-not-found'."""))
+                 help=argparse.SUPPRESS)
+# XXX deprecated: replaced with requests session cookie handling
 group.add_argument("-C", "--cookies", action="store_true", dest="cookies",
-                 help=_(
-"""Accept and send HTTP cookies according to RFC 2109. Only cookies
-which are sent back to the originating server are accepted.
-Sent and accepted cookies are provided as additional logging
-information."""))
+                 help=argparse.SUPPRESS)
 group.add_argument("--cookiefile", dest="cookiefile", metavar="FILENAME",
                  help=_(
 """Read a file with initial cookie data. The cookie data format is
 explained below."""))
+group.add_argument("--check-extern", action="store_true",
+                 dest="checkextern", help=_("""Check external URLs."""))
 group.add_argument("--ignore-url", action="append", metavar="REGEX",
                  dest="externstrict", help=_(
 """Only check syntax of URLs matching the given regular expression.
@@ -380,11 +360,10 @@ group.add_argument("-p", "--password", action="store_false", dest="password",
 """Read a password from console and use it for HTTP and FTP authorization.
 For FTP the default password is 'anonymous@'. For HTTP there is
 no default password. See also -u."""))
+# XXX deprecated: replaced with numrequestsperpage
 group.add_argument("-P", "--pause", type=int, dest="pause",
                  metavar="NUMBER",
-                 help=_(
-"""Pause the given number of seconds between two subsequent connection
-requests to the same host. Default is no pause between requests."""))
+                 help=argparse.SUPPRESS)
 group.add_argument("-r", "--recursion-level", type=int,
                  dest="recursionlevel", metavar="NUMBER",
                  help=_(
@@ -463,8 +442,6 @@ constructauth = False
 do_profile = False
 if options.warnings:
     config["warnings"] = options.warnings
-if options.anchors:
-    config["anchors"] = options.anchors
 if options.externstrict:
     pats = [linkcheck.get_link_pat(arg, strict=True) \
             for arg in options.externstrict]
@@ -472,6 +449,8 @@ if options.externstrict:
 if options.extern:
     pats = [linkcheck.get_link_pat(arg) for arg in options.extern]
     config["externlinks"].extend(pats)
+if options.checkextern:
+    config["checkextern"] = True
 if options.output:
     if "/" in options.output:
         logtype, encoding = options.output.split("/", 1)
@@ -536,12 +515,6 @@ if options.password:
         msg = _("Enter LinkChecker HTTP/FTP password:")
     _password = getpass.getpass(console.encode(msg))
     constructauth = True
-if options.pause is not None:
-    if options.pause >= 0:
-        config["wait"] = options.pause
-    else:
-        print_usage(_("Illegal argument %(arg)r for option %(option)s") % \
-                    {"arg": options.pause, "option": "'-P, --pause'"})
 if options.profile:
     do_profile = options.profile
 if options.quiet:
@@ -562,33 +535,18 @@ if options.timeout is not None:
                     {"arg": options.timeout, "option": "'--timeout'"})
 if options.version:
     print_version()
+if options.listplugins:
+    print_plugins(config["pluginfolders"])
 if options.verbose:
     if options.verbose:
         config["verbose"] = True
         config["warnings"] = True
-if options.complete:
-    if options.complete:
-        config["complete"] = True
-        config["verbose"] = True
-        config["warnings"] = True
 if options.viewprof:
     viewprof()
-if options.warningregex is not None:
-    config["warningregex"] = try_compile_re(options.warningregex)
-    config["warnings"] = True
-if options.warningsizebytes is not None:
-    config["warnsizebytes"] = options.warningsizebytes
-if options.cookies:
-    config['storecookies'] = config['sendcookies'] = options.cookies
 if options.cookiefile is not None:
     config['cookiefile'] = options.cookiefile
-    config['storecookies'] = config['sendcookies'] = True
 if constructauth:
     config.add_auth(pattern=".+", user=_username, password=_password)
-# boolean options
-for option in ("checkhtml", "checkcss", "scanvirus"):
-    if getattr(options, option):
-        config[option] = getattr(options, option)
 # read missing passwords
 for entry in config["authentication"]:
     if entry["password"] is None:
@@ -599,6 +557,12 @@ for entry in config["authentication"]:
         entry["password"] = getpass.getpass(console.encode(msg))
 if options.useragent is not None:
     config["useragent"] = options.useragent
+if options.cookiefile is not None:
+    if linkcheck.fileutil.is_readable(options.cookiefile):
+        config["cookiefile"] = options.cookiefile
+    else:
+        msg = _("Could not read cookie file %s") % options.cookiefile
+        log.error(LOG_CMDLINE, msg)
 # now sanitize the configuration
 config.sanitize()
 
@@ -607,18 +571,10 @@ log.debug(LOG_CMDLINE, "configuration: %s",
 
 # prepare checking queue
 aggregate = get_aggregate(config)
-if options.cookiefile is not None:
-    try:
-        cookies = linkcheck.cookies.from_file(options.cookiefile)
-        for headers, scheme, host, path in cookies:
-            aggregate.cookies.add(headers, scheme, host, path)
-        config["sendcookies"] = True
-    except StandardError:
-        log.error(LOG_CMDLINE,
-      _("Could not parse cookie file: %s"), sys.exc_info()[1])
-        sys.exit(1)
 if options.trace:
+    # enable thread tracing
     config["trace"] = True
+    # start trace in mainthread
     import linkcheck.trace
     linkcheck.trace.trace_filter([r"^linkcheck"])
     linkcheck.trace.trace_on()

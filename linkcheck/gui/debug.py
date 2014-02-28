@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2009-2012 Bastian Kleineidam
+# Copyright (C) 2009-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -41,23 +41,3 @@ class LinkCheckerDebug (QtGui.QDialog, Ui_DebugDialog):
     def getText (self):
         """Get debug info as string."""
         return self.textEdit.toPlainText()
-
-
-class LinkCheckerDebugMemory (QtGui.QDialog, Ui_DebugDialog):
-    """Show memory debugging output."""
-
-    def __init__ (self, parent=None):
-        """Setup the debug memory dialog."""
-        super(LinkCheckerDebugMemory, self).__init__(parent)
-        self.setupUi(self)
-        font = QtGui.QFont("Consolas", 11)
-        font.setFixedPitch(True)
-        self.textEdit.document().setDefaultFont(font)
-
-    def reset (self):
-        """Clear memory info."""
-        self.textEdit.clear()
-
-    def setText (self, text):
-        """Set memory debug info."""
-        return self.textEdit.setPlainText(text)

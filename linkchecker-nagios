@@ -137,8 +137,6 @@ if args.verbose < 0:
 else:
     config["verbose"] = True
     config["warnings"] = True
-    if args.verbose >= 2:
-        config["complete"] = True
 
 # check missing passwords
 for entry in config["authentication"]:

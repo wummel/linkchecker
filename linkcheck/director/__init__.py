@@ -19,13 +19,11 @@ Management of checking a queue of links with several threads.
 """
 import os
 import thread
-import urlparse
-from cStringIO import StringIO
-from .. import log, LOG_CHECK, LinkCheckerInterrupt, cookies, dummy, \
-  fileutil, strformat
-from ..cache import urlqueue, robots_txt, cookie, connection
+import time
+from .. import log, LOG_CHECK, LinkCheckerInterrupt, dummy, \
+  fileutil, strformat, plugins
+from ..cache import urlqueue, robots_txt
 from . import aggregator, console
-from ..httplib2 import HTTPMessage
 
 
 def visit_loginurl (aggregate):
@@ -53,7 +51,7 @@ def visit_loginurl (aggregate):
         log.warn(LOG_CHECK, _("Error posting form at login URL %(url)s.") % \
           {"url": url})
         return
-    store_cookies(tc.get_browser().cj, aggregate.cookies, url)
+    #XXX store_cookies(tc.get_browser().cj, aggregate.cookies, url)
     resulturl = tc.get_browser().get_url()
     log.debug(LOG_CHECK, u"URL after POST is %s" % resulturl)
     # add result URL to check list
@@ -105,18 +103,6 @@ def search_formname (fieldnames, tc):
             return form.name or form.attrs.get('id')
     # none found
     return None
-
-
-def store_cookies (cookiejar, cookiecache, url):
-    """Store cookies in cookiejar into the cookiecache."""
-    cookielst = []
-    for c in cookiejar:
-        cookielst.append("Set-Cookie2: %s" % cookies.cookie_str(c))
-    log.debug(LOG_CHECK, "Store cookies %s", cookielst)
-    headers = HTTPMessage(StringIO("\r\n".join(cookielst)))
-    urlparts = urlparse.urlsplit(url)
-    scheme, host, path = urlparts[0:3]
-    cookiecache.add(headers, scheme, host, path)
 
 
 def check_urls (aggregate):
@@ -194,14 +180,17 @@ def abort (aggregate):
             break
         except KeyboardInterrupt:
             log.warn(LOG_CHECK, _("user abort; force shutdown"))
+            aggregate.logger.end_log_output()
             abort_now()
 
 
 def abort_now ():
     """Force exit of current process without cleanup."""
     if os.name == 'posix':
-        # Unix systems can use sigkill
+        # Unix systems can use signals
         import signal
+        os.kill(os.getpid(), signal.SIGTERM)
+        time.sleep(1)
         os.kill(os.getpid(), signal.SIGKILL)
     elif os.name == 'nt':
         # NT has os.abort()
@@ -214,8 +203,6 @@ def abort_now ():
 def get_aggregate (config):
     """Get an aggregator instance with given configuration."""
     _urlqueue = urlqueue.UrlQueue(max_allowed_puts=config["maxnumurls"])
-    connections = connection.ConnectionPool(config.get_connectionlimits(), wait=config["wait"])
-    cookies = cookie.CookieJar()
     _robots_txt = robots_txt.RobotsTxt()
-    return aggregator.Aggregate(config, _urlqueue, connections,
-                                cookies, _robots_txt)
+    plugin_manager = plugins.PluginManager(config)
+    return aggregator.Aggregate(config, _urlqueue, _robots_txt, plugin_manager)

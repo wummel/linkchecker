@@ -18,11 +18,11 @@ DEBORIGFILE:=$(DEBUILDDIR)/$(LAPPNAME)_$(VERSION).orig.tar.xz
 DEBPACKAGEDIR:=$(DEBUILDDIR)/$(APPNAME)-$(VERSION)
 FILESCHECK_URL:=http://localhost/~calvin/
 SRCDIR:=${HOME}/src
-PY_FILES_DIRS:=linkcheck tests *.py linkchecker linkchecker-nagios linkchecker-gui cgi-bin config doc
+PY_FILES_DIRS:=linkcheck tests *.py linkchecker linkchecker-nagios linkchecker-gui cgi-bin config doc/examples
 MYPY_FILES_DIRS:=linkcheck/HtmlParser linkcheck/checker \
 	  linkcheck/cache linkcheck/configuration linkcheck/director \
 	  linkcheck/htmlutil linkcheck/logger linkcheck/network \
-	  linkcheck/bookmarks \
+	  linkcheck/bookmarks linkcheck/plugins linkcheck/parser \
 	  linkcheck/gui/__init__.py \
 	  linkcheck/gui/checker.py \
 	  linkcheck/gui/contextmenu.py \
@@ -192,7 +192,7 @@ filescheck: localbuild
 	done
 
 update-copyright:
-	update-copyright --holder="Bastian Kleineidam"
+	update-copyright --holder="Bastian Kleineidam" $(PY_FILES_DIRS)
 
 releasecheck: check update-certificates
 	@if egrep -i "xx\.|xxxx|\.xx" doc/changelog.txt > /dev/null; then \

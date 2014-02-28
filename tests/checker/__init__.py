@@ -127,13 +127,12 @@ def get_test_aggregate (confargs, logargs):
     add_fileoutput_config(config)
     # uncomment for debugging
     #config.init_logging(None, debug=["all"])
-    config["anchors"] = True
     config["verbose"] = True
-    config["complete"] = True
     config['threads'] = 0
     config['status'] = False
-    config['cookies'] = True
+    config["checkextern"] = True
     config.update(confargs)
+    config.sanitize()
     return linkcheck.director.get_aggregate(config)
 
 

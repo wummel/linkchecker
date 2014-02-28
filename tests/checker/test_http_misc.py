@@ -35,7 +35,6 @@ class TestHttpMisc (HttpServerTest):
             u"url %s" % url,
             u"cache key %s" % url,
             u"real url %s" % url,
-            u"info 1 URL parsed.",
             u"valid",
             u"url http://www.example.org/",
             u"cache key http://www.example.org/",
@@ -47,15 +46,15 @@ class TestHttpMisc (HttpServerTest):
     def obfuscate_test (self):
         if os.name != "posix" or sys.platform != 'linux2':
             return
-        host = "www.google.de"
-        ip = iputil.resolve_host(host).pop()
+        host = "www.heise.de"
+        ip = iputil.resolve_host(host)[0]
         url = u"http://%s/" % iputil.obfuscate_ip(ip)
-        rurl = u"http://%s/" % host
+        rurl = u"http://%s/" % ip
         resultlines = [
             u"url %s" % url,
-            u"cache key %s" % url,
+            u"cache key %s" % rurl,
             u"real url %s" % rurl,
-            u"info Redirected to `%s'." % rurl,
+            u"info Access denied by robots.txt, checked only syntax.",
             u"warning URL %s has obfuscated IP address %s" % (url, ip),
             u"valid",
         ]

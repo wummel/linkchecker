@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2004-2012 Bastian Kleineidam
+# Copyright (C) 2004-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -361,7 +361,7 @@ class TestUrl (unittest.TestCase):
         self.urlnormtest(url, nurl)
         # ldap url
         url = "ldap://[2001:db8::7]/c=GB?objectClass?one"
-        nurl = "ldap://%5B2001:db8::7%5D/c=GB%3FobjectClass%3Fone"
+        nurl = "ldap://%5B2001:db8::7%5D/c=GB?objectClass?one"
         self.urlnormtest(url, nurl)
         url = "tel:+1-816-555-1212"
         nurl = url

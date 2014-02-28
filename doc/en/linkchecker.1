@@ -33,15 +33,14 @@ Antivirus check
 .IP \(bu
 a command line, GUI and web interface
 .SH EXAMPLES
-The most common use checks the given domain recursively, plus any
-URL pointing outside of the domain:
-  \fBlinkchecker http://www.example.net/\fP
+The most common use checks the given domain recursively:
+  \fBlinkchecker http://www.example.com/\fP
 .br
 Beware that this checks the whole site which can have thousands of URLs.
 Use the \fB\-r\fP option to restrict the recursion depth.
 .br
-Don't check \fBmailto:\fP URLs. All other links are checked as usual:
-  \fBlinkchecker \-\-ignore\-url=^mailto: mysite.example.org\fP
+Don't check URLs with \fB/secret\fP in its name. All other links are checked as usual:
+  \fBlinkchecker \-\-ignore\-url=/secret mysite.example.com\fP
 .br
 Checking a local HTML file on Unix:
   \fBlinkchecker ../bla.html\fP
@@ -53,7 +52,7 @@ You can skip the \fBhttp://\fP url part if the domain starts with \fBwww.\fP:
   \fBlinkchecker www.example.com\fP
 .br
 You can skip the \fBftp://\fP url part if the domain starts with \fBftp.\fP:
-  \fBlinkchecker \-r0 ftp.example.org\fP
+  \fBlinkchecker \-r0 ftp.example.com\fP
 .br
 Generate a sitemap graph and convert it with the graphviz dot utility:
   \fBlinkchecker \-odot \-v www.example.com | dot \-Tps > sitemap.ps\fP
@@ -77,17 +76,11 @@ of threads is 100. To disable threading specify a non-positive number.
 .TP
 \fB\-V\fP, \fB\-\-version\fP
 Print version and exit.
+.TP
+\fB\-\-list\-plugins\fP
+Print available check plugins and exit.
 .
 .SS Output options
-.TP
-\fB\-\-check\-css\fP
-Check syntax of CSS URLs with the W3C online validator.
-.TP
-\fB\-\-check\-html\fP
-Check syntax of HTML URLs with the W3C online validator.
-.TP
-\fB\-\-complete\fP
-Log all URLs, including duplicates. Default is to log duplicate URLs only once.
 .TP
 \fB\-D\fP\fISTRING\fP, \fB\-\-debug=\fP\fISTRING\fP
 Print debugging output for the given logger.
@@ -139,12 +132,6 @@ that of your locale. Valid encodings are listed at
 Quiet operation, an alias for \fB\-o none\fP.
 This is only useful with \fB\-F\fP.
 .TP
-\fB\-\-scan\-virus\fP
-Scan content of URLs for viruses with ClamAV.
-.TP
-\fB\-\-trace\fP
-Print tracing information.
-.TP
 \fB\-v\fP, \fB\-\-verbose\fP
 Log all checked URLs. Default is to log only errors and warnings.
 .TP
@@ -160,26 +147,14 @@ Note that multiple values can be combined in the regular expression,
 for example "(This page has moved|Oracle Application error)".
 .br
 See section \fBREGULAR EXPRESSIONS\fP for more info.
-.TP
-\fB\-\-warning\-size\-bytes=\fP\fINUMBER\fP
-Print a warning if content size info is available and exceeds the given
-number of \fIbytes\fP.
-.
 .SS Checking options
-.TP
-\fB\-a\fP, \fB\-\-anchors\fP
-Check HTTP anchor references. Default is not to check anchors.
-This option enables logging of the warning \fBurl\-anchor\-not\-found\fP.
-.TP
-\fB\-C\fP, \fB\-\-cookies\fP
-Accept and send HTTP cookies according to RFC 2109. Only cookies
-which are sent back to the originating server are accepted.
-Sent and accepted cookies are provided as additional logging
-information.
 .TP
 \fB\-\-cookiefile=\fP\fIFILENAME\fP
 Read a file with initial cookie data. The cookie data
 format is explained below.
+.TP
+\fB\-\-check\-extern
+Check external URLs.
 .TP
 \fB\-\-ignore\-url=\fP\fIREGEX\fP
 URLs matching the given regular expression will be ignored and not checked.
@@ -205,10 +180,6 @@ See section \fBREGULAR EXPRESSIONS\fP for more info.
 Read a password from console and use it for HTTP and FTP authorization.
 For FTP the default password is \fBanonymous@\fP. For HTTP there is
 no default password. See also \fB\-u\fP.
-.TP
-\fB\-P\fP\fINUMBER\fP, \fB\-\-pause=\fP\fINUMBER\fP
-Pause the given number of seconds between two subsequent connection
-requests to the same host. Default is no pause between requests.
 .TP
 \fB\-r\fP\fINUMBER\fP, \fB\-\-recursion\-level=\fP\fINUMBER\fP
 Check recursively all links up to given depth.
@@ -291,16 +262,13 @@ A cookie file contains standard HTTP header (RFC 2616) data with the
 following possible names:
 .
 .TP
-\fBScheme\fP (optional)
-Sets the scheme the cookies are valid for; default scheme is \fBhttp\fP.
-.TP
 \fBHost\fP (required)
 Sets the domain the cookies are valid for.
 .TP
 \fBPath\fP (optional)
 Gives the path the cookies are value for; default path is \fB/\fP.
 .TP
-\fBSet-cookie\fP (optional)
+\fBSet-cookie\fP (required)
 Set cookie name/value. Can be given more than once.
 .PP
 Multiple entries are separated by a blank line.
@@ -314,7 +282,6 @@ with \fBhttps://example.org/\fP:
  Set-cookie: ID="smee"
  Set-cookie: spam="egg"
 
- Scheme: https
  Host: example.org
  Set-cookie: baggage="elitist"; comment="hologram"
 
@@ -353,7 +320,6 @@ After connecting to the given HTTP server the given path
 or query is requested. All redirections are followed, and
 if user/password is given it will be used as authorization
 when necessary.
-Permanently moved pages issue a warning.
 All final HTTP status codes other than 2xx are errors.
 .
 HTML page contents are checked for recursion.
@@ -411,6 +377,20 @@ Unsupported links (``javascript:``, etc.)
   The complete list of recognized, but unsupported links can be found
   in the \fBlinkcheck/checker/unknownurl.py\fP source file.
   The most prominent of them should be JavaScript links.
+
+.SH PLUGINS
+There are two plugin types: connection and content plugins.
+.
+Connection plugins are run after a successful connection to the
+URL host.
+.
+Content plugins are run if the URL type has content
+(mailto: URLs have no content for example) and if the check is not
+forbidden (ie. by HTTP robots.txt).
+.
+See \fBlinkchecker \-\-list\-plugins\fP for a list of plugins and
+their documentation. All plugins are enabled via the \fBlinkcheckerrc\fP(5)
+configuration file.
 
 .SH RECURSION
 Before descending recursively into a URL, it has to fulfill several

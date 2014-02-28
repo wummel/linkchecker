@@ -59,8 +59,8 @@ class DOTLogger (_GraphLogger):
                 self.writeln(u'    href="%s",' % dotquote(node["url"]))
             if node["dltime"] >= 0 and self.has_part("dltime"):
                 self.writeln(u"    dltime=%d," % node["dltime"])
-            if node["dlsize"] >= 0 and self.has_part("dlsize"):
-                self.writeln(u"    dlsize=%d," % node["dlsize"])
+            if node["size"] >= 0 and self.has_part("dlsize"):
+                self.writeln(u"    size=%d," % node["size"])
             if node["checktime"] and self.has_part("checktime"):
                 self.writeln(u"    checktime=%d," % node["checktime"])
             if self.has_part("extern"):

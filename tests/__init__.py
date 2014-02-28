@@ -24,6 +24,10 @@ from contextlib import contextmanager
 from linkcheck import LinkCheckerInterrupt, winutil
 
 
+basedir = os.path.dirname(__file__)
+linkchecker_cmd = os.path.join(os.path.dirname(basedir), "linkchecker")
+
+
 class memoized (object):
     """Decorator that caches a function's return value each time it is called.
     If called later with the same arguments, the cached value is returned, and
@@ -49,16 +53,32 @@ class memoized (object):
         return self.func.__doc__
 
 
-def _run (cmd):
+def run (cmd, verbosity=0, **kwargs):
+    """Run command without error checking.
+    @return: command return code"""
+    if kwargs.get("shell"):
+        # for shell calls the command must be a string
+        cmd = " ".join(cmd)
+    return subprocess.call(cmd, **kwargs)
+
+
+def run_checked (cmd, ret_ok=(0,), **kwargs):
+    """Run command and raise OSError on error."""
+    retcode = run(cmd, **kwargs)
+    if retcode not in ret_ok:
+        msg = "Command `%s' returned non-zero exit status %d" % (cmd, retcode)
+        raise OSError(msg)
+    return retcode
+
+
+
+def run_silent (cmd):
     """Run given command without output."""
     null = open(os.name == 'nt' and ':NUL' or "/dev/null", 'w')
     try:
-        try:
-            return subprocess.call(cmd, stdout=null, stderr=subprocess.STDOUT)
-        finally:
-            null.close()
-    except OSError:
-        return -1
+        return run(cmd, stdout=null, stderr=subprocess.STDOUT)
+    finally:
+        null.close()
 
 
 def _need_func (testfunc, name):
@@ -91,7 +111,7 @@ need_network = _need_func(has_network, "network")
 @memoized
 def has_msgfmt ():
     """Test if msgfmt is available."""
-    return _run(["msgfmt", "-V"]) == 0
+    return run_silent(["msgfmt", "-V"]) == 0
 
 need_msgfmt = _need_func(has_msgfmt, "msgfmt")
 

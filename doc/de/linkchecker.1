@@ -41,16 +41,15 @@ Antivirusprüfung
 .IP \(bu
 ein Kommandozeilenprogramm, GUI und web interface
 .SH BEISPIELE
-Der häufigste Gebrauchsfall prüft die angegebene Domäne rekursiv,
-inklusive aller einzelnen nach außen zeigenden Verknüpfungen:
-  \fBlinkchecker http://www.example.net/\fP
+The most common use checks the given domain recursively:
+  \fBlinkchecker http://www.example.com/\fP
 .br
 Beachten Sie dass dies die komplette Domäne überprüft, welche aus mehreren
 tausend URLs bestehen kann. Benutzen Sie die Option \fB\-r\fP, um die
 Rekursionstiefe zu beschränken.
 .br
-Prüfe keine \fBmailto:\fP URLs. Alle anderen Verknüpfungen werden wie üblich geprüft:
-  \fBlinkchecker \-\-ignore\-url=^mailto: mysite.example.org\fP
+Don't check URLs with \fB/secret\fP in its name. All other links are checked as usual:
+  \fBlinkchecker \-\-ignore\-url=/secret mysite.example.com\fP
 .br
 Überprüfung einer lokalen HTML Datei unter Unix:
   \fBlinkchecker ../bla.html\fP
@@ -61,8 +60,8 @@ Prüfe keine \fBmailto:\fP URLs. Alle anderen Verknüpfungen werden wie üblich 
 Sie können den \fBhttp://\fP URL Anteil weglassen wenn die Domäne mit \fBwww.\fP beginnt:
   \fBlinkchecker www.example.com\fP
 .br
-Sie können den \fBftp://\fP URL Anteil weglassen wenn die Domäne mit \fBftp.\fP beginnt:
-  \fBlinkchecker \-r0 ftp.example.org\fP
+You can skip the \fBftp://\fP url part if the domain starts with \fBftp.\fP:
+  \fBlinkchecker \-r0 ftp.example.com\fP
 .br
 Erzeuge einen Sitemap Graphen und konvertiere ihn mit dem graphviz dot Programm:
   \fBlinkchecker \-odot \-v www.example.com | dot \-Tps > sitemap.ps\fP
@@ -88,18 +87,11 @@ positive Nummer an.
 .TP 
 \fB\-V\fP, \fB\-\-version\fP
 Gebe die Version aus und beende das Programm.
+.TP 
+\fB\-\-list\-plugins\fP
+Print available check plugins and exit.
 .
 .SS Ausgabeoptionen
-.TP 
-\fB\-\-check\-css\fP
-Prüfe Syntax von CSS URLs mit dem W3C Online Validator.
-.TP 
-\fB\-\-check\-html\fP
-Prüfe Syntax von HTML URLs mit dem W3C Online Validator.
-.TP 
-\fB\-\-complete\fP
-Gebe alle geprüften URLs aus. Standard ist es, doppelte URLs nur einmal
-auszugeben.
 .TP 
 \fB\-D\fP\fINAME\fP, \fB\-\-debug=\fP\fINAME\fP
 Gebe Testmeldungen aus für den angegebenen Logger. Verfügbare Logger sind
@@ -144,12 +136,6 @@ lokalen Spracheinstellung. Gültige Enkodierungen sind aufgelistet unter
 Keine Ausgabe, ein Alias für \fB\-o none\fP. Dies ist nur in Verbindung mit
 \fB\-F\fP nützlich.
 .TP 
-\fB\-\-scan\-virus\fP
-Prüfe Inhalt von URLs auf Viren mit ClamAV.
-.TP 
-\fB\-\-trace\fP
-Trace\-Information ausgeben.
-.TP 
 \fB\-v\fP, \fB\-\-verbose\fP
 Gebe alle geprüften URLs aus. Standard ist es, nur fehlerhafte URLs und
 Warnungen auszugeben.
@@ -168,26 +154,14 @@ werden können, zum Beispiel "(Diese Seite ist umgezogen|Oracle
 Applikationsfehler)".
 .br
 Siehe Abschnitt \fBREGULAR EXPRESSIONS\fP für weitere Infos.
-.TP 
-\fB\-\-warning\-size\-bytes=\fP\fINUMMER\fP
-Gebe eine Warnung aus, wenn die Inhaltsgröße bekannt ist und die angegebene
-Anzahl von Bytes übersteigt.
-.
 .SS "Optionen zum Prüfen"
-.TP 
-\fB\-a\fP, \fB\-\-anchors\fP
-Prüfe HTTP Ankerverweise. Standard ist, Ankerverweise nicht zu prüfen. Diese
-Option aktiviert die Ausgabe der Warnung \fBurl\-anchor\-not\-found\fP.
-.TP 
-\fB\-C\fP, \fB\-\-cookies\fP
-Akzeptiere und sende HTTP Cookies nach der RFC 2109. Lediglich Cookies, die
-zum ursprünglichen Server zurückgesendet werden, werden akzeptiert.
-Gesendete und akzeptierte Cookies werden als zusätzlicheLoginformation
-aufgeführt.
 .TP 
 \fB\-\-cookiefile=\fP\fIDATEINAME\fP
 Lese eine Datei mit Cookie\-Daten. Das Cookie Datenformat wird weiter unten
 erklärt.
+.TP 
+\fB\-\-check\-extern\fP
+Check external URLs.
 .TP 
 \fB\-\-ignore\-url=\fP\fIREGEX\fP
 URLs welche dem angegebenen regulären Ausdruck entsprechen werden ignoriert
@@ -214,11 +188,6 @@ Siehe Abschnitt \fBREGULAR EXPRESSIONS\fP für weitere Infos.
 Liest ein Passwort von der Kommandozeile und verwende es für HTTP und FTP
 Autorisierung. Für FTP ist das Standardpasswort \fBanonymous@\fP. Für HTTP gibt
 es kein Standardpasswort. Siehe auch \fB\-u\fP.
-.TP 
-\fB\-P\fP\fINUMMER\fP, \fB\-\-pause=\fP\fINUMMER\fP
-Pausiere die angegebene Anzahl von Sekunden zwischen zwei aufeinander
-folgenden Verbindungen zum demselben Rechner. Standard ist keine Pause
-zwischen Verbindungen.
 .TP 
 \fB\-r\fP\fINUMMER\fP, \fB\-\-recursion\-level=\fP\fINUMMER\fP
 Prüfe rekursiv alle URLs bis zu der angegebenen Tiefe. Eine negative Tiefe
@@ -301,17 +270,13 @@ Eine Cookie\-Datei enthält Standard HTTP\-Header (RFC 2616) mit den folgenden
 möglichen Namen:
 .
 .TP 
-\fBScheme\fP (optional)
-Setzt das Schema für das die Cookies gültig sind; Standardschema ist
-\fBhttp\fP.
-.TP 
 \fBHost\fP (erforderlich)
 Setzt die Domäne für die die Cookies gültig sind.
 .TP 
 \fBPath\fP (optional)
 Gibt den Pfad für den die Cookies gültig sind; Standardpfad ist \fB/\fP.
 .TP 
-\fBSet\-cookie\fP (optional)
+\fBSet\-cookie\fP (required)
 Setzt den Cookie Name/Wert. Kann mehrmals angegeben werden.
 .PP
 Mehrere Einträge sind durch eine Leerzeile zu trennen.
@@ -325,7 +290,6 @@ Das untige Beispiel sendet zwei Cookies zu allen URLs die mit
  Set\-cookie: ID="smee"
  Set\-cookie: spam="egg"
 
- Scheme: https
  Host: example.org
  Set\-cookie: baggage="elitist"; comment="hologram"
 
@@ -362,12 +326,10 @@ beschrieben.
 .
 .TP 
 HTTP Verknüpfungen (\fBhttp:\fP, \fBhttps:\fP)
-Nach Verbinden zu dem gegebenen HTTP\-Server wird der eingegebene Pfad oder
-Query angefordert. Alle Umleitungen werden verfolgt, und falls ein
-Benutzer/Passwort angegeben wurde werden diese falls notwendig als
-Authorisierung benutzt. Permanent umgezogene Webseiten werden als Warnung
-ausgegeben. Alle finalen HTTP Statuscodes, die nicht dem Muster 2xx
-entsprechen, werden als Fehler ausgegeben.
+After connecting to the given HTTP server the given path or query is
+requested. All redirections are followed, and if user/password is given it
+will be used as authorization when necessary.  All final HTTP status codes
+other than 2xx are errors.
 .
 Der Inhalt von HTML\-Seiten wird rekursiv geprüft.
 .TP 
@@ -417,6 +379,19 @@ Nicht unterstützte Links (\*(lqjavascript:\*(lq, etc.)
   
   Die komplette Liste von erkannten, aber nicht unterstützten Links ist in der
   Quelldatei \fBlinkcheck/checker/unknownurl.py\fP. Die bekanntesten davon dürften JavaScript\-Links sein.
+
+.SH PLUGINS
+There are two plugin types: connection and content plugins.
+.
+Connection plugins are run after a successful connection to the URL host.
+.
+Content plugins are run if the URL type has content (mailto: URLs have no
+content for example) and if the check is not forbidden (ie. by HTTP
+robots.txt).
+.
+See \fBlinkchecker \-\-list\-plugins\fP for a list of plugins and their
+documentation. All plugins are enabled via the \fBlinkcheckerrc\fP(5)
+configuration file.
 
 .SH Rekursion
 Bevor eine URL rekursiv geprüft wird, hat diese mehrere Bedingungen zu

@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2004-2012 Bastian Kleineidam
+# Copyright (C) 2004-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ class TestHttpRobots (HttpServerTest):
             u"url %s" % url,
             u"cache key %s" % url,
             u"real url %s" % url,
-            u"warning Access denied by robots.txt, skipping content checks.",
-            u"error",
+            u"info Access denied by robots.txt, checked only syntax.",
+            u"valid",
         ]
         self.direct(url, resultlines, recursionlevel=5)

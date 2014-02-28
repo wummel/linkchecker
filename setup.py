@@ -97,7 +97,7 @@ except ImportError:
     has_py2app = False
 
 # the application version
-AppVersion = "8.7"
+AppVersion = "9.0"
 # the application name
 AppName = "LinkChecker"
 
@@ -915,6 +915,8 @@ o a command line, GUI and web interface
         'linkcheck.HtmlParser',
         'linkcheck.logger',
         'linkcheck.network',
+        'linkcheck.parser',
+        'linkcheck.plugins',
         'linkcheck_dns.dns',
         'linkcheck_dns.dns.rdtypes',
         'linkcheck_dns.dns.rdtypes.ANY',

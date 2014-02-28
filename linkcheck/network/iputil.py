@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2003-2012 Bastian Kleineidam
+# Copyright (C) 2003-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -233,7 +233,7 @@ def hosts2map (hosts):
         elif is_valid_ip(host):
             hostset.add(expand_ip(host)[0])
         else:
-            hostset |= resolve_host(host)
+            hostset |= set(resolve_host(host))
     return (hostset, nets)
 
 
@@ -264,29 +264,32 @@ def lookup_ips (ips):
 def resolve_host (host):
     """
     @host: hostname or IP address
-    Return set of ip numbers for given host.
+    Return list of ip numbers for given host.
     """
-    ips = set()
+    ips = []
     try:
         for res in socket.getaddrinfo(host, None, 0, socket.SOCK_STREAM):
             # res is a tuple (address family, socket type, protocol,
             #  canonical name, socket address)
             # add first ip of socket address
-            ips.add(res[4][0])
+            ips.append(res[4][0])
     except socket.error:
         log.info(LOG_CHECK, "Ignored invalid host %r", host)
     return ips
 
 
-def obfuscate_ip (ip):
+def obfuscate_ip(ip):
     """Obfuscate given host in IP form.
     @ip: IPv4 address string
     @return: hexadecimal IP string ('0x1ab...')
     @raise: ValueError on invalid IP addresses
     """
-    if not is_valid_ipv4(ip):
-        raise ValueError('Invalid IPv4 value %r' % ip)
-    return "0x%s" % "".join(hex(int(x))[2:] for x in ip.split("."))
+    if is_valid_ipv4(ip):
+        res = "0x%s" % "".join(hex(int(x))[2:] for x in ip.split("."))
+    else:
+        raise ValueError('Invalid IP value %r' % ip)
+    assert is_obfuscated_ip(res),  '%r obfuscation error' % res
+    return res
 
 
 is_obfuscated_ip = re.compile(r"^(0x[a-f0-9]+|[0-9]+)$").match

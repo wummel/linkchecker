@@ -20,7 +20,7 @@ Utility functions suitable for command line clients.
 from __future__ import print_function
 import sys
 import argparse
-from . import checker, fileutil, strformat
+from . import checker, fileutil, strformat, plugins
 from .director import console
 
 
@@ -39,6 +39,19 @@ class LCArgumentParser(argparse.ArgumentParser):
 def print_version(exit_code=0):
     """Print the program version and exit."""
     console.print_version()
+    sys.exit(exit_code)
+
+
+def print_plugins(folders, exit_code=0):
+    """Print available plugins and exit."""
+    modules = plugins.get_plugin_modules(folders)
+    pluginclasses = sorted(plugins.get_plugin_classes(modules), key=lambda x: x.__name__)
+
+    for pluginclass in pluginclasses:
+        print(pluginclass.__name__)
+        doc = strformat.wrap(pluginclass.__doc__, 80)
+        print(strformat.indent(doc))
+        print()
     sys.exit(exit_code)
 
 

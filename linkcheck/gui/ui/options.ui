@@ -29,6 +29,9 @@
       <item>
        <widget class="QWidget" name="widget" native="true">
         <layout class="QFormLayout" name="formLayout">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::ExpandingFieldsGrow</enum>
+         </property>
          <item row="0" column="0">
           <widget class="QLabel" name="label">
            <property name="toolTip">
@@ -99,23 +102,6 @@
          </item>
          <item row="2" column="1">
           <widget class="QCheckBox" name="debug">
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_7">
-           <property name="toolTip">
-            <string extracomment="When checking finishes, write a memory dump to a temporary file. The memory dump is written both when checking finishes normally and when checking gets canceled."/>
-           </property>
-           <property name="text">
-            <string>Debug memory usage</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="QCheckBox" name="debugmemory">
            <property name="text">
             <string/>
            </property>

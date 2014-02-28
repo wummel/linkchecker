@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2012 Bastian Kleineidam
+# Copyright (C) 2000-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,9 +22,7 @@ import re
 import os
 import urlparse
 import urllib
-import urllib2
-import socket
-from . import httplib2 as httplib
+import requests
 from . import log, LOG_CHECK
 
 for scheme in ('ldap', 'irc'):
@@ -504,92 +502,37 @@ def splitport (host, port=0):
     return host, port
 
 
-class PasswordManager (object):
-    """Simple password manager storing username and password. Suitable
-    for use as an AuthHandler instance in urllib2."""
-
-    def __init__ (self, user, password):
-        """Store given username and password."""
-        self.user = user
-        self.password = password
-
-    def add_password (self, realm, uri, user, passwd):
-        """Does nothing since username and password are already stored.
-
-        @return: None
-        """
-        pass
-
-    def find_user_password (self, realm, authuri):
-        """Get stored username and password.
-
-        @return: A tuple (user, password)
-        @rtype: tuple
-        """
-        return self.user, self.password
-
-
-def get_opener (user=None, password=None, proxy=None, debuglevel=0):
-    """Construct an URL opener object. It considers the given credentials
-    and proxy.
-
-    @return: URL opener
-    @rtype: urllib2.OpenerDirector
-    """
-    from . import httputil
-    pwd_manager = PasswordManager(user, password)
-    handlers = [
-        urllib2.UnknownHandler,
-        httputil.HttpWithGzipHandler(debuglevel=debuglevel),
-        urllib2.HTTPBasicAuthHandler(pwd_manager),
-        urllib2.HTTPDigestAuthHandler(pwd_manager),
-    ]
-    if proxy:
-        handlers.insert(0,
-          urllib2.ProxyHandler({"http": proxy, "https": proxy}))
-        handlers.extend([
-            urllib2.ProxyBasicAuthHandler(pwd_manager),
-            urllib2.ProxyDigestAuthHandler(pwd_manager),
-        ])
-    if hasattr(httplib, 'HTTPS'):
-        handlers.append(httputil.HttpsWithGzipHandler(debuglevel=debuglevel))
-    return urllib2.build_opener(*handlers)
-
-
-def get_content (url, user=None, password=None, proxy=None, data=None,
-                 addheaders=None):
+def get_content(url, user=None, password=None, proxy=None, data=None,
+                addheaders=None):
     """Get URL content and info.
 
-    @return: (url info, content), or (None, None) on error.
-    @rtype: tuple (string, string)
+    @return: (decoded text content of URL, headers) or
+             (None, errmsg) on error.
+    @rtype: tuple (String, dict) or (None, String)
     """
     from . import configuration
-    if log.is_debug(LOG_CHECK):
-        debuglevel = 1
-    else:
-        debuglevel = 0
     headers = {
         'User-Agent': configuration.UserAgent,
     }
     if addheaders:
         headers.update(addheaders)
-    req = urllib2.Request(url, data, headers)
+    method = 'GET'
+    kwargs = dict(headers=headers)
+    if user and password:
+        kwargs['auth'] = (user, password)
+    if data:
+        kwargs['data'] = data
+        method = 'POST'
+    if proxy:
+        kwargs['proxy'] = dict(http=proxy)
     try:
-        f = get_opener(user=user, password=password, proxy=proxy,
-                       debuglevel=debuglevel)
-        res = None
-        try:
-            res = f.open(req)
-            return (res.info(), res.read())
-        finally:
-            if res is not None:
-                res.close()
-    except (urllib2.HTTPError, socket.timeout, urllib2.URLError,
-            socket.gaierror, socket.error, IOError, httplib.HTTPException,
-            ValueError), msg:
+        response = requests.request(method, url, **kwargs)
+        return response.text, response.headers
+    except (requests.exceptions.RequestException,
+            requests.exceptions.BaseHTTPError) as msg:
         log.warn(LOG_CHECK, ("Could not get content of URL %(url)s: %(msg)s.") \
           % {"url": url, "msg": str(msg)})
-    return (None, None)
+        return None, str(msg)
 
 
 def shorten_duplicate_content_url(url):

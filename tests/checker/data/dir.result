@@ -2,7 +2,6 @@ url file://%(curdir)s/%(datadir)s/dir/
 cache key file://%(curdir)s/%(datadir)s/dir/
 real url file://%(curdir)s/%(datadir)s/dir/
 name %(datadir)s/dir
-info 1 URL parsed.
 valid
 
 url %%C3%%AD%%C2%%BB%%C2%%AD%%C2%%AF%%C2%%BF.dat

@@ -1,7 +1,6 @@
 url http://localhost:%(port)d/%(datadir)s/http.html
 cache key http://localhost:%(port)d/%(datadir)s/http.html
 real url http://localhost:%(port)d/%(datadir)s/http.html
-info 14 URLs parsed.
 valid
 
 url dns://www.example.org
@@ -63,18 +62,16 @@ valid
 url clsid:12345-67890
 cache key clsid:12345-67890
 real url clsid:12345-67890
-warning Clsid URL ignored.
+info Clsid URL ignored.
 valid
 
 url http://example.org/foo/ #a=1,2,3
-cache key http://example.org/foo/%%20#a%%3D1%%2C2%%2C3
+cache key http://example.org/foo/%%20
 real url http://example.org/foo/%%20#a%%3D1%%2C2%%2C3
-warning Anchor `a%%3D1%%2C2%%2C3' not found. Available anchors: -.
-valid
+error
 
 url http://.example.org/
 cache key http://.example.org/
 real url http://.example.org/
-name UnicodeError
-warning Access denied by robots.txt, skipping content checks.
+name Error
 error

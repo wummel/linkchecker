@@ -138,30 +138,22 @@ class TestFile (LinkCheckTest):
         nurl = self.norm(url)
         url2 = u"file://%(curdir)s/%(datadir)s/a b/el.html" % self.get_attrs()
         nurl2 = self.norm(url2)
+        url3 = u"file://%(curdir)s/%(datadir)s/a b/t.txt" % self.get_attrs()
+        nurl3 = self.norm(url3)
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % nurl,
             u"real url %s" % nurl,
-            u"info 2 URLs parsed.",
-            u"valid",
-            u"url bl.html#bl",
-            u"cache key %s#bl" % nurl,
-            u"real url %s" % nurl,
-            u"name Broken link",
-            u"info 2 URLs parsed.",
-            u"warning Anchor `bl' not found. Available anchors: `BL'.",
             u"valid",
             u"url el.html",
             u"cache key %s" % nurl2,
             u"real url %s" % nurl2,
             u"name External link",
-            u"info 1 URL parsed.",
             u"valid",
-            u"url #bl",
-            u"cache key %s#bl" % nurl2,
-            u"real url %s" % nurl2,
-            u"name Broken link",
-            u"warning Anchor `bl' not found. Available anchors: `BL'.",
+            u"url t.txt",
+            u"cache key %s" % nurl3,
+            u"real url %s" % nurl3,
+            u"name External link",
             u"valid",
         ]
         self.direct(url, resultlines, recursionlevel=2)

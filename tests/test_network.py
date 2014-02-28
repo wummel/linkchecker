@@ -43,7 +43,7 @@ class TestNetwork (unittest.TestCase):
         host = "dinsdale.python.org"
         ips = iputil.resolve_host(host)
         self.assertTrue(len(ips) > 0)
-        obfuscated = iputil.obfuscate_ip(ips.pop())
+        obfuscated = iputil.obfuscate_ip(ips[0])
         self.assertTrue(iputil.is_obfuscated_ip(obfuscated))
         hosts = iputil.lookup_ips([obfuscated])
         self.assertTrue(host in hosts)

@@ -27,7 +27,7 @@ import urlparse
 import shutil
 import socket
 import _LinkChecker_configdata as configdata
-from .. import (log, LOG_CHECK, LOG_ROOT, ansicolor, lognames, clamav,
+from .. import (log, LOG_CHECK, LOG_ROOT, ansicolor, lognames,
     get_config_dir, fileutil, configdict)
 from . import confparse
 from ..decorators import memoized
@@ -75,6 +75,9 @@ Modules = (
 def get_modules_info ():
     """Return list of unicode strings with detected module info."""
     lines = []
+    # requests
+    import requests
+    lines.append(u"Requests: %s" % requests.__version__)
     # PyQt
     try:
         from PyQt4 import QtCore
@@ -129,53 +132,48 @@ class Configuration (dict):
         Initialize the default options.
         """
         super(Configuration, self).__init__()
-        self['trace'] = False
-        self["verbose"] = False
-        self["complete"] = False
-        self["warnings"] = True
-        self["ignorewarnings"] = []
-        self['quiet'] = False
-        self["anchors"] = False
-        self["externlinks"] = []
-        self["internlinks"] = []
-        # on ftp, password is set by Pythons ftplib
+        ## checking options
+        self["allowedschemes"] = []
+        self['cookiefile'] = None
+        self["debugmemory"] = False
+        self["localwebroot"] = None
+        self["maxfilesizeparse"] = 1*1024*1024
+        self["maxfilesizedownload"] = 5*1024*1024
+        self["maxnumurls"] = None
+        self["maxrunseconds"] = None
+        self["maxrequestspersecond"] = 10
+        self["nntpserver"] = os.environ.get("NNTP_SERVER", None)
+        self["proxy"] = urllib.getproxies()
+        self["sslverify"] = True
+        self["threads"] = 100
+        self["timeout"] = 60
+        self["aborttimeout"] = 300
+        self["recursionlevel"] = -1
+        self["useragent"] = UserAgent
+        ## authentication
         self["authentication"] = []
         self["loginurl"] = None
         self["loginuserfield"] = "login"
         self["loginpasswordfield"] = "password"
         self["loginextrafields"] = {}
-        self["proxy"] = urllib.getproxies()
-        self["recursionlevel"] = -1
-        self["wait"] = 0
-        self['sendcookies'] = False
-        self['storecookies'] = False
-        self['cookiefile'] = None
-        self["status"] = False
-        self["status_wait_seconds"] = 5
+        ## filtering
+        self["externlinks"] = []
+        self["ignorewarnings"] = []
+        self["internlinks"] = []
+        self["checkextern"] = False
+        ## plugins
+        self["pluginfolders"] = get_plugin_folders()
+        self["enabledplugins"] = []
+        ## output
+        self['trace'] = False
+        self['quiet'] = False
+        self["verbose"] = False
+        self["warnings"] = True
         self["fileoutput"] = []
         self['output'] = 'text'
+        self["status"] = False
+        self["status_wait_seconds"] = 5
         self['logger'] = None
-        self["warningregex"] = None
-        self["warningregex_max"] = 5
-        self["warnsizebytes"] = None
-        self["nntpserver"] = os.environ.get("NNTP_SERVER", None)
-        self["threads"] = 100
-        # socket timeout in seconds
-        self["timeout"] = 60
-        self["checkhtml"] = False
-        self["checkcss"] = False
-        self["scanvirus"] = False
-        self["clamavconf"] = clamav.canonical_clamav_conf()
-        self["useragent"] = UserAgent
-        self["debugmemory"] = False
-        self["localwebroot"] = None
-        self["sslverify"] = True
-        self["warnsslcertdaysvalid"] = 14
-        self["maxrunseconds"] = None
-        self["maxnumurls"] = None
-        self["maxconnectionshttp"] = 10
-        self["maxconnectionshttps"] = 10
-        self["maxconnectionsftp"] = 2
         self.loggers = {}
         from ..logger import LoggerClasses
         for c in LoggerClasses:
@@ -302,28 +300,14 @@ class Configuration (dict):
 
     def sanitize (self):
         "Make sure the configuration is consistent."
-        if self["anchors"]:
-            self.sanitize_anchors()
         if self['logger'] is None:
             self.sanitize_logger()
-        if self['scanvirus']:
-            self.sanitize_scanvirus()
-        if self['storecookies'] or self['cookiefile']:
-            self.sanitize_cookies()
         if self['loginurl']:
             self.sanitize_loginurl()
         self.sanitize_proxies()
+        self.sanitize_plugins()
         # set default socket timeout
         socket.setdefaulttimeout(self['timeout'])
-
-    def sanitize_anchors (self):
-        """Make anchor configuration consistent."""
-        if not self["warnings"]:
-            self["warnings"] = True
-            from ..checker.const import Warnings
-            self["ignorewarnings"] = Warnings.keys()
-        if 'url-anchor-not-found' in self["ignorewarnings"]:
-            self["ignorewarnings"].remove('url-anchor-not-found')
 
     def sanitize_logger (self):
         """Make logger configuration consistent."""
@@ -331,24 +315,6 @@ class Configuration (dict):
             log.warn(LOG_CHECK, _("activating text logger output."))
             self['output'] = 'text'
         self['logger'] = self.logger_new(self['output'])
-
-    def sanitize_scanvirus (self):
-        """Ensure clamav is installed for virus checking."""
-        try:
-            clamav.init_clamav_conf(self['clamavconf'])
-        except clamav.ClamavError:
-            log.warn(LOG_CHECK,
-                _("Clamav could not be initialized"))
-            self['scanvirus'] = False
-
-    def sanitize_cookies (self):
-        """Make cookie configuration consistent."""
-        if not self['sendcookies']:
-            log.warn(LOG_CHECK, _("activating sendcookies."))
-            self['sendcookies'] = True
-        if not self['storecookies']:
-            log.warn(LOG_CHECK, _("activating storecookies."))
-            self['storecookies'] = True
 
     def sanitize_loginurl (self):
         """Make login configuration consistent."""
@@ -377,9 +343,6 @@ class Configuration (dict):
             log.warn(LOG_CHECK,
               _("disabling login URL %(url)s.") % {"url": url})
             self["loginurl"] = None
-        elif not self['storecookies']:
-            # login URL implies storing and sending cookies
-            self['storecookies'] = self['sendcookies'] = True
 
     def sanitize_proxies (self):
         """Try to read additional proxy settings which urllib does not
@@ -394,6 +357,39 @@ class Configuration (dict):
             ftp_proxy = get_gconf_ftp_proxy() or get_kde_ftp_proxy()
             if ftp_proxy:
                 self["proxy"]["ftp"] = ftp_proxy
+
+    def sanitize_plugins(self):
+        """Ensure each plugin is configurable."""
+        for plugin in self["enabledplugins"]:
+            if plugin not in self:
+                self[plugin] = {}
+
+
+def get_plugin_folders():
+    """Get linkchecker plugin folders. Default is ~/.linkchecker/plugins/."""
+    folders = []
+    defaultfolder = normpath("~/.linkchecker/plugins")
+    if not os.path.exists(defaultfolder) and not Portable:
+        try:
+            make_userdir(defaultfolder)
+        except StandardError as errmsg:
+            msg = _("could not create plugin directory %(dirname)r: %(errmsg)r")
+            args = dict(dirname=defaultfolder, errmsg=errmsg)
+            log.warn(LOG_CHECK, msg % args)
+    if os.path.exists(defaultfolder):
+        folders.append(defaultfolder)
+    return folders
+
+
+def make_userdir(child):
+    """Create a child directory."""
+    userdir = os.path.dirname(child)
+    if not os.path.isdir(userdir):
+        if os.name == 'nt':
+            # Windows forbids filenames with leading dot unless
+            # a trailing dot is added.
+            userdir += "."
+        os.mkdir(userdir, 0700)
 
 
 def get_user_config():
@@ -413,13 +409,7 @@ def get_user_config():
        not Portable:
         # copy the initial configuration to the user configuration
         try:
-            userdir = os.path.dirname(userconf)
-            if not os.path.isdir(userdir):
-                if os.name == 'nt':
-                    # Windows forbids filenames with leading dot unless
-                    # a trailing dot is added.
-                    userdir += "."
-                os.mkdir(userdir, 0700)
+            make_userdir(userconf)
             shutil.copy(initialconf, userconf)
         except StandardError as errmsg:
             msg = _("could not copy initial configuration file %(src)r to %(dst)r: %(errmsg)r")
@@ -445,6 +435,7 @@ def get_gconf_http_proxy ():
                 return "%s:%d" % (host, port)
     except StandardError as msg:
         log.debug(LOG_CHECK, "error getting HTTP proxy from gconf: %s", msg)
+        pass
     return None
 
 
@@ -464,6 +455,7 @@ def get_gconf_ftp_proxy ():
             return "%s:%d" % (host, port)
     except StandardError as msg:
         log.debug(LOG_CHECK, "error getting FTP proxy from gconf: %s", msg)
+        pass
     return None
 
 
@@ -478,6 +470,7 @@ def get_kde_http_proxy ():
         return data.get("http_proxy")
     except StandardError as msg:
         log.debug(LOG_CHECK, "error getting HTTP proxy from KDE: %s", msg)
+        pass
 
 
 def get_kde_ftp_proxy ():
@@ -491,6 +484,7 @@ def get_kde_ftp_proxy ():
         return data.get("ftp_proxy")
     except StandardError as msg:
         log.debug(LOG_CHECK, "error getting FTP proxy from KDE: %s", msg)
+        pass
 
 # The following KDE functions are largely ported and ajusted from
 # Google Chromium:

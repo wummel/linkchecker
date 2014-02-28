@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2004-2011 Bastian Kleineidam
+# Copyright (C) 2004-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ class TestError (LinkCheckTest):
 
     def test_invalid1 (self):
         # invalid scheme chars
-        url = u"äöü?:"
+        url = u"äöü:"
         attrs = self.get_attrs(url=url)
         attrs['nurl'] = self.norm("file://%(curdir)s/%(url)s" % attrs)
         resultlines = [
@@ -54,7 +54,7 @@ class TestError (LinkCheckTest):
 
     def test_invalid2 (self):
         # missing scheme alltogether
-        url = u"?äöü?"
+        url = u"äöü"
         attrs = self.get_attrs(url=url)
         attrs['nurl'] = self.norm("file://%(curdir)s/%(url)s" % attrs)
         resultlines = [

@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2012 Bastian Kleineidam
+# Copyright (C) 2000-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -172,7 +172,7 @@ def get_configuration(form, out):
     config["logger"] = config.logger_new('html', fd=out, encoding=HTML_ENCODING)
     config["threads"] = 2
     if "anchors" in form:
-        config["anchors"] = True
+        config["enabledplugins"].append("AnchorCheck")
     if "errors" not in form:
         config["verbose"] = True
     # avoid checking of local files or other nasty stuff
@@ -246,15 +246,16 @@ def format_error (why):
     @return: HTML page content
     @rtype: unicode
     """
-    return _("""<html><head>
+    return _("""<!DOCTYPE HTML>
+<html><head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>LinkChecker Online Error</title></head>
 <body text=#192c83 bgcolor=#fff7e5 link=#191c83 vlink=#191c83 alink=#191c83>
 <blockquote>
-<b>Error: %s</b><br>
+<b>Error: %s</b><br/>
 The LinkChecker Online script has encountered an error. Please ensure
 that your provided URL link begins with <code>http://</code> and
-contains only these characters: <code>A-Za-z0-9./_~-</code><br><br>
+contains only these characters: <code>A-Za-z0-9./_~-</code><br/><br/>
 Errors are logged.
 </blockquote>
 </body>

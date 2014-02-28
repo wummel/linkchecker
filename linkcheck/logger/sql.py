@@ -90,7 +90,7 @@ class SQLLogger (_Logger):
         """
         self.writeln(u"insert into %(table)s(urlname,"
               "parentname,baseref,valid,result,warning,info,url,line,col,"
-              "name,checktime,dltime,dlsize,cached,level) values ("
+              "name,checktime,dltime,size,cached,level) values ("
               "%(base_url)s,"
               "%(url_parent)s,"
               "%(base_ref)s,"
@@ -104,7 +104,7 @@ class SQLLogger (_Logger):
               "%(name)s,"
               "%(checktime)d,"
               "%(dltime)d,"
-              "%(dlsize)d,"
+              "%(size)d,"
               "%(cached)d,"
               "%(level)d,"
               "%(modified)s"
@@ -123,7 +123,7 @@ class SQLLogger (_Logger):
                'name': sqlify(url_data.name),
                'checktime': url_data.checktime,
                'dltime': url_data.dltime,
-               'dlsize': url_data.dlsize,
+               'size': url_data.size,
                'cached': 0,
                'separator': self.separator,
                "level": url_data.level,

@@ -275,6 +275,12 @@ def is_accessable_by_others(filename):
     return mode & (stat.S_IRWXG | stat.S_IRWXO)
 
 
+def is_writable_by_others(filename):
+    """Check if file or directory is world writable."""
+    mode = os.stat(filename)[stat.ST_MODE]
+    return mode & stat.S_IWOTH
+
+
 @memoized
 def is_writable(filename):
     """Check if

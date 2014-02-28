@@ -1,37 +1,12 @@
 url http://localhost:%(port)d/%(datadir)s/http_slash.html
 cache key http://localhost:%(port)d/%(datadir)s/http_slash.html
 real url http://localhost:%(port)d/%(datadir)s/http_slash.html
-info 7 URLs parsed.
 valid
 
-url http://www.example.com/1
-cache key http://www.example.com/1
-real url http://www.example.com/1
-name ok example
-valid
-
-url http:/www.example.com/2
-cache key None
-real url http:///www.example.com/2
-name one slash example
-error
-
-url http:www.example.com/3
-cache key None
-real url http:///www.example.com/3
-name no slash example
-error
-
-url //www.example.com/4
-cache key http://www.example.com/4
-real url http://www.example.com/4
-name no scheme example
-valid
-
-url http://
+url http:
 cache key None
 real url http://
-name no url
+name no url, no slash
 error
 
 url http:/
@@ -40,9 +15,27 @@ real url http:///
 name no url, one slash
 error
 
-url http:
+url http://
 cache key None
 real url http://
-name no url, no slash
+name no url
 error
+
+url http:www.example.com/
+cache key None
+real url http:///www.example.com/
+name no slash example
+error
+
+url http:/www.example.com/
+cache key None
+real url http:///www.example.com/
+name one slash example
+error
+
+url http://www.example.com/
+cache key http://www.example.com/
+real url http://www.example.com/
+name ok example
+valid
 

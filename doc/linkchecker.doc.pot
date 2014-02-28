@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2014-01-08 22:34+0100\n"
+"POT-Creation-Date: 2014-02-28 22:57+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -76,7 +76,7 @@ msgid "LinkChecker features"
 msgstr ""
 
 #. type: IP
-#: en/linkchecker.1:11 en/linkchecker.1:13 en/linkchecker.1:15 en/linkchecker.1:17 en/linkchecker.1:19 en/linkchecker.1:21 en/linkchecker.1:23 en/linkchecker.1:25 en/linkchecker.1:27 en/linkchecker.1:29 en/linkchecker.1:31 en/linkchecker.1:33 en/linkchecker.1:477 en/linkchecker.1:481 en/linkchecker.1:483
+#: en/linkchecker.1:11 en/linkchecker.1:13 en/linkchecker.1:15 en/linkchecker.1:17 en/linkchecker.1:19 en/linkchecker.1:21 en/linkchecker.1:23 en/linkchecker.1:25 en/linkchecker.1:27 en/linkchecker.1:29 en/linkchecker.1:31 en/linkchecker.1:33 en/linkchecker.1:457 en/linkchecker.1:461 en/linkchecker.1:463
 #, no-wrap
 msgid "\\(bu"
 msgstr ""
@@ -152,31 +152,31 @@ msgid "EXAMPLES"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:39
+#: en/linkchecker.1:38
 #, no-wrap
 msgid ""
-"The most common use checks the given domain recursively, plus any\n"
-"URL pointing outside of the domain:\n"
-"  B<linkchecker http://www.example.net/>\n"
+"The most common use checks the given domain recursively:\n"
+"  B<linkchecker http://www.example.com/>\n"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:42
+#: en/linkchecker.1:41
 msgid ""
 "Beware that this checks the whole site which can have thousands of URLs.  "
 "Use the B<-r> option to restrict the recursion depth."
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:45
+#: en/linkchecker.1:44
 #, no-wrap
 msgid ""
-"Don't check B<mailto:> URLs. All other links are checked as usual:\n"
-"  B<linkchecker --ignore-url=^mailto: mysite.example.org>\n"
+"Don't check URLs with B</secret> in its name. All other links are checked as "
+"usual:\n"
+"  B<linkchecker --ignore-url=/secret mysite.example.com>\n"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:48
+#: en/linkchecker.1:47
 #, no-wrap
 msgid ""
 "Checking a local HTML file on Unix:\n"
@@ -184,7 +184,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:51
+#: en/linkchecker.1:50
 #, no-wrap
 msgid ""
 "Checking a local HTML file on Windows:\n"
@@ -192,7 +192,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:54
+#: en/linkchecker.1:53
 #, no-wrap
 msgid ""
 "You can skip the B<http://> url part if the domain starts with B<www.>:\n"
@@ -200,15 +200,15 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:57
+#: en/linkchecker.1:56
 #, no-wrap
 msgid ""
 "You can skip the B<ftp://> url part if the domain starts with B<ftp.>:\n"
-"  B<linkchecker -r0 ftp.example.org>\n"
+"  B<linkchecker -r0 ftp.example.com>\n"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:60
+#: en/linkchecker.1:59
 #, no-wrap
 msgid ""
 "Generate a sitemap graph and convert it with the graphviz dot utility:\n"
@@ -216,125 +216,101 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:61
+#: en/linkchecker.1:60
 #, no-wrap
 msgid "OPTIONS"
 msgstr ""
 
 #. type: SS
-#: en/linkchecker.1:62
+#: en/linkchecker.1:61
 #, no-wrap
 msgid "General options"
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:63
+#: en/linkchecker.1:62
 #, no-wrap
 msgid "B<-f>I<FILENAME>, B<--config=>I<FILENAME>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:67
+#: en/linkchecker.1:66
 msgid ""
 "Use I<FILENAME> as configuration file. As default LinkChecker uses "
 "B<~/.linkchecker/linkcheckerrc>."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:67
+#: en/linkchecker.1:66
 #, no-wrap
 msgid "B<-h>, B<--help>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:70
+#: en/linkchecker.1:69
 msgid "Help me! Print usage information for this program."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:70
+#: en/linkchecker.1:69
 #, no-wrap
 msgid "B<--stdin>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:73
+#: en/linkchecker.1:72
 msgid "Read list of white-space separated URLs to check from stdin."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:73
+#: en/linkchecker.1:72
 #, no-wrap
 msgid "B<-t>I<NUMBER>, B<--threads=>I<NUMBER>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:77 en/linkcheckerrc.5:95
+#: en/linkchecker.1:76 en/linkcheckerrc.5:47
 msgid ""
 "Generate no more than the given number of threads. Default number of threads "
 "is 100. To disable threading specify a non-positive number."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:77
+#: en/linkchecker.1:76
 #, no-wrap
 msgid "B<-V>, B<--version>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:80
+#: en/linkchecker.1:79
 msgid "Print version and exit."
 msgstr ""
 
+#. type: TP
+#: en/linkchecker.1:79
+#, no-wrap
+msgid "B<--list-plugins>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkchecker.1:82
+msgid "Print available check plugins and exit."
+msgstr ""
+
 #. type: SS
-#: en/linkchecker.1:81
+#: en/linkchecker.1:83
 #, no-wrap
 msgid "Output options"
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:82
-#, no-wrap
-msgid "B<--check-css>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkchecker.1:85 en/linkcheckerrc.5:23
-msgid "Check syntax of CSS URLs with the W3C online validator."
-msgstr ""
-
-#. type: TP
-#: en/linkchecker.1:85
-#, no-wrap
-msgid "B<--check-html>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkchecker.1:88 en/linkcheckerrc.5:28
-msgid "Check syntax of HTML URLs with the W3C online validator."
-msgstr ""
-
-#. type: TP
-#: en/linkchecker.1:88
-#, no-wrap
-msgid "B<--complete>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkchecker.1:91
-msgid ""
-"Log all URLs, including duplicates. Default is to log duplicate URLs only "
-"once."
-msgstr ""
-
-#. type: TP
-#: en/linkchecker.1:91
+#: en/linkchecker.1:84
 #, no-wrap
 msgid "B<-D>I<STRING>, B<--debug=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:101
+#: en/linkchecker.1:94
 msgid ""
 "Print debugging output for the given logger.  Available loggers are "
 "B<cmdline>, B<checking>, B<cache>, B<gui>, B<dns> and B<all>.  Specifying "
@@ -344,7 +320,7 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:101
+#: en/linkchecker.1:94
 #, no-wrap
 msgid ""
 "B<-F>I<TYPE>[B</>I<ENCODING>][B</>I<FILENAME>], "
@@ -352,7 +328,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:110
+#: en/linkchecker.1:103
 msgid ""
 "Output to a file B<linkchecker-out.>I<TYPE>, B<$HOME/.linkchecker/blacklist> "
 "for B<blacklist> output, or I<FILENAME> if specified.  The I<ENCODING> "
@@ -362,7 +338,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:120
+#: en/linkchecker.1:113
 msgid ""
 "The I<FILENAME> and I<ENCODING> parts of the B<none> output type will be "
 "ignored, else if the file already exists, it will be overwritten.  You can "
@@ -374,35 +350,35 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:120
+#: en/linkchecker.1:113
 #, no-wrap
 msgid "B<--no-status>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:123
+#: en/linkchecker.1:116
 msgid "Do not print check status messages."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:123
+#: en/linkchecker.1:116
 #, no-wrap
 msgid "B<--no-warnings>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:126
+#: en/linkchecker.1:119
 msgid "Don't log warnings. Default is to log warnings."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:126
+#: en/linkchecker.1:119
 #, no-wrap
 msgid "B<-o>I<TYPE>[B</>I<ENCODING>], B<--output=>I<TYPE>[B</>I<ENCODING>]"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:133
+#: en/linkchecker.1:126
 msgid ""
 "Specify output type as B<text>, B<html>, B<sql>, B<csv>, B<gml>, B<dot>, "
 "B<xml>, B<sitemap>, B<none> or B<blacklist>.  Default type is B<text>. The "
@@ -410,7 +386,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:137
+#: en/linkchecker.1:130
 msgid ""
 "The I<ENCODING> specifies the output encoding, the default is that of your "
 "locale. Valid encodings are listed at "
@@ -418,57 +394,35 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:137
+#: en/linkchecker.1:130
 #, no-wrap
 msgid "B<-q>, B<--quiet>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:141
+#: en/linkchecker.1:134
 msgid "Quiet operation, an alias for B<-o none>.  This is only useful with B<-F>."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:141
-#, no-wrap
-msgid "B<--scan-virus>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkchecker.1:144 en/linkcheckerrc.5:89
-msgid "Scan content of URLs for viruses with ClamAV."
-msgstr ""
-
-#. type: TP
-#: en/linkchecker.1:144
-#, no-wrap
-msgid "B<--trace>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkchecker.1:147
-msgid "Print tracing information."
-msgstr ""
-
-#. type: TP
-#: en/linkchecker.1:147
+#: en/linkchecker.1:134
 #, no-wrap
 msgid "B<-v>, B<--verbose>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:150
+#: en/linkchecker.1:137
 msgid "Log all checked URLs. Default is to log only errors and warnings."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:150
+#: en/linkchecker.1:137
 #, no-wrap
 msgid "B<-W>I<REGEX>, B<--warning-regex=>I<REGEX>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:155 en/linkcheckerrc.5:115
+#: en/linkchecker.1:142
 msgid ""
 "Define a regular expression which prints a warning if it matches any content "
 "of the checked link.  This applies only to valid pages, so we can get their "
@@ -476,107 +430,78 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:158
+#: en/linkchecker.1:145
 msgid ""
 "Use this to check for pages that contain some form of error, for example "
 "\"This page has moved\" or \"Oracle Application error\"."
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:161
+#: en/linkchecker.1:148 en/linkcheckerrc.5:467
 msgid ""
 "Note that multiple values can be combined in the regular expression, for "
 "example \"(This page has moved|Oracle Application error)\"."
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:163 en/linkchecker.1:190 en/linkchecker.1:203
+#: en/linkchecker.1:150 en/linkchecker.1:165 en/linkchecker.1:178
 msgid "See section B<REGULAR EXPRESSIONS> for more info."
 msgstr ""
 
-#. type: TP
-#: en/linkchecker.1:163
-#, no-wrap
-msgid "B<--warning-size-bytes=>I<NUMBER>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkchecker.1:167 en/linkcheckerrc.5:124
-msgid ""
-"Print a warning if content size info is available and exceeds the given "
-"number of I<bytes>."
-msgstr ""
-
 #. type: SS
-#: en/linkchecker.1:168
+#: en/linkchecker.1:150
 #, no-wrap
 msgid "Checking options"
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:169
-#, no-wrap
-msgid "B<-a>, B<--anchors>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkchecker.1:173 en/linkcheckerrc.5:18
-msgid ""
-"Check HTTP anchor references. Default is not to check anchors.  This option "
-"enables logging of the warning B<url-anchor-not-found>."
-msgstr ""
-
-#. type: TP
-#: en/linkchecker.1:173
-#, no-wrap
-msgid "B<-C>, B<--cookies>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkchecker.1:179
-msgid ""
-"Accept and send HTTP cookies according to RFC 2109. Only cookies which are "
-"sent back to the originating server are accepted.  Sent and accepted cookies "
-"are provided as additional logging information."
-msgstr ""
-
-#. type: TP
-#: en/linkchecker.1:179
+#: en/linkchecker.1:151
 #, no-wrap
 msgid "B<--cookiefile=>I<FILENAME>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:183
+#: en/linkchecker.1:155
 msgid ""
 "Read a file with initial cookie data. The cookie data format is explained "
 "below."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:183
+#: en/linkchecker.1:155
+#, no-wrap
+msgid "B<--check-extern>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkchecker.1:158
+msgid "Check external URLs."
+msgstr ""
+
+#. type: TP
+#: en/linkchecker.1:158
 #, no-wrap
 msgid "B<--ignore-url=>I<REGEX>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:186
+#: en/linkchecker.1:161
 msgid "URLs matching the given regular expression will be ignored and not checked."
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:188 en/linkchecker.1:201
+#: en/linkchecker.1:163 en/linkchecker.1:176
 msgid "This option can be given multiple times."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:190
+#: en/linkchecker.1:165
 #, no-wrap
 msgid "B<-N>I<STRING>, B<--nntp-server=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:195 en/linkcheckerrc.5:71
+#: en/linkchecker.1:170 en/linkcheckerrc.5:34
 msgid ""
 "Specify an NNTP server for B<news:> links. Default is the environment "
 "variable B<NNTP_SERVER>. If no host is given, only the syntax of the link is "
@@ -584,24 +509,24 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:195
+#: en/linkchecker.1:170
 #, no-wrap
 msgid "B<--no-follow-url=>I<REGEX>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:199
+#: en/linkchecker.1:174
 msgid "Check but do not recurse into URLs matching the given regular expression."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:203
+#: en/linkchecker.1:178
 #, no-wrap
 msgid "B<-p>, B<--password>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:208
+#: en/linkchecker.1:183
 msgid ""
 "Read a password from console and use it for HTTP and FTP authorization.  For "
 "FTP the default password is B<anonymous@>. For HTTP there is no default "
@@ -609,52 +534,39 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:208
-#, no-wrap
-msgid "B<-P>I<NUMBER>, B<--pause=>I<NUMBER>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkchecker.1:212
-msgid ""
-"Pause the given number of seconds between two subsequent connection requests "
-"to the same host. Default is no pause between requests."
-msgstr ""
-
-#. type: TP
-#: en/linkchecker.1:212
+#: en/linkchecker.1:183
 #, no-wrap
 msgid "B<-r>I<NUMBER>, B<--recursion-level=>I<NUMBER>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:217 en/linkcheckerrc.5:84
+#: en/linkchecker.1:188 en/linkcheckerrc.5:41
 msgid ""
 "Check recursively all links up to given depth.  A negative depth will enable "
 "infinite recursion.  Default depth is infinite."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:217
+#: en/linkchecker.1:188
 #, no-wrap
 msgid "B<--timeout=>I<NUMBER>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:221 en/linkcheckerrc.5:101
+#: en/linkchecker.1:192 en/linkcheckerrc.5:53
 msgid ""
 "Set the timeout for connection attempts in seconds. The default timeout is "
 "60 seconds."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:221
+#: en/linkchecker.1:192
 #, no-wrap
 msgid "B<-u>I<STRING>, B<--user=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:226
+#: en/linkchecker.1:197
 msgid ""
 "Try the given username for HTTP and FTP authorization.  For FTP the default "
 "username is B<anonymous>. For HTTP there is no default username. See also "
@@ -662,13 +574,13 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:226
+#: en/linkchecker.1:197
 #, no-wrap
 msgid "B<--user-agent=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:231 en/linkcheckerrc.5:108
+#: en/linkchecker.1:202 en/linkcheckerrc.5:67
 msgid ""
 "Specify the User-Agent string to send to the HTTP server, for example "
 "\"Mozilla/4.0\". The default is \"LinkChecker/X.Y\" where X.Y is the current "
@@ -676,13 +588,13 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:232
+#: en/linkchecker.1:203
 #, no-wrap
 msgid "CONFIGURATION FILES"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:236
+#: en/linkchecker.1:207
 msgid ""
 "Configuration files can specify all options above. They can also specify "
 "some options that cannot be set on the command line.  See "
@@ -690,13 +602,13 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:237
+#: en/linkchecker.1:208
 #, no-wrap
 msgid "OUTPUT TYPES"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:241
+#: en/linkchecker.1:212
 msgid ""
 "Note that by default only errors and warnings are logged.  You should use "
 "the B<--verbose> option to get the complete URL list, especially when "
@@ -704,24 +616,24 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:242
+#: en/linkchecker.1:213
 #, no-wrap
 msgid "B<text>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:245
+#: en/linkchecker.1:216
 msgid "Standard text logger, logging URLs in keyword: argument fashion."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:245
+#: en/linkchecker.1:216
 #, no-wrap
 msgid "B<html>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:250
+#: en/linkchecker.1:221
 msgid ""
 "Log URLs in keyword: argument fashion, formatted as HTML.  Additionally has "
 "links to the referenced pages. Invalid URLs have HTML and CSS syntax check "
@@ -729,94 +641,94 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:250
+#: en/linkchecker.1:221
 #, no-wrap
 msgid "B<csv>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:253
+#: en/linkchecker.1:224
 msgid "Log check result in CSV format with one URL per line."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:253
+#: en/linkchecker.1:224
 #, no-wrap
 msgid "B<gml>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:256
+#: en/linkchecker.1:227
 msgid "Log parent-child relations between linked URLs as a GML sitemap graph."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:256
+#: en/linkchecker.1:227
 #, no-wrap
 msgid "B<dot>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:259
+#: en/linkchecker.1:230
 msgid "Log parent-child relations between linked URLs as a DOT sitemap graph."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:259
+#: en/linkchecker.1:230
 #, no-wrap
 msgid "B<gxml>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:262
+#: en/linkchecker.1:233
 msgid "Log check result as a GraphXML sitemap graph."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:262
+#: en/linkchecker.1:233
 #, no-wrap
 msgid "B<xml>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:265
+#: en/linkchecker.1:236
 msgid "Log check result as machine-readable XML."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:265
+#: en/linkchecker.1:236
 #, no-wrap
 msgid "B<sitemap>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:269
+#: en/linkchecker.1:240
 msgid ""
 "Log check result as an XML sitemap whose protocol is documented at "
 "B<http://www.sitemaps.org/protocol.html>."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:269
+#: en/linkchecker.1:240
 #, no-wrap
 msgid "B<sql>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:273
+#: en/linkchecker.1:244
 msgid ""
 "Log check result as SQL script with INSERT commands. An example script to "
 "create the initial SQL table is included as create.sql."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:273
+#: en/linkchecker.1:244
 #, no-wrap
 msgid "B<blacklist>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:278
+#: en/linkchecker.1:249
 msgid ""
 "Suitable for cron jobs. Logs the check result into a file "
 "B<~/.linkchecker/blacklist> which only contains entries with invalid URLs "
@@ -824,100 +736,89 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:278
+#: en/linkchecker.1:249
 #, no-wrap
 msgid "B<none>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:281
+#: en/linkchecker.1:252
 msgid "Logs nothing. Suitable for debugging or checking the exit code."
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:282
+#: en/linkchecker.1:253
 #, no-wrap
 msgid "REGULAR EXPRESSIONS"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:285
+#: en/linkchecker.1:256
 msgid ""
 "LinkChecker accepts Python regular expressions.  See "
 "B<http://docs.python.org/\\:howto/regex.html> for an introduction."
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:288
+#: en/linkchecker.1:259
 msgid ""
 "An addition is that a leading exclamation mark negates the regular "
 "expression."
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:289
+#: en/linkchecker.1:260
 #, no-wrap
 msgid "COOKIE FILES"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:292
+#: en/linkchecker.1:263
 msgid ""
 "A cookie file contains standard HTTP header (RFC 2616) data with the "
 "following possible names:"
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:293
-#, no-wrap
-msgid "B<Scheme> (optional)"
-msgstr ""
-
-#. type: Plain text
-#: en/linkchecker.1:296
-msgid "Sets the scheme the cookies are valid for; default scheme is B<http>."
-msgstr ""
-
-#. type: TP
-#: en/linkchecker.1:296
+#: en/linkchecker.1:264
 #, no-wrap
 msgid "B<Host> (required)"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:299
+#: en/linkchecker.1:267
 msgid "Sets the domain the cookies are valid for."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:299
+#: en/linkchecker.1:267
 #, no-wrap
 msgid "B<Path> (optional)"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:302
+#: en/linkchecker.1:270
 msgid "Gives the path the cookies are value for; default path is B</>."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:302
+#: en/linkchecker.1:270
 #, no-wrap
-msgid "B<Set-cookie> (optional)"
+msgid "B<Set-cookie> (required)"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:305
+#: en/linkchecker.1:273
 msgid "Set cookie name/value. Can be given more than once."
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:307
+#: en/linkchecker.1:275
 msgid "Multiple entries are separated by a blank line."
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:311
+#: en/linkchecker.1:279
 msgid ""
 "The example below will send two cookies to all URLs starting with "
 "B<http://example.com/hello/> and one to all URLs starting with "
@@ -925,7 +826,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:316
+#: en/linkchecker.1:284
 #, no-wrap
 msgid ""
 " Host: example.com\n"
@@ -935,22 +836,21 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:320
+#: en/linkchecker.1:287
 #, no-wrap
 msgid ""
-" Scheme: https\n"
 " Host: example.org\n"
 " Set-cookie: baggage=\"elitist\"; comment=\"hologram\"\n"
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:321
+#: en/linkchecker.1:288
 #, no-wrap
 msgid "PROXY SUPPORT"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:327
+#: en/linkchecker.1:294
 msgid ""
 "To use a proxy on Unix or Windows set the $http_proxy, $https_proxy or "
 "$ftp_proxy environment variables to the proxy URL. The URL should be of the "
@@ -960,53 +860,53 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:330
+#: en/linkchecker.1:297
 msgid ""
 "You can also set a comma-separated domain list in the $no_proxy environment "
 "variables to ignore any proxy settings for these domains."
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:332
+#: en/linkchecker.1:299
 msgid "Setting a HTTP proxy on Unix for example looks like this:"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:334
+#: en/linkchecker.1:301
 #, no-wrap
 msgid "  export http_proxy=\"http://proxy.example.com:8080\"\n"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:336
+#: en/linkchecker.1:303
 msgid "Proxy authentication is also supported:"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:338
+#: en/linkchecker.1:305
 #, no-wrap
 msgid "  export http_proxy=\"http://user1:mypass@proxy.example.org:8081\"\n"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:340
+#: en/linkchecker.1:307
 msgid "Setting a proxy on the Windows command prompt:"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:342
+#: en/linkchecker.1:309
 #, no-wrap
 msgid "  set http_proxy=http://proxy.example.com:8080\n"
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:343
+#: en/linkchecker.1:310
 #, no-wrap
 msgid "PERFORMED CHECKS"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:349
+#: en/linkchecker.1:316
 msgid ""
 "All URLs have to pass a preliminary syntax test. Minor quoting mistakes will "
 "issue a warning, all other invalid syntax issues are errors.  After the "
@@ -1015,33 +915,33 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:350
+#: en/linkchecker.1:317
 #, no-wrap
 msgid "HTTP links (B<http:>, B<https:>)"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:358
+#: en/linkchecker.1:324
 msgid ""
 "After connecting to the given HTTP server the given path or query is "
 "requested. All redirections are followed, and if user/password is given it "
-"will be used as authorization when necessary.  Permanently moved pages issue "
-"a warning.  All final HTTP status codes other than 2xx are errors."
+"will be used as authorization when necessary.  All final HTTP status codes "
+"other than 2xx are errors."
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:360
+#: en/linkchecker.1:326
 msgid "HTML page contents are checked for recursion."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:360
+#: en/linkchecker.1:326
 #, no-wrap
 msgid "Local files (B<file:>)"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:365
+#: en/linkchecker.1:331
 msgid ""
 "A regular, readable file that can be opened is valid. A readable directory "
 "is also valid. All other files, for example device files, unreadable or "
@@ -1049,18 +949,18 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:367
+#: en/linkchecker.1:333
 msgid "HTML or other parseable file contents are checked for recursion."
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:367
+#: en/linkchecker.1:333
 #, no-wrap
 msgid "Mail links (B<mailto:>)"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:372
+#: en/linkchecker.1:338
 msgid ""
 "A mailto: link eventually resolves to a list of email addresses.  If one "
 "address fails, the whole list will fail.  For each mail address we check the "
@@ -1068,7 +968,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:382
+#: en/linkchecker.1:348
 #, no-wrap
 msgid ""
 "  1) Check the adress syntax, both of the part before and after\n"
@@ -1083,19 +983,19 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:382
+#: en/linkchecker.1:348
 #, no-wrap
 msgid "FTP links (B<ftp:>)"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:386
+#: en/linkchecker.1:352
 #, no-wrap
 msgid "  For FTP links we do:\n"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:392
+#: en/linkchecker.1:358
 #, no-wrap
 msgid ""
 "  1) connect to the specified host\n"
@@ -1106,13 +1006,13 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:393
+#: en/linkchecker.1:359
 #, no-wrap
 msgid "Telnet links (``telnet:``)"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:398
+#: en/linkchecker.1:364
 #, no-wrap
 msgid ""
 "  We try to connect and if user/password are given, login to the\n"
@@ -1120,13 +1020,13 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:399
+#: en/linkchecker.1:365
 #, no-wrap
 msgid "NNTP links (``news:``, ``snews:``, ``nntp``)"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:404
+#: en/linkchecker.1:370
 #, no-wrap
 msgid ""
 "  We try to connect to the given NNTP server. If a news group or\n"
@@ -1134,13 +1034,13 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: en/linkchecker.1:405
+#: en/linkchecker.1:371
 #, no-wrap
 msgid "Unsupported links (``javascript:``, etc.)"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:410
+#: en/linkchecker.1:376
 #, no-wrap
 msgid ""
 "  An unsupported link will only print a warning. No further checking\n"
@@ -1148,7 +1048,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:414
+#: en/linkchecker.1:380
 #, no-wrap
 msgid ""
 "  The complete list of recognized, but unsupported links can be found\n"
@@ -1157,25 +1057,57 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:415
+#: en/linkchecker.1:381 en/linkcheckerrc.5:444
+#, no-wrap
+msgid "PLUGINS"
+msgstr ""
+
+#. type: Plain text
+#: en/linkchecker.1:383
+msgid "There are two plugin types: connection and content plugins."
+msgstr ""
+
+#. type: Plain text
+#: en/linkchecker.1:386
+msgid "Connection plugins are run after a successful connection to the URL host."
+msgstr ""
+
+#. type: Plain text
+#: en/linkchecker.1:390
+msgid ""
+"Content plugins are run if the URL type has content (mailto: URLs have no "
+"content for example) and if the check is not forbidden (ie. by HTTP "
+"robots.txt)."
+msgstr ""
+
+#. type: Plain text
+#: en/linkchecker.1:394
+msgid ""
+"See B<linkchecker --list-plugins> for a list of plugins and their "
+"documentation. All plugins are enabled via the B<linkcheckerrc>(5)  "
+"configuration file."
+msgstr ""
+
+#. type: SH
+#: en/linkchecker.1:395
 #, no-wrap
 msgid "RECURSION"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:418
+#: en/linkchecker.1:398
 msgid ""
 "Before descending recursively into a URL, it has to fulfill several "
 "conditions. They are checked in this order:"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:420
+#: en/linkchecker.1:400
 msgid "1. A URL must be valid."
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:426
+#: en/linkchecker.1:406
 #, no-wrap
 msgid ""
 "2. A URL must be parseable. This currently includes HTML files,\n"
@@ -1186,7 +1118,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:429
+#: en/linkchecker.1:409
 #, no-wrap
 msgid ""
 "3. The URL content must be retrievable. This is usually the case\n"
@@ -1194,7 +1126,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:432
+#: en/linkchecker.1:412
 #, no-wrap
 msgid ""
 "4. The maximum recursion level must not be exceeded. It is configured\n"
@@ -1202,7 +1134,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:435
+#: en/linkchecker.1:415
 #, no-wrap
 msgid ""
 "5. It must not match the ignored URL list. This is controlled with\n"
@@ -1210,7 +1142,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:439
+#: en/linkchecker.1:419
 #, no-wrap
 msgid ""
 "6. The Robots Exclusion Protocol must allow links in the URL to be\n"
@@ -1219,20 +1151,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:442
+#: en/linkchecker.1:422
 msgid ""
 "Note that the directory recursion reads all files in that directory, not "
 "just a subset like B<index.htm*>."
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:443
+#: en/linkchecker.1:423
 #, no-wrap
 msgid "NOTES"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:448
+#: en/linkchecker.1:428
 msgid ""
 "URLs on the commandline starting with B<ftp.> are treated like "
 "B<ftp://ftp.>, URLs starting with B<www.> are treated like B<http://www.>.  "
@@ -1240,7 +1172,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:453
+#: en/linkchecker.1:433
 msgid ""
 "If you have your system configured to automatically establish a connection "
 "to the internet (e.g. with diald), it will connect when checking links not "
@@ -1249,106 +1181,106 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:455
+#: en/linkchecker.1:435
 msgid "Javascript links are not supported."
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:458
+#: en/linkchecker.1:438
 msgid ""
 "If your platform does not support threading, LinkChecker disables it "
 "automatically."
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:460
+#: en/linkchecker.1:440
 msgid "You can supply multiple user/password pairs in a configuration file."
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:463
+#: en/linkchecker.1:443
 msgid ""
 "When checking B<news:> links the given NNTP host doesn't need to be the same "
 "as the host of the user browsing your pages."
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:464
+#: en/linkchecker.1:444
 #, no-wrap
 msgid "ENVIRONMENT"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:466
+#: en/linkchecker.1:446
 msgid "B<NNTP_SERVER> - specifies default NNTP server"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:468
+#: en/linkchecker.1:448
 msgid "B<http_proxy> - specifies default HTTP proxy server"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:470
+#: en/linkchecker.1:450
 msgid "B<ftp_proxy> - specifies default FTP proxy server"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:472
+#: en/linkchecker.1:452
 msgid ""
 "B<no_proxy> - comma-separated list of domains to not contact over a proxy "
 "server"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:474
+#: en/linkchecker.1:454
 msgid "B<LC_MESSAGES>, B<LANG>, B<LANGUAGE> - specify output language"
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:475
+#: en/linkchecker.1:455
 #, no-wrap
 msgid "RETURN VALUE"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:477
+#: en/linkchecker.1:457
 msgid "The return value is 2 when"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:479
+#: en/linkchecker.1:459
 msgid "a program error occurred."
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:481
+#: en/linkchecker.1:461
 msgid "The return value is 1 when"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:483
+#: en/linkchecker.1:463
 msgid "invalid links were found or"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:485
+#: en/linkchecker.1:465
 msgid "link warnings were found and warnings are enabled"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:487
+#: en/linkchecker.1:467
 msgid "Else the return value is zero."
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:488
+#: en/linkchecker.1:468
 #, no-wrap
 msgid "LIMITATIONS"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:492
+#: en/linkchecker.1:472
 msgid ""
 "LinkChecker consumes memory for each queued URL to check. With thousands of "
 "queued URLs the amount of consumed memory can become quite large. This might "
@@ -1356,70 +1288,70 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:493
+#: en/linkchecker.1:473
 #, no-wrap
 msgid "FILES"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:495
+#: en/linkchecker.1:475
 msgid "B<~/.linkchecker/linkcheckerrc> - default configuration file"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:497
+#: en/linkchecker.1:477
 msgid "B<~/.linkchecker/blacklist> - default blacklist logger output filename"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:499
+#: en/linkchecker.1:479
 msgid "B<linkchecker-out.>I<TYPE> - default logger file output name"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:501
+#: en/linkchecker.1:481
 msgid ""
 "B<http://docs.python.org/library/codecs.html#standard-encodings> - valid "
 "output encodings"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:503
+#: en/linkchecker.1:483
 msgid ""
 "B<http://docs.python.org/howto/regex.html> - regular expression "
 "documentation"
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:504 en/linkcheckerrc.5:614 en/linkchecker-gui.1:16
+#: en/linkchecker.1:484 en/linkcheckerrc.5:538 en/linkchecker-gui.1:16
 #, no-wrap
 msgid "SEE ALSO"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:506
+#: en/linkchecker.1:486
 msgid "B<linkcheckerrc>(5)"
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:507 en/linkcheckerrc.5:617 en/linkchecker-gui.1:19
+#: en/linkchecker.1:487 en/linkcheckerrc.5:541 en/linkchecker-gui.1:19
 #, no-wrap
 msgid "AUTHOR"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:509 en/linkcheckerrc.5:619 en/linkchecker-gui.1:21
+#: en/linkchecker.1:489 en/linkcheckerrc.5:543 en/linkchecker-gui.1:21
 msgid "Bastian Kleineidam E<lt>bastian.kleineidam@web.deE<gt>"
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:510 en/linkcheckerrc.5:620 en/linkchecker-gui.1:22
+#: en/linkchecker.1:490 en/linkcheckerrc.5:544 en/linkchecker-gui.1:22
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:511 en/linkcheckerrc.5:621
+#: en/linkchecker.1:491 en/linkcheckerrc.5:545
 msgid "Copyright \\(co 2000-2014 Bastian Kleineidam"
 msgstr ""
 
@@ -1461,257 +1393,131 @@ msgid "SETTINGS"
 msgstr ""
 
 #. type: SS
-#: en/linkcheckerrc.5:13
+#: en/linkcheckerrc.5:12
 #, no-wrap
 msgid "[checking]"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:14
-#, no-wrap
-msgid "B<anchors=>[B<0>|B<1>]"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:20
-msgid "Command line option: B<--anchors>"
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:20
-#, no-wrap
-msgid "B<checkcss=>[B<0>|B<1>]"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:25
-msgid "Command line option: B<--check-css>"
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:25
-#, no-wrap
-msgid "B<checkhtml=>[B<0>|B<1>]"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:30
-msgid "Command line option: B<--check-html>"
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:30
-#, no-wrap
-msgid "B<clamavconf=>I<filename>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:33
-msgid "Filename of B<clamd.conf> config file."
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:35 en/linkcheckerrc.5:56 en/linkcheckerrc.5:66 en/linkcheckerrc.5:134 en/linkcheckerrc.5:144 en/linkcheckerrc.5:153 en/linkcheckerrc.5:161 en/linkcheckerrc.5:168 en/linkcheckerrc.5:175 en/linkcheckerrc.5:182 en/linkcheckerrc.5:194 en/linkcheckerrc.5:200 en/linkcheckerrc.5:313 en/linkcheckerrc.5:330
-msgid "Command line option: none"
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:35
+#: en/linkcheckerrc.5:13
 #, no-wrap
 msgid "B<cookiefile=>I<filename>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:39
+#: en/linkcheckerrc.5:17
 msgid ""
 "Read a file with initial cookie data. The cookie data format is explained in "
 "linkchecker(1)."
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:41
+#: en/linkcheckerrc.5:19
 msgid "Command line option: B<--cookiefile>"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:41
-#, no-wrap
-msgid "B<cookies=>[B<0>|B<1>]"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:44
-msgid "Accept and send HTTP cookies."
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:46
-msgid "Command line option: B<--cookies>"
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:46
-#, no-wrap
-msgid "B<debugmemory=>[B<0>|B<1>]"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:51
-msgid ""
-"When checking finishes, write a memory dump to a temporary file.  The memory "
-"dump is written both when checking finishes normally and when checking gets "
-"canceled."
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:54
-msgid ""
-"The memory dump only works if the python-meliae package is installed.  "
-"Otherwise a warning is printed to install it."
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:56
+#: en/linkcheckerrc.5:19
 #, no-wrap
 msgid "B<localwebroot=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:60
+#: en/linkcheckerrc.5:23
 msgid ""
 "When checking absolute URLs inside local files, the given root directory is "
 "used as base URL."
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:64
+#: en/linkcheckerrc.5:27
 msgid ""
 "Note that the given directory must have URL syntax, so it must use a slash "
 "to join directories instead of a backslash.  And the given directory must "
 "end with a slash."
 msgstr ""
 
+#. type: Plain text
+#: en/linkcheckerrc.5:29 en/linkcheckerrc.5:77 en/linkcheckerrc.5:86 en/linkcheckerrc.5:94 en/linkcheckerrc.5:112 en/linkcheckerrc.5:118 en/linkcheckerrc.5:229 en/linkcheckerrc.5:246
+msgid "Command line option: none"
+msgstr ""
+
 #. type: TP
-#: en/linkcheckerrc.5:66
+#: en/linkcheckerrc.5:29
 #, no-wrap
 msgid "B<nntpserver=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:73
+#: en/linkcheckerrc.5:36
 msgid "Command line option: B<--nntp-server>"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:73
-#, no-wrap
-msgid "B<pause=>I<NUMBER>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:77
-msgid ""
-"Pause the given number of seconds between two subsequent connection requests "
-"to the same host."
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:79
-msgid "Command line option: B<--pause>"
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:79
+#: en/linkcheckerrc.5:36
 #, no-wrap
 msgid "B<recursionlevel=>I<NUMBER>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:86
+#: en/linkcheckerrc.5:43
 msgid "Command line option: B<--recursion-level>"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:86
-#, no-wrap
-msgid "B<scanvirus=>[B<0>|B<1>]"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:91
-msgid "Command line option: B<--scan-virus>"
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:91
+#: en/linkcheckerrc.5:43
 #, no-wrap
 msgid "B<threads=>I<NUMBER>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:97
+#: en/linkcheckerrc.5:49
 msgid "Command line option: B<--threads>"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:97
+#: en/linkcheckerrc.5:49
 #, no-wrap
 msgid "B<timeout=>I<NUMBER>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:103
+#: en/linkcheckerrc.5:55 en/linkcheckerrc.5:62
 msgid "Command line option: B<--timeout>"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:103
+#: en/linkcheckerrc.5:55
+#, no-wrap
+msgid "B<aborttimeout=>I<NUMBER>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:60
+msgid ""
+"Time to wait for checks to finish after the user aborts the first time (with "
+"Ctrl-C or the abort button).  The default abort timeout is 300 seconds."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:62
 #, no-wrap
 msgid "B<useragent=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:110
+#: en/linkcheckerrc.5:69
 msgid "Command line option: B<--user-agent>"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:110
-#, no-wrap
-msgid "B<warningregex=>=I<REGEX>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:118
-msgid ""
-"Use this to check for pages that contain some form of error, for example "
-"\"This page has moved\" or \"Oracle Application Server error\"."
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:120
-msgid "Command line option: B<--warning-regex>"
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:120
-#, no-wrap
-msgid "B<warnsizebytes=>I<NUMBER>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:126
-msgid "Command line option: B<--warning-size-bytes>"
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:126
+#: en/linkcheckerrc.5:69
 #, no-wrap
 msgid "B<sslverify=>[B<0>|B<1>|I<filename>]"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:132
+#: en/linkcheckerrc.5:75
 msgid ""
 "If set to zero disables SSL certificate checking.  If set to one (the "
 "default) enables SSL certificate checking with the provided CA certificate "
@@ -1719,32 +1525,13 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:134
-#, no-wrap
-msgid "B<warnsslcertdaysvalid=>I<NUMBER>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:140
-msgid ""
-"Check that SSL certificates are at least the given number of days valid.  "
-"The number must not be negative.  If the number of days is zero a warning is "
-"printed only for certificates that are already expired."
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:142
-msgid "The default number of days is 14."
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:144
+#: en/linkcheckerrc.5:77
 #, no-wrap
 msgid "B<maxrunseconds=>I<NUMBER>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:149
+#: en/linkcheckerrc.5:82
 msgid ""
 "Stop checking new URLs after the given number of seconds. Same as if the "
 "user stops (by hitting Ctrl-C or clicking the abort buttin in the GUI)  "
@@ -1752,149 +1539,144 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:151
+#: en/linkcheckerrc.5:84
 msgid "The default is not to stop until all URLs are checked."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:153
+#: en/linkcheckerrc.5:86
 #, no-wrap
 msgid "B<maxnumurls=>I<NUMBER>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:157
+#: en/linkcheckerrc.5:90
 msgid ""
 "Maximum number of URLs to check. New URLs will not be queued after the given "
 "number of URLs is checked."
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:159
+#: en/linkcheckerrc.5:92
 msgid "The default is to queue and check all URLs."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:161
+#: en/linkcheckerrc.5:94
 #, no-wrap
-msgid "B<maxconnectionshttp=>I<NUMBER>"
+msgid "B<maxrequestspersecond=>I<NUMBER>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:164
-msgid "Maximum number of connections to HTTP servers."
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:166 en/linkcheckerrc.5:173
-msgid "The default is 10."
+#: en/linkcheckerrc.5:97
+msgid "Limit the maximum number of requests per second to one host."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:168
+#: en/linkcheckerrc.5:97
 #, no-wrap
-msgid "B<maxconnectionshttps=>I<NUMBER>"
+msgid "B<allowedschemes=>I<NAME>[B<,>I<NAME>...]"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:171
-msgid "Maximum number of connections to HTTPS servers."
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:175
-#, no-wrap
-msgid "B<maxconnectionsftp=>I<NUMBER>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:178
-msgid "Maximum number of connections to FTP servers."
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:180
-msgid "The default is 2."
+#: en/linkcheckerrc.5:100
+msgid "Allowed URL schemes as comma-separated list."
 msgstr ""
 
 #. type: SS
-#: en/linkcheckerrc.5:182
+#: en/linkcheckerrc.5:100
 #, no-wrap
 msgid "[filtering]"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:183
+#: en/linkcheckerrc.5:101
 #, no-wrap
 msgid "B<ignore=>I<REGEX> (MULTILINE)"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:186
+#: en/linkcheckerrc.5:104
 msgid "Only check syntax of URLs matching the given regular expressions."
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:188
+#: en/linkcheckerrc.5:106
 msgid "Command line option: B<--ignore-url>"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:188
+#: en/linkcheckerrc.5:106
 #, no-wrap
 msgid "B<ignorewarnings=>I<NAME>[B<,>I<NAME>...]"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:192
+#: en/linkcheckerrc.5:110
 msgid ""
 "Ignore the comma-separated list of warnings. See B<WARNIGS> for the list of "
 "supported warnings."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:194
+#: en/linkcheckerrc.5:112
 #, no-wrap
 msgid "B<internlinks=>I<REGEX>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:198
+#: en/linkcheckerrc.5:116
 msgid ""
 "Regular expression to add more URLs recognized as internal links.  Default "
 "is that URLs given on the command line are internal."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:200
+#: en/linkcheckerrc.5:118
 #, no-wrap
 msgid "B<nofollow=>I<REGEX> (MULTILINE)"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:204
+#: en/linkcheckerrc.5:122
 msgid "Check but do not recurse into URLs matching the given regular expressions."
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:206
+#: en/linkcheckerrc.5:124
 msgid "Command line option: B<--no-follow-url>"
 msgstr ""
 
+#. type: TP
+#: en/linkcheckerrc.5:124
+#, no-wrap
+msgid "B<checkextern=>[B<0>|B<1>]"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:127
+msgid "Check external links. Default is to check internal links only."
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:129
+msgid "Command line option: B<--checkextern>"
+msgstr ""
+
 #. type: SS
-#: en/linkcheckerrc.5:206
+#: en/linkcheckerrc.5:129
 #, no-wrap
 msgid "[authentication]"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:207
+#: en/linkcheckerrc.5:130
 #, no-wrap
 msgid "B<entry=>I<REGEX> I<USER> [I<PASS>] (MULTILINE)"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:213
+#: en/linkcheckerrc.5:136
 msgid ""
 "Provide different user/password pairs for different link types.  Entries are "
 "a triple (URL regex, username, password)  or a tuple (URL regex, username), "
@@ -1902,14 +1684,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:216
+#: en/linkcheckerrc.5:139
 msgid ""
 "The password is optional and if missing it has to be entered at the "
 "commandline."
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:222
+#: en/linkcheckerrc.5:145
 msgid ""
 "If the regular expression matches the checked URL, the given user/password "
 "pair is used for authentication. The commandline options B<-u> and B<-p> "
@@ -1919,91 +1701,72 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:224
+#: en/linkcheckerrc.5:147
 msgid "Command line option: B<-u>, B<-p>"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:224
+#: en/linkcheckerrc.5:147
 #, no-wrap
 msgid "B<loginurl=>I<URL>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:229
+#: en/linkcheckerrc.5:151
 msgid ""
 "A login URL to be visited before checking. Also needs authentication data "
-"set for it, and implies using cookies because most logins use cookies "
-"nowadays."
+"set for it."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:229
+#: en/linkcheckerrc.5:151
 #, no-wrap
 msgid "B<loginuserfield=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:232
+#: en/linkcheckerrc.5:154
 msgid "The name of the user CGI field. Default name is B<login>."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:232
+#: en/linkcheckerrc.5:154
 #, no-wrap
 msgid "B<loginpasswordfield=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:235
+#: en/linkcheckerrc.5:157
 msgid "The name of the password CGI field. Default name is B<password>."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:235
+#: en/linkcheckerrc.5:157
 #, no-wrap
 msgid "B<loginextrafields=>I<NAME>B<:>I<VALUE> (MULTILINE)"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:239
+#: en/linkcheckerrc.5:161
 msgid ""
 "Optionally any additional CGI name/value pairs. Note that the default values "
 "are submitted automatically."
 msgstr ""
 
 #. type: SS
-#: en/linkcheckerrc.5:239
+#: en/linkcheckerrc.5:161
 #, no-wrap
 msgid "[output]"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:240
-#, no-wrap
-msgid "B<complete=>[B<0>|B<1>]"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:244
-msgid ""
-"If set log all checked URLs, even duplicates. Default is to log duplicate "
-"URLs only once."
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:246
-msgid "Command line option: B<--complete>"
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:246
+#: en/linkcheckerrc.5:162
 #, no-wrap
 msgid "B<debug=>I<STRING>[B<,>I<STRING>...]"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:252
+#: en/linkcheckerrc.5:168
 msgid ""
 "Print debugging output for the given loggers.  Available loggers are "
 "B<cmdline>, B<checking>, B<cache>, B<gui>, B<dns>, B<thread> and B<all>.  "
@@ -2011,25 +1774,25 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:254
+#: en/linkcheckerrc.5:170
 msgid "Command line option: B<--debug>"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:254
+#: en/linkcheckerrc.5:170
 #, no-wrap
 msgid "B<fileoutput=>I<TYPE>[B<,>I<TYPE>...]"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:259
+#: en/linkcheckerrc.5:175
 msgid ""
 "Output to a files B<linkchecker-out.>I<TYPE>, "
 "B<$HOME/.linkchecker/blacklist> for B<blacklist> output."
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:265
+#: en/linkcheckerrc.5:181
 msgid ""
 "Valid file output types are B<text>, B<html>, B<sql>, B<csv>, B<gml>, "
 "B<dot>, B<xml>, B<none> or B<blacklist> Default is no file output. The "
@@ -2038,18 +1801,18 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:267
+#: en/linkcheckerrc.5:183
 msgid "Command line option: B<--file-output>"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:267
+#: en/linkcheckerrc.5:183
 #, no-wrap
 msgid "B<log=>I<TYPE>[B</>I<ENCODING>]"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:273
+#: en/linkcheckerrc.5:189
 msgid ""
 "Specify output type as B<text>, B<html>, B<sql>, B<csv>, B<gml>, B<dot>, "
 "B<xml>, B<none> or B<blacklist>.  Default type is B<text>. The various "
@@ -2057,7 +1820,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:277
+#: en/linkcheckerrc.5:193
 msgid ""
 "The I<ENCODING> specifies the output encoding, the default is that of your "
 "locale. Valid encodings are listed at "
@@ -2065,136 +1828,136 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:279
+#: en/linkcheckerrc.5:195
 msgid "Command line option: B<--output>"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:279
+#: en/linkcheckerrc.5:195
 #, no-wrap
 msgid "B<quiet=>[B<0>|B<1>]"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:283
+#: en/linkcheckerrc.5:199
 msgid ""
 "If set, operate quiet. An alias for B<log=none>.  This is only useful with "
 "B<fileoutput>."
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:285 en/linkcheckerrc.5:295
+#: en/linkcheckerrc.5:201 en/linkcheckerrc.5:211
 msgid "Command line option: B<--verbose>"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:285
+#: en/linkcheckerrc.5:201
 #, no-wrap
 msgid "B<status=>[B<0>|B<1>]"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:288
+#: en/linkcheckerrc.5:204
 msgid "Control printing check status messages. Default is 1."
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:290
+#: en/linkcheckerrc.5:206
 msgid "Command line option: B<--no-status>"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:290
+#: en/linkcheckerrc.5:206
 #, no-wrap
 msgid "B<verbose=>[B<0>|B<1>]"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:293
+#: en/linkcheckerrc.5:209
 msgid ""
 "If set log all checked URLs once. Default is to log only errors and "
 "warnings."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:295
+#: en/linkcheckerrc.5:211
 #, no-wrap
 msgid "B<warnings=>[B<0>|B<1>]"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:298
+#: en/linkcheckerrc.5:214
 msgid "If set log warnings. Default is to log warnings."
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:300
+#: en/linkcheckerrc.5:216
 msgid "Command line option: B<--no-warnings>"
 msgstr ""
 
 #. type: SS
-#: en/linkcheckerrc.5:300
+#: en/linkcheckerrc.5:216
 #, no-wrap
 msgid "[text]"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:301 en/linkcheckerrc.5:364 en/linkcheckerrc.5:374 en/linkcheckerrc.5:384 en/linkcheckerrc.5:400 en/linkcheckerrc.5:416 en/linkcheckerrc.5:447 en/linkcheckerrc.5:454 en/linkcheckerrc.5:464 en/linkcheckerrc.5:474
+#: en/linkcheckerrc.5:217 en/linkcheckerrc.5:280 en/linkcheckerrc.5:290 en/linkcheckerrc.5:300 en/linkcheckerrc.5:316 en/linkcheckerrc.5:332 en/linkcheckerrc.5:363 en/linkcheckerrc.5:370 en/linkcheckerrc.5:380 en/linkcheckerrc.5:390
 #, no-wrap
 msgid "B<filename=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:305
+#: en/linkcheckerrc.5:221
 msgid ""
 "Specify output filename for text logging. Default filename is "
 "B<linkchecker-out.txt>."
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:307
+#: en/linkcheckerrc.5:223
 msgid "Command line option: B<--file-output=>"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:307 en/linkcheckerrc.5:367 en/linkcheckerrc.5:377 en/linkcheckerrc.5:387 en/linkcheckerrc.5:403 en/linkcheckerrc.5:419 en/linkcheckerrc.5:457 en/linkcheckerrc.5:467 en/linkcheckerrc.5:477
+#: en/linkcheckerrc.5:223 en/linkcheckerrc.5:283 en/linkcheckerrc.5:293 en/linkcheckerrc.5:303 en/linkcheckerrc.5:319 en/linkcheckerrc.5:335 en/linkcheckerrc.5:373 en/linkcheckerrc.5:383 en/linkcheckerrc.5:393
 #, no-wrap
 msgid "B<parts=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:311
+#: en/linkcheckerrc.5:227
 msgid ""
 "Comma-separated list of parts that have to be logged.  See B<LOGGER PARTS> "
 "below."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:313 en/linkcheckerrc.5:370 en/linkcheckerrc.5:380 en/linkcheckerrc.5:390 en/linkcheckerrc.5:406 en/linkcheckerrc.5:422 en/linkcheckerrc.5:450 en/linkcheckerrc.5:460 en/linkcheckerrc.5:470 en/linkcheckerrc.5:480
+#: en/linkcheckerrc.5:229 en/linkcheckerrc.5:286 en/linkcheckerrc.5:296 en/linkcheckerrc.5:306 en/linkcheckerrc.5:322 en/linkcheckerrc.5:338 en/linkcheckerrc.5:366 en/linkcheckerrc.5:376 en/linkcheckerrc.5:386 en/linkcheckerrc.5:396
 #, no-wrap
 msgid "B<encoding=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:317
+#: en/linkcheckerrc.5:233
 msgid ""
 "Valid encodings are listed in "
 "B<http://docs.python.org/library/codecs.html#standard-encodings>."
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:319
+#: en/linkcheckerrc.5:235
 msgid "Default encoding is B<iso-8859-15>."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:319
+#: en/linkcheckerrc.5:235
 #, no-wrap
 msgid "I<color*>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:328
+#: en/linkcheckerrc.5:244
 msgid ""
 "Color settings for the various log parts, syntax is I<color> or "
 "I<type>B<;>I<color>. The I<type> can be B<bold>, B<light>, B<blink>, "
@@ -2204,332 +1967,332 @@ msgid ""
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:330
+#: en/linkcheckerrc.5:246
 #, no-wrap
 msgid "B<colorparent=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:333
+#: en/linkcheckerrc.5:249
 msgid "Set parent color. Default is B<white>."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:333
+#: en/linkcheckerrc.5:249
 #, no-wrap
 msgid "B<colorurl=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:336
+#: en/linkcheckerrc.5:252
 msgid "Set URL color. Default is B<default>."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:336
+#: en/linkcheckerrc.5:252
 #, no-wrap
 msgid "B<colorname=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:339
+#: en/linkcheckerrc.5:255
 msgid "Set name color. Default is B<default>."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:339
+#: en/linkcheckerrc.5:255
 #, no-wrap
 msgid "B<colorreal=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:342
+#: en/linkcheckerrc.5:258
 msgid "Set real URL color. Default is B<cyan>."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:342
+#: en/linkcheckerrc.5:258
 #, no-wrap
 msgid "B<colorbase=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:345
+#: en/linkcheckerrc.5:261
 msgid "Set base URL color. Default is B<purple>."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:345
+#: en/linkcheckerrc.5:261
 #, no-wrap
 msgid "B<colorvalid=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:348
+#: en/linkcheckerrc.5:264
 msgid "Set valid color. Default is B<bold;green>."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:348
+#: en/linkcheckerrc.5:264
 #, no-wrap
 msgid "B<colorinvalid=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:351
+#: en/linkcheckerrc.5:267
 msgid "Set invalid color. Default is B<bold;red>."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:351
+#: en/linkcheckerrc.5:267
 #, no-wrap
 msgid "B<colorinfo=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:354
+#: en/linkcheckerrc.5:270
 msgid "Set info color. Default is B<default>."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:354
+#: en/linkcheckerrc.5:270
 #, no-wrap
 msgid "B<colorwarning=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:357
+#: en/linkcheckerrc.5:273
 msgid "Set warning color. Default is B<bold;yellow>."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:357
+#: en/linkcheckerrc.5:273
 #, no-wrap
 msgid "B<colordltime=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:360
+#: en/linkcheckerrc.5:276
 msgid "Set download time color. Default is B<default>."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:360
+#: en/linkcheckerrc.5:276
 #, no-wrap
 msgid "B<colorreset=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:363
+#: en/linkcheckerrc.5:279
 msgid "Set reset color. Default is B<deault>."
 msgstr ""
 
 #. type: SS
-#: en/linkcheckerrc.5:363
+#: en/linkcheckerrc.5:279
 #, no-wrap
 msgid "[gml]"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:367 en/linkcheckerrc.5:370 en/linkcheckerrc.5:373 en/linkcheckerrc.5:377 en/linkcheckerrc.5:380 en/linkcheckerrc.5:383 en/linkcheckerrc.5:387 en/linkcheckerrc.5:390 en/linkcheckerrc.5:393 en/linkcheckerrc.5:403 en/linkcheckerrc.5:406 en/linkcheckerrc.5:409 en/linkcheckerrc.5:419 en/linkcheckerrc.5:422 en/linkcheckerrc.5:425 en/linkcheckerrc.5:450 en/linkcheckerrc.5:453 en/linkcheckerrc.5:457 en/linkcheckerrc.5:460 en/linkcheckerrc.5:463 en/linkcheckerrc.5:467 en/linkcheckerrc.5:470 en/linkcheckerrc.5:473 en/linkcheckerrc.5:477 en/linkcheckerrc.5:480 en/linkcheckerrc.5:483
+#: en/linkcheckerrc.5:283 en/linkcheckerrc.5:286 en/linkcheckerrc.5:289 en/linkcheckerrc.5:293 en/linkcheckerrc.5:296 en/linkcheckerrc.5:299 en/linkcheckerrc.5:303 en/linkcheckerrc.5:306 en/linkcheckerrc.5:309 en/linkcheckerrc.5:319 en/linkcheckerrc.5:322 en/linkcheckerrc.5:325 en/linkcheckerrc.5:335 en/linkcheckerrc.5:338 en/linkcheckerrc.5:341 en/linkcheckerrc.5:366 en/linkcheckerrc.5:369 en/linkcheckerrc.5:373 en/linkcheckerrc.5:376 en/linkcheckerrc.5:379 en/linkcheckerrc.5:383 en/linkcheckerrc.5:386 en/linkcheckerrc.5:389 en/linkcheckerrc.5:393 en/linkcheckerrc.5:396 en/linkcheckerrc.5:399
 msgid "See [text] section above."
 msgstr ""
 
 #. type: SS
-#: en/linkcheckerrc.5:373
+#: en/linkcheckerrc.5:289
 #, no-wrap
 msgid "[dot]"
 msgstr ""
 
 #. type: SS
-#: en/linkcheckerrc.5:383
+#: en/linkcheckerrc.5:299
 #, no-wrap
 msgid "[csv]"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:393 en/linkcheckerrc.5:412
+#: en/linkcheckerrc.5:309 en/linkcheckerrc.5:328
 #, no-wrap
 msgid "B<separator=>I<CHAR>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:396
+#: en/linkcheckerrc.5:312
 msgid "Set CSV separator. Default is a comma (B<,>)."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:396
+#: en/linkcheckerrc.5:312
 #, no-wrap
 msgid "B<quotechar=>I<CHAR>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:399
+#: en/linkcheckerrc.5:315
 msgid "Set CSV quote character. Default is a double quote (B<\">)."
 msgstr ""
 
 #. type: SS
-#: en/linkcheckerrc.5:399
+#: en/linkcheckerrc.5:315
 #, no-wrap
 msgid "[sql]"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:409
+#: en/linkcheckerrc.5:325
 #, no-wrap
 msgid "B<dbname=>I<STRING>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:412
+#: en/linkcheckerrc.5:328
 msgid "Set database name to store into. Default is B<linksdb>."
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:415
+#: en/linkcheckerrc.5:331
 msgid "Set SQL command separator character. Default is a semicolor (B<;>)."
 msgstr ""
 
 #. type: SS
-#: en/linkcheckerrc.5:415
+#: en/linkcheckerrc.5:331
 #, no-wrap
 msgid "[html]"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:425
+#: en/linkcheckerrc.5:341
 #, no-wrap
 msgid "B<colorbackground=>I<COLOR>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:428
+#: en/linkcheckerrc.5:344
 msgid "Set HTML background color. Default is B<#fff7e5>."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:428
+#: en/linkcheckerrc.5:344
 #, no-wrap
 msgid "B<colorurl=>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:431
+#: en/linkcheckerrc.5:347
 msgid "Set HTML URL color. Default is B<#dcd5cf>."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:431
+#: en/linkcheckerrc.5:347
 #, no-wrap
 msgid "B<colorborder=>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:434
+#: en/linkcheckerrc.5:350
 msgid "Set HTML border color. Default is B<#000000>."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:434
+#: en/linkcheckerrc.5:350
 #, no-wrap
 msgid "B<colorlink=>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:437
+#: en/linkcheckerrc.5:353
 msgid "Set HTML link color. Default is B<#191c83>."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:437
+#: en/linkcheckerrc.5:353
 #, no-wrap
 msgid "B<colorwarning=>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:440
+#: en/linkcheckerrc.5:356
 msgid "Set HTML warning color. Default is B<#e0954e>."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:440
+#: en/linkcheckerrc.5:356
 #, no-wrap
 msgid "B<colorerror=>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:443
+#: en/linkcheckerrc.5:359
 msgid "Set HTML error color. Default is B<#db4930>."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:443
+#: en/linkcheckerrc.5:359
 #, no-wrap
 msgid "B<colorok=>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:446
+#: en/linkcheckerrc.5:362
 msgid "Set HTML valid color. Default is B<#3ba557>."
 msgstr ""
 
 #. type: SS
-#: en/linkcheckerrc.5:446
+#: en/linkcheckerrc.5:362
 #, no-wrap
 msgid "[blacklist]"
 msgstr ""
 
 #. type: SS
-#: en/linkcheckerrc.5:453
+#: en/linkcheckerrc.5:369
 #, no-wrap
 msgid "[xml]"
 msgstr ""
 
 #. type: SS
-#: en/linkcheckerrc.5:463
+#: en/linkcheckerrc.5:379
 #, no-wrap
 msgid "[gxml]"
 msgstr ""
 
 #. type: SS
-#: en/linkcheckerrc.5:473
+#: en/linkcheckerrc.5:389
 #, no-wrap
 msgid "[sitemap]"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:483
+#: en/linkcheckerrc.5:399
 #, no-wrap
 msgid "B<priority=>I<FLOAT>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:487
+#: en/linkcheckerrc.5:403
 msgid ""
 "A number between 0.0 and 1.0 determining the priority. The default priority "
 "for the first URL is 1.0, for all child URLs 0.5."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:487
+#: en/linkcheckerrc.5:403
 #, no-wrap
 msgid "B<frequency=>[B<always>|B<hourly>|B<daily>|B<weekly>|B<monthly>|B<yearly>|B<never>]"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:490
+#: en/linkcheckerrc.5:406
 msgid "The frequence pages are changing with."
 msgstr ""
 
 #. type: SH
-#: en/linkcheckerrc.5:491
+#: en/linkcheckerrc.5:407
 #, no-wrap
 msgid "LOGGER PARTS"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:507
+#: en/linkcheckerrc.5:423
 #, no-wrap
 msgid ""
 " B<all>       (for all parts)\n"
@@ -2551,13 +2314,13 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: en/linkcheckerrc.5:507
+#: en/linkcheckerrc.5:423
 #, no-wrap
 msgid "MULTILINE"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:511
+#: en/linkcheckerrc.5:427
 msgid ""
 "Some option values can span multiple lines. Each line has to be indented for "
 "that to work. Lines starting with a hash (B<#>) will be ignored, though they "
@@ -2565,7 +2328,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:517
+#: en/linkcheckerrc.5:433
 #, no-wrap
 msgid ""
 " ignore=\n"
@@ -2576,13 +2339,13 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: en/linkcheckerrc.5:518
+#: en/linkcheckerrc.5:434
 #, no-wrap
 msgid "EXAMPLE"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:521
+#: en/linkcheckerrc.5:437
 #, no-wrap
 msgid ""
 " [output]\n"
@@ -2590,7 +2353,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:524
+#: en/linkcheckerrc.5:440
 #, no-wrap
 msgid ""
 " [checking]\n"
@@ -2598,325 +2361,309 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:527
+#: en/linkcheckerrc.5:443
 #, no-wrap
 msgid ""
 " [filtering]\n"
 " ignorewarnings=http-moved-permanent\n"
 msgstr ""
 
+#. type: Plain text
+#: en/linkcheckerrc.5:448
+msgid ""
+"All plugins have a separate section. If the section appears in the "
+"configuration file the plugin is enabled.  Some plugins read extra options "
+"in their section."
+msgstr ""
+
+#. type: SS
+#: en/linkcheckerrc.5:449
+#, no-wrap
+msgid "[AnchorCheck]"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:451
+msgid "Checks validity of HTML anchors."
+msgstr ""
+
+#. type: SS
+#: en/linkcheckerrc.5:452
+#, no-wrap
+msgid "[LocationInfo]"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:455
+msgid ""
+"Adds the country and if possible city name of the URL host as info.  Needs "
+"GeoIP or pygeoip and a local country or city lookup DB installed."
+msgstr ""
+
+#. type: SS
+#: en/linkcheckerrc.5:456
+#, no-wrap
+msgid "[RegexCheck]"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:460
+msgid ""
+"Define a regular expression which prints a warning if it matches any content "
+"of the checked link. This applies only to valid pages, so we can get their "
+"content."
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:464
+msgid ""
+"Use this to check for pages that contain some form of error message, for "
+"example 'This page has moved' or 'Oracle Application error'."
+msgstr ""
+
+#. type: SS
+#: en/linkcheckerrc.5:468
+#, no-wrap
+msgid "[SslCertificateCheck]"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:472
+msgid ""
+"Check SSL certificate expiration date. Only internal https: links will be "
+"checked. A domain will only be checked once to avoid duplicate warnings."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:472
+#, no-wrap
+msgid "B<sslcertwarndays=>I<NUMBER>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:475
+msgid "Configures the expiration warning time in days."
+msgstr ""
+
+#. type: SS
+#: en/linkcheckerrc.5:476
+#, no-wrap
+msgid "[HtmlSyntaxCheck]"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:479
+msgid ""
+"Check the syntax of HTML pages with the online W3C HTML validator.  See "
+"http://validator.w3.org/docs/api.html."
+msgstr ""
+
+#. type: SS
+#: en/linkcheckerrc.5:480
+#, no-wrap
+msgid "[CssSyntaxCheck]"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:483
+msgid ""
+"Check the syntax of HTML pages with the online W3C CSS validator.  See "
+"http://jigsaw.w3.org/css-validator/manual.html#expert."
+msgstr ""
+
+#. type: SS
+#: en/linkcheckerrc.5:484
+#, no-wrap
+msgid "[VirusCheck]"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:487
+msgid ""
+"Checks the page content for virus infections with clamav.  A local clamav "
+"daemon must be installed."
+msgstr ""
+
+#. type: TP
+#: en/linkcheckerrc.5:487
+#, no-wrap
+msgid "B<clamavconf=>I<filename>"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:490
+msgid "Filename of B<clamd.conf> config file."
+msgstr ""
+
 #. type: SH
-#: en/linkcheckerrc.5:528
+#: en/linkcheckerrc.5:491
 #, no-wrap
 msgid "WARNINGS"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:531
+#: en/linkcheckerrc.5:494
 msgid ""
 "The following warnings are recognized in the 'ignorewarnings' config file "
 "entry:"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:532
+#: en/linkcheckerrc.5:495
 #, no-wrap
 msgid "B<file-missing-slash>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:535
+#: en/linkcheckerrc.5:498
 msgid "The file: URL is missing a trailing slash."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:535
+#: en/linkcheckerrc.5:498
 #, no-wrap
 msgid "B<file-system-path>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:538
+#: en/linkcheckerrc.5:501
 msgid "The file: path is not the same as the system specific path."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:538
+#: en/linkcheckerrc.5:501
 #, no-wrap
 msgid "B<ftp-missing-slash>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:541
+#: en/linkcheckerrc.5:504
 msgid "The ftp: URL is missing a trailing slash."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:541
-#, no-wrap
-msgid "B<http-auth-unknonwn>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:544
-msgid "Unsupported HTTP authentication method."
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:544
+#: en/linkcheckerrc.5:504
 #, no-wrap
 msgid "B<http-cookie-store-error>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:547
+#: en/linkcheckerrc.5:507
 msgid "An error occurred while storing a cookie."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:547
-#, no-wrap
-msgid "B<http-decompress-error>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:550
-msgid "An error occurred while decompressing the URL content."
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:550
+#: en/linkcheckerrc.5:507
 #, no-wrap
 msgid "B<http-empty-content>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:553
+#: en/linkcheckerrc.5:510
 msgid "The URL had no content."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:553
-#, no-wrap
-msgid "B<http-moved-permanent>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:556
-msgid "The URL has moved permanently."
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:556
-#, no-wrap
-msgid "B<http-robots-denied>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:559
-msgid "The http: URL checking has been denied."
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:559
-#, no-wrap
-msgid "B<http-unsupported-encoding>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:562
-msgid "The URL content is encoded with an unknown encoding."
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:562
-#, no-wrap
-msgid "B<http-wrong-redirect>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:565
-msgid "The URL has been redirected to an URL of a different type."
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:565
-#, no-wrap
-msgid "B<https-certificate-error>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:568
-msgid "The SSL certificate is invalid or expired."
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:568
-#, no-wrap
-msgid "B<ignore-url>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:571
-msgid "The URL has been ignored."
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:571
-#, no-wrap
-msgid "B<mail-no-connection>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:574
-msgid "No connection to a MX host could be established."
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:574
+#: en/linkcheckerrc.5:510
 #, no-wrap
 msgid "B<mail-no-mx-host>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:577
+#: en/linkcheckerrc.5:513
 msgid "The mail MX host could not be found."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:577
-#, no-wrap
-msgid "B<mail-unverified-address>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:580
-msgid "The mailto: address could not be verified."
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:580
+#: en/linkcheckerrc.5:513
 #, no-wrap
 msgid "B<nntp-no-newsgroup>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:583
+#: en/linkcheckerrc.5:516
 msgid "The NNTP newsgroup could not be found."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:583
+#: en/linkcheckerrc.5:516
 #, no-wrap
 msgid "B<nntp-no-server>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:586
+#: en/linkcheckerrc.5:519
 msgid "No NNTP server was found."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:586
-#, no-wrap
-msgid "B<url-anchor-not-found>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:589
-msgid "URL anchor was not found."
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:589
-#, no-wrap
-msgid "B<url-content-size-unequal>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:592
-msgid "The URL content size and download size are unequal."
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:592
+#: en/linkcheckerrc.5:519
 #, no-wrap
 msgid "B<url-content-size-zero>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:595
+#: en/linkcheckerrc.5:522
 msgid "The URL content size is zero."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:595
+#: en/linkcheckerrc.5:522
 #, no-wrap
 msgid "B<url-content-too-large>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:598
+#: en/linkcheckerrc.5:525
 msgid "The URL content size is too large."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:598
+#: en/linkcheckerrc.5:525
 #, no-wrap
 msgid "B<url-effective-url>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:601
+#: en/linkcheckerrc.5:528
 msgid "The effective URL is different from the original."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:601
+#: en/linkcheckerrc.5:528
 #, no-wrap
 msgid "B<url-error-getting-content>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:604
+#: en/linkcheckerrc.5:531
 msgid "Could not get the content of the URL."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:604
+#: en/linkcheckerrc.5:531
 #, no-wrap
 msgid "B<url-obfuscated-ip>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:607
+#: en/linkcheckerrc.5:534
 msgid "The IP is obfuscated."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:607
-#, no-wrap
-msgid "B<url-warnregex-found>"
-msgstr ""
-
-#. type: Plain text
-#: en/linkcheckerrc.5:610
-msgid "The warning regular expression was found in the URL contents."
-msgstr ""
-
-#. type: TP
-#: en/linkcheckerrc.5:610
+#: en/linkcheckerrc.5:534
 #, no-wrap
 msgid "B<url-whitespace>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:613
+#: en/linkcheckerrc.5:537
 msgid "The URL contains leading or trailing whitespace."
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:616
+#: en/linkcheckerrc.5:540
 msgid "linkchecker(1)"
 msgstr ""
 

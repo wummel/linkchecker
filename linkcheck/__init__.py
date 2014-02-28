@@ -68,12 +68,14 @@ LOG_CHECK = "linkcheck.check"
 LOG_CACHE = "linkcheck.cache"
 LOG_GUI = "linkcheck.gui"
 LOG_THREAD = "linkcheck.thread"
+LOG_PLUGIN = "linkcheck.plugin"
 lognames = {
     "cmdline": LOG_CMDLINE,
     "checking": LOG_CHECK,
     "cache": LOG_CACHE,
     "gui": LOG_GUI,
     "thread": LOG_THREAD,
+    "plugin": LOG_PLUGIN,
     "all": LOG_ROOT,
 }
 lognamelist = ", ".join(repr(name) for name in lognames)

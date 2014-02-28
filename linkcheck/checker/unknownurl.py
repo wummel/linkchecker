@@ -20,7 +20,6 @@ Handle uncheckable URLs.
 
 import re
 from . import urlbase
-from .const import WARN_IGNORE_URL
 
 # from http://www.iana.org/assignments/uri-schemes.html
 ignored_schemes_permanent = r"""
@@ -124,7 +123,7 @@ ignored_schemes_other = r"""
 """
 
 
-ignored_schemes = "^(%s%s%s%s):" % (
+ignored_schemes = "^(%s%s%s%s)$" % (
     ignored_schemes_permanent,
     ignored_schemes_provisional,
     ignored_schemes_historical,
@@ -132,7 +131,7 @@ ignored_schemes = "^(%s%s%s%s):" % (
 )
 ignored_schemes_re = re.compile(ignored_schemes, re.VERBOSE)
 
-is_unknown_url = ignored_schemes_re.search
+is_unknown_scheme = ignored_schemes_re.match
 
 
 class UnknownUrl (urlbase.UrlBase):
@@ -140,19 +139,16 @@ class UnknownUrl (urlbase.UrlBase):
 
     def local_check (self):
         """Only logs that this URL is unknown."""
-        if self.extern[0] and self.extern[1]:
-            self.add_info(_("Outside of domain filter, checked only syntax."))
-        elif self.ignored():
-            self.add_warning(_("%(scheme)s URL ignored.") %
-                             {"scheme": self.scheme.capitalize()},
-                             tag=WARN_IGNORE_URL)
+        if self.ignored():
+            self.add_info(_("%(scheme)s URL ignored.") %
+                          {"scheme": self.scheme.capitalize()})
         else:
             self.set_result(_("URL is unrecognized or has invalid syntax"),
                         valid=False)
 
     def ignored (self):
         """Return True if this URL scheme is ignored."""
-        return ignored_schemes_re.search(self.url)
+        return is_unknown_scheme(self.scheme)
 
     def can_get_content (self):
         """Unknown URLs have no content.

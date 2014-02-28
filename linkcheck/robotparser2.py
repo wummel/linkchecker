@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2000-2012 Bastian Kleineidam
+# Copyright (C) 2000-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,12 +22,8 @@ http://www.robotstxt.org/wc/norobots-rfc.html
 """
 import urlparse
 import urllib
-import urllib2
 import time
-import socket
-import sys
-from . import httplib2 as httplib
-from . import url as urlutil
+import requests
 from . import log, LOG_CHECK, configuration
 
 __all__ = ["RobotFileParser"]
@@ -79,71 +75,32 @@ class RobotFileParser (object):
     def read (self):
         """Read the robots.txt URL and feeds it to the parser."""
         self._reset()
-        data = None
         headers = {
             'User-Agent': configuration.UserAgent,
             'Accept-Encoding': ACCEPT_ENCODING,
         }
-        req = urllib2.Request(self.url, data, headers)
         try:
-            self._read_content(req)
-        except urllib2.HTTPError, x:
-            if x.code in (401, 403):
-                self.disallow_all = True
-                log.debug(LOG_CHECK, "%r disallow all (code %d)",
-                          self.url, x.code)
-            else:
-                self.allow_all = True
-                log.debug(LOG_CHECK, "%r allow all (HTTP error)", self.url)
-        except socket.timeout:
-            raise
-        except urllib2.URLError:
-            x = sys.exc_info()[1]
-            if isinstance(x.reason, socket.timeout):
-                raise
-            self.allow_all = True
-            log.debug(LOG_CHECK, "%r allow all (URL error)", self.url)
-        except (socket.gaierror, socket.error):
-            # no network
-            self.allow_all = True
-            log.debug(LOG_CHECK, "%r allow all (socket error)", self.url)
-        except IOError:
-            self.allow_all = True
-            log.debug(LOG_CHECK, "%r allow all (I/O error)", self.url)
-        except httplib.HTTPException:
-            self.allow_all = True
-            log.debug(LOG_CHECK, "%r allow all (HTTP exception)", self.url)
-        except ValueError:
-            # urllib2 could raise ValueError on invalid data
-            self.disallow_all = True
-            log.debug(LOG_CHECK, "%r disallow all (value error)", self.url)
-
-    def _read_content (self, req):
-        """Read robots.txt content.
-        @raise: urllib2.HTTPError on HTTP failure codes
-        @raise: socket.gaierror, socket.error, urllib2.URLError on network
-          errors
-        @raise: httplib.HTTPException, IOError on HTTP errors
-        @raise: ValueError on bad digest auth (a bug)
-        """
-        if log.is_debug(LOG_CHECK):
-            debuglevel = 1
-        else:
-            debuglevel = 0
-        f = urlutil.get_opener(user=self.user, password=self.password,
-            proxy=self.proxy, debuglevel=debuglevel)
-        res = None
-        try:
-            res = f.open(req)
-            ct = res.info().get("Content-Type")
-            if ct and ct.lower().startswith("text/plain"):
-                self.parse([line.strip() for line in res])
+            response = requests.get(self.url, headers=headers)
+            response.raise_for_status()
+            content_type = response.headers.get('content-type')
+            if content_type and content_type.lower().startswith('text/plain'):
+                self.parse(response.iter_lines())
             else:
                 log.debug(LOG_CHECK, "%r allow all (no text content)", self.url)
                 self.allow_all = True
-        finally:
-            if res is not None:
-                res.close()
+        except requests.HTTPError, x:
+            if x.response.status_code in (401, 403):
+                self.disallow_all = True
+                log.debug(LOG_CHECK, "%r disallow all (code %d)", self.url, x.response.status_code)
+            else:
+                self.allow_all = True
+                log.debug(LOG_CHECK, "%r allow all (HTTP error)", self.url)
+        except requests.exceptions.Timeout:
+            raise
+        except requests.exceptions.RequestException:
+            # no network or other failure
+            self.allow_all = True
+            log.debug(LOG_CHECK, "%r allow all (request error)", self.url)
 
     def _add_entry (self, entry):
         """Add a parsed entry to entry list.
@@ -163,18 +120,17 @@ class RobotFileParser (object):
 
         @return: None
         """
-        log.debug(LOG_CHECK, "%r parse %d lines", self.url, len(lines))
+        log.debug(LOG_CHECK, "%r parse lines", self.url)
         state = 0
         linenumber = 0
         entry = Entry()
 
         for line in lines:
+            line = line.strip()
             linenumber += 1
             if not line:
                 if state == 1:
-                    log.debug(LOG_CHECK,
-                         "%r line %d: allow or disallow directives without" \
-                         " any user-agent line", self.url, linenumber)
+                    log.debug(LOG_CHECK, "%r line %d: allow or disallow directives without any user-agent line", self.url, linenumber)
                     entry = Entry()
                     state = 0
                 elif state == 2:
@@ -194,49 +150,42 @@ class RobotFileParser (object):
                 line[1] = urllib.unquote(line[1].strip())
                 if line[0] == "user-agent":
                     if state == 2:
-                        log.debug(LOG_CHECK,
-                          "%r line %d: missing blank line before user-agent" \
-                          " directive", self.url, linenumber)
+                        log.debug(LOG_CHECK, "%r line %d: missing blank line before user-agent directive", self.url, linenumber)
                         self._add_entry(entry)
                         entry = Entry()
                     entry.useragents.append(line[1])
                     state = 1
                 elif line[0] == "disallow":
                     if state == 0:
-                        log.debug(LOG_CHECK,
-                          "%r line %d: missing user-agent directive before" \
-                          " this line", self.url, linenumber)
+                        log.debug(LOG_CHECK, "%r line %d: missing user-agent directive before this line", self.url, linenumber)
+                        pass
                     else:
                         entry.rulelines.append(RuleLine(line[1], False))
                         state = 2
                 elif line[0] == "allow":
                     if state == 0:
-                        log.debug(LOG_CHECK,
-                          "%r line %d: missing user-agent directive before" \
-                          " this line", self.url, linenumber)
+                        log.debug(LOG_CHECK, "%r line %d: missing user-agent directive before this line", self.url, linenumber)
+                        pass
                     else:
                         entry.rulelines.append(RuleLine(line[1], True))
                         state = 2
                 elif line[0] == "crawl-delay":
                     if state == 0:
-                        log.debug(LOG_CHECK,
-                          "%r line %d: missing user-agent directive before" \
-                          " this line", self.url, linenumber)
+                        log.debug(LOG_CHECK, "%r line %d: missing user-agent directive before this line", self.url, linenumber)
+                        pass
                     else:
                         try:
                             entry.crawldelay = max(0, int(line[1]))
                             state = 2
                         except ValueError:
-                            log.debug(LOG_CHECK,
-                              "%r line %d: invalid delay number %r",
-                              self.url, linenumber, line[1])
+                            log.debug(LOG_CHECK, "%r line %d: invalid delay number %r", self.url, linenumber, line[1])
                             pass
                 else:
-                    log.debug(LOG_CHECK, "%r line %d: unknown key %r",
-                             self.url, linenumber, line[0])
+                    log.debug(LOG_CHECK, "%r line %d: unknown key %r", self.url, linenumber, line[0])
+                    pass
             else:
-                log.debug(LOG_CHECK, "%r line %d: malformed line %r",
-                    self.url, linenumber, line)
+                log.debug(LOG_CHECK, "%r line %d: malformed line %r", self.url, linenumber, line)
+                pass
         if state in (1, 2):
             self.entries.append(entry)
         self.modified()
@@ -248,8 +197,7 @@ class RobotFileParser (object):
         @return: True if agent can fetch url, else False
         @rtype: bool
         """
-        log.debug(LOG_CHECK, "%r check allowance for:\n" \
-              "  user agent: %r\n  url: %r ...", self.url, useragent, url)
+        log.debug(LOG_CHECK, "%r check allowance for:\n  user agent: %r\n  url: %r ...", self.url, useragent, url)
         if not isinstance(useragent, str):
             useragent = useragent.encode("ascii", "ignore")
         if not isinstance(url, str):

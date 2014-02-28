@@ -2,8 +2,12 @@ url file://%(curdir)s/%(datadir)s/misc.html
 cache key file://%(curdir)s/%(datadir)s/misc.html
 real url file://%(curdir)s/%(datadir)s/misc.html
 name %(datadir)s/misc.html
-info 5 URLs parsed.
 valid
+
+url 
+cache key None
+real url 
+error
 
 url http://www.example.com/
 cache key http://www.example.com/
@@ -14,11 +18,6 @@ url favicon.ico
 cache key file://%(curdir)s/%(datadir)s/favicon.ico
 real url file://%(curdir)s/%(datadir)s/favicon.ico
 valid
-
-url 
-cache key None
-real url 
-error
 
 url test.swf
 cache key file://%(curdir)s/%(datadir)s/test.swf

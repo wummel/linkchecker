@@ -2,7 +2,6 @@ url file://%(curdir)s/%(datadir)s/file.css
 cache key file://%(curdir)s/%(datadir)s/file.css
 real url file://%(curdir)s/%(datadir)s/file.css
 name %(datadir)s/file.css
-info 2 URLs parsed.
 valid
 
 url file.html

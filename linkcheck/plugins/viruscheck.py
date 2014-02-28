@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2004-2012 Bastian Kleineidam
+# Copyright (C) 2000-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,11 +14,57 @@
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
-import socket
+"""
+Check page content for virus infection with clamav.
+"""
 import os
-from . import log, LOG_ROOT
-from .socketutil import create_socket
+import socket
+from . import _ContentPlugin
+from .. import log, LOG_PLUGIN
+from ..socketutil import create_socket
+
+
+class VirusCheck(_ContentPlugin):
+    """Checks the page content for virus infections with clamav.
+    A local clamav daemon must be installed."""
+
+    def __init__(self, config):
+        """Initialize clamav configuration."""
+        super(VirusCheck, self).__init__(config)
+        # XXX read config
+        self.clamav_conf = get_clamav_conf(canonical_clamav_conf())
+
+    def check(self, url_data):
+        """Try to ask GeoIP database for country info."""
+        if url_data.extern[0]:
+            # only scan internal pages for viruses
+            return
+        if not self.clamav_conf:
+            # No clamav available
+            return
+        data = url_data.get_content()
+        infected, errors = scan(data, self.clamav_conf)
+        if infected or errors:
+            for msg in infected:
+                url_data.add_warning(u"Virus scan infection: %s" % msg)
+            for msg in errors:
+                url_data.add_warning(u"Virus scan error: %s" % msg)
+        else:
+            url_data.add_info("No viruses in data found.")
+
+    @classmethod
+    def read_config(cls, configparser):
+        """Read configuration file options."""
+        config = dict()
+        section = cls.__name__
+        option = "clamavconf"
+        if configparser.has_option(section, option):
+            value = configparser.get(section, option)
+        else:
+            value = None
+        config[option] = value
+        return config
+
 
 class ClamavError (Exception):
     """Raised on clamav errors."""
@@ -91,22 +137,11 @@ def canonical_clamav_conf ():
     return clamavconf
 
 
-_clamav_conf = None
-def init_clamav_conf (conf):
+def get_clamav_conf(filename):
     """Initialize clamav configuration."""
-    if not conf:
-        # clamav was not configured
-        return
-    if os.path.isfile(conf):
-        global _clamav_conf
-        _clamav_conf = ClamavConfig(conf)
-    else:
-        log.warn(LOG_ROOT, "No ClamAV config file found at %r.", conf)
-
-
-def get_clamav_conf ():
-    """Get the ClamavConfig instance."""
-    return _clamav_conf
+    if os.path.isfile(filename):
+        return ClamavConfig(filename)
+    log.warn(LOG_PLUGIN, "No ClamAV config file found at %r.", filename)
 
 
 def get_sockinfo (host, port=None):
@@ -181,12 +216,11 @@ class ClamavConfig (dict):
         return sock
 
 
-def scan (data):
+def scan (data, clamconf):
     """Scan data for viruses.
     @return (infection msgs, errors)
     @rtype ([], [])
     """
-    clamconf = ClamavConfig(canonical_clamav_conf())
     try:
         scanner = ClamdScanner(clamconf)
     except socket.error:

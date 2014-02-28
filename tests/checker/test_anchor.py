@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2004-2009 Bastian Kleineidam
+# Copyright (C) 2004-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,4 +26,17 @@ class TestAnchor (LinkCheckTest):
     """
 
     def test_anchor (self):
-        self.file_test("anchor.html")
+        confargs = {"enabledplugins": ["AnchorCheck"]}
+        url = u"file://%(curdir)s/%(datadir)s/anchor.html" % self.get_attrs()
+        nurl = self.norm(url)
+        anchor = "broken"
+        urlanchor = url + "#" + anchor
+        resultlines = [
+            u"url %s" % urlanchor,
+            u"cache key %s" % nurl,
+            u"real url %s" % nurl,
+            u"warning Anchor `%s' not found. Available anchors: `myid:'." % anchor,
+            u"valid",
+        ]
+        self.direct(urlanchor, resultlines, confargs=confargs)
+

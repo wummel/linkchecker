@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2010-2012 Bastian Kleineidam
+# Copyright (C) 2010-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ class TestUnknown (LinkCheckTest):
             u"url %s" % url,
             u"cache key %s" % nurl,
             u"real url %s" % nurl,
-            u"warning Skype URL ignored.",
+            u"info Skype URL ignored.",
             u"valid",
         ]
         self.direct(url, resultlines)
@@ -42,7 +42,7 @@ class TestUnknown (LinkCheckTest):
             u"url %s" % url,
             u"cache key %s" % nurl,
             u"real url %s" % nurl,
-            u"warning Irc URL ignored.",
+            u"info Irc URL ignored.",
             u"valid",
         ]
         self.direct(url, resultlines)
@@ -52,7 +52,7 @@ class TestUnknown (LinkCheckTest):
             u"url %s" % url,
             u"cache key %s" % nurl,
             u"real url %s" % nurl,
-            u"warning Ircs URL ignored.",
+            u"info Ircs URL ignored.",
             u"valid",
         ]
         self.direct(url, resultlines)
@@ -64,7 +64,7 @@ class TestUnknown (LinkCheckTest):
             u"url %s" % url,
             u"cache key %s" % nurl,
             u"real url %s" % nurl,
-            u"warning Steam URL ignored.",
+            u"info Steam URL ignored.",
             u"valid",
         ]
         self.direct(url, resultlines)
@@ -76,7 +76,7 @@ class TestUnknown (LinkCheckTest):
             u"url %s" % url,
             u"cache key %s" % nurl,
             u"real url %s" % nurl,
-            u"warning Feed URL ignored.",
+            u"info Feed URL ignored.",
             u"valid",
         ]
         self.direct(url, resultlines)
@@ -86,7 +86,7 @@ class TestUnknown (LinkCheckTest):
             u"url %s" % url,
             u"cache key %s" % nurl,
             u"real url %s" % nurl,
-            u"warning Feed URL ignored.",
+            u"info Feed URL ignored.",
             u"valid",
         ]
         self.direct(url, resultlines)

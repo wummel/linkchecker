@@ -2,7 +2,6 @@ url file://%(curdir)s/%(datadir)s/html5.html
 cache key file://%(curdir)s/%(datadir)s/html5.html
 real url file://%(curdir)s/%(datadir)s/html5.html
 name %(datadir)s/html5.html
-info 6 URLs parsed.
 valid
 
 url file.asc

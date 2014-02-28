@@ -26,21 +26,19 @@ import time
 import errno
 import socket
 import select
+from cStringIO import StringIO
 
 from . import absolute_url, get_url_from
-from .. import (log, LOG_CHECK, LOG_CACHE, httputil, httplib2 as httplib,
-  strformat, LinkCheckerError, url as urlutil, trace, clamav, winutil, geoip,
-  fileutil, get_link_pat)
+from .. import (log, LOG_CHECK, LOG_CACHE,
+  strformat, LinkCheckerError, url as urlutil, trace, get_link_pat, parser)
 from ..HtmlParser import htmlsax
 from ..htmlutil import linkparse
 from ..network import iputil
 from .const import (WARN_URL_EFFECTIVE_URL,
     WARN_URL_ERROR_GETTING_CONTENT, WARN_URL_OBFUSCATED_IP,
-    WARN_URL_ANCHOR_NOT_FOUND, WARN_URL_WARNREGEX_FOUND,
-    WARN_URL_CONTENT_SIZE_TOO_LARGE, WARN_URL_CONTENT_SIZE_ZERO,
-    WARN_URL_CONTENT_SIZE_UNEQUAL, WARN_URL_WHITESPACE,
+    WARN_URL_CONTENT_SIZE_ZERO, WARN_URL_CONTENT_SIZE_TOO_LARGE,
+    WARN_URL_WHITESPACE,
     WARN_URL_TOO_LONG, URL_MAX_LENGTH, URL_WARN_LENGTH,
-    WARN_SYNTAX_HTML, WARN_SYNTAX_CSS,
     ExcList, ExcSyntaxList, ExcNoCacheList)
 
 # helper alias
@@ -71,17 +69,6 @@ def url_norm (url, encoding=None):
         raise LinkCheckerError(msg)
 
 
-def getXmlText (parent, tag):
-    """Return XML content of given tag in parent element."""
-    elem = parent.getElementsByTagName(tag)[0]
-    # Yes, the DOM standard is awful.
-    rc = []
-    for node in elem.childNodes:
-        if node.nodeType == node.TEXT_NODE:
-            rc.append(node.data)
-    return ''.join(rc)
-
-
 class UrlBase (object):
     """An URL with additional information like validity etc."""
 
@@ -103,8 +90,8 @@ class UrlBase (object):
         "text/vnd.wap.wml": "wml",
     }
 
-    # Set maximum file size for downloaded files in bytes.
-    MaxFilesizeBytes = 1024*1024*5
+    # Read in 16kb chunks
+    ReadChunkBytes = 1024*16
 
     def __init__ (self, base_url, recursion_level, aggregate,
                   parent_url=None, base_ref=None, line=-1, column=-1,
@@ -173,8 +160,6 @@ class UrlBase (object):
         self.urlparts = None
         # the scheme, host, port and anchor part of url
         self.scheme = self.host = self.port = self.anchor = None
-        # list of parsed anchors
-        self.anchors = []
         # the result message string and flag
         self.result = u""
         self.has_result = False
@@ -190,8 +175,6 @@ class UrlBase (object):
         self.modified = None
         # download time
         self.dltime = -1
-        # download size
-        self.dlsize = -1
         # check time
         self.checktime = 0
         # connection object
@@ -211,8 +194,6 @@ class UrlBase (object):
         self.do_check_content = True
         # MIME content type
         self.content_type = None
-        # number of URLs in page content
-        self.num_urls = 0
 
     def set_result (self, msg, valid=True, overwrite=False):
         """
@@ -229,6 +210,8 @@ class UrlBase (object):
             log.warn(LOG_CHECK, "Empty result for %s", self)
         self.result = msg
         self.valid = valid
+        # free content data
+        self.data = None
 
     def get_title (self):
         """Return title of page the URL refers to.
@@ -245,30 +228,6 @@ class UrlBase (object):
                 if title:
                     self.title = title
         return self.title
-
-    def set_title_from_content (self):
-        """Set title of page the URL refers to.from page content."""
-        if not self.valid:
-            return
-        try:
-            handler = linkparse.TitleFinder()
-        except tuple(ExcList):
-            return
-        parser = htmlsax.parser(handler)
-        handler.parser = parser
-        if self.charset:
-            parser.encoding = self.charset
-        # parse
-        try:
-            parser.feed(self.get_content())
-            parser.flush()
-        except linkparse.StopParse as msg:
-            log.debug(LOG_CHECK, "Stopped parsing: %s", msg)
-        # break cyclic dependencies
-        handler.parser = None
-        parser.handler = None
-        if handler.title:
-            self.title = handler.title
 
     def is_parseable (self):
         """
@@ -287,15 +246,15 @@ class UrlBase (object):
         return False
 
     def is_http (self):
-        """
-        Return True for http:// URLs.
-        """
+        """Return True for http:// URLs."""
         return False
 
     def is_file (self):
-        """
-        Return True for file:// URLs.
-        """
+        """Return True for file:// URLs."""
+        return False
+
+    def is_directory(self):
+        """Return True if current URL represents a directory."""
         return False
 
     def is_local(self):
@@ -318,45 +277,6 @@ class UrlBase (object):
         if s not in self.info:
             self.info.append(s)
 
-    def copy_from_cache (self, cache_data):
-        """
-        Fill attributes from cache data.
-        """
-        self.url = cache_data["url"]
-        self.result = cache_data["result"]
-        self.has_result = True
-        anchor_changed = (self.anchor != cache_data["anchor"])
-        for tag, msg in cache_data["warnings"]:
-            # do not copy anchor warnings, since the current anchor
-            # might have changed
-            if anchor_changed and tag == WARN_URL_ANCHOR_NOT_FOUND:
-                continue
-            self.add_warning(msg, tag=tag)
-        for info in cache_data["info"]:
-            self.add_info(info)
-        self.valid = cache_data["valid"]
-        self.dltime = cache_data["dltime"]
-        self.dlsize = cache_data["dlsize"]
-        self.anchors = cache_data["anchors"]
-        self.content_type = cache_data["content_type"]
-        if anchor_changed and self.valid:
-            # recheck anchor
-            self.check_anchor()
-
-    def get_cache_data (self):
-        """Return all data values that should be put in the cache."""
-        return {"url": self.url,
-                "result": self.result,
-                "warnings": self.warnings,
-                "info": self.info,
-                "valid": self.valid,
-                "dltime": self.dltime,
-                "dlsize": self.dlsize,
-                "anchors": self.anchors,
-                "anchor": self.anchor,
-                "content_type": self.get_content_type(),
-               }
-
     def set_cache_keys (self):
         """
         Set keys for URL checking and content recursion.
@@ -367,11 +287,7 @@ class UrlBase (object):
         assert isinstance(self.cache_content_key, unicode), self
         log.debug(LOG_CACHE, "Content cache key %r", self.cache_content_key)
         # construct cache key
-        if self.aggregate.config["anchors"]:
-            # add anchor to cache key
-            self.cache_url_key = urlutil.urlunsplit(self.urlparts[:4]+[self.anchor or u""])
-        else:
-            self.cache_url_key = self.cache_content_key
+        self.cache_url_key = self.cache_content_key
         assert isinstance(self.cache_url_key, unicode), self
         log.debug(LOG_CACHE, "URL cache key %r", self.cache_url_key)
 
@@ -442,9 +358,9 @@ class UrlBase (object):
         self.url = urlutil.urlunsplit(urlparts)
         # split into (modifiable) list
         self.urlparts = strformat.url_unicode_split(self.url)
+        self.build_url_parts()
         # and unsplit again
         self.url = urlutil.urlunsplit(self.urlparts)
-        self.build_url_parts()
 
     def build_url_parts (self):
         """Set userinfo, host, port and anchor from self.urlparts.
@@ -452,22 +368,28 @@ class UrlBase (object):
         """
         # check userinfo@host:port syntax
         self.userinfo, host = urllib.splituser(self.urlparts[1])
-        # set host lowercase
-        if self.userinfo:
-            self.urlparts[1] = "%s@%s" % (self.userinfo, host.lower())
-        else:
-            self.urlparts[1] = host.lower()
-        # safe anchor for later checking
-        self.anchor = self.urlparts[4]
         port = urlutil.default_ports.get(self.scheme, 0)
-        self.host, self.port = urlutil.splitport(host, port=port)
-        if self.port is None:
+        host, port = urlutil.splitport(host, port=port)
+        if port is None:
             raise LinkCheckerError(_("URL host %(host)r has invalid port") %
                     {"host": host})
+        self.port = port
+        # set host lowercase
+        self.host = host.lower()
         if self.scheme in scheme_requires_host:
             if not self.host:
                 raise LinkCheckerError(_("URL has empty hostname"))
             self.check_obfuscated_ip()
+        if not self.port or self.port == urlutil.default_ports.get(self.scheme):
+            host = self.host
+        else:
+            host = "%s:%d" % (self.host, self.port)
+        if self.userinfo:
+            self.urlparts[1] = "%s@%s" % (self.userinfo, host)
+        else:
+            self.urlparts[1] = host
+        # safe anchor for later checking
+        self.anchor = self.urlparts[4]
 
     def check_obfuscated_ip (self):
         """Warn if host of this URL is obfuscated IP address."""
@@ -476,9 +398,10 @@ class UrlBase (object):
         if iputil.is_obfuscated_ip(self.host):
             ips = iputil.resolve_host(self.host)
             if ips:
+                self.host = ips[0]
                 self.add_warning(
                    _("URL %(url)s has obfuscated IP address %(ip)s") % \
-                   {"url": self.base_url, "ip": ips.pop()},
+                   {"url": self.base_url, "ip": ips[0]},
                           tag=WARN_URL_OBFUSCATED_IP)
 
     def check (self):
@@ -499,19 +422,6 @@ class UrlBase (object):
             # close/release possible open connection
             self.close_connection()
 
-    def add_country_info (self):
-        """Try to ask GeoIP database for country info."""
-        if self.host:
-            country = geoip.get_country(self.host)
-            if country:
-                self.add_info(_("URL is located in %(country)s.") %
-                {"country": _(country)})
-
-    def add_size_info (self):
-        """Store size of URL content from meta info into self.size.
-        Must be implemented in subclasses."""
-        pass
-
     def local_check (self):
         """Local check function can be overridden in subclasses."""
         log.debug(LOG_CHECK, "Checking %s", self)
@@ -524,35 +434,28 @@ class UrlBase (object):
         try:
             self.check_connection()
             self.add_size_info()
-            self.add_country_info()
+            self.aggregate.plugin_manager.run_connection_plugins(self)
         except tuple(ExcList) as exc:
             value = self.handle_exception()
             # make nicer error msg for unknown hosts
             if isinstance(exc, socket.error) and exc.args[0] == -2:
                 value = _('Hostname not found')
-            # make nicer error msg for bad status line
-            elif isinstance(exc, httplib.BadStatusLine):
-                value = _('Bad HTTP response %(line)r') % {"line": str(value)}
             elif isinstance(exc, UnicodeError):
                 # idna.encode(host) failed
                 value = _('Bad hostname %(host)r: %(msg)s') % {'host': self.host, 'msg': str(value)}
             self.set_result(unicode_safe(value), valid=False)
-        self.checktime = time.time() - check_start
         if self.do_check_content:
             # check content and recursion
             try:
-                self.check_content()
+                if self.valid and self.can_get_content():
+                    self.aggregate.plugin_manager.run_content_plugins(self)
                 if self.allows_recursion():
-                    self.parse_url()
-                # check content size
-                self.check_size()
+                    parser.parse_url(self)
             except tuple(ExcList):
                 value = self.handle_exception()
-                # make nicer error msg for bad status line
-                if isinstance(value, httplib.BadStatusLine):
-                    value = _('Bad HTTP response %(line)r') % {"line": str(value)}
                 self.add_warning(_("could not get content: %(msg)s") %
                      {"msg": str(value)}, tag=WARN_URL_ERROR_GETTING_CONTENT)
+        self.checktime = time.time() - check_start
 
     def close_connection (self):
         """
@@ -595,6 +498,17 @@ class UrlBase (object):
         """
         self.url_connection = urllib2.urlopen(self.url)
 
+    def add_size_info (self):
+        """Set size of URL content (if any)..
+        Should be overridden in subclasses."""
+        maxbytes = self.aggregate.config["maxfilesizedownload"]
+        if self.size > maxbytes:
+            self.add_warning(
+              _("Content size %(size)s is larger than %(maxbytes)s.") %
+                  dict(size=strformat.strsize(self.size),
+                       maxbytes=strformat.strsize(maxbytes)),
+                tag=WARN_URL_CONTENT_SIZE_TOO_LARGE)
+
     def allows_recursion (self):
         """
         Return True iff we can recurse into the url's content.
@@ -617,6 +531,9 @@ class UrlBase (object):
         if self.extern[0]:
             log.debug(LOG_CHECK, "... no, extern.")
             return False
+        if self.size > self.aggregate.config["maxfilesizeparse"]:
+            log.debug(LOG_CHECK, "... no, maximum parse size.")
+            return False
         if not self.content_allows_robots():
             log.debug(LOG_CHECK, "... no, robots.")
             return False
@@ -628,6 +545,7 @@ class UrlBase (object):
         Return False if the content of this URL forbids robots to
         search for recursive links.
         """
+        # XXX cleanup
         if not self.is_html():
             return True
         if not (self.is_http() or self.is_file()):
@@ -644,62 +562,11 @@ class UrlBase (object):
             parser.flush()
         except linkparse.StopParse as msg:
             log.debug(LOG_CHECK, "Stopped parsing: %s", msg)
+            pass
         # break cyclic dependencies
         handler.parser = None
         parser.handler = None
         return handler.follow
-
-    def get_anchors (self):
-        """Store anchors for this URL. Precondition: this URL is
-        an HTML resource."""
-        log.debug(LOG_CHECK, "Getting HTML anchors %s", self)
-        self.find_links(self.add_anchor, tags=linkparse.AnchorTags)
-
-    def find_links (self, callback, tags=None):
-        """Parse into content and search for URLs to check.
-        Found URLs are added to the URL queue.
-        """
-        # construct parser object
-        handler = linkparse.LinkFinder(callback, tags=tags)
-        parser = htmlsax.parser(handler)
-        if self.charset:
-            parser.encoding = self.charset
-        handler.parser = parser
-        # parse
-        try:
-            parser.feed(self.get_content())
-            parser.flush()
-        except linkparse.StopParse as msg:
-            log.debug(LOG_CHECK, "Stopped parsing: %s", msg)
-        # break cyclic dependencies
-        handler.parser = None
-        parser.handler = None
-
-    def add_anchor (self, url, line, column, name, base):
-        """Add anchor URL."""
-        self.anchors.append((url, line, column, name, base))
-
-    def check_anchor (self):
-        """If URL is valid, parseable and has an anchor, check it.
-        A warning is logged and True is returned if the anchor is not found.
-        """
-        if not (self.anchor and self.aggregate.config["anchors"] and
-                self.valid and self.is_html()):
-            return
-        log.debug(LOG_CHECK, "checking anchor %r in %s", self.anchor, self.anchors)
-        enc = lambda anchor: urlutil.url_quote_part(anchor, encoding=self.encoding)
-        if any(x for x in self.anchors if enc(x[0]) == self.anchor):
-            return
-        if self.anchors:
-            anchornames = sorted(set(u"`%s'" % x[0] for x in self.anchors))
-            anchors = u", ".join(anchornames)
-        else:
-            anchors = u"-"
-        args = {"name": self.anchor, "anchors": anchors}
-        msg = u"%s %s" % (_("Anchor `%(name)s' not found.") % args,
-                          _("Available anchors: %(anchors)s.") % args)
-        self.add_warning(msg, tag=WARN_URL_ANCHOR_NOT_FOUND)
-        return True
 
     def set_extern (self, url):
         """
@@ -728,9 +595,15 @@ class UrlBase (object):
                 log.debug(LOG_CHECK, "Intern URL %r", url)
                 self.extern = (0, 0)
                 return
-        log.debug(LOG_CHECK, "Explicit extern URL %r", url)
-        self.extern = (1, 0)
-        return
+        if self.aggregate.config['checkextern']:
+            self.extern = (1, 0)
+        else:
+            self.extern = (1, 1)
+        if self.extern[0] and self.extern[1]:
+            self.add_info(_("The URL is outside of the domain "
+                          "filter, checked only syntax."))
+            if not self.has_result:
+                self.set_result(_("filtered"))
 
     def get_content_type (self):
         """Return content MIME type or empty string.
@@ -741,188 +614,35 @@ class UrlBase (object):
 
     def can_get_content (self):
         """Indicate wether url get_content() can be called."""
-        return True
+        return self.size <= self.aggregate.config["maxfilesizedownload"]
 
     def get_content (self):
         """Precondition: url_connection is an opened URL."""
         if self.data is None:
             log.debug(LOG_CHECK, "Get content of %r", self.url)
             t = time.time()
-            self.data, self.dlsize = self.read_content()
+            self.data = self.read_content()
+            self.size = len(self.data)
             self.dltime = time.time() - t
+            if self.size == 0:
+                self.add_warning(_("Content size is zero."),
+                             tag=WARN_URL_CONTENT_SIZE_ZERO)
         return self.data
 
-    def read_content (self):
-        """Return data and data size for this URL.
-        Can be overridden in subclasses."""
-        if self.size > self.MaxFilesizeBytes:
-            raise LinkCheckerError(_("File size too large"))
-        data = self.url_connection.read(self.MaxFilesizeBytes+1)
-        if len(data) > self.MaxFilesizeBytes:
-            raise LinkCheckerError(_("File size too large"))
-        if not self.is_local():
-            self.aggregate.add_download_data(self.cache_content_key, data)
-        return data, len(data)
+    def read_content(self):
+        """Return data for this URL. Can be overridden in subclasses."""
+        buf = StringIO()
+        data = self.read_content_chunk()
+        while data:
+            if buf.tell() + len(data) > self.aggregate.config["maxfilesizedownload"]:
+                raise LinkCheckerError(_("File size too large"))
+            buf.write(data)
+            data = self.read_content_chunk()
+        return buf.getvalue()
 
-    def check_content (self):
-        """Check content data for warnings, syntax errors, viruses etc."""
-        if not (self.valid and self.can_get_content()):
-            return
-        if self.is_html():
-            self.set_title_from_content()
-            if self.aggregate.config["anchors"]:
-                self.get_anchors()
-        self.check_anchor()
-        self.check_warningregex()
-        # is it an intern URL?
-        if not self.extern[0]:
-            # check HTML/CSS syntax
-            if self.aggregate.config["checkhtml"] and self.is_html():
-                self.check_html()
-            if self.aggregate.config["checkcss"] and self.is_css():
-                self.check_css()
-            # check with clamav
-            if self.aggregate.config["scanvirus"]:
-                self.scan_virus()
-
-    def check_warningregex (self):
-        """Check if content matches a given regular expression."""
-        config = self.aggregate.config
-        warningregex = config["warningregex"]
-        if not (warningregex and self.valid and self.is_parseable()):
-            return
-        log.debug(LOG_CHECK, "checking content for warning regex")
-        try:
-            content = self.get_content()
-            curpos = 0
-            curline = 1
-            # add warnings for found matches, up to the maximum allowed number
-            for num, match in enumerate(warningregex.finditer(content)):
-                # calculate line number for match
-                curline += content.count('\n', curpos, match.start())
-                curpos = match.start()
-                # add a warning message
-                msg = _("Found %(match)r at line %(line)d in link contents.")
-                self.add_warning(msg %
-                   {"match": match.group(), "line": curline},
-                   tag=WARN_URL_WARNREGEX_FOUND)
-                # check for maximum number of warnings
-                if num >= config["warningregex_max"]:
-                    break
-        except tuple(ExcList):
-            value = self.handle_exception()
-            self.set_result(unicode_safe(value), valid=False)
-
-    def check_size (self):
-        """Check content size if it is zero or larger than a given
-        maximum size.
-        """
-        if self.dlsize == 0:
-            self.add_warning(_("Content size is zero."),
-                             tag=WARN_URL_CONTENT_SIZE_ZERO)
-        else:
-            maxbytes = self.aggregate.config["warnsizebytes"]
-            if maxbytes is not None and self.dlsize >= maxbytes:
-                self.add_warning(
-                   _("Content size %(dlsize)s is larger than %(maxbytes)s.") %
-                        {"dlsize": strformat.strsize(self.dlsize),
-                         "maxbytes": strformat.strsize(maxbytes)},
-                          tag=WARN_URL_CONTENT_SIZE_TOO_LARGE)
-        if self.size != -1 and self.dlsize != -1 and self.dlsize != self.size:
-                self.add_warning(_("Download size (%(dlsize)d Byte) "
-                        "does not equal content size (%(size)d Byte).") %
-                        {"dlsize": self.dlsize,
-                         "size": self.size},
-                          tag=WARN_URL_CONTENT_SIZE_UNEQUAL)
-
-    def check_w3_errors (self, xml, w3type):
-        """Add warnings for W3C HTML or CSS errors in xml format.
-        w3type is either "W3C HTML" or "W3C CSS"."""
-        from xml.dom.minidom import parseString
-        dom = parseString(xml)
-        for error in dom.getElementsByTagName('m:error'):
-            warnmsg = _("%(w3type)s validation error at line %(line)s col %(column)s: %(msg)s")
-            attrs = {
-                "w3type": w3type,
-                "line": getXmlText(error, "m:line"),
-                "column": getXmlText(error, "m:col"),
-                "msg": getXmlText(error, "m:message"),
-            }
-            tag = WARN_SYNTAX_HTML if w3type == "W3C HTML" else WARN_SYNTAX_CSS
-            self.add_warning(warnmsg % attrs, tag=tag)
-
-    def check_html (self):
-        """Check HTML syntax of this page (which is supposed to be HTML)
-        with the online W3C HTML validator documented at
-        http://validator.w3.org/docs/api.html
-        """
-        self.aggregate.check_w3_time()
-        try:
-            body = {'fragment': self.get_content(), 'output': 'soap12'}
-            data = urllib.urlencode(body)
-            u = urllib2.urlopen('http://validator.w3.org/check', data)
-            if u.headers.get('x-w3c-validator-status', 'Invalid') == 'Valid':
-                self.add_info(u"W3C Validator: %s" % _("valid HTML syntax"))
-                return
-            self.check_w3_errors(u.read(), "W3C HTML")
-        except Exception:
-            # catch _all_ exceptions since we dont want third party module
-            # errors to propagate into this library
-            err = str(sys.exc_info()[1])
-            log.warn(LOG_CHECK,
-                _("HTML W3C validation caused error: %(msg)s ") %
-                {"msg": err})
-
-    def check_css (self):
-        """Check CSS syntax of this page (which is supposed to be CSS)
-        with the online W3C CSS validator documented at
-        http://jigsaw.w3.org/css-validator/manual.html#expert
-        """
-        self.aggregate.check_w3_time()
-        try:
-            host = 'jigsaw.w3.org'
-            path = '/css-validator/validator'
-            params = {
-                'text': "div {}",
-                'warning': '2',
-                'output': 'soap12',
-            }
-            fields = params.items()
-            content_type, body = httputil.encode_multipart_formdata(fields)
-            h = httplib.HTTPConnection(host)
-            h.putrequest('POST', path)
-            h.putheader('Content-Type', content_type)
-            h.putheader('Content-Length', str(len(body)))
-            h.endheaders()
-            h.send(body)
-            r = h.getresponse(True)
-            if r.getheader('X-W3C-Validator-Status', 'Invalid') == 'Valid':
-                self.add_info(u"W3C Validator: %s" % _("valid CSS syntax"))
-                return
-            self.check_w3_errors(r.read(), "W3C HTML")
-        except Exception:
-            # catch _all_ exceptions since we dont want third party module
-            # errors to propagate into this library
-            err = str(sys.exc_info()[1])
-            log.warn(LOG_CHECK,
-                _("CSS W3C validation caused error: %(msg)s ") %
-                {"msg": err})
-
-    def scan_virus (self):
-        """Scan content for viruses."""
-        infected, errors = clamav.scan(self.get_content())
-        for msg in infected:
-            self.add_warning(u"Virus scan infection: %s" % msg)
-        for msg in errors:
-            self.add_warning(u"Virus scan error: %s" % msg)
-
-    def parse_url (self):
-        """
-        Parse url content and search for recursive links.
-        Default parse type is html.
-        """
-        self.parse_html()
-        self.add_num_url_info()
+    def read_content_chunk(self):
+        """Read one chunk of content from this URL."""
+        return self.url_connection.read(self.ReadChunkBytes)
 
     def get_user_password (self):
         """Get tuple (user, password) from configured authentication.
@@ -933,16 +653,8 @@ class UrlBase (object):
             return urllib.splitpasswd(self.userinfo)
         return self.aggregate.config.get_user_password(self.url)
 
-    def parse_html (self):
-        """Parse into HTML content and search for URLs to check.
-        Found URLs are added to the URL queue.
-        """
-        log.debug(LOG_CHECK, "Parsing HTML %s", self)
-        self.find_links(self.add_url)
-
     def add_url (self, url, line=0, column=0, name=u"", base=None):
         """Queue URL data for checking."""
-        self.num_urls += 1
         if base:
             base_ref = urlutil.url_norm(base)[0]
         else:
@@ -953,108 +665,6 @@ class UrlBase (object):
         if url_data.has_result or not url_data.extern[1]:
             # Only queue URLs which have a result or are not strict extern.
             self.aggregate.urlqueue.put(url_data)
-
-    def add_num_url_info(self):
-        """Add number of URLs parsed to info."""
-        if self.num_urls > 0:
-            attrs = {"num": self.num_urls}
-            msg = _n("%(num)d URL parsed.", "%(num)d URLs parsed.", self.num_urls)
-            self.add_info(msg % attrs)
-
-    def parse_opera (self):
-        """Parse an opera bookmark file."""
-        log.debug(LOG_CHECK, "Parsing Opera bookmarks %s", self)
-        from ..bookmarks.opera import parse_bookmark_data
-        for url, name, lineno in parse_bookmark_data(self.get_content()):
-            self.add_url(url, line=lineno, name=name)
-
-    def parse_chromium (self):
-        """Parse a Chromium or Google Chrome bookmark file."""
-        log.debug(LOG_CHECK, "Parsing Chromium bookmarks %s", self)
-        from ..bookmarks.chromium import parse_bookmark_data
-        for url, name in parse_bookmark_data(self.get_content()):
-            self.add_url(url, name=name)
-
-    def parse_safari (self):
-        """Parse a Safari bookmark file."""
-        log.debug(LOG_CHECK, "Parsing Safari bookmarks %s", self)
-        from ..bookmarks.safari import parse_bookmark_data
-        for url, name in parse_bookmark_data(self.get_content()):
-            self.add_url(url, name=name)
-
-    def parse_text (self):
-        """Parse a text file with one url per line; comment and blank
-        lines are ignored."""
-        log.debug(LOG_CHECK, "Parsing text %s", self)
-        lineno = 0
-        for line in self.get_content().splitlines():
-            lineno += 1
-            line = line.strip()
-            if not line or line.startswith('#'):
-                continue
-            self.add_url(line, line=lineno)
-
-    def parse_css (self):
-        """
-        Parse a CSS file for url() patterns.
-        """
-        log.debug(LOG_CHECK, "Parsing CSS %s", self)
-        lineno = 0
-        linkfinder = linkparse.css_url_re.finditer
-        strip_comments = linkparse.strip_c_comments
-        for line in strip_comments(self.get_content()).splitlines():
-            lineno += 1
-            for mo in linkfinder(line):
-                column = mo.start("url")
-                url = strformat.unquote(mo.group("url").strip())
-                self.add_url(url, line=lineno, column=column)
-
-    def parse_swf (self):
-        """Parse a SWF file for URLs."""
-        linkfinder = linkparse.swf_url_re.finditer
-        for mo in linkfinder(self.get_content()):
-            url = mo.group()
-            self.add_url(url)
-
-    def parse_word (self):
-        """Parse a word file for hyperlinks."""
-        if not winutil.has_word():
-            return
-        filename = self.get_temp_filename()
-        # open word file and parse hyperlinks
-        try:
-            app = winutil.get_word_app()
-            try:
-                doc = winutil.open_wordfile(app, filename)
-                if doc is None:
-                    raise winutil.Error("could not open word file %r" % filename)
-                try:
-                    for link in doc.Hyperlinks:
-                        self.add_url(link.Address, name=link.TextToDisplay)
-                finally:
-                    winutil.close_wordfile(doc)
-            finally:
-                winutil.close_word_app(app)
-        except winutil.Error, msg:
-            log.warn(LOG_CHECK, "Error parsing word file: %s", msg)
-
-    def parse_wml (self):
-        """Parse into WML content and search for URLs to check.
-        Found URLs are added to the URL queue.
-        """
-        log.debug(LOG_CHECK, "Parsing WML %s", self)
-        self.find_links(self.add_url, tags=linkparse.WmlTags)
-
-    def get_temp_filename (self):
-        """Get temporary filename for content to parse."""
-        # store content in temporary file
-        fd, filename = fileutil.get_temp_file(mode='wb', suffix='.doc',
-            prefix='lc_')
-        try:
-            fd.write(self.get_content())
-        finally:
-            fd.close()
-        return filename
 
     def serialized (self, sep=os.linesep):
         """
@@ -1103,7 +713,7 @@ class UrlBase (object):
             if pat:
                 log.debug(LOG_CHECK, "Add intern pattern %r", pat)
                 self.aggregate.config['internlinks'].append(get_link_pat(pat))
-        except UnicodeError, msg:
+        except UnicodeError as msg:
             res = _("URL has unparsable domain name: %(domain)s") % \
                 {"domain": msg}
             self.set_result(res, valid=False)
@@ -1151,7 +761,7 @@ class UrlBase (object):
           Number of seconds needed to check this link, default: zero.
         - url_data.dltime: int
           Number of seconds needed to download URL content, default: -1
-        - url_data.dlsize: int
+        - url_data.size: int
           Size of downloaded URL content, default: -1
         - url_data.info: list of unicode
           Additional information about this URL.
@@ -1181,7 +791,7 @@ class UrlBase (object):
           domain=(self.urlparts[1] if self.urlparts else u""),
           checktime=self.checktime,
           dltime=self.dltime,
-          dlsize=self.dlsize,
+          size=self.size,
           info=self.info,
           line=self.line,
           column=self.column,
@@ -1211,7 +821,7 @@ urlDataAttr = [
     'domain',
     'checktime',
     'dltime',
-    'dlsize',
+    'size',
     'info',
     'modified',
     'line',

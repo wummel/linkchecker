@@ -2,7 +2,6 @@ url file://%(curdir)s/%(datadir)s/archive.html
 cache key file://%(curdir)s/%(datadir)s/archive.html
 real url file://%(curdir)s/%(datadir)s/archive.html
 name %(datadir)s/archive.html
-info 2 URLs parsed.
 valid
 
 url file.html

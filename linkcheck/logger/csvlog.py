@@ -26,7 +26,7 @@ from .. import strformat
 Columns = (
     u"urlname", u"parentname", u"baseref", u"result", u"warningstring",
     u"infostring", u"valid", u"url", u"line", u"column", u"name",
-    u"dltime", u"dlsize", u"checktime", u"cached", u"level", u"modified",
+    u"dltime", u"size", u"checktime", u"cached", u"level", u"modified",
 )
 
 
@@ -117,7 +117,7 @@ class CSVLogger (_Logger):
         if self.has_part("dltime"):
             row.append(url_data.dltime)
         if self.has_part("dlsize"):
-            row.append(url_data.dlsize)
+            row.append(url_data.size)
         if self.has_part("checktime"):
             row.append(url_data.checktime)
         if self.has_part("cached"):

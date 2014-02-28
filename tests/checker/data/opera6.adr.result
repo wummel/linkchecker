@@ -2,7 +2,6 @@ url file://%(curdir)s/%(datadir)s/opera6.adr
 cache key file://%(curdir)s/%(datadir)s/opera6.adr
 real url file://%(curdir)s/%(datadir)s/opera6.adr
 name %(datadir)s/opera6.adr
-info 1 URL parsed.
 valid
 
 url file.css

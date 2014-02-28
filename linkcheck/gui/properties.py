@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2010-2012 Bastian Kleineidam
+# Copyright (C) 2010-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -38,8 +38,8 @@ def set_properties (widget, data):
         widget.prop_dltime.setText(_("%.3f seconds") % data.dltime)
     else:
         widget.prop_dltime.setText(u"")
-    if data.dlsize >= 0:
-        widget.prop_size.setText(strformat.strsize(data.dlsize))
+    if data.size >= 0:
+        widget.prop_size.setText(strformat.strsize(data.size))
     else:
         widget.prop_size.setText(u"")
     if data.modified:

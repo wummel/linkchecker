@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2004-2012 Bastian Kleineidam
+# Copyright (C) 2004-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -48,14 +48,9 @@ class TestHttp (HttpServerTest):
         ]
         if status in (204,):
             resultlines.append(u"warning No Content")
-        elif status == 401:
-            resultlines.append(u"warning Unauthorized access without HTTP authentication.")
-        elif status in (301, 302):
-            resultlines.append(u"info Redirected to `%s'." % url)
-        if (status != 101 and status < 200) or status >= 400 or status in (301, 302, 305):
+        if (status != 101 and status < 200) or status >= 400:
             result = u"error"
         else:
             result = u"valid"
         resultlines.append(result)
         self.direct(url, resultlines, recursionlevel=0)
-

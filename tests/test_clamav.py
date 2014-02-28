@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2006-2012 Bastian Kleineidam
+# Copyright (C) 2006-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,15 +19,18 @@ Test virus filter.
 """
 import unittest
 from tests import need_clamav
-from linkcheck import clamav
+from linkcheck.plugins import viruscheck as clamav
 
 
 class TestClamav (unittest.TestCase):
 
+    def setUp(self):
+        self.clamav_conf = clamav.get_clamav_conf("/etc/clamav/clamd.conf")
+
     @need_clamav
     def testClean (self):
         data = ""
-        infected, errors = clamav.scan(data)
+        infected, errors = clamav.scan(data, self.clamav_conf)
         self.assertFalse(infected)
         self.assertFalse(errors)
 
@@ -47,7 +50,7 @@ class TestClamav (unittest.TestCase):
            'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' \
            'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAW0NMQU1BVl' \
            '0AEAAAABAAAAACAAABAAAAAAAAAAAAAAAAAAAAAAAAwA==">t</a>'
-        infected, errors = clamav.scan(data)
+        infected, errors = clamav.scan(data, self.clamav_conf)
         msg = 'stream: ClamAV-Test-File(2d1206194bd704385e37000be6113f73:781) FOUND\n'
         self.assertTrue(msg in infected)
         self.assertFalse(errors)

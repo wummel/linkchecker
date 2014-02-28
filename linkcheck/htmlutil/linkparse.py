@@ -201,9 +201,7 @@ class LinkFinder (TagFinder):
     def start_element (self, tag, attrs):
         """Search for links and store found URLs in a list."""
         log.debug(LOG_CHECK, "LinkFinder tag %s attrs %s", tag, attrs)
-        log.debug(LOG_CHECK, "line %d col %d old line %d old col %d",
-            self.parser.lineno(), self.parser.column(),
-            self.parser.last_lineno(), self.parser.last_column())
+        log.debug(LOG_CHECK, "line %d col %d old line %d old col %d", self.parser.lineno(), self.parser.column(), self.parser.last_lineno(), self.parser.last_column())
         if tag == "base" and not self.base_ref:
             self.base_ref = unquote(attrs.get_true("href", u''))
         tagattrs = self.tags.get(tag, [])
@@ -282,7 +280,6 @@ class LinkFinder (TagFinder):
             return
         for u in urls:
             assert isinstance(u, unicode) or u is None, repr(u)
-            log.debug(LOG_CHECK,
-              u"LinkParser found link %r %r %r %r %r", tag, attr, u, name, base)
+            log.debug(LOG_CHECK, u"LinkParser found link %r %r %r %r %r", tag, attr, u, name, base)
             self.callback(u, self.parser.last_lineno(),
                           self.parser.last_column(), name, base)

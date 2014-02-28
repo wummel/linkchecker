@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2011-2013 Bastian Kleineidam
+# Copyright (C) 2011-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -58,9 +58,9 @@ def get_online_version ():
     """Download update info and parse it."""
     # prevent getting a cached answer
     headers = {'Pragma': 'no-cache', 'Cache-Control': 'no-cache'}
-    info, content = get_content(UPDATE_URL, addheaders=headers)
-    if info is None:
-        return None, _('could not download update information')
+    content, info = get_content(UPDATE_URL, addheaders=headers)
+    if content is None:
+        return content, info
     version, url = None, None
     for line in content.splitlines():
         if line.startswith(VERSION_TAG):

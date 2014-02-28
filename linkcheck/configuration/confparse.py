@@ -17,9 +17,8 @@
 """Parse configuration files"""
 
 import ConfigParser
-import re
 import os
-from .. import LinkCheckerError, get_link_pat, LOG_CHECK, log, fileutil
+from .. import LinkCheckerError, get_link_pat, LOG_CHECK, log, fileutil, plugins
 
 
 def read_multiline (value):
@@ -53,16 +52,17 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                 failed_files = set(files) - set(self.read_ok)
                 log.warn(LOG_CHECK, "Could not read configuration files %s.", failed_files)
             # Read all the configuration parameters from the given files.
-            self.read_output_config()
             self.read_checking_config()
             self.read_authentication_config()
             self.read_filtering_config()
+            self.read_output_config()
+            self.read_plugin_config()
         except Exception as msg:
             raise LinkCheckerError(
               _("Error parsing configuration: %s") % unicode(msg))
 
     def read_string_option (self, section, option, allowempty=False):
-        """Read a sring option."""
+        """Read a string option."""
         if self.has_option(section, option):
             value = self.get(section, option)
             if not allowempty and not value:
@@ -106,11 +106,6 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             if self.getboolean(section, "verbose"):
                 self.config["verbose"] = True
                 self.config["warnings"] = True
-        if self.has_option(section, "complete"):
-            if self.getboolean(section, "complete"):
-                self.config["complete"] = True
-                self.config["verbose"] = True
-                self.config["warnings"] = True
         if self.has_option(section, "quiet"):
             if self.getboolean(section, "quiet"):
                 self.config['output'] = 'none'
@@ -141,37 +136,24 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         self.read_int_option(section, "threads", min=-1)
         self.config['threads'] = max(0, self.config['threads'])
         self.read_int_option(section, "timeout", min=1)
-        self.read_boolean_option(section, "anchors")
+        self.read_int_option(section, "aborttimeout", min=1)
         self.read_int_option(section, "recursionlevel", min=-1)
-        if self.has_option(section, "warningregex"):
-            val = self.get(section, "warningregex")
-            if val:
-                self.config["warningregex"] = re.compile(val)
-        self.read_int_option(section, "warnsizebytes", min=1)
         self.read_string_option(section, "nntpserver")
         self.read_string_option(section, "useragent")
-        self.read_int_option(section, "pause", key="wait", min=0)
-        for name in ("http", "https", "ftp"):
-            self.read_int_option(section, "maxconnections%s" % name, min=1)
-        self.read_check_options(section)
-
-    def read_check_options (self, section):
-        """Read check* options."""
-        self.read_boolean_option(section, "checkhtml")
-        self.read_boolean_option(section, "checkcss")
-        self.read_boolean_option(section, "scanvirus")
-        self.read_boolean_option(section, "clamavconf")
+        self.read_int_option(section, "maxrequestspersecond", min=1)
+        self.read_int_option(section, "maxnumurls", min=0)
+        self.read_int_option(section, "maxfilesizeparse", min=1)
+        self.read_int_option(section, "maxfilesizedownload", min=1)
+        if self.has_option(section, "allowedschemes"):
+            self.config['allowedschemes'] = [x.strip().lower() for x in \
+                 self.get(section, 'allowedschemes').split(',')]
         self.read_boolean_option(section, "debugmemory")
-        if self.has_option(section, "cookies"):
-            self.config["sendcookies"] = self.config["storecookies"] = \
-                self.getboolean(section, "cookies")
         self.read_string_option(section, "cookiefile")
         self.read_string_option(section, "localwebroot")
         try:
             self.read_boolean_option(section, "sslverify")
         except ValueError:
             self.read_string_option(section, "sslverify")
-        self.read_int_option(section, "warnsslcertdaysvalid", min=1)
         self.read_int_option(section, "maxrunseconds", min=0)
 
     def read_authentication_config (self):
@@ -198,7 +180,6 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                 raise LinkCheckerError(_("invalid login URL `%s'. Only " \
                   "HTTP and HTTPS URLs are supported.") % val)
             self.config["loginurl"] = val
-            self.config["storecookies"] = self.config["sendcookies"] = True
         self.read_string_option(section, "loginuserfield")
         self.read_string_option(section, "loginpasswordfield")
         # read login extra fields
@@ -231,7 +212,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         """
         section = "filtering"
         if self.has_option(section, "ignorewarnings"):
-            self.config['ignorewarnings'] = [f.strip() for f in \
+            self.config['ignorewarnings'] = [f.strip().lower() for f in \
                  self.get(section, 'ignorewarnings').split(',')]
         if self.has_option(section, "ignore"):
             for line in read_multiline(self.get(section, "ignore")):
@@ -244,3 +225,14 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         if self.has_option(section, "internlinks"):
             pat = get_link_pat(self.get(section, "internlinks"))
             self.config["internlinks"].append(pat)
+        self.read_boolean_option(section, "checkextern")
+
+    def read_plugin_config(self):
+        """Read plugin-specific configuration values."""
+        folders = self.config["pluginfolders"]
+        modules = plugins.get_plugin_modules(folders)
+        for pluginclass in plugins.get_plugin_classes(modules):
+            section = pluginclass.__name__
+            if self.has_section(section):
+                self.config["enabledplugins"].append(section)
+                self.config[section] = pluginclass.read_config(self)

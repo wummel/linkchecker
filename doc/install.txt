@@ -50,7 +50,9 @@ First, install the required software.
    On Debian or Ubuntu systems, install the package qt4-dev-tools.
    On Redhat systems, install the package qt-devel.
 
-4. *Optional, for bash-completion:*
+4. Python requests module from https://pypi.python.org/pypi/requests
+
+5. *Optional, for bash-completion:*
    argcomplete Python module from https://pypi.python.org/pypi/argcomplete
 
 6. *Optional, for displaying country codes:*

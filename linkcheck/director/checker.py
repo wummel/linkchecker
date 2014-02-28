@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2006-2011 Bastian Kleineidam
+# Copyright (C) 2006-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -36,14 +36,17 @@ def check_url (urlqueue, logger):
 class Checker (task.LoggedCheckedTask):
     """URL check thread."""
 
-    def __init__ (self, urlqueue, logger):
+    def __init__ (self, urlqueue, logger, add_request_session):
         """Store URL queue and logger."""
         super(Checker, self).__init__(logger)
         self.urlqueue = urlqueue
         self.origname = self.getName()
+        self.add_request_session = add_request_session
 
     def run_checked (self):
         """Check URLs in the queue."""
+        # construct per-thread HTTP/S requests session
+        self.add_request_session()
         while not self.stopped(0):
             self.check_url()
 

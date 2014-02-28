@@ -4,7 +4,7 @@
 Functions to load plugin modules.
 
 Example usage:
-    modules = loader.get_modules('plugins')
+    modules = loader.get_package_modules('plugins')
     plugins = loader.get_plugins(modules, PluginClass)
 """
 from __future__ import print_function
@@ -12,6 +12,8 @@ import os
 import sys
 import zipfile
 import importlib
+import imp
+from .fileutil import is_writable_by_others
 
 
 def is_frozen ():
@@ -20,10 +22,10 @@ def is_frozen ():
     return hasattr(sys, "frozen")
 
 
-def get_modules(folder):
-    """Find all valid modules in the given folder which must be in
-    in the same directory as this loader.py module. A valid module
-    has a .py extension, and is importable.
+def get_package_modules(packagename):
+    """Find all valid modules in the given package which must be a folder
+    in the same directory as this loader.py module. A valid module has
+    a .py extension, and is importable.
     @return: all loaded valid modules
     @rtype: iterator of module
     """
@@ -32,22 +34,36 @@ def get_modules(folder):
         zipname = os.path.dirname(os.path.dirname(__file__))
         parentmodule = os.path.basename(os.path.dirname(__file__))
         with zipfile.ZipFile(zipname, 'r') as f:
-            prefix = "%s/%s/" % (parentmodule, folder)
+            prefix = "%s/%s/" % (parentmodule, packagename)
             modnames = [os.path.splitext(n[len(prefix):])[0]
               for n in f.namelist()
               if n.startswith(prefix) and "__init__" not in n]
     else:
-        dirname = os.path.join(os.path.dirname(__file__), folder)
-        modnames = get_importable_modules(dirname)
+        dirname = os.path.join(os.path.dirname(__file__), packagename)
+        modnames = [x[:-3] for x in get_importable_files(dirname)]
     for modname in modnames:
         try:
-            name ="..%s.%s" % (folder, modname)
+            name ="..%s.%s" % (packagename, modname)
             yield importlib.import_module(name, __name__)
         except ImportError as msg:
-            print("ERROR: could not load module %s: %s" % (modname, msg))
+            print("WARN: could not load module %s: %s" % (modname, msg))
 
 
-def get_importable_modules(folder):
+def get_folder_modules(folder, parentpackage):
+    """."""
+    if is_writable_by_others(folder):
+        print("ERROR: refuse to load modules from world writable folder %r" % folder)
+        return
+    for filename in get_importable_files(folder):
+        fullname = os.path.join(folder, filename)
+        modname = parentpackage+"."+filename[:-3]
+        try:
+            yield imp.load_source(modname, fullname)
+        except ImportError as msg:
+            print("WARN: could not load file %s: %s" % (fullname, msg))
+
+
+def get_importable_files(folder):
     """Find all module files in the given folder that end with '.py' and
     don't start with an underscore.
     @return module names
@@ -55,22 +71,26 @@ def get_importable_modules(folder):
     """
     for fname in os.listdir(folder):
         if fname.endswith('.py') and not fname.startswith('_'):
-            yield fname[:-3]
+            fullname = os.path.join(folder, fname)
+            if is_writable_by_others(fullname):
+                print("ERROR: refuse to load module from world writable file %r" % fullname)
+            else:
+                yield fname
 
 
-def get_plugins(modules, classobj):
-    """Find all class objects in all modules.
+def get_plugins(modules, classes):
+    """Find all given (sub-)classes in all modules.
     @param modules: the modules to search
     @ptype modules: iterator of modules
     @return: found classes
     @rytpe: iterator of class objects
     """
     for module in modules:
-        for plugin in get_module_plugins(module, classobj):
+        for plugin in get_module_plugins(module, classes):
             yield plugin
 
 
-def get_module_plugins(module, classobj):
+def get_module_plugins(module, classes):
     """Return all subclasses of a class in the module.
     If the module defines __all__, only those entries will be searched,
     otherwise all objects not starting with '_' will be searched.
@@ -85,7 +105,8 @@ def get_module_plugins(module, classobj):
         except AttributeError:
             continue
         try:
-            if issubclass(obj, classobj):
-                yield obj
+            for classobj in classes:
+                if issubclass(obj, classobj):
+                    yield obj
         except TypeError:
             continue

@@ -55,7 +55,7 @@ class _GraphLogger (_Logger):
             "label": quote(url_data.title if url_data.title else url_data.name),
             "extern": 1 if url_data.extern else 0,
             "checktime": url_data.checktime,
-            "dlsize": url_data.dlsize,
+            "size": url_data.size,
             "dltime": url_data.dltime,
             "edge": quote(url_data.name),
             "valid": 1 if url_data.valid else 0,

@@ -14,51 +14,13 @@ in einem INI\-Format geschrieben.
 Die Standarddatei ist \fB~/.linkchecker/linkcheckerrc\fP unter Unix\-,
 \fB%HOMEPATH%\e.linkchecker\elinkcheckerrc\fP unter Windows\-Systemen.
 .SH EIGENSCHAFTEN
-
 .SS [checking]
-.TP 
-\fBanchors=\fP[\fB0\fP|\fB1\fP]
-Prüfe HTTP Ankerverweise. Standard ist, Ankerverweise nicht zu prüfen. Diese
-Option aktiviert die Ausgabe der Warnung \fBurl\-anchor\-not\-found\fP.
-.br
-Kommandozeilenoption: \fB\-\-anchors\fP
-.TP 
-\fBcheckcss=\fP[\fB0\fP|\fB1\fP]
-Prüfe Syntax von CSS URLs mit dem W3C Online Validator.
-.br
-Kommandozeilenoption: \fB\-\-check\-css\fP
-.TP 
-\fBcheckhtml=\fP[\fB0\fP|\fB1\fP]
-Prüfe Syntax von HTML URLs mit dem W3C Online Validator.
-.br
-Kommandozeilenoption: \fB\-\-check\-html\fP
-.TP 
-\fBclamavconf=\fP\fIDateiname\fP
-Dateiname von \fBclamd.conf\fP Konfigurationsdatei.
-.br
-Kommandozeilenoption: keine
 .TP 
 \fBcookiefile=\fP\fIDateiname\fP
 Lese eine Datei mit Cookie\-Daten. Das Cookie Datenformat wird in
 linkchecker(1) erklärt.
 .br
 Kommandozeilenoption: \fB\-\-cookiefile\fP
-.TP 
-\fBcookies=\fP[\fB0\fP|\fB1\fP]
-Akzeptiere und sende HTTP cookies.
-.br
-Kommandozeilenoption: \fB\-\-cookies\fP
-.TP 
-\fBdebugmemory=\fP[\fB0\fP|\fB1\fP]
-Schreibe einen Speicherabzug in eine temporäre Datei wenn die Prüfung
-endet. Der Speicherabzug wird sowohl beim normalen Beenden der Prüfung als
-auch wenn die Prüfung abgebrochen wird geschrieben.
-.br
-Der Speicherabzug funktioniert nur falls das Paket python\-meliae installiert
-ist. Andernfalls wird eine Warnung angezeigt mit dem Hinweis dieses Paket zu
-installieren.
-.br
-Kommandozeilenoption: keine
 .TP 
 \fBlocalwebroot=\fP\fISTRING\fP
 Beim Prüfen von absoluten URLs in lokalen Dateien wird das angegebene
@@ -78,22 +40,11 @@ korrekte Syntax des Links geprüft.
 .br
 Kommandozeilenoption: \fB\-\-nntp\-server\fP
 .TP 
-\fBpause=\fP\fINUMBER\fP
-Pausiere die angegebene Anzahl von Sekunden zwischen zwei aufeinander
-folgenden Verbindungen zum demselben Rechner.
-.br
-Kommandozeilenoption: \fB\-\-pause\fP
-.TP 
 \fBrecursionlevel=\fP\fINUMBER\fP
 Prüfe rekursiv alle URLs bis zu der angegebenen Tiefe. Eine negative Tiefe
 bewirkt unendliche Rekursion. Standard Tiefe ist unendlich.
 .br
 Kommandozeilenoption: \fB\-\-recursion\-level\fP
-.TP 
-\fBscanvirus=\fP[\fB0\fP|\fB1\fP]
-Prüfe Inhalt von URLs auf Viren mit ClamAV.
-.br
-Kommandozeilenoption: \fB\-\-scan\-virus\fP
 .TP 
 \fBthreads=\fP\fINUMBER\fP
 Generiere nicht mehr als die angegebene Anzahl von Threads. Standard Anzahl
@@ -108,6 +59,12 @@ Setze den Timeout für TCP\-Verbindungen in Sekunden. Der Standard Timeout ist
 .br
 Kommandozeilenoption: \fB\-\-timeout\fP
 .TP 
+\fBaborttimeout=\fP\fINUMBER\fP
+Time to wait for checks to finish after the user aborts the first time (with
+Ctrl\-C or the abort button).  The default abort timeout is 300 seconds.
+.br
+Kommandozeilenoption: \fB\-\-timeout\fP
+.TP 
 \fBuseragent=\fP\fISTRING\fP
 Gibt den User\-Agent an, der zu HTTP\-Servern geschickt wird,
 z.B. "Mozilla/4.0". Der Standard ist "LinkChecker/X.Y", wobei X.Y die
@@ -115,37 +72,11 @@ aktuelle Version von LinkChecker ist.
 .br
 Kommandozeilenoption: \fB\-\-user\-agent\fP
 .TP 
-\fBwarningregex=\fP=\fIREGEX\fP
-Definieren Sie einen regulären Ausdruck der eine Warnung ausgibt falls er
-auf den Inhalt einer geprüften URL zutrifft. Dies gilt nur für gültige
-Seiten deren Inhalt wir bekommen können.
-.br
-Benutzen Sie dies, um nach Seiten zu suchen, welche bestimmte Fehler
-enthalten, zum Beispiel "Diese Seite wurde entfernt" oder "Oracle
-Applikationsfehler".
-.br
-Kommandozeilenoption: \fB\-\-warning\-regex\fP
-.TP 
-\fBwarnsizebytes=\fP\fINUMBER\fP
-Gebe eine Warnung aus, wenn die Inhaltsgröße bekannt ist und die angegebene
-Anzahl von Bytes übersteigt.
-.br
-Kommandozeilenoption: \fB\-\-warning\-size\-bytes\fP
-.TP 
 \fBsslverify=\fP[\fB0\fP|\fB1\fP|\fIdateiname\fP]
 Falls der Wert Null ist werden SSL Zertifikate nicht überprüft. Falls er auf
 Eins gesetzt wird (der Standard) werden SSL Zertifikate mit der gelieferten
 CA Zertifikatsdatei geprüft. Falls ein Dateiname angegeben ist wird dieser
 zur Prüfung verwendet.
-.br
-Kommandozeilenoption: keine
-.TP 
-\fBwarnsslcertdaysvalid=\fP\fINUMBER\fP
-Prüfe ob SSL\-Zertifikate mindestens die angegebene Anzahl an Tagen gültig
-sind. Die Anzahl darf nicht negativ sein. Falls die Anzahl Null ist wird
-eine Warnung nur für Zertifikate ausgegeben, die schon abgelaufen sind.
-.br
-The Standardanzahl an Tagen ist 14.
 .br
 Kommandozeilenoption: keine
 .TP 
@@ -167,26 +98,11 @@ Standard ist alle URLs anzunehmen und zu prüfen.
 .br
 Kommandozeilenoption: keine
 .TP 
-\fBmaxconnectionshttp=\fP\fINUMBER\fP
-Maximale Anzahl an HTTP\-Verbindungen.
-.br
-Der Standard ist 10.
-.br
-Kommandozeilenoption: keine
+\fBmaxrequestspersecond=\fP\fINUMBER\fP
+Limit the maximum number of requests per second to one host.
 .TP 
-\fBmaxconnectionshttps=\fP\fINUMBER\fP
-Maximale Anzahl an HTTPS\-Verbindungen.
-.br
-Der Standard ist 10.
-.br
-Kommandozeilenoption: keine
-.TP 
-\fBmaxconnectionsftp=\fP\fINUMBER\fP
-Maximale Anzahl an FTP\-Verbindungen.
-.br
-Der Standard ist 2.
-.br
-Kommandozeilenoption: keine
+\fBallowedschemes=\fP\fINAME\fP[\fB,\fP\fINAME\fP...]
+Allowed URL schemes as comma\-separated list.
 .SS [filtering]
 .TP 
 \fBignore=\fP\fIREGEX\fP (MULTILINE)
@@ -212,6 +128,11 @@ Prüfe URLs die auf den regulären Ausdruck zutreffen, aber führe keine
 Rekursion durch.
 .br
 Kommandozeilenoption: \fB\-\-no\-follow\-url\fP
+.TP 
+\fBcheckextern=\fP[\fB0\fP|\fB1\fP]
+Check external links. Default is to check internal links only.
+.br
+Command line option: \fB\-\-checkextern\fP
 .SS [authentication]
 .TP 
 \fBentry=\fP\fIREGEX\fP \fIBENUTZER\fP [\fIPASSWORT\fP] (MULTILINE)
@@ -232,9 +153,8 @@ wird Authentifizierung für http[s] und ftp Verknüpfungen benutzt.
 Kommandozeilenoption: \fB\-u\fP, \fB\-p\fP
 .TP 
 \fBloginurl=\fP\fIURL\fP
-Eine Anmelde\-URL, die vor der Prüfung besucht wird. Benötigt einen Eintrag
-zur Authentifizierung und impliziert die Benutzung von Cookies, weil die
-meisten Anmeldungen heutzutage Cookies benutzen.
+A login URL to be visited before checking. Also needs authentication data
+set for it.
 .TP 
 \fBloginuserfield=\fP\fINAME\fP
 Der Name für das Benutzer CGI\-Feld. Der Standardname ist \fBlogin\fP.
@@ -246,12 +166,6 @@ Der Name für das Passwort CGI\-Feld. Der Standardname ist \fBpassword\fP.
 Optional zusätzliche CGI Namen/Werte\-Paare. Die Default\-Werte werden
 automatisch übermittelt.
 .SS [output]
-.TP 
-\fBcomplete=\fP[\fB0\fP|\fB1\fP]
-Falls gesetzt, gebe alle geprüften URLs aus, sogar Duplikate. Standard ist
-es, URLs nur einmal auszugeben.
-.br
-Kommandozeilenoption: \fB\-\-complete\fP
 .TP 
 \fBdebug=\fP\fISTRING\fP[\fB,\fP\fISTRING\fP...]
 Gebe Testmeldungen aus für den angegebenen Logger. Verfügbare Logger sind
@@ -528,6 +442,52 @@ ignoriert, müssen aber eingerückt sein.
 
  [filtering]
  ignorewarnings=http\-moved\-permanent
+
+.SH PLUGINS
+All plugins have a separate section. If the section appears in the
+configuration file the plugin is enabled.  Some plugins read extra options
+in their section.
+
+.SS [AnchorCheck]
+Checks validity of HTML anchors.
+
+.SS [LocationInfo]
+Adds the country and if possible city name of the URL host as info.  Needs
+GeoIP or pygeoip and a local country or city lookup DB installed.
+
+.SS [RegexCheck]
+Define a regular expression which prints a warning if it matches any content
+of the checked link. This applies only to valid pages, so we can get their
+content.
+
+Use this to check for pages that contain some form of error message, for
+example 'This page has moved' or 'Oracle Application error'.
+
+Man beachte, dass mehrere Werte in dem regulären Ausdruck kombiniert
+werden können, zum Beispiel "(Diese Seite ist umgezogen|Oracle
+Applikationsfehler)".
+
+.SS [SslCertificateCheck]
+Check SSL certificate expiration date. Only internal https: links will be
+checked. A domain will only be checked once to avoid duplicate warnings.
+.TP 
+\fBsslcertwarndays=\fP\fINUMBER\fP
+Configures the expiration warning time in days.
+
+.SS [HtmlSyntaxCheck]
+Check the syntax of HTML pages with the online W3C HTML validator.  See
+http://validator.w3.org/docs/api.html.
+
+.SS [CssSyntaxCheck]
+Check the syntax of HTML pages with the online W3C CSS validator.  See
+http://jigsaw.w3.org/css\-validator/manual.html#expert.
+
+.SS [VirusCheck]
+Checks the page content for virus infections with clamav.  A local clamav
+daemon must be installed.
+.TP 
+\fBclamavconf=\fP\fIDateiname\fP
+Dateiname von \fBclamd.conf\fP Konfigurationsdatei.
 .
 .SH WARNUNGEN
 Die folgenden Warnungen werden vom Konfigurationseintrag 'ignorewarnings'
@@ -543,56 +503,20 @@ Der file: Pfad ist nicht derselbe wie der Systempfad.
 \fBftp\-missing\-slash\fP
 Der ftp: URL fehlt ein abschließender Schrägstrich.
 .TP 
-\fBhttp\-auth\-unknonwn\fP
-Nicht unterstützte HTTP Authentifizierungsmethode.
-.TP 
 \fBhttp\-cookie\-store\-error\fP
 Ein Fehler trat auf während des Speicherns eines Cookies.
-.TP 
-\fBhttp\-decompress\-error\fP
-Ein Fehler trat beim Dekomprimieren des URL Inhalts auf.
 .TP 
 \fBhttp\-empty\-content\fP
 Die URL besitzt keinen Inhalt.
 .TP 
-\fBhttp\-moved\-permanent\fP
-Die URL wurde dauerhaft verschoben.
-.TP 
-\fBhttp\-robots\-denied\fP
-Die http: URL\-Überprüfung wurde verweigert.
-.TP 
-\fBhttp\-unsupported\-encoding\fP
-Der URL\-Inhalt ist in einer unbekannten Kodierung verfasst.
-.TP 
-\fBhttp\-wrong\-redirect\fP
-Die URL wurde zu einem anderen URL\-Typ umgeleitet.
-.TP 
-\fBhttps\-certificate\-error\fP
-Das SSL\-Zertifikat ist ungültig oder abgelaufen.
-.TP 
-\fBignore\-url\fP
-Die URL wurde ignoriert.
-.TP 
-\fBmail\-no\-connection\fP
-Es konnte keine Verbindung zu einem MX\-Rechner hergestellt werden.
-.TP 
 \fBmail\-no\-mx\-host\fP
 Der MX Mail\-Rechner konnte nicht gefunden werden.
-.TP 
-\fBmail\-unverified\-address\fP
-Die mailto: Addresse konnte nicht überprüft werden.
 .TP 
 \fBnntp\-no\-newsgroup\fP
 Die NNTP Nachrichtengruppe konnte nicht gefunden werden.
 .TP 
 \fBnntp\-no\-server\fP
 Es wurde kein NNTP Server gefunden.
-.TP 
-\fBurl\-anchor\-not\-found\fP
-URL Anker wurde nicht gefunden.
-.TP 
-\fBurl\-content\-size\-unequal\fP
-Der URL Inhaltsgrößenangabe und die Download\-Größe sind unterschiedlich.
 .TP 
 \fBurl\-content\-size\-zero\fP
 Der URL Inhaltsgrößenangabe ist Null.
@@ -608,9 +532,6 @@ Konnte den Inhalt der URL nicht bekommen.
 .TP 
 \fBurl\-obfuscated\-ip\fP
 Die IP\-Adresse ist verschleiert.
-.TP 
-\fBurl\-warnregex\-found\fP
-Der reguläre Ausdruck für Warnungen wurde in den URL Inhalten gefunden.
 .TP 
 \fBurl\-whitespace\fP
 Die URL %(url)s enthält Leerzeichen am Anfang oder Ende.

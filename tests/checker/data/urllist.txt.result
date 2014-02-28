@@ -2,7 +2,6 @@ url file://%(curdir)s/%(datadir)s/urllist.txt
 cache key file://%(curdir)s/%(datadir)s/urllist.txt
 real url file://%(curdir)s/%(datadir)s/urllist.txt
 name %(datadir)s/urllist.txt
-info 4 URLs parsed.
 valid
 
 url file.html
@@ -10,19 +9,8 @@ cache key file://%(curdir)s/%(datadir)s/file.html
 real url file://%(curdir)s/%(datadir)s/file.html
 valid
 
-url file.html#isnix
-cache key file://%(curdir)s/%(datadir)s/file.html#isnix
-real url file://%(curdir)s/%(datadir)s/file.html
-warning Anchor `isnix' not found. Available anchors: `iswas'.
-valid
-
-url file.html#iswas
-cache key file://%(curdir)s/%(datadir)s/file.html#iswas
-real url file://%(curdir)s/%(datadir)s/file.html
-valid
-
 url javascript:loadthis()
 cache key javascript:loadthis()
 real url javascript:loadthis()
-warning Javascript URL ignored.
+info Javascript URL ignored.
 valid

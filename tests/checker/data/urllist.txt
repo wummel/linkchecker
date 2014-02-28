@@ -3,7 +3,5 @@
  # comments are ignored
 
 file.html
-file.html#isnix
-file.html#iswas
 
 javascript:loadthis()

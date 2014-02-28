@@ -9,50 +9,13 @@ The file is written in an INI-style format.
 The default file location is \fB~/.linkchecker/linkcheckerrc\fP on Unix,
 \fB%HOMEPATH%\\.linkchecker\\linkcheckerrc\fP on Windows systems.
 .SH SETTINGS
-
 .SS \fB[checking]\fP
-.TP
-\fBanchors=\fP[\fB0\fP|\fB1\fP]
-Check HTTP anchor references. Default is not to check anchors.
-This option enables logging of the warning \fBurl\-anchor\-not\-found\fP.
-.br
-Command line option: \fB\-\-anchors\fP
-.TP
-\fBcheckcss=\fP[\fB0\fP|\fB1\fP]
-Check syntax of CSS URLs with the W3C online validator.
-.br
-Command line option: \fB\-\-check\-css\fP
-.TP
-\fBcheckhtml=\fP[\fB0\fP|\fB1\fP]
-Check syntax of HTML URLs with the W3C online validator.
-.br
-Command line option: \fB\-\-check\-html\fP
-.TP
-\fBclamavconf=\fP\fIfilename\fP
-Filename of \fBclamd.conf\fP config file.
-.br
-Command line option: none
 .TP
 \fBcookiefile=\fP\fIfilename\fP
 Read a file with initial cookie data. The cookie data
 format is explained in linkchecker(1).
 .br
 Command line option: \fB\-\-cookiefile\fP
-.TP
-\fBcookies=\fP[\fB0\fP|\fB1\fP]
-Accept and send HTTP cookies.
-.br
-Command line option: \fB\-\-cookies\fP
-.TP
-\fBdebugmemory=\fP[\fB0\fP|\fB1\fP]
-When checking finishes, write a memory dump to a temporary file.
-The memory dump is written both when checking finishes normally
-and when checking gets canceled.
-.br
-The memory dump only works if the python-meliae package is installed.
-Otherwise a warning is printed to install it.
-.br
-Command line option: none
 .TP
 \fBlocalwebroot=\fP\fISTRING\fP
 When checking absolute URLs inside local files, the given root directory
@@ -71,23 +34,12 @@ only the syntax of the link is checked.
 .br
 Command line option: \fB\-\-nntp\-server\fP
 .TP
-\fBpause=\fP\fINUMBER\fP
-Pause the given number of seconds between two subsequent connection
-requests to the same host.
-.br
-Command line option: \fB\-\-pause\fP
-.TP
 \fBrecursionlevel=\fP\fINUMBER\fP
 Check recursively all links up to given depth.
 A negative depth will enable infinite recursion.
 Default depth is infinite.
 .br
 Command line option: \fB\-\-recursion\-level\fP
-.TP
-\fBscanvirus=\fP[\fB0\fP|\fB1\fP]
-Scan content of URLs for viruses with ClamAV.
-.br
-Command line option: \fB\-\-scan\-virus\fP
 .TP
 \fBthreads=\fP\fINUMBER\fP
 Generate no more than the given number of threads. Default number
@@ -101,6 +53,13 @@ is 60 seconds.
 .br
 Command line option: \fB\-\-timeout\fP
 .TP
+\fBaborttimeout=\fP\fINUMBER\fP
+Time to wait for checks to finish after the user aborts the first time
+(with Ctrl-C or the abort button).
+The default abort timeout is 300 seconds.
+.br
+Command line option: \fB\-\-timeout\fP
+.TP
 \fBuseragent=\fP\fISTRING\fP
 Specify the User-Agent string to send to the HTTP server, for example
 "Mozilla/4.0". The default is "LinkChecker/X.Y" where X.Y is the current
@@ -108,37 +67,11 @@ version of LinkChecker.
 .br
 Command line option: \fB\-\-user\-agent\fP
 .TP
-\fBwarningregex=\fP=\fIREGEX\fP
-Define a regular expression which prints a warning if it matches any
-content of the checked link.
-This applies only to valid pages, so we can get their content.
-.br
-Use this to check for pages that contain some form of error, for example
-"This page has moved" or "Oracle Application Server error".
-.br
-Command line option: \fB\-\-warning\-regex\fP
-.TP
-\fBwarnsizebytes=\fP\fINUMBER\fP
-Print a warning if content size info is available and exceeds the given
-number of \fIbytes\fP.
-.br
-Command line option: \fB\-\-warning\-size\-bytes\fP
-.TP
 \fBsslverify=\fP[\fB0\fP|\fB1\fP|\fIfilename\fP]
 If set to zero disables SSL certificate checking.
 If set to one (the default) enables SSL certificate checking with
 the provided CA certificate file. If a filename is specified, it
 will be used as the certificate file.
-.br
-Command line option: none
-.TP
-\fBwarnsslcertdaysvalid=\fP\fINUMBER\fP
-Check that SSL certificates are at least the given number of days valid.
-The number must not be negative.
-If the number of days is zero a warning is printed only for certificates
-that are already expired.
-.br
-The default number of days is 14.
 .br
 Command line option: none
 .TP
@@ -159,26 +92,11 @@ The default is to queue and check all URLs.
 .br
 Command line option: none
 .TP
-\fBmaxconnectionshttp=\fP\fINUMBER\fP
-Maximum number of connections to HTTP servers.
-.br
-The default is 10.
-.br
-Command line option: none
+\fBmaxrequestspersecond=\fP\fINUMBER\fP
+Limit the maximum number of requests per second to one host.
 .TP
-\fBmaxconnectionshttps=\fP\fINUMBER\fP
-Maximum number of connections to HTTPS servers.
-.br
-The default is 10.
-.br
-Command line option: none
-.TP
-\fBmaxconnectionsftp=\fP\fINUMBER\fP
-Maximum number of connections to FTP servers.
-.br
-The default is 2.
-.br
-Command line option: none
+\fBallowedschemes=\fP\fINAME\fP[\fB,\fP\fINAME\fP...]
+Allowed URL schemes as comma-separated list.
 .SS \fB[filtering]\fP
 .TP
 \fBignore=\fP\fIREGEX\fP (MULTILINE)
@@ -203,6 +121,11 @@ Check but do not recurse into URLs matching the given regular
 expressions.
 .br
 Command line option: \fB\-\-no\-follow\-url\fP
+.TP
+\fBcheckextern=\fP[\fB0\fP|\fB1\fP]
+Check external links. Default is to check internal links only.
+.br
+Command line option: \fB\-\-checkextern\fP
 .SS \fB[authentication]\fP
 .TP
 \fBentry=\fP\fIREGEX\fP \fIUSER\fP [\fIPASS\fP] (MULTILINE)
@@ -224,8 +147,7 @@ Command line option: \fB\-u\fP, \fB\-p\fP
 .TP
 \fBloginurl=\fP\fIURL\fP
 A login URL to be visited before checking. Also needs authentication
-data set for it, and implies using cookies because most logins use
-cookies nowadays.
+data set for it.
 .TP
 \fBloginuserfield=\fP\fISTRING\fP
 The name of the user CGI field. Default name is \fBlogin\fP.
@@ -237,12 +159,6 @@ The name of the password CGI field. Default name is \fBpassword\fP.
 Optionally any additional CGI name/value pairs. Note that the default
 values are submitted automatically.
 .SS \fB[output]\fP
-.TP
-\fBcomplete=\fP[\fB0\fP|\fB1\fP]
-If set log all checked URLs, even duplicates. Default is to log
-duplicate URLs only once.
-.br
-Command line option: \fB\-\-complete\fP
 .TP
 \fBdebug=\fP\fISTRING\fP[\fB,\fP\fISTRING\fP...]
 Print debugging output for the given loggers.
@@ -524,6 +440,53 @@ though they must still be indented.
 
  [filtering]
  ignorewarnings=http-moved-permanent
+
+.SH PLUGINS
+All plugins have a separate section. If the section
+appears in the configuration file the plugin is enabled.
+Some plugins read extra options in their section.
+
+.SS \fB[AnchorCheck]\fP
+Checks validity of HTML anchors.
+
+.SS \fB[LocationInfo]\fP
+Adds the country and if possible city name of the URL host as info.
+Needs GeoIP or pygeoip and a local country or city lookup DB installed.
+
+.SS \fB[RegexCheck]\fP
+Define a regular expression which prints a warning if it matches
+any content of the checked link. This applies only to valid pages,
+so we can get their content.
+
+Use this to check for pages that contain some form of error
+message, for example 'This page has moved' or 'Oracle
+Application error'.
+
+Note that multiple values can be combined in the regular expression,
+for example "(This page has moved|Oracle Application error)".
+
+.SS \fB[SslCertificateCheck]\fP
+Check SSL certificate expiration date. Only internal https: links
+will be checked. A domain will only be checked once to avoid duplicate
+warnings.
+.TP
+\fBsslcertwarndays=\fP\fINUMBER\fP
+Configures the expiration warning time in days.
+
+.SS \fB[HtmlSyntaxCheck]\fP
+Check the syntax of HTML pages with the online W3C HTML validator.
+See http://validator.w3.org/docs/api.html.
+
+.SS \fB[CssSyntaxCheck]\fP
+Check the syntax of HTML pages with the online W3C CSS validator.
+See http://jigsaw.w3.org/css-validator/manual.html#expert.
+
+.SS \fB[VirusCheck]\fP
+Checks the page content for virus infections with clamav.
+A local clamav daemon must be installed.
+.TP
+\fBclamavconf=\fP\fIfilename\fP
+Filename of \fBclamd.conf\fP config file.
 .
 .SH WARNINGS
 The following warnings are recognized in the 'ignorewarnings' config
@@ -539,56 +502,20 @@ The file: path is not the same as the system specific path.
 \fBftp-missing-slash\fP
 The ftp: URL is missing a trailing slash.
 .TP
-\fBhttp-auth-unknonwn\fP
-Unsupported HTTP authentication method.
-.TP
 \fBhttp-cookie-store-error\fP
 An error occurred while storing a cookie.
-.TP
-\fBhttp-decompress-error\fP
-An error occurred while decompressing the URL content.
 .TP
 \fBhttp-empty-content\fP
 The URL had no content.
 .TP
-\fBhttp-moved-permanent\fP
-The URL has moved permanently.
-.TP
-\fBhttp-robots-denied\fP
-The http: URL checking has been denied.
-.TP
-\fBhttp-unsupported-encoding\fP
-The URL content is encoded with an unknown encoding.
-.TP
-\fBhttp-wrong-redirect\fP
-The URL has been redirected to an URL of a different type.
-.TP
-\fBhttps-certificate-error\fP
-The SSL certificate is invalid or expired.
-.TP
-\fBignore-url\fP
-The URL has been ignored.
-.TP
-\fBmail-no-connection\fP
-No connection to a MX host could be established.
-.TP
 \fBmail-no-mx-host\fP
 The mail MX host could not be found.
-.TP
-\fBmail-unverified-address\fP
-The mailto: address could not be verified.
 .TP
 \fBnntp-no-newsgroup\fP
 The NNTP newsgroup could not be found.
 .TP
 \fBnntp-no-server\fP
 No NNTP server was found.
-.TP
-\fBurl-anchor-not-found\fP
-URL anchor was not found.
-.TP
-\fBurl-content-size-unequal\fP
-The URL content size and download size are unequal.
 .TP
 \fBurl-content-size-zero\fP
 The URL content size is zero.
@@ -604,9 +531,6 @@ Could not get the content of the URL.
 .TP
 \fBurl-obfuscated-ip\fP
 The IP is obfuscated.
-.TP
-\fBurl-warnregex-found\fP
-The warning regular expression was found in the URL contents.
 .TP
 \fBurl-whitespace\fP
 The URL contains leading or trailing whitespace.

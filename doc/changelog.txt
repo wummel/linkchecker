@@ -1,3 +1,34 @@
+8.7 "" (released xx.xx.2014)
+
+Features:
+- checking: Support connection and content check plugins.
+- checking: Move lots of custom checks like Antivirus and syntax
+  checks into plugins (see upgrading.txt for more info).
+- checking: Add options to limit the number of requests per second,
+  allowed URL schemes and maximum file or download size.
+
+Changes:
+- checking: Use the Python requests module for HTTP and HTTPS requests.
+- logging: Removed download, domains and robots.txt statistics.
+- logging: HTML output is now in HTML5.
+- checking: Removed 301 warning since 301 redirects are used
+  a lot without updating the old URL links.
+- checking: Disallowed access by robots.txt is an info now, not
+  a warning. Otherwise it produces a lot of warnings which
+  is counter-productive.
+- checking: Do not check SMTP connections for mailto: URLs anymore.
+  It resulted in lots of false warnings since spam prevention
+  usually disallows direct SMTP connections from unrecognized
+  client IPs.
+- checking: Only internal URLs are checked as default. To check
+  external urls use --check-extern.
+
+Fixes:
+- logging: Status was printed every second regardless of the
+  configured wait time.
+- checking: Several speed and memory usage improvements.
+
+
 8.6 "About Time" (released 8.1.2014)
 
 Changes:

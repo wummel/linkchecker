@@ -17,53 +17,92 @@
 """
 Aggregate needed object instances for checker threads.
 """
-import time
 import threading
-from .. import log, LOG_CHECK, strformat
+import thread
+import requests
+import time
+import random
+from .. import log, LOG_CHECK, strformat, cookies
 from ..decorators import synchronized
 from ..cache import urlqueue
-from . import logger, status, checker, cleanup
+from . import logger, status, checker, interrupt
 
 
-_w3_time_lock = threading.Lock()
 _threads_lock = threading.RLock()
-_download_lock = threading.Lock()
+_hosts_lock = threading.RLock()
+
+def new_request_session(config):
+    """Create a new request session."""
+    session = requests.Session()
+    # XXX proxies
+    if config["cookiefile"]:
+        for cookie in cookies.from_file(config["cookiefile"]):
+            session.cookies = requests.cookies.merge_cookies(session.cookies, cookie)
+    return session
+
 
 class Aggregate (object):
     """Store thread-safe data collections for checker threads."""
 
-    def __init__ (self, config, urlqueue, connections, cookies, robots_txt):
+    def __init__ (self, config, urlqueue, robots_txt, plugin_manager):
         """Store given link checking objects."""
         self.config = config
         self.urlqueue = urlqueue
-        self.connections = connections
-        self.cookies = cookies
-        self.robots_txt = robots_txt
         self.logger = logger.Logger(config)
         self.threads = []
-        self.last_w3_call = 0
-        self.downloaded_bytes = 0
+        self.request_sessions = {}
+        self.robots_txt = robots_txt
+        self.plugin_manager = plugin_manager
+        self.times = {}
+        requests_per_second = config["maxrequestspersecond"]
+        self.wait_time_min = 1.0 / requests_per_second
+        self.wait_time_max = max(self.wait_time_min + 0.5, 0.5)
 
     @synchronized(_threads_lock)
     def start_threads (self):
         """Spawn threads for URL checking and status printing."""
         if self.config["status"]:
             t = status.Status(self.urlqueue, self.config.status_logger,
-                self.config["status_wait_seconds"],
-                self.config["maxrunseconds"])
+                self.config["status_wait_seconds"])
             t.start()
             self.threads.append(t)
-        t = cleanup.Cleanup(self.connections)
-        t.start()
-        self.threads.append(t)
+        if self.config["maxrunseconds"]:
+            t = interrupt.Interrupt(self.config["maxrunseconds"])
+            t.start()
+            self.threads.append(t)
         num = self.config["threads"]
         if num > 0:
             for dummy in range(num):
-                t = checker.Checker(self.urlqueue, self.logger)
-                t.start()
+                t = checker.Checker(self.urlqueue, self.logger, self.add_request_session)
                 self.threads.append(t)
+                t.start()
         else:
+            self.request_sessions[thread.get_ident()] = new_request_session(self.config)
             checker.check_url(self.urlqueue, self.logger)
+
+    @synchronized(_threads_lock)
+    def add_request_session(self):
+        """Add a request session for current thread."""
+        session = new_request_session(self.config)
+        self.request_sessions[thread.get_ident()] = session
+
+    @synchronized(_threads_lock)
+    def get_request_session(self):
+        """Get the request session for current thread."""
+        return self.request_sessions[thread.get_ident()]
+
+    @synchronized(_hosts_lock)
+    def wait_for_host(self, host):
+        """Throttle requests to one host."""
+        t = time.time()
+        if host in self.times:
+            due_time = self.times[host]
+            if due_time > t:
+                wait = due_time - t
+                time.sleep(wait)
+                t = time.time()
+        wait_time = random.uniform(self.wait_time_min, self.wait_time_max)
+        self.times[host] = t + wait_time
 
     @synchronized(_threads_lock)
     def print_active_threads (self):
@@ -77,8 +116,8 @@ class Aggregate (object):
                     first = False
                 log.info(LOG_CHECK, name[12:])
         args = dict(
-            num=len(self.threads),
-            timeout=strformat.strduration_long(self.config["timeout"]),
+            num=len([x for x in self.threads if x.getName().startswith("CheckThread-")]),
+            timeout=strformat.strduration_long(self.config["aborttimeout"]),
         )
         log.info(LOG_CHECK, _("%(num)d URLs are still active. After a timeout of %(timeout)s the active URLs will stop.") % args)
 
@@ -98,7 +137,7 @@ class Aggregate (object):
         """Print still-active URLs and empty the URL queue."""
         self.print_active_threads()
         self.cancel()
-        timeout = self.config["timeout"]
+        timeout = self.config["aborttimeout"]
         try:
             self.urlqueue.join(timeout=timeout)
         except urlqueue.Timeout:
@@ -118,36 +157,9 @@ class Aggregate (object):
             self.cancel()
         for t in self.threads:
             t.stop()
-        self.connections.clear()
-        self.gather_statistics()
 
     @synchronized(_threads_lock)
     def is_finished (self):
         """Determine if checking is finished."""
         self.remove_stopped_threads()
         return self.urlqueue.empty() and not self.threads
-
-    @synchronized(_w3_time_lock)
-    def check_w3_time (self):
-        """Make sure the W3C validators are at most called once a second."""
-        if time.time() - self.last_w3_call < 1:
-            time.sleep(1)
-        self.last_w3_call = time.time()
-
-    @synchronized(_download_lock)
-    def add_download_data(self, url, data):
-        """Add given downloaded data.
-        @param url: URL which data belongs to
-        @ptype url: unicode
-        @param data: downloaded data
-        @ptype data: string
-        """
-        self.downloaded_bytes += len(data)
-
-    def gather_statistics(self):
-        """Gather download and cache statistics and send them to the
-        logger.
-        """
-        robots_txt_stats = self.robots_txt.hits, self.robots_txt.misses
-        download_stats = self.downloaded_bytes
-        self.logger.add_statistics(robots_txt_stats, download_stats)

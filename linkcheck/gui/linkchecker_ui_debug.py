@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui/debug.ui'
 #
-# Created: Mon Dec 12 19:00:37 2011
-#      by: PyQt4 UI code generator 4.8.6
+# Created: Fri Feb 28 21:24:59 2014
+#      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -19,7 +19,6 @@ class Ui_DebugDialog(object):
         DebugDialog.setObjectName(_fromUtf8("DebugDialog"))
         DebugDialog.setWindowModality(QtCore.Qt.ApplicationModal)
         DebugDialog.resize(564, 547)
-        DebugDialog.setWindowTitle(_("LinkChecker debug log"))
         self.verticalLayout = QtGui.QVBoxLayout(DebugDialog)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.frame = QtGui.QFrame(DebugDialog)
@@ -40,5 +39,5 @@ class Ui_DebugDialog(object):
         QtCore.QMetaObject.connectSlotsByName(DebugDialog)
 
     def retranslateUi(self, DebugDialog):
-        pass
+        DebugDialog.setWindowTitle(_("LinkChecker debug log"))
 
