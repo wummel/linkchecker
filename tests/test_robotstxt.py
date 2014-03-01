@@ -290,3 +290,11 @@ class TestRobotsTxt (unittest.TestCase):
         self.check_url("spam", "/cgi-bin/foo/bar", False)
         self.check_url("spam", "/cgi-bin?a=1", False)
         self.check_url("spam", "/", True)
+
+    def test_sitemap(self):
+        lines = [
+            "Sitemap: bla",
+        ]
+        self.rp.parse(lines)
+        self.assertTrue(len(self.rp.sitemap_urls) > 0)
+        self.assertTrue(self.rp.sitemap_urls[0] == "bla")

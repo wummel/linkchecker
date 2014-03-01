@@ -50,6 +50,7 @@ class RobotFileParser (object):
         self.disallow_all = False
         self.allow_all = False
         self.last_checked = 0
+        self.sitemap_urls = []
 
     def mtime (self):
         """Returns the time the robots.txt file was last fetched.
@@ -180,6 +181,11 @@ class RobotFileParser (object):
                         except ValueError:
                             log.debug(LOG_CHECK, "%r line %d: invalid delay number %r", self.url, linenumber, line[1])
                             pass
+                elif line[0] == "sitemap":
+                    # Note that sitemap URLs must be absolute according to
+                    # http://www.sitemaps.org/protocol.html#submit_robots
+                    # But this should be checked by the calling layer.
+                    self.sitemap_urls.append(line[1])
                 else:
                     log.debug(LOG_CHECK, "%r line %d: unknown key %r", self.url, linenumber, line[0])
                     pass
