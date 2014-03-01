@@ -35,6 +35,7 @@ Changes:
   Closes: GH bug #424
 - checking: Disable twill page refreshing.
   Closes: GH bug #423
+- checking: The default number of checking threads is 10 now instead of 100.
 
 Fixes:
 - logging: Status was printed every second regardless of the

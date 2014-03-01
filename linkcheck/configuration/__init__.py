@@ -145,7 +145,7 @@ class Configuration (dict):
         self["nntpserver"] = os.environ.get("NNTP_SERVER", None)
         self["proxy"] = urllib.getproxies()
         self["sslverify"] = True
-        self["threads"] = 100
+        self["threads"] = 10
         self["timeout"] = 60
         self["aborttimeout"] = 300
         self["recursionlevel"] = -1
