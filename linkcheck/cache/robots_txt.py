@@ -17,7 +17,7 @@
 """
 Cache robots.txt contents.
 """
-from .. import robotparser2, configuration, url as urlutil
+from .. import robotparser2, configuration
 from ..containers import LFUCache
 from ..decorators import synchronized
 from ..lock import get_lock
@@ -42,12 +42,12 @@ class RobotsTxt (object):
         self.hits = self.misses = 0
         self.roboturl_locks = {}
 
-    def allows_url (self, roboturl, url, proxy, user, password, callback=None):
+    def allows_url (self, roboturl, url, proxy, user, password):
         """Ask robots.txt allowance."""
         with self.get_lock(roboturl):
-            return self._allows_url(roboturl, url, proxy, user, password, callback)
+            return self._allows_url(roboturl, url, proxy, user, password)
 
-    def _allows_url (self, roboturl, url, proxy, user, password, callback):
+    def _allows_url (self, roboturl, url, proxy, user, password):
         """Ask robots.txt allowance. Assumes only single thread per robots.txt
         URL calls this function."""
         with cache_lock:
@@ -60,11 +60,6 @@ class RobotsTxt (object):
             password=password)
         rp.set_url(roboturl)
         rp.read()
-        if hasattr(callback, '__call__'):
-            parts = urlutil.url_split(rp.url)
-            host = "%s:%d" % (parts[1], parts[2])
-            wait = rp.get_crawldelay(self.useragent)
-            callback(host, wait)
         with cache_lock:
             self.cache[roboturl] = rp
         return rp.can_fetch(self.useragent, url)

@@ -63,7 +63,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         roboturl = self.get_robots_txt_url()
         user, password = self.get_user_password()
         rb = self.aggregate.robots_txt
-        #callback = self.aggregate.connections.host_wait
         return rb.allows_url(roboturl, self.url, self.proxy, user, password)
 
     def add_size_info (self):
