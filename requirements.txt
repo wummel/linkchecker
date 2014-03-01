@@ -4,6 +4,7 @@ requests
 argcomplete
 twill
 # for testing:
+#pytest
 #pyftpdlib
 # for building on osx:
 #py2app
