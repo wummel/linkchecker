@@ -22,6 +22,13 @@ def is_frozen ():
     return hasattr(sys, "frozen")
 
 
+def check_writable_by_others(filename):
+    if os.name != 'posix':
+        # XXX on non-posix systems other bits are relevant
+        return
+    return is_writable_by_others(filename)
+
+
 def get_package_modules(packagename):
     """Find all valid modules in the given package which must be a folder
     in the same directory as this loader.py module. A valid module has
@@ -51,7 +58,7 @@ def get_package_modules(packagename):
 
 def get_folder_modules(folder, parentpackage):
     """."""
-    if is_writable_by_others(folder):
+    if check_writable_by_others(folder):
         print("ERROR: refuse to load modules from world writable folder %r" % folder)
         return
     for filename in get_importable_files(folder):
@@ -72,7 +79,7 @@ def get_importable_files(folder):
     for fname in os.listdir(folder):
         if fname.endswith('.py') and not fname.startswith('_'):
             fullname = os.path.join(folder, fname)
-            if is_writable_by_others(fullname):
+            if check_writable_by_others(fullname):
                 print("ERROR: refuse to load module from world writable file %r" % fullname)
             else:
                 yield fname
