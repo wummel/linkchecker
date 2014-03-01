@@ -6,18 +6,20 @@ Features:
   checks into plugins (see upgrading.txt for more info).
 - checking: Add options to limit the number of requests per second,
   allowed URL schemes and maximum file or download size.
-  Closes: GH bug #397, #465
+  Closes: GH bug #397, #465, #420
 - gui: UI language can be changed dynamically.
   Closes: GH bug #391
 
 Changes:
 - checking: Use the Python requests module for HTTP and HTTPS requests.
-  Closes: GH bug #393, #463
+  Closes: GH bug #393, #463, #417
 - logging: Removed download, domains and robots.txt statistics.
 - logging: HTML output is now in HTML5.
 - checking: Removed 301 warning since 301 redirects are used
   a lot without updating the old URL links.
-  Closes: GH bug #444
+  Also, recursive redirection is not checked any more since there
+  is a maximum redirection limit anyway.
+  Closes: GH bug #444, #419
 - checking: Disallowed access by robots.txt is an info now, not
   a warning. Otherwise it produces a lot of warnings which
   is counter-productive.
@@ -46,6 +48,8 @@ Fixes:
 - checking: For login pages, use twill form field counter if
   the field has neither name nor id.
   Closes: GH bug #428
+- configuration: Check regular expressions for errors.
+  Closes: GH bug #410
 
 
 8.6 "About Time" (released 8.1.2014)

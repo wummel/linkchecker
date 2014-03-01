@@ -121,6 +121,7 @@ def get_link_pat (arg, strict=False):
     @type strict: bool
     @return: dictionary with keys 'pattern', 'negate' and 'strict'
     @rtype: dict
+    @raises: re.error on invalid regular expressions
     """
     log.debug(LOG_CHECK, "Link pattern %r strict=%s", arg, strict)
     if arg.startswith('!'):
@@ -129,8 +130,13 @@ def get_link_pat (arg, strict=False):
     else:
         pattern = arg
         negate = False
+    try:
+        regex = re.compile(pattern)
+    except re.error as msg:
+        log.warn(LOG_CHECK, "invalid regular expression %r: %s" % (pattern, msg))
+        raise
     return {
-        "pattern": re.compile(pattern),
+        "pattern": regex,
         "negate": negate,
         "strict": strict,
     }

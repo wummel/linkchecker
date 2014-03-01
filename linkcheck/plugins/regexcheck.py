@@ -37,10 +37,13 @@ class RegexCheck(_ContentPlugin):
     def __init__(self, config):
         """Set warning regex from config."""
         super(RegexCheck, self).__init__(config)
-        if config["warningregex"]:
-            self.warningregex = re.compile(config["warningregex"])
-        else:
-            self.warningregex = None
+        self.warningregex = None
+        pattern = config["warningregex"]
+        if pattern:
+            try:
+                self.warningregex = re.compile(pattern)
+            except re.error as msg:
+                log.warn(LOG_PLUGIN, "Invalid regex pattern %r: %s" % (pattern, msg))
 
     def check(self, url_data):
         """Check content."""
