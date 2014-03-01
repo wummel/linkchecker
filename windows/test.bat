@@ -16,4 +16,3 @@
 @echo off
 set PYDIR=C:\Python27
 %PYDIR%\python.exe -m pytest --resultlog=testresults.txt tests
-pause
