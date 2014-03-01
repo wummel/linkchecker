@@ -66,6 +66,8 @@ def configure_twill (tc):
     """
     # make sure readonly controls are writeable (might be needed)
     tc.config("readonly_controls_writeable", True)
+    # disable page refreshing
+    tc.config("acknowledge_equiv_refresh", False)
     # fake IE 6.0 to talk sense into some sites (eg. SourceForge)
     tc.agent("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)")
     # tell twill to shut up

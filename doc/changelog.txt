@@ -30,6 +30,8 @@ Changes:
   Closes: GH bug #394, #460
 - checking: Document that gconf and KDE proxy settings are parsed.
   Closes: GH bug #424
+- checking: Disable twill page refreshing.
+  Closes: GH bug #423
 
 Fixes:
 - logging: Status was printed every second regardless of the
