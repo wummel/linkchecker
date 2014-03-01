@@ -62,13 +62,13 @@ def parse_html (url_data):
 
 def parse_opera (url_data):
     """Parse an opera bookmark file."""
-    from .bookmarks.opera import parse_bookmark_data
+    from ..bookmarks.opera import parse_bookmark_data
     for url, name, lineno in parse_bookmark_data(url_data.get_content()):
         url_data.add_url(url, line=lineno, name=name)
 
 def parse_chromium (url_data):
     """Parse a Chromium or Google Chrome bookmark file."""
-    from .bookmarks.chromium import parse_bookmark_data
+    from ..bookmarks.chromium import parse_bookmark_data
     for url, name in parse_bookmark_data(url_data.get_content()):
         url_data.add_url(url, name=name)
 
