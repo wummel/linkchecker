@@ -93,14 +93,14 @@ def submit_login_form (config, url, tc):
 def search_formname (fieldnames, tc):
     """Search form that has all given CGI fieldnames."""
     browser = tc.get_browser()
-    for form in browser.get_all_forms():
+    for formcounter, form in enumerate(browser.get_all_forms()):
         for name in fieldnames:
             try:
                 browser.get_form_field(form, name)
             except tc.TwillException:
                 break
         else:
-            return form.name or form.attrs.get('id')
+            return form.name or form.attrs.get('id') or formcounter
     # none found
     return None
 
