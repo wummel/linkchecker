@@ -36,6 +36,8 @@ Fixes:
 - checking: Several speed and memory usage improvements.
 - logging: Fix --no-warnings option.
   Closes: GH bug #457
+- logging: The -o none now sets the exit code.
+  Closes: GH bug #451
 
 
 8.6 "About Time" (released 8.1.2014)

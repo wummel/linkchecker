@@ -39,12 +39,6 @@ class NoneLogger (_Logger):
         """
         pass
 
-    def log_filter_url (self, url_data, do_filter):
-        """
-        Do nothing.
-        """
-        pass
-
     def log_url (self, url_data):
         """Do nothing."""
         pass
