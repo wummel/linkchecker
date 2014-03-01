@@ -60,10 +60,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         @return: True if access is granted, otherwise False
         @rtype: bool
         """
-        roboturl = self.get_robots_txt_url()
-        user, password = self.get_user_password()
-        rb = self.aggregate.robots_txt
-        return rb.allows_url(roboturl, self.url, self.proxy, user, password)
+        return self.aggregate.robots_txt.allows_url(self)
 
     def add_size_info (self):
         """Get size of URL content from HTTP header."""

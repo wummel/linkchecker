@@ -21,6 +21,7 @@ from .. import robotparser2, configuration
 from ..containers import LFUCache
 from ..decorators import synchronized
 from ..lock import get_lock
+from ..checker import get_url_from
 
 
 # lock objects
@@ -42,27 +43,46 @@ class RobotsTxt (object):
         self.hits = self.misses = 0
         self.roboturl_locks = {}
 
-    def allows_url (self, roboturl, url, proxy, user, password):
+    def allows_url (self, url_data):
         """Ask robots.txt allowance."""
+        roboturl = url_data.get_robots_txt_url()
         with self.get_lock(roboturl):
-            return self._allows_url(roboturl, url, proxy, user, password)
+            return self._allows_url(url_data, roboturl)
 
-    def _allows_url (self, roboturl, url, proxy, user, password):
+    def _allows_url (self, url_data, roboturl):
         """Ask robots.txt allowance. Assumes only single thread per robots.txt
         URL calls this function."""
+        user, password = url_data.get_user_password()
         with cache_lock:
             if roboturl in self.cache:
                 self.hits += 1
                 rp = self.cache[roboturl]
-                return rp.can_fetch(self.useragent, url)
+                return rp.can_fetch(self.useragent, url_data.url)
             self.misses += 1
-        rp = robotparser2.RobotFileParser(proxy=proxy, user=user,
+        rp = robotparser2.RobotFileParser(proxy=url_data.proxy, user=user,
             password=password)
         rp.set_url(roboturl)
         rp.read()
         with cache_lock:
             self.cache[roboturl] = rp
-        return rp.can_fetch(self.useragent, url)
+        self.add_sitemap_urls(rp, url_data, roboturl)
+        return rp.can_fetch(self.useragent, url_data.url)
+
+    def add_sitemap_urls(self, rp, url_data, roboturl):
+        """Add sitemap URLs to queue."""
+        if not rp.sitemap_urls:
+            return
+        rec_level = url_data.aggregate.config["recursionlevel"]
+        if rec_level >= 0 and url_data.recursion_level >= rec_level:
+            return
+        for sitemap_url, line in rp.sitemap_urls:
+            sitemap_url_data = get_url_from(sitemap_url,
+                url_data.recursion_level+1, url_data.aggregate,
+                parent_url=roboturl, line=line,
+                parent_content_type=url_data.content_type)
+            if sitemap_url_data.has_result or not sitemap_url_data.extern[1]:
+                # Only queue URLs which have a result or are not strict extern.
+                url_data.aggregate.urlqueue.put(sitemap_url_data)
 
     @synchronized(robot_lock)
     def get_lock(self, roboturl):

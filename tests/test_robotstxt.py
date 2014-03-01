@@ -297,4 +297,4 @@ class TestRobotsTxt (unittest.TestCase):
         ]
         self.rp.parse(lines)
         self.assertTrue(len(self.rp.sitemap_urls) > 0)
-        self.assertTrue(self.rp.sitemap_urls[0] == "bla")
+        self.assertTrue(self.rp.sitemap_urls[0] == ("bla", 1))

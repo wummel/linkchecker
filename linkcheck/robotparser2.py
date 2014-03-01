@@ -50,6 +50,7 @@ class RobotFileParser (object):
         self.disallow_all = False
         self.allow_all = False
         self.last_checked = 0
+        # list of tuples (sitemap url, line number)
         self.sitemap_urls = []
 
     def mtime (self):
@@ -185,7 +186,7 @@ class RobotFileParser (object):
                     # Note that sitemap URLs must be absolute according to
                     # http://www.sitemaps.org/protocol.html#submit_robots
                     # But this should be checked by the calling layer.
-                    self.sitemap_urls.append(line[1])
+                    self.sitemap_urls.append((line[1], linenumber))
                 else:
                     log.debug(LOG_CHECK, "%r line %d: unknown key %r", self.url, linenumber, line[0])
                     pass

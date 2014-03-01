@@ -7,6 +7,7 @@ Features:
 - checking: Add options to limit the number of requests per second,
   allowed URL schemes and maximum file or download size.
   Closes: GH bug #397, #465, #420
+- checking: Support checking Sitemap: URLs in robots.txt files.
 - gui: UI language can be changed dynamically.
   Closes: GH bug #391
 
