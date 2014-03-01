@@ -142,6 +142,7 @@ def print_app_info (out=stderr):
     """Print system and application info (output defaults to stderr)."""
     print(_("System info:"), file=out)
     print(configuration.App, file=out)
+    print(_("Released on:"), configuration.ReleaseDate, file=out)
     print(_("Python %(version)s on %(platform)s") %
                     {"version": sys.version, "platform": sys.platform}, file=out)
     for key in PYTHON_ENV_VARS:
@@ -156,3 +157,4 @@ def print_app_info (out=stderr):
 def print_version (out=stdout):
     """Print the program version (output defaults to stdout)."""
     print(configuration.AppInfo, file=out)
+    print(_("Released on:"), configuration.ReleaseDate, file=out)
