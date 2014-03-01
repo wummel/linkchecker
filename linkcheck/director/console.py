@@ -156,5 +156,6 @@ def print_app_info (out=stderr):
 
 def print_version (out=stdout):
     """Print the program version (output defaults to stdout)."""
-    print(configuration.AppInfo, file=out)
-    print(_("Released on:"), configuration.ReleaseDate, file=out)
+    print(configuration.App, _("released"),
+          configuration.ReleaseDate, file=out)
+    print(configuration.Copyright, file=out)
