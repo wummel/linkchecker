@@ -6,13 +6,13 @@ Features:
   checks into plugins (see upgrading.txt for more info).
 - checking: Add options to limit the number of requests per second,
   allowed URL schemes and maximum file or download size.
-  Closes: GH bug #397
+  Closes: GH bug #397, #465
 - gui: UI language can be changed dynamically.
   Closes: GH bug #391
 
 Changes:
 - checking: Use the Python requests module for HTTP and HTTPS requests.
-  Closes: GH bug #393
+  Closes: GH bug #393, #463
 - logging: Removed download, domains and robots.txt statistics.
 - logging: HTML output is now in HTML5.
 - checking: Removed 301 warning since 301 redirects are used
@@ -26,7 +26,7 @@ Changes:
   client IPs.
 - checking: Only internal URLs are checked as default. To check
   external urls use --check-extern.
-  Closes: GH bug #394
+  Closes: GH bug #394, #460
 
 Fixes:
 - logging: Status was printed every second regardless of the
@@ -34,6 +34,8 @@ Fixes:
 - logging: Add missing column name to SQL insert command.
   Closes: GH bug #399
 - checking: Several speed and memory usage improvements.
+- logging: Fix --no-warnings option.
+  Closes: GH bug #457
 
 
 8.6 "About Time" (released 8.1.2014)
