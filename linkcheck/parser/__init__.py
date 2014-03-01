@@ -182,5 +182,3 @@ def parse_firefox (url_data):
         url_data = get_url_from(url, url_data.recursion_level+1,
             url_data.aggregate, parent_url=url_data.url, name=name)
         url_data.aggregate.urlqueue.put(url_data)
-
-
