@@ -31,6 +31,8 @@ Changes:
 Fixes:
 - logging: Status was printed every second regardless of the
   configured wait time.
+- logging: Add missing column name to SQL insert command.
+  Closes: GH bug #399
 - checking: Several speed and memory usage improvements.
 
 
