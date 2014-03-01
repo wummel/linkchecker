@@ -17,6 +17,7 @@ Changes:
 - logging: HTML output is now in HTML5.
 - checking: Removed 301 warning since 301 redirects are used
   a lot without updating the old URL links.
+  Closes: GH bug #444
 - checking: Disallowed access by robots.txt is an info now, not
   a warning. Otherwise it produces a lot of warnings which
   is counter-productive.
