@@ -37,7 +37,7 @@ from .settings import Settings
 from .recentdocs import RecentDocumentModel
 from .projects import openproject, saveproject, loadproject, ProjectExt
 from .. import configuration, checker, director, get_link_pat, \
-    strformat, fileutil, LinkCheckerError
+    strformat, fileutil, LinkCheckerError, i18n
 from ..containers import enum
 from .. import url as urlutil
 from ..checker import httpheaders
@@ -135,6 +135,18 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
     def init_menu (self):
         """Add menu entries for bookmark file checking."""
         self.urlinput.addMenuEntries(self.menuEdit)
+        self.menuLang = self.menuEdit.addMenu(_('Languages'))
+        self.menuLang.setTitle(_("&Language"))
+        # ensure only one action is checked
+        langActionGroup = QtGui.QActionGroup(self)
+        langActionGroup.triggered.connect(self.switch_language)
+        for i, lang in enumerate(sorted(i18n.supported_languages)):
+            action = self.menuLang.addAction("&%d %s" % (i, lang))
+            action.setCheckable(True)
+            action.setData(lang)
+            if lang == i18n.default_language:
+                action.setChecked(True)
+            langActionGroup.addAction(action)
 
     def init_drop(self):
         """Set and activate drag-and-drop functions."""
@@ -309,7 +321,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         elif status == Status.checking:
             self.treeView.setSortingEnabled(False)
             self.debug.reset()
-            self.set_statusmsg(u"Checking site...")
+            self.set_statusmsg(_(u"Checking site..."))
             # disable commands
             self.menubar.setEnabled(False)
             self.urlinput.setEnabled(False)
@@ -580,3 +592,20 @@ Version 2 or later.
             loadproject(self, filename)
         else:
             self.urlinput.setText(url.toString())
+
+    def retranslateUi(self, Window):
+        """Translate menu titles."""
+        super(LinkCheckerMain, self).retranslateUi(Window)
+        # self.menu_lang is created after calling retranslateUi
+        # the first time, so check for its excistance
+        if hasattr(self, "menu_lang"):
+            self.menuLang.setTitle(_("&Language"))
+
+    def switch_language(self, action):
+        """Change UI language."""
+        lang = str(action.data().toString())
+        i18n.install_language(lang)
+        self.retranslateUi(self)
+        self.options.retranslateUi(self.options)
+        self.debug.retranslateUi(self.debug)
+        self.editor.retranslateUi(self.editor)

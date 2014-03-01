@@ -28,6 +28,8 @@ import codecs
 # more supported languages are added in init()
 supported_languages = set(['en'])
 default_language = default_encoding = None
+default_directory = None
+default_domain = None
 
 def install_builtin (translator, do_unicode):
     """Install _() and _n() gettext methods into default namespace."""
@@ -62,7 +64,9 @@ class NullTranslator (gettext.NullTranslations):
 def init (domain, directory, loc=None):
     """Initialize this gettext i18n module. Searches for supported languages
     and installs the gettext translator class."""
-    global default_language, default_encoding
+    global default_language, default_encoding, default_domain, default_directory
+    default_directory = directory
+    default_domain = domain
     if os.path.isdir(directory):
         # get supported languages
         for lang in os.listdir(directory):
@@ -81,9 +85,13 @@ def init (domain, directory, loc=None):
     # Even if the default language is not supported, the encoding should
     # be installed. Otherwise the Python installation is borked.
     default_encoding = encoding
-    # install translation service routines into default namespace
-    translator = get_translator(domain, directory,
-                                languages=[default_language], fallback=True)
+    install_language(default_language)
+
+
+def install_language(language):
+    """Install translation service routines into default namespace."""
+    translator = get_translator(default_domain, default_directory,
+        languages=[get_lang(language)], fallback=True)
     do_unicode = True
     translator.install(do_unicode)
 
