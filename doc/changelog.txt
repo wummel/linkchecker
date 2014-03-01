@@ -28,6 +28,8 @@ Changes:
 - checking: Only internal URLs are checked as default. To check
   external urls use --check-extern.
   Closes: GH bug #394, #460
+- checking: Document that gconf and KDE proxy settings are parsed.
+  Closes: GH bug #424
 
 Fixes:
 - logging: Status was printed every second regardless of the
