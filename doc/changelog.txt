@@ -39,6 +39,9 @@ Fixes:
   Closes: GH bug #457
 - logging: The -o none now sets the exit code.
   Closes: GH bug #451
+- checking: For login pages, use twill form field counter if
+  the field has neither name nor id.
+  Closes: GH bug #428
 
 
 8.6 "About Time" (released 8.1.2014)
