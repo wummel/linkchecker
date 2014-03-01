@@ -178,7 +178,7 @@ class RobotFileParser (object):
                         try:
                             entry.crawldelay = max(0, int(line[1]))
                             state = 2
-                        except ValueError:
+                        except (ValueError, OverflowError):
                             log.debug(LOG_CHECK, "%r line %d: invalid delay number %r", self.url, linenumber, line[1])
                             pass
                 elif line[0] == "sitemap":
