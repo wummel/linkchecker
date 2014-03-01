@@ -23,6 +23,8 @@ def is_frozen ():
 
 
 def check_writable_by_others(filename):
+    """Check if file is writable by others on POSIX systems.
+    On non-POSIX systems the check is ignored."""
     if os.name != 'posix':
         # XXX on non-posix systems other bits are relevant
         return
