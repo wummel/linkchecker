@@ -37,8 +37,8 @@ class TestFilenames (unittest.TestCase):
         path = 'c:\\'
         realpath = get_nt_filename(path)
         self.assertEqual(path, realpath)
-        # Only works on my computer.
+        # XXX Only works on my computer.
         # Is there a Windows UNC share that is always available for tests?
-        path = '\\Vboxsrv\share\msg.txt'
-        realpath = get_nt_filename(path)
-        self.assertEqual(path, realpath)
+        #path = '\\Vboxsrv\share\msg.txt'
+        #realpath = get_nt_filename(path)
+        #self.assertEqual(path, realpath)

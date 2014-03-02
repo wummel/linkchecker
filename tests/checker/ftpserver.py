@@ -53,7 +53,11 @@ def start_server (host, port):
         if "kill" in msg:
             raise KeyboardInterrupt()
 
-    from pyftpdlib import ftpserver
+    try:
+        from pyftpdlib import ftpserver
+    except ImportError:
+        pytest.skip("pyftpdlib is not available")
+        return
     authorizer = ftpserver.DummyAuthorizer()
     datadir = os.path.join(os.path.dirname(__file__), 'data')
     authorizer.add_anonymous(datadir)

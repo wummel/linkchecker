@@ -60,7 +60,7 @@ class TestStrFormat (unittest.TestCase):
         self.assertEqual(wrap(s, -1), s)
         self.assertEqual(wrap(s, 0), s)
         l = len(os.linesep)
-        gap = " "*l
+        gap = " "
         s2 = "11%(gap)s22%(sep)s33%(gap)s44%(sep)s55" % \
              {'sep': os.linesep, 'gap': gap}
         # splitting lines

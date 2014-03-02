@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2004-2010 Bastian Kleineidam
+# Copyright (C) 2004-2010,2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,13 +24,13 @@ from . import LinkCheckTest
 # to enable the has_newsserver() resource manually.
 NNTP_SERVER = "news.uni-stuttgart.de"
 # info string returned by news server
-NNTP_INFO = u"201 news.uni-stuttgart.de InterNetNews NNRP server " \
-            u"INN 2.4.4 (20060818 snapshot) ready (no posting)."
+NNTP_INFO = u"200 news.uni-stuttgart.de InterNetNews NNRP server " \
+            u"INN 2.5.2 ready (no posting)"
 # Most free NNTP servers are slow, so don't waist a lot of time running those.
 NNTP_TIMEOUT_SECS = 30
 
 # disabled for now until some stable news server comes up
-class _TestNews (LinkCheckTest):
+class TestNews (LinkCheckTest):
     """Test nntp: and news: link checking."""
 
     def newstest (self, url, resultlines):
