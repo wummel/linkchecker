@@ -18,7 +18,7 @@
 Test URL length checks.
 """
 from . import LinkCheckTest
-from linkcheck.checker.const import URL_MAX_LENGTH, URL_WARN_LENGTH
+from linkcheck.checker.const import URL_MAX_LENGTH
 
 
 class TestURLLength(LinkCheckTest):
@@ -27,26 +27,14 @@ class TestURLLength(LinkCheckTest):
     """
 
     def test_url_warn(self):
-        url = u"http://www.example.org/" + (u"a" * URL_WARN_LENGTH)
-        urllen = len(url)
-        attrs = self.get_attrs(url=url)
-        resultlines = [
-            u"url %(url)s" % attrs,
-            u"cache key %(url)s" % attrs,
-            u"real url %(url)s" % attrs,
-            u"warning URL length %d is longer than %d." % (urllen, URL_WARN_LENGTH),
-            u"error",
-        ]
-        self.direct(url, resultlines)
-
-    def test_url_error(self):
-        url = u"http://www.example.org/" + ("a" * URL_MAX_LENGTH)
+        url = u"http://www.example.org/" + (u"a" * URL_MAX_LENGTH)
         attrs = self.get_attrs(url=url)
         attrs['nurl'] = self.norm(url)
         resultlines = [
             u"url %(nurl)s" % attrs,
             u"cache key %(nurl)s" % attrs,
             u"real url %(nurl)s" % attrs,
+            u"warning URL length %d is longer than %d." % (len(url), URL_MAX_LENGTH),
             u"error",
         ]
         self.direct(url, resultlines)

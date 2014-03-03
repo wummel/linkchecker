@@ -72,9 +72,9 @@ except ImportError:
 
 ExcList = ExcCacheList + ExcNoCacheList
 
-# some constants
-URL_MAX_LENGTH = 2000
-URL_WARN_LENGTH = 1024
+# Maximum URL length
+# https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers
+URL_MAX_LENGTH = 2047
 
 # the warnings
 WARN_URL_EFFECTIVE_URL = "url-effective-url"

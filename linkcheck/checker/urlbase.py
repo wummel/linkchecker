@@ -37,8 +37,7 @@ from ..network import iputil
 from .const import (WARN_URL_EFFECTIVE_URL,
     WARN_URL_ERROR_GETTING_CONTENT, WARN_URL_OBFUSCATED_IP,
     WARN_URL_CONTENT_SIZE_ZERO, WARN_URL_CONTENT_SIZE_TOO_LARGE,
-    WARN_URL_WHITESPACE,
-    WARN_URL_TOO_LONG, URL_MAX_LENGTH, URL_WARN_LENGTH,
+    WARN_URL_WHITESPACE, URL_MAX_LENGTH, WARN_URL_TOO_LONG,
     ExcList, ExcSyntaxList, ExcNoCacheList)
 
 # helper alias
@@ -323,11 +322,7 @@ class UrlBase (object):
             self.url = effectiveurl
         if len(self.url) > URL_MAX_LENGTH:
             args = dict(len=len(self.url), max=URL_MAX_LENGTH)
-            self.set_result(_("URL length %(len)d is longer than maximum of %(max)d.") % args, valid=False)
-        elif len(self.url) > URL_WARN_LENGTH:
-            args = dict(len=len(self.url), warn=URL_WARN_LENGTH)
-            self.add_warning(_("URL length %(len)d is longer than %(warn)d.") % args,
-                tag=WARN_URL_TOO_LONG)
+            self.add_warning(_("URL length %(len)d is longer than %(max)d.") % args, tag=WARN_URL_TOO_LONG)
 
     def build_url (self):
         """
