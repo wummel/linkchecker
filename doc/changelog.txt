@@ -1,4 +1,4 @@
-8.7 "" (released xx.xx.2014)
+9.0 "" (released xx.xx.2014)
 
 Features:
 - checking: Support connection and content check plugins.
