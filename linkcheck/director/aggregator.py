@@ -44,7 +44,8 @@ def new_request_session(config):
 class Aggregate (object):
     """Store thread-safe data collections for checker threads."""
 
-    def __init__ (self, config, urlqueue, robots_txt, plugin_manager):
+    def __init__ (self, config, urlqueue, robots_txt, plugin_manager,
+                  result_cache):
         """Store given link checking objects."""
         self.config = config
         self.urlqueue = urlqueue
@@ -53,6 +54,7 @@ class Aggregate (object):
         self.request_sessions = {}
         self.robots_txt = robots_txt
         self.plugin_manager = plugin_manager
+        self.result_cache = result_cache
         self.times = {}
         requests_per_second = config["maxrequestspersecond"]
         self.wait_time_min = 1.0 / requests_per_second

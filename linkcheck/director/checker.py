@@ -17,6 +17,7 @@
 """
 URL checking functions.
 """
+import copy
 from . import task
 from ..cache import urlqueue
 
@@ -28,7 +29,7 @@ def check_url (urlqueue, logger):
         try:
             if not url_data.has_result:
                 url_data.check()
-            logger.log_url(url_data)
+            logger.log_url(url_data.to_wire())
         finally:
             urlqueue.task_done(url_data)
 
@@ -53,7 +54,7 @@ class Checker (task.LoggedCheckedTask):
     def check_url (self):
         """Try to get URL data from queue and check it."""
         try:
-            url_data = self.urlqueue.get(timeout=0.1)
+            url_data = self.urlqueue.get(timeout=0.2)
             if url_data is not None:
                 try:
                     self.check_url_data(url_data)
@@ -70,6 +71,17 @@ class Checker (task.LoggedCheckedTask):
         else:
             url = url_data.url.encode("ascii", "replace")
         self.setName("CheckThread-%s" % url)
-        if not url_data.has_result:
-            url_data.check()
-        self.logger.log_url(url_data)
+        if url_data.has_result:
+            self.logger.log_url(url_data.to_wire())
+        else:
+            cache = url_data.aggregate.result_cache
+            key = url_data.cache_key[1]
+            result = cache.get_result(key)
+            if result is None:
+                url_data.check()
+                result = url_data.to_wire()
+                cache.add_result(key, result)
+            else:
+                result = copy.copy(result)
+                result.parent_url = url_data.parent_url
+            self.logger.log_url(result)
