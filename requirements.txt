@@ -2,7 +2,7 @@
 requests>=2.2.1
 # optional:
 argcomplete
-twill
+#twill
 # for testing:
 #pytest
 #pyftpdlib
