@@ -122,6 +122,8 @@ homepage:
 	@echo "lname: \"$(LAPPNAME)\"" >> $(WEB_META)
 	@echo "maintainer: \"$(MAINTAINER)\"" >> $(WEB_META)
 	@echo "author: \"$(AUTHOR)\"" >> $(WEB_META)
+	git add $(WEBMETA)
+	-git commit -m "Updated webpage meta info"
 # update documentation and man pages
 	$(MAKE) -C doc man
 	$(MAKE) -C doc/web release
