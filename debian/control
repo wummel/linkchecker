@@ -13,11 +13,13 @@ Homepage: http://wummel.github.io/linkchecker/
 
 Package: linkchecker
 Architecture: any
-Depends: ${misc:Depends}, ${python:Depends}, ${shlibs:Depends}, python (>= 2.7.2)
+Depends: ${misc:Depends}, ${python:Depends}, ${shlibs:Depends},
+         python (>= 2.7.2), python-requests (>= 2.2.1)
 Provides: ${python:Provides}
 Suggests: clamav-daemon,
           linkchecker-gui,
           linkchecker-web,
+          python-argcomplete,
           python-cssutils,
           python-gconf,
           python-geoip (>= 1.2.1-2),

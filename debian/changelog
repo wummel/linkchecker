@@ -1,3 +1,9 @@
+linkchecker (9.0-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+
+ -- Bastian Kleineidam <calvin@debian.org>  Tue, 04 Mar 2014 21:36:44 +0100
+
 linkchecker (8.6-2) unstable; urgency=low
 
   * Updated debian/watch
