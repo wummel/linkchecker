@@ -20,6 +20,7 @@ Define http test support classes for LinkChecker tests.
 import os
 import time
 import threading
+import pytest
 from ftplib import FTP
 from . import LinkCheckTest
 

@@ -119,7 +119,7 @@ class UrlQueue (object):
         """
         if self.shutdown or self.allowed_puts == 0:
             return True
-        if url_data.cache_url_key is not None and url_data.cache_url_key in self.seen:
+        if url_data.cache_key is not None and url_data.cache_key in self.seen:
             return True
         return False
 
@@ -134,14 +134,15 @@ class UrlQueue (object):
                 return
             self.allowed_puts -= 1
         log.debug(LOG_CACHE, "queueing %s", url_data)
-        key = url_data.cache_url_key
+        key = url_data.cache_key
         if key is not None:
             if key in self.seen:
                 # don't check duplicate URLs
                 return
             self.seen.add(key)
         self.unfinished_tasks += 1
-        if url_data.has_result:
+        if url_data.has_result or \
+           (key and key[1] in url_data.aggregate.result_cache.cache):
             self.queue.appendleft(url_data)
         else:
             self.queue.append(url_data)

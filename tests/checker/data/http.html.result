@@ -37,6 +37,11 @@ real url http://localhost:%(port)d/?q=%%C3%%BC
 name html entities
 valid
 
+url 
+cache key http://localhost:%(port)d/tests/checker/data/http.html
+real url http://localhost:%(port)d/tests/checker/data/http.html
+valid
+
 url file.css
 cache key http://localhost:%(port)d/tests/checker/data/file.css
 real url http://localhost:%(port)d/tests/checker/data/file.css

@@ -60,9 +60,8 @@ class Logger (object):
         do_print = self.do_print(url_data)
         # Only send a transport object to the loggers, not the complete
         # object instance.
-        transport = url_data.to_wire()
         for log in self.loggers:
-            log.log_filter_url(transport, do_print)
+            log.log_filter_url(url_data, do_print)
 
     @synchronized(_lock)
     def log_internal_error (self):

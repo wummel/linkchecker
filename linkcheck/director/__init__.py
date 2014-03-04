@@ -22,7 +22,7 @@ import thread
 import time
 from .. import log, LOG_CHECK, LinkCheckerInterrupt, dummy, \
   fileutil, strformat, plugins
-from ..cache import urlqueue, robots_txt
+from ..cache import urlqueue, robots_txt, results
 from . import aggregator, console
 
 
@@ -207,4 +207,6 @@ def get_aggregate (config):
     _urlqueue = urlqueue.UrlQueue(max_allowed_puts=config["maxnumurls"])
     _robots_txt = robots_txt.RobotsTxt()
     plugin_manager = plugins.PluginManager(config)
-    return aggregator.Aggregate(config, _urlqueue, _robots_txt, plugin_manager)
+    result_cache = results.ResultCache()
+    return aggregator.Aggregate(config, _urlqueue, _robots_txt, plugin_manager,
+        result_cache)

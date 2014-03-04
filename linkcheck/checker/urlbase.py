@@ -180,9 +180,8 @@ class UrlBase (object):
         self.url_connection = None
         # data of url content,  (data == None) means no data is available
         self.data = None
-        # cache keys, are set by build_url() calling set_cache_keys()
-        self.cache_url_key = None
-        self.cache_content_key = None
+        # cache key is set by build_url() calling set_cache_key()
+        self.cache_key = None
         # extern flags (is_extern, is_strict)
         self.extern = None
         # flag if the result should be cached
@@ -276,19 +275,14 @@ class UrlBase (object):
         if s not in self.info:
             self.info.append(s)
 
-    def set_cache_keys (self):
-        """
-        Set keys for URL checking and content recursion.
-        """
-        # remove anchor from content cache key since we assume
+    def set_cache_key (self):
+        """Set key for URL cache checking. A cache key consists of
+        a tuple (source url, target url)."""
+        # remove anchor from cached target url since we assume
         # URLs with different anchors to have the same content
-        self.cache_content_key = urlutil.urlunsplit(self.urlparts[:4]+[u''])
-        assert isinstance(self.cache_content_key, unicode), self
-        log.debug(LOG_CACHE, "Content cache key %r", self.cache_content_key)
-        # construct cache key
-        self.cache_url_key = self.cache_content_key
-        assert isinstance(self.cache_url_key, unicode), self
-        log.debug(LOG_CACHE, "URL cache key %r", self.cache_url_key)
+        cache_url = urlutil.urlunsplit(self.urlparts[:4]+[u''])
+        self.cache_key = (self.parent_url, cache_url)
+        log.debug(LOG_CACHE, "URL cache key %r", self.cache_key)
 
     def check_syntax (self):
         """
@@ -310,7 +304,7 @@ class UrlBase (object):
         except tuple(ExcSyntaxList) as msg:
             self.set_result(unicode_safe(msg), valid=False)
         else:
-            self.set_cache_keys()
+            self.set_cache_key()
 
     def check_url_warnings(self):
         """Check URL name and length."""
@@ -675,8 +669,8 @@ class UrlBase (object):
         assert isinstance(self.name, unicode), self
         if self.anchor is not None:
             assert isinstance(self.anchor, unicode), self
-        if self.cache_url_key is not None:
-            assert isinstance(self.cache_url_key, unicode), self
+        if self.cache_key is not None:
+            assert isinstance(self.cache_key, unicode), self
         return sep.join([
             u"%s link" % self.scheme,
             u"base_url=%r" % self.base_url,
@@ -688,7 +682,7 @@ class UrlBase (object):
             u"column=%d" % self.column,
             u"name=%r" % self.name,
             u"anchor=%r" % self.anchor,
-            u"cache_key=%r" % self.cache_url_key,
+            u"cache_key=%r" % self.cache_key,
            ])
 
     def get_intern_pattern (self, url=None):
@@ -733,7 +727,7 @@ class UrlBase (object):
         return u"<%s>" % self.serialized(sep=u", ")
 
     def to_wire_dict (self):
-        """Return a simplified transport object for logging.
+        """Return a simplified transport object for logging and caching.
 
         The transport object must contain these attributes:
         - url_data.valid: bool
@@ -764,7 +758,7 @@ class UrlBase (object):
           Line number of this URL at parent document, or -1
         - url_data.column: int
           Column number of this URL at parent document, or -1
-        - url_data.cache_url_key: unicode
+        - url_data.cache_key: unicode
           Cache key for this URL.
         - url_data.content_type: unicode
           MIME content type for URL content.
@@ -790,7 +784,7 @@ class UrlBase (object):
           info=self.info,
           line=self.line,
           column=self.column,
-          cache_url_key=self.cache_url_key,
+          cache_key=self.cache_key,
           content_type=self.get_content_type(),
           level=self.recursion_level,
           modified=self.modified,
@@ -821,7 +815,7 @@ urlDataAttr = [
     'modified',
     'line',
     'column',
-    'cache_url_key',
+    'cache_key',
     'content_type',
     'level',
 ]
