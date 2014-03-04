@@ -1,7 +1,6 @@
 include README.txt COPYING MANIFEST.in
 include config/linkchecker-completion config/create.sql
 include config/linkcheckerrc
-include config/ca-certificates.crt
 include config/linkchecker.apache2.conf install-rpm.sh
 include linkchecker.freecode
 include cgi-bin/lc.wsgi cgi-bin/README

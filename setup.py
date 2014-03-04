@@ -634,7 +634,7 @@ myemail = "bastian.kleineidam@web.de"
 
 data_files = [
     ('share/linkchecker',
-        ['config/linkcheckerrc', 'config/ca-certificates.crt',
+        ['config/linkcheckerrc',
         'doc/html/lccollection.qhc', 'doc/html/lcdoc.qch']),
     ('share/linkchecker/examples',
         ['cgi-bin/lconline/leer.html.en',
