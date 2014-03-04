@@ -621,7 +621,7 @@ library_dirs = []
 # libraries
 libraries = []
 # scripts
-scripts = ['linkchecker', 'linkchecker-gui', 'linkchecker-nagios']
+scripts = ['linkchecker', 'linkchecker-gui']
 
 if os.name == 'nt':
     # windows does not have unistd.h
