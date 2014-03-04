@@ -1,4 +1,4 @@
-9.0 "" (released xx.xx.2014)
+9.0 "The Wolf of Wall Street" (released 3.3.2014)
 
 Features:
 - checking: Support connection and content check plugins.

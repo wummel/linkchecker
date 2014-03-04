@@ -48,9 +48,12 @@ class ResultCache(object):
             return self.cache[key]
         self.misses += 1
         return None
-    
+
     @synchronized(cache_lock)
     def add_result(self, key, result):
+        """Add result object to cache with given key.
+        The request is ignored when the cache is already full.
+        """
         if len(self.cache) > self.max_size:
             return
         self.cache[key] = result

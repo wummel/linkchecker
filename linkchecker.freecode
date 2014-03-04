@@ -1,5 +1,5 @@
 Project: LinkChecker
-Version: 8.6
+Version: 9.0
 Hide: N
 Website-URL: http://wummel.github.io/linkchecker/
 Changelog-URL: https://github.com/wummel/linkchecker/blob/master/doc/changelog.txt
@@ -8,4 +8,5 @@ Debian-Package-URL: http://packages.debian.org/linkchecker
 GIT-Tree-URL: https://github.com/wummel/linkchecker.git
 Windows-installer-URL: http://wummel.github.io/linkchecker/dist/LinkChecker-${version}.exe
 
-This release adds missing logger classes and sends an HTTP Accept header.
+This release adds plugin support and uses the Python requests module for
+HTTP URLs. Some bugs were also fixed.
