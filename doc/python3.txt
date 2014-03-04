@@ -1,9 +1,10 @@
 Porting status of dependent Python packages
 ============================================
 
-Date: 18.04.2013
+Date: 3.3.2014
 
 OK   Python
+OK   requests
 OK   Qt/PyQt
 OK   mod_wsgi from http://code.google.com/p/modwsgi/
 OK   argcomplete from https://pypi.python.org/pypi/argcomplete
