@@ -45,7 +45,6 @@ MYPY_FILES_DIRS:=linkcheck/HtmlParser linkcheck/checker \
 	  cgi-bin/lc.wsgi \
 	  linkchecker \
 	  linkchecker-gui \
-	  linkchecker-nagios \
 	  *.py
 
 TESTS ?= tests
@@ -246,7 +245,7 @@ gui:
 	$(MAKE) -C linkcheck/gui
 
 count:
-	@sloccount linkchecker linkchecker-gui linkchecker-nagios linkcheck tests
+	@sloccount linkchecker linkchecker-gui linkcheck tests
 
 # run eclipse ide
 ide:
