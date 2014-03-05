@@ -233,22 +233,32 @@ def guess_mimetype (filename, read=None):
     # Special case for Google Chrome Bookmark files.
     if not mime and basename == 'Bookmarks':
         mime = 'text/plain'
-    # Mime type text/plain can be differentiated further with content reading.
-    if mime == "text/plain" and read is not None:
-        # try to read some content and do a poor man's file(1)
-        try:
-            data = read()[:30]
-            for mime, ro in PARSE_CONTENTS.items():
-                if ro.search(data):
-                    break
-        except Exception:
-            pass
+    # Some mime types can be differentiated further with content reading.
+    if mime in ("text/plain", "application/xml", "text/xml") and read is not None:
+        read_mime = guess_mimetype_read(read)
+        if read_mime is not None:
+            mime = read_mime
     if not mime:
         mime = "application/octet-stream"
     elif ";" in mime:
         # split off not needed extension info
         mime = mime.split(';')[0]
     return mime.strip().lower()
+
+
+def guess_mimetype_read(read):
+    """Try to read some content and do a poor man's file(1)."""
+    mime = None
+    try:
+        data = read()[:70]
+    except Exception:
+        pass
+    else:
+        for cmime, ro in PARSE_CONTENTS.items():
+            if ro.search(data):
+                mime = cmime
+                break
+    return mime
 
 
 def get_temp_file (mode='r', **kwargs):
