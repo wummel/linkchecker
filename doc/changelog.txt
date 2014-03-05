@@ -1,3 +1,9 @@
+9.1 "" (released xx.xx.2014)
+
+Features:
+- checking: Support parsing of sitemap and sitemap index XML files.
+
+
 9.0 "The Wolf of Wall Street" (released 3.3.2014)
 
 Features:
