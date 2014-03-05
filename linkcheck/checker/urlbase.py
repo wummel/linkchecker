@@ -508,12 +508,8 @@ class UrlBase (object):
         Return True iff we can recurse into the url's content.
         """
         log.debug(LOG_CHECK, "checking recursion of %r ...", self.url)
-        # Test self.valid before self.is_parseable().
         if not self.valid:
             log.debug(LOG_CHECK, "... no, invalid.")
-            return False
-        if not self.is_parseable():
-            log.debug(LOG_CHECK, "... no, not parseable.")
             return False
         if not self.can_get_content():
             log.debug(LOG_CHECK, "... no, cannot get content.")
@@ -527,6 +523,9 @@ class UrlBase (object):
             return False
         if self.size > self.aggregate.config["maxfilesizeparse"]:
             log.debug(LOG_CHECK, "... no, maximum parse size.")
+            return False
+        if not self.is_parseable():
+            log.debug(LOG_CHECK, "... no, not parseable.")
             return False
         if not self.content_allows_robots():
             log.debug(LOG_CHECK, "... no, robots.")
