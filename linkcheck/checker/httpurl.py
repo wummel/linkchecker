@@ -21,7 +21,7 @@ Handle http links.
 import requests
 from cStringIO import StringIO
 
-from .. import (log, LOG_CHECK, strformat,
+from .. import (log, LOG_CHECK, strformat, fileutil,
     url as urlutil, LinkCheckerError)
 from . import (internpaturl, proxysupport, httpheaders as headers)
 # import warnings
@@ -227,6 +227,14 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if not self.valid:
             return False
         ctype = self.get_content_type()
+        # some content types must be validated with the page content
+        if ctype in ("application/xml", "text/xml"):
+            data = self.get_content()
+            io = StringIO(data)
+            rtype = fileutil.guess_mimetype_read(io.read)
+            if rtype is not None:
+                # XXX side effect
+                ctype = self.content_type = rtype
         if ctype not in self.ContentMimetypes:
             log.debug(LOG_CHECK, "URL with content type %r is not parseable", ctype)
             return False

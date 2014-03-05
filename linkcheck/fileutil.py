@@ -218,6 +218,8 @@ PARSE_CONTENTS = {
     "text/plain+opera": re.compile(r'^Opera Hotlist'),
     "text/plain+chromium": re.compile(r'^{\s*"checksum":'),
     "text/plain+linkchecker": re.compile(r'(?i)^# LinkChecker URL list'),
+    "application/xml+sitemapindex": re.compile(r'(?i)<\?xml[^<]+<sitemapindex\s+'),
+    "application/xml+sitemap": re.compile(r'(?i)<\?xml[^<]+<urlset\s+'),
 }
 
 def guess_mimetype (filename, read=None):

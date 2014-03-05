@@ -1,5 +1,5 @@
 # -*- coding: iso-8859-1 -*-
-# Copyright (C) 2010-2012 Bastian Kleineidam
+# Copyright (C) 2010-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -39,7 +39,9 @@ class TestFileutil (unittest.TestCase):
         self.assertEqual(linkcheck.fileutil.get_mtime(file_non_existing), 0)
 
     def mime_test (self, filename, mime_expected):
-        mime = linkcheck.fileutil.guess_mimetype(get_file(filename))
+        absfilename = get_file(filename)
+        with open(absfilename) as fd:
+            mime = linkcheck.fileutil.guess_mimetype(absfilename, read=fd.read)
         self.assertEqual(mime, mime_expected)
 
     def test_mime (self):
@@ -47,4 +49,6 @@ class TestFileutil (unittest.TestCase):
         self.mime_test(filename, "application/x-plist+safari")
         filename = os.path.join("plist_xml", "Bookmarks.plist")
         self.mime_test(filename, "application/x-plist+safari")
-        self.mime_test("test.wml", "text/vnd.wap.wml")
+        self.mime_test("file.wml", "text/vnd.wap.wml")
+        self.mime_test("sitemap.xml", "application/xml+sitemap")
+        self.mime_test("sitemapindex.xml", "application/xml+sitemapindex")

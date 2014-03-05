@@ -87,6 +87,8 @@ class UrlBase (object):
         "text/plain+chromium": "chromium",
         "application/x-plist+safari": "safari",
         "text/vnd.wap.wml": "wml",
+        "application/xml+sitemap": "sitemap",
+        "application/xml+sitemapindex": "sitemapindex",
     }
 
     # Read in 16kb chunks

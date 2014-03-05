@@ -49,17 +49,20 @@ def parse_opera (url_data):
     for url, name, lineno in parse_bookmark_data(url_data.get_content()):
         url_data.add_url(url, line=lineno, name=name)
 
+
 def parse_chromium (url_data):
     """Parse a Chromium or Google Chrome bookmark file."""
     from ..bookmarks.chromium import parse_bookmark_data
     for url, name in parse_bookmark_data(url_data.get_content()):
         url_data.add_url(url, name=name)
 
+
 def parse_safari (url_data):
     """Parse a Safari bookmark file."""
     from ..bookmarks.safari import parse_bookmark_data
     for url, name in parse_bookmark_data(url_data.get_content()):
         url_data.add_url(url, name=name)
+
 
 def parse_text (url_data):
     """Parse a text file with one url per line; comment and blank
@@ -87,12 +90,14 @@ def parse_css (url_data):
             url = strformat.unquote(mo.group("url").strip())
             url_data.add_url(url, line=lineno, column=column)
 
+
 def parse_swf (url_data):
     """Parse a SWF file for URLs."""
     linkfinder = linkparse.swf_url_re.finditer
     for mo in linkfinder(url_data.get_content()):
         url = mo.group()
         url_data.add_url(url)
+
 
 def parse_word (url_data):
     """Parse a word file for hyperlinks."""
@@ -115,6 +120,7 @@ def parse_word (url_data):
             winutil.close_word_app(app)
     except winutil.Error as msg:
         log.warn(LOG_CHECK, "Error parsing word file: %s", msg)
+
 
 def parse_wml (url_data):
     """Parse into WML content and search for URLs to check.
@@ -161,7 +167,7 @@ def parse_firefox (url_data):
     """Parse a Firefox3 bookmark file."""
     filename = url_data.get_os_filename()
     for url, name in firefox.parse_bookmark_file(filename):
-        # XXX use add_url
-        url_data = get_url_from(url, url_data.recursion_level+1,
-            url_data.aggregate, parent_url=url_data.url, name=name)
-        url_data.aggregate.urlqueue.put(url_data)
+        url_data.add_url(url, name=name)
+
+
+from .sitemap import parse_sitemap, parse_sitemapindex
