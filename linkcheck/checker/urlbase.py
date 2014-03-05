@@ -666,16 +666,19 @@ class UrlBase (object):
         """
         sep = unicode_safe(sep)
         if self.base_url is not None:
-            assert isinstance(self.base_url, unicode), self
+            assert isinstance(self.base_url, unicode), repr(self.base_url)
         if self.parent_url is not None:
-            assert isinstance(self.parent_url, unicode), self
+            assert isinstance(self.parent_url, unicode), repr(self.parent_url)
         if self.base_ref is not None:
-            assert isinstance(self.base_ref, unicode), self
-        assert isinstance(self.name, unicode), self
+            assert isinstance(self.base_ref, unicode), repr(self.base_ref)
+        assert isinstance(self.name, unicode), repr(self.name)
         if self.anchor is not None:
-            assert isinstance(self.anchor, unicode), self
+            assert isinstance(self.anchor, unicode), repr(self.anchor)
         if self.cache_key is not None:
-            assert isinstance(self.cache_key, unicode), self
+            if self.cache_key[0] is not None:
+                assert isinstance(self.cache_key[0], unicode), repr(self.cache_key[0])
+            if self.cache_key[1] is not None:
+                assert isinstance(self.cache_key[1], unicode), repr(self.cache_key[1])
         return sep.join([
             u"%s link" % self.scheme,
             u"base_url=%r" % self.base_url,
@@ -687,7 +690,7 @@ class UrlBase (object):
             u"column=%d" % self.column,
             u"name=%r" % self.name,
             u"anchor=%r" % self.anchor,
-            u"cache_key=%r" % self.cache_key,
+            u"cache_key=%s" % repr(self.cache_key),
            ])
 
     def get_intern_pattern (self, url=None):
