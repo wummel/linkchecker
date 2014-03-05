@@ -629,6 +629,9 @@ if os.name == 'nt':
 else:
     extra_compile_args.append("-pedantic")
 
+if sys.platform == 'darwin':
+    define_macros.extend(('HAVE_STRLCPY', None), ('HAVE_STRLCAT', None))
+
 myname = "Bastian Kleineidam"
 myemail = "bastian.kleineidam@web.de"
 
@@ -932,8 +935,7 @@ o a command line, GUI and web interface
             extra_compile_args = extra_compile_args,
             library_dirs = library_dirs,
             libraries = libraries,
-            define_macros = define_macros + [('YY_NO_INPUT', None),
-                ('HAVE_STRLCPY', None), ('HAVE_STRLCAT', None)],
+            define_macros = define_macros + [('YY_NO_INPUT', None)],
             include_dirs = include_dirs + [normpath("linkcheck/HtmlParser")],
         ),
         Extension("linkcheck.network._network",
