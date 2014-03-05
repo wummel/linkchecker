@@ -31,7 +31,7 @@ def parse_url(url_data):
     if url_data.is_file() and firefox.has_sqlite and firefox.extension.search(url_data.url):
         return parse_firefox(url_data)
     # determine parse routine according to content types
-    mime = url_data.get_content_type()
+    mime = url_data.content_type
     key = url_data.ContentMimetypes[mime]
     return globals()["parse_"+key](url_data)
 

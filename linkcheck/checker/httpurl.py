@@ -153,11 +153,9 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if _user is not None and _password is not None:
             self.auth = (_user, _password)
 
-    def get_content_type (self):
+    def set_content_type (self):
         """Return content MIME type or empty string."""
-        if not self.content_type:
-            self.content_type = headers.get_content_type(self.headers)
-        return self.content_type
+        self.content_type = headers.get_content_type(self.headers)
 
     def follow_redirections(self, request):
         """Follow all redirections of http response."""
@@ -226,17 +224,14 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         if not self.valid:
             return False
-        ctype = self.get_content_type()
         # some content types must be validated with the page content
-        if ctype in ("application/xml", "text/xml"):
-            data = self.get_content()
-            io = StringIO(data)
-            rtype = fileutil.guess_mimetype_read(io.read)
+        if self.content_type in ("application/xml", "text/xml"):
+            rtype = fileutil.guess_mimetype_read(self.get_content)
             if rtype is not None:
                 # XXX side effect
-                ctype = self.content_type = rtype
-        if ctype not in self.ContentMimetypes:
-            log.debug(LOG_CHECK, "URL with content type %r is not parseable", ctype)
+                self.content_type = rtype
+        if self.content_type not in self.ContentMimetypes:
+            log.debug(LOG_CHECK, "URL with content type %r is not parseable", self.content_type)
             return False
         return True
 

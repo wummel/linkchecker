@@ -193,7 +193,7 @@ class UrlBase (object):
         # flag if content should be checked or not
         self.do_check_content = True
         # MIME content type
-        self.content_type = None
+        self.content_type = u""
 
     def set_result (self, msg, valid=True, overwrite=False):
         """
@@ -247,7 +247,7 @@ class UrlBase (object):
         """Return True iff content is valid and of the given type."""
         if not self.valid:
             return False
-        mime = self.get_content_type()
+        mime = self.content_type
         return self.ContentMimetypes.get(mime) == ctype
 
     def is_http (self):
@@ -429,6 +429,7 @@ class UrlBase (object):
         log.debug(LOG_CHECK, "checking connection")
         try:
             self.check_connection()
+            self.set_content_type()
             self.add_size_info()
             self.aggregate.plugin_manager.run_connection_plugins(self)
         except tuple(ExcList) as exc:
@@ -600,12 +601,10 @@ class UrlBase (object):
             if not self.has_result:
                 self.set_result(_("filtered"))
 
-    def get_content_type (self):
-        """Return content MIME type or empty string.
+    def set_content_type (self):
+        """Set content MIME type.
         Should be overridden in subclasses."""
-        if self.content_type is None:
-            self.content_type = u""
-        return self.content_type
+        pass
 
     def can_get_content (self):
         """Indicate wether url get_content() can be called."""
@@ -794,7 +793,7 @@ class UrlBase (object):
           line=self.line,
           column=self.column,
           cache_key=self.cache_key,
-          content_type=self.get_content_type(),
+          content_type=self.content_type,
           level=self.recursion_level,
           modified=self.modified,
         )

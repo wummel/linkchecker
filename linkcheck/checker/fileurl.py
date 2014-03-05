@@ -242,21 +242,18 @@ class FileUrl (urlbase.UrlBase):
             return True
         if firefox.has_sqlite and firefox.extension.search(self.url):
             return True
-        ctype = self.get_content_type()
-        if ctype in self.ContentMimetypes:
+        if self.content_type in self.ContentMimetypes:
             return True
-        log.debug(LOG_CHECK, "File with content type %r is not parseable.", ctype)
+        log.debug(LOG_CHECK, "File with content type %r is not parseable.", self.content_type)
         return False
 
-    def get_content_type (self):
+    def set_content_type (self):
         """Return URL content type, or an empty string if content
         type could not be found."""
-        if self.content_type is None:
-            if self.url:
-                self.content_type = fileutil.guess_mimetype(self.url, read=self.get_content)
-            else:
-                self.content_type = u""
-        return self.content_type
+        if self.url:
+            self.content_type = fileutil.guess_mimetype(self.url, read=self.get_content)
+        else:
+            self.content_type = u""
 
     def get_intern_pattern (self, url=None):
         """Get pattern for intern URL matching.

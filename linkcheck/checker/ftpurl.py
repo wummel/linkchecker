@@ -165,10 +165,9 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """See if URL target is parseable for recursion."""
         if self.is_directory():
             return True
-        ctype = self.get_content_type()
-        if ctype in self.ContentMimetypes:
+        if self.content_type in self.ContentMimetypes:
             return True
-        log.debug(LOG_CHECK, "URL with content type %r is not parseable.", ctype)
+        log.debug(LOG_CHECK, "URL with content type %r is not parseable.", self.content_type)
         return False
 
     def is_directory (self):
@@ -177,12 +176,10 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         path = self.urlparts[2]
         return (not path) or path.endswith('/')
 
-    def get_content_type (self):
-        """Return URL content type, or an empty string if content
+    def set_content_type (self):
+        """Set URL content type, or an empty string if content
         type could not be found."""
-        if self.content_type is None:
-            self.content_type = fileutil.guess_mimetype(self.url, read=self.get_content)
-        return self.content_type
+        self.content_type = fileutil.guess_mimetype(self.url, read=self.get_content)
 
     def read_content (self):
         """Return URL target content, or in case of directories a dummy HTML
