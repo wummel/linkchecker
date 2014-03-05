@@ -17,28 +17,11 @@
 """
 Main functions for link parsing
 """
-from ..checker import get_url_from
 from .. import winutil, fileutil, log, LOG_CHECK, strformat
 from ..htmlutil import linkparse
 from ..HtmlParser import htmlsax
 from ..bookmarks import firefox
 
-ContentMimetypes = {
-        "text/html": "html",
-        "application/xhtml+xml": "html",
-        # Include PHP file which helps when checking local .php files.
-        # It does not harm other URL schemes like HTTP since HTTP servers
-        # should not send this content type. They send text/html instead.
-        "application/x-httpd-php": "html",
-        "text/css": "css",
-        "application/x-shockwave-flash": "swf",
-        "application/msword": "word",
-        "text/plain+linkchecker": "text",
-        "text/plain+opera": "opera",
-        "text/plain+chromium": "chromium",
-        "application/x-plist+safari": "safari",
-        "text/vnd.wap.wml": "wml",
-    }
 
 def parse_url(url_data):
     """Parse a URL."""
@@ -49,7 +32,7 @@ def parse_url(url_data):
         return parse_firefox(url_data)
     # determine parse routine according to content types
     mime = url_data.get_content_type()
-    key = ContentMimetypes[mime]
+    key = url_data.ContentMimetypes[mime]
     return globals()["parse_"+key](url_data)
 
 
