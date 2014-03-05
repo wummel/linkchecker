@@ -209,25 +209,6 @@ class FileUrl (urlbase.UrlBase):
             data = super(FileUrl, self).read_content()
         return data
 
-    def is_html (self):
-        """Check if file is a HTML file."""
-        return self.ContentMimetypes.get(self.get_content_type()) == "html"
-
-    def is_css (self):
-        """
-        Check if file is a CSS file.
-        """
-        return self.ContentMimetypes.get(self.get_content_type()) == "css"
-
-    def is_file (self):
-        """
-        This is a file.
-
-        @return: True
-        @rtype: bool
-        """
-        return True
-
     def get_os_filename (self):
         """
         Construct os specific file path out of the file:// URL.

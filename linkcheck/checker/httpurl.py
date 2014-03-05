@@ -217,35 +217,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             buf.write(data)
         return buf.getvalue()
 
-    def is_html (self):
-        """
-        See if this URL points to a HTML file by looking at the
-        Content-Type header, file extension and file content.
-
-        @return: True if URL points to HTML file
-        @rtype: bool
-        """
-        if not self.valid:
-            return False
-        mime = self.get_content_type()
-        return self.ContentMimetypes.get(mime) == "html"
-
-    def is_css (self):
-        """Return True iff content of this url is CSS stylesheet."""
-        if not self.valid:
-            return False
-        mime = self.get_content_type()
-        return self.ContentMimetypes.get(mime) == "css"
-
-    def is_http (self):
-        """
-        This is a HTTP file.
-
-        @return: True
-        @rtype: bool
-        """
-        return True
-
     def is_parseable (self):
         """
         Check if content is parseable for recursion.

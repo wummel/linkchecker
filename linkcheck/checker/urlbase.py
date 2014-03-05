@@ -234,22 +234,27 @@ class UrlBase (object):
         return False
 
     def is_html (self):
-        """
-        Return True iff content of this url is HTML formatted.
-        """
-        return False
+        """Return True iff content of this url is HTML formatted."""
+        return self._is_ctype("html")
 
     def is_css (self):
         """Return True iff content of this url is CSS stylesheet."""
-        return False
+        return self._is_ctype("css")
+
+    def _is_ctype(self, ctype):
+        """Return True iff content is valid and of the given type."""
+        if not self.valid:
+            return False
+        mime = self.get_content_type()
+        return self.ContentMimetypes.get(mime) == ctype
 
     def is_http (self):
-        """Return True for http:// URLs."""
-        return False
+        """Return True for http:// or https:// URLs."""
+        return self.scheme in ("http", "https")
 
     def is_file (self):
         """Return True for file:// URLs."""
-        return False
+        return self.scheme == "file"
 
     def is_directory(self):
         """Return True if current URL represents a directory."""

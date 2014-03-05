@@ -161,14 +161,6 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         self.url_connection.dir(add_entry)
         return files
 
-    def is_html (self):
-        """See if URL target is a HTML file by looking at the extension."""
-        return self.ContentMimetypes.get(self.get_content_type()) == "html"
-
-    def is_css (self):
-        """See if URL target is a CSS file by looking at the extension."""
-        return self.ContentMimetypes.get(self.get_content_type()) == "css"
-
     def is_parseable (self):
         """See if URL target is parseable for recursion."""
         if self.is_directory():
