@@ -2,6 +2,12 @@
 
 Features:
 - checking: Support parsing of sitemap and sitemap index XML files.
+- checking: Fix URL result caching.
+- logging: Support arbitrary encodings in CSV output.
+  Closes: GH bug #467
+
+Fixes:
+- checking: Fix internal error in debug output.
 
 
 9.0 "The Wolf of Wall Street" (released 3.3.2014)
