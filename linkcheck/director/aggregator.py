@@ -34,6 +34,7 @@ _hosts_lock = threading.RLock()
 def new_request_session(config):
     """Create a new request session."""
     session = requests.Session()
+    session.max_redirects = config["maxhttpredirects"]
     # XXX proxies
     if config["cookiefile"]:
         for cookie in cookies.from_file(config["cookiefile"]):
