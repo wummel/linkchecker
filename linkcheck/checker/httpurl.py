@@ -44,8 +44,6 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         Initialize HTTP specific variables.
         """
         super(HttpUrl, self).reset()
-        # URLs seen through redirections
-        self.aliases = []
         # initialize check data
         self.headers = {}
         self.auth = None

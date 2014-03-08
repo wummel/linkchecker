@@ -53,7 +53,6 @@ class UrlQueue (object):
         self.unfinished_tasks = 0
         self.finished_tasks = 0
         self.in_progress = 0
-        self.seen = set()
         self.shutdown = False
         # Each put() decreases the number of allowed puts.
         # This way we can restrict the number of URLs that are checked.
@@ -107,8 +106,6 @@ class UrlQueue (object):
         """Put an item into the queue.
         Block if necessary until a free slot is available.
         """
-        if self.put_denied(item):
-            return
         with self.mutex:
             self._put(item)
             self.not_empty.notify()
@@ -117,35 +114,23 @@ class UrlQueue (object):
         """Determine if put() will not append the item on the queue.
         @return True (reliable) or False (unreliable)
         """
-        if self.shutdown or self.allowed_puts == 0:
-            return True
-        if url_data.cache_key is not None and url_data.cache_key in self.seen:
-            return True
-        return False
+        return self.shutdown or self.allowed_puts == 0
 
     def _put (self, url_data):
         """Put URL in queue, increase number of unfished tasks."""
-        if self.shutdown:
-            # don't accept more URLs
+        if self.put_denied(url_data):
             return
         if self.allowed_puts is not None:
-            if self.allowed_puts == 0:
-                # no more puts allowed
-                return
             self.allowed_puts -= 1
-        log.debug(LOG_CACHE, "queueing %s", url_data)
-        key = url_data.cache_key
-        if key is not None:
-            if key in self.seen:
-                # don't check duplicate URLs
-                return
-            self.seen.add(key)
-        self.unfinished_tasks += 1
-        if url_data.has_result or \
-           (key and key[1] in url_data.aggregate.result_cache.cache):
+        log.debug(LOG_CACHE, "queueing %s", url_data.url)
+        key = url_data.cache_url
+        cache = url_data.aggregate.result_cache
+        if url_data.has_result or cache.has_result(key):
             self.queue.appendleft(url_data)
         else:
+            assert key is not None, "no result for None key: %s" % url_data
             self.queue.append(url_data)
+        self.unfinished_tasks += 1
 
     def task_done (self, url_data):
         """
@@ -163,10 +148,7 @@ class UrlQueue (object):
         placed in the queue.
         """
         with self.all_tasks_done:
-            log.debug(LOG_CACHE, "task_done %s", url_data)
-            # check for aliases (eg. through HTTP redirections)
-            if hasattr(url_data, "aliases") and url_data.aliases:
-                self.seen.update(url_data.aliases)
+            log.debug(LOG_CACHE, "task_done %s", url_data.url)
             self.finished_tasks += 1
             self.unfinished_tasks -= 1
             self.in_progress -= 1

@@ -67,7 +67,7 @@ class TestLogger (linkcheck.logger._Logger):
             url = u"url %s" % url_data.base_url
             self.result.append(url)
         if self.has_part('cachekey'):
-            cache_key = url_data.cache_key[1] if url_data.cache_key else None
+            cache_key = url_data.cache_url if url_data.cache_url else None
             self.result.append(u"cache key %s" % cache_key)
         if self.has_part('realurl'):
             self.result.append(u"real url %s" % url_data.url)

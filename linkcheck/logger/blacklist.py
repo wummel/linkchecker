@@ -55,7 +55,8 @@ class BlacklistLogger (_Logger):
         """
         Put invalid url in blacklist, delete valid url from blacklist.
         """
-        key = url_data.cache_key
+        key = (url_data.parent_url, url_data.cache_url)
+        key = repr(key)
         if key in self.blacklist:
             if url_data.valid:
                 del self.blacklist[key]
@@ -90,7 +91,7 @@ class BlacklistLogger (_Logger):
         """
         oldmask = os.umask(0077)
         for key, value in self.blacklist.items():
-            self.write(u"%d %s%s" % (value, key, os.linesep))
+            self.write(u"%d %s%s" % (value, repr(key), os.linesep))
         self.close_fileoutput()
         # restore umask
         os.umask(oldmask)

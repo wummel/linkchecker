@@ -7,7 +7,8 @@ Features:
   Closes: GH bug #467
 
 Fixes:
-- checking: Fix internal error in debug output.
+- checking: Fix internal errors in debug output.
+  Closes: GH bug #472
 
 
 9.0 "The Wolf of Wall Street" (released 3.3.2014)

@@ -58,9 +58,11 @@ class TestHttpRedirect (HttpServerTest):
             u"info Redirected to `%s'." % rurl,
             u"valid",
             u"url newurl.html",
-            u"cache key %s" % rurl,
+            u"cache key %s" % nurl,
             u"real url %s" % rurl,
             u"name Recursive Redirect",
+            # XXX the info is copied from the cached result
+            u"info Redirected to `%s'." % rurl,
             u"valid",
         ]
         self.direct(url, resultlines, recursionlevel=99)
@@ -103,3 +105,9 @@ class TestHttpRedirect (HttpServerTest):
             u"error",
         ]
         self.direct(url, resultlines, recursionlevel=99)
+
+    def redirect6(self):
+        #max_redirect = 10
+        # url = "http://httpbin.org/redirect/" + max_redirect --> valid
+        # url = "http://httpbin.org/redirect/" + (max_redirect+1) --> error
+        pass # XXX

@@ -33,28 +33,28 @@ class ResultCache(object):
     format: {cache key (string) -> result (UrlData.towire())}
     """
 
-    def __init__(self, max_size=10000):
+    def __init__(self, max_size=100000):
         """Initialize result cache."""
         # mapping {URL -> cached result}
         self.cache = {}
         self.max_size = max_size
-        self.hits = self.misses = 0
 
     @synchronized(cache_lock)
     def get_result(self, key):
         """Return cached result or None if not found."""
-        if key in self.cache:
-            self.hits += 1
-            return self.cache[key]
-        self.misses += 1
-        return None
+        return self.cache.get(key)
 
     @synchronized(cache_lock)
     def add_result(self, key, result):
         """Add result object to cache with given key.
-        The request is ignored when the cache is already full.
+        The request is ignored when the cache is already full or the key
+        is None.
         """
         if len(self.cache) > self.max_size:
             return
-        self.cache[key] = result
+        if key is not None:
+            self.cache[key] = result
 
+    def has_result(self, key):
+        """Non-thread-safe function for fast containment checks."""
+        return key in self.cache

@@ -288,13 +288,12 @@ class MailtoUrl (urlbase.UrlBase):
             pass
         self.set_result(_("Valid mail address syntax"))
 
-    def set_cache_key(self):
+    def set_cache_url(self):
         """
-        The cache key is a comma separated list of emails.
+        The cache url is a comma separated list of emails.
         """
         emails = u",".join(sorted(self.addresses))
-        cache_url = u"%s:%s" % (self.scheme, emails)
-        self.cache_key = (self.parent_url, cache_url)
+        self.cache_url = u"%s:%s" % (self.scheme, emails)
 
     def can_get_content (self):
         """

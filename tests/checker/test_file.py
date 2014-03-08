@@ -134,7 +134,7 @@ class TestFile (LinkCheckTest):
         self.direct(url, resultlines)
 
     def test_good_dir_space (self):
-        url = u"file://%(curdir)s/%(datadir)s/a b/bl.html" % self.get_attrs()
+        url = u"file://%(curdir)s/%(datadir)s/a b/" % self.get_attrs()
         nurl = self.norm(url)
         url2 = u"file://%(curdir)s/%(datadir)s/a b/el.html" % self.get_attrs()
         nurl2 = self.norm(url2)
@@ -145,15 +145,15 @@ class TestFile (LinkCheckTest):
             u"cache key %s" % nurl,
             u"real url %s" % nurl,
             u"valid",
-            u"url bl.html",
-            u"cache key %s" % nurl,
-            u"real url %s" % nurl,
-            u"name link",
-            u"valid",
             u"url el.html",
             u"cache key %s" % nurl2,
             u"real url %s" % nurl2,
-            u"name External link",
+            u"name el.html",
+            u"valid",
+            u"url t.txt",
+            u"cache key %s" % nurl3,
+            u"real url %s" % nurl3,
+            u"name t.txt",
             u"valid",
             u"url t.txt",
             u"cache key %s" % nurl3,

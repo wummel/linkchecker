@@ -29,8 +29,8 @@ import select
 from cStringIO import StringIO
 
 from . import absolute_url, get_url_from
-from .. import (log, LOG_CHECK, LOG_CACHE,
-  strformat, LinkCheckerError, url as urlutil, trace, get_link_pat, parser)
+from .. import (log, LOG_CHECK,
+  strformat, LinkCheckerError, url as urlutil, trace, get_link_pat)
 from ..HtmlParser import htmlsax
 from ..htmlutil import linkparse
 from ..network import iputil
@@ -182,8 +182,8 @@ class UrlBase (object):
         self.url_connection = None
         # data of url content,  (data == None) means no data is available
         self.data = None
-        # cache key is set by build_url() calling set_cache_key()
-        self.cache_key = None
+        # cache url is set by build_url() calling set_cache_url()
+        self.cache_url = None
         # extern flags (is_extern, is_strict)
         self.extern = None
         # flag if the result should be cached
@@ -194,6 +194,8 @@ class UrlBase (object):
         self.do_check_content = True
         # MIME content type
         self.content_type = u""
+        # URLs seen through redirections
+        self.aliases = []
 
     def set_result (self, msg, valid=True, overwrite=False):
         """
@@ -282,14 +284,11 @@ class UrlBase (object):
         if s not in self.info:
             self.info.append(s)
 
-    def set_cache_key (self):
-        """Set key for URL cache checking. A cache key consists of
-        a tuple (source url, target url)."""
+    def set_cache_url (self):
+        """Set the URL to be used for caching."""
         # remove anchor from cached target url since we assume
         # URLs with different anchors to have the same content
-        cache_url = urlutil.urlunsplit(self.urlparts[:4]+[u''])
-        self.cache_key = (self.parent_url, cache_url)
-        log.debug(LOG_CACHE, "URL cache key %r", self.cache_key)
+        self.cache_url = urlutil.urlunsplit(self.urlparts[:4]+[u''])
 
     def check_syntax (self):
         """
@@ -311,7 +310,7 @@ class UrlBase (object):
         except tuple(ExcSyntaxList) as msg:
             self.set_result(unicode_safe(msg), valid=False)
         else:
-            self.set_cache_key()
+            self.set_cache_url()
 
     def check_url_warnings(self):
         """Check URL name and length."""
@@ -414,15 +413,10 @@ class UrlBase (object):
                 raise KeyboardInterrupt(value)
             else:
                 raise
-        finally:
-            # close/release possible open connection
-            self.close_connection()
 
     def local_check (self):
         """Local check function can be overridden in subclasses."""
-        log.debug(LOG_CHECK, "Checking %s", self)
-        # start time for check
-        check_start = time.time()
+        log.debug(LOG_CHECK, "Checking %s", unicode(self))
         # strict extern URLs should not be checked
         assert not self.extern[1], 'checking strict extern URL'
         # check connection
@@ -441,18 +435,23 @@ class UrlBase (object):
                 # idna.encode(host) failed
                 value = _('Bad hostname %(host)r: %(msg)s') % {'host': self.host, 'msg': str(value)}
             self.set_result(unicode_safe(value), valid=False)
-        if self.do_check_content:
+
+    def check_content(self):
+        """Check content of URL.
+        @return: True if content can be parsed, else False
+        """
+        if self.do_check_content and self.valid:
             # check content and recursion
             try:
-                if self.valid and self.can_get_content():
+                if self.can_get_content():
                     self.aggregate.plugin_manager.run_content_plugins(self)
                 if self.allows_recursion():
-                    parser.parse_url(self)
+                    return True
             except tuple(ExcList):
                 value = self.handle_exception()
                 self.add_warning(_("could not get content: %(msg)s") %
                      {"msg": str(value)}, tag=WARN_URL_ERROR_GETTING_CONTENT)
-        self.checktime = time.time() - check_start
+        return False
 
     def close_connection (self):
         """
@@ -648,7 +647,7 @@ class UrlBase (object):
         return self.aggregate.config.get_user_password(self.url)
 
     def add_url (self, url, line=0, column=0, name=u"", base=None):
-        """Queue URL data for checking."""
+        """Add new URL to queue."""
         if base:
             base_ref = urlutil.url_norm(base)[0]
         else:
@@ -656,9 +655,7 @@ class UrlBase (object):
         url_data = get_url_from(url, self.recursion_level+1, self.aggregate,
             parent_url=self.url, base_ref=base_ref, line=line, column=column,
             name=name, parent_content_type=self.content_type)
-        if url_data.has_result or not url_data.extern[1]:
-            # Only queue URLs which have a result or are not strict extern.
-            self.aggregate.urlqueue.put(url_data)
+        self.aggregate.urlqueue.put(url_data)
 
     def serialized (self, sep=os.linesep):
         """
@@ -674,11 +671,8 @@ class UrlBase (object):
         assert isinstance(self.name, unicode), repr(self.name)
         if self.anchor is not None:
             assert isinstance(self.anchor, unicode), repr(self.anchor)
-        if self.cache_key is not None:
-            if self.cache_key[0] is not None:
-                assert isinstance(self.cache_key[0], unicode), repr(self.cache_key[0])
-            if self.cache_key[1] is not None:
-                assert isinstance(self.cache_key[1], unicode), repr(self.cache_key[1])
+        if self.cache_url is not None:
+            assert isinstance(self.cache_url, unicode), repr(self.cache_url)
         return sep.join([
             u"%s link" % self.scheme,
             u"base_url=%r" % self.base_url,
@@ -690,7 +684,7 @@ class UrlBase (object):
             u"column=%d" % self.column,
             u"name=%r" % self.name,
             u"anchor=%r" % self.anchor,
-            u"cache_key=%s" % repr(self.cache_key),
+            u"cache_url=%s" % self.cache_url,
            ])
 
     def get_intern_pattern (self, url=None):
@@ -715,14 +709,23 @@ class UrlBase (object):
                 {"domain": msg}
             self.set_result(res, valid=False)
 
-    def __str__ (self):
+    def __unicode__(self):
+        """
+        Get URL info.
+
+        @return: URL info
+        @rtype: unicode
+        """
+        return self.serialized()
+
+    def __str__(self):
         """
         Get URL info.
 
         @return: URL info, encoded with the output logger encoding
         @rtype: string
         """
-        s = self.serialized()
+        s = unicode(self)
         return self.aggregate.config['logger'].encode(s)
 
     def __repr__ (self):
@@ -766,8 +769,8 @@ class UrlBase (object):
           Line number of this URL at parent document, or -1
         - url_data.column: int
           Column number of this URL at parent document, or -1
-        - url_data.cache_key: unicode
-          Cache key for this URL.
+        - url_data.cache_url: unicode
+          Cache url for this URL.
         - url_data.content_type: unicode
           MIME content type for URL content.
         - url_data.level: int
@@ -792,7 +795,7 @@ class UrlBase (object):
           info=self.info,
           line=self.line,
           column=self.column,
-          cache_key=self.cache_key,
+          cache_url=self.cache_url,
           content_type=self.content_type,
           level=self.recursion_level,
           modified=self.modified,
@@ -823,7 +826,7 @@ urlDataAttr = [
     'modified',
     'line',
     'column',
-    'cache_key',
+    'cache_url',
     'content_type',
     'level',
 ]

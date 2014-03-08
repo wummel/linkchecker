@@ -80,9 +80,7 @@ class RobotsTxt (object):
                 url_data.recursion_level+1, url_data.aggregate,
                 parent_url=roboturl, line=line,
                 parent_content_type=url_data.content_type)
-            if sitemap_url_data.has_result or not sitemap_url_data.extern[1]:
-                # Only queue URLs which have a result or are not strict extern.
-                url_data.aggregate.urlqueue.put(sitemap_url_data)
+            url_data.aggregate.urlqueue.put(sitemap_url_data)
 
     @synchronized(robot_lock)
     def get_lock(self, roboturl):

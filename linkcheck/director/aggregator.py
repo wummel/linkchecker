@@ -81,7 +81,7 @@ class Aggregate (object):
                 t.start()
         else:
             self.request_sessions[thread.get_ident()] = new_request_session(self.config)
-            checker.check_url(self.urlqueue, self.logger)
+            checker.check_urls(self.urlqueue, self.logger)
 
     @synchronized(_threads_lock)
     def add_request_session(self):

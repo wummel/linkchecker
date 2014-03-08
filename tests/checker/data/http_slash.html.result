@@ -39,3 +39,8 @@ real url http://www.example.com/
 name ok example
 valid
 
+url //www.example.com/
+cache key http://www.example.com/
+real url http://www.example.com/
+name no scheme example
+valid

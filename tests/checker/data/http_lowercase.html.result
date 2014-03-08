@@ -9,3 +9,8 @@ real url http://www.example.com/
 name l1
 valid
 
+url HTTP://WWW.EXAMPLE.COM/
+cache key http://www.example.com/
+real url http://www.example.com/
+name l2
+valid

@@ -18,23 +18,63 @@
 URL checking functions.
 """
 import copy
+import time
 from . import task
 from ..cache import urlqueue
+from .. import parser
 
 
-def check_url (urlqueue, logger):
+def check_urls (urlqueue, logger):
     """Check URLs without threading."""
     while not urlqueue.empty():
         url_data = urlqueue.get()
         try:
-            if not url_data.has_result:
-                url_data.check()
-            logger.log_url(url_data.to_wire())
+            check_url(url_data, logger)
         finally:
             urlqueue.task_done(url_data)
 
 
-class Checker (task.LoggedCheckedTask):
+def check_url(url_data, logger):
+    """Check a single URL with logging."""
+    if url_data.has_result:
+        logger.log_url(url_data.to_wire())
+    else:
+        cache = url_data.aggregate.result_cache
+        key = url_data.cache_url
+        result = cache.get_result(key)
+        if result is None:
+            # check
+            check_start = time.time()
+            try:
+                url_data.check()
+                do_parse = url_data.check_content()
+                url_data.checktime = time.time() - check_start
+                # Add result to cache
+                result = url_data.to_wire()
+                cache.add_result(key, result)
+                for alias in url_data.aliases:
+                    # redirect aliases
+                    cache.add_result(alias, result)
+                # parse content recursively
+                if do_parse:
+                    parser.parse_url(url_data)
+            finally:
+                # close/release possible open connection
+                url_data.close_connection()
+        else:
+            # copy data from cache and adjust it
+            result = copy.copy(result)
+            result.parent_url = url_data.parent_url
+            result.base_ref = url_data.base_ref or u""
+            result.base_url = url_data.base_url or u""
+            result.line = url_data.line
+            result.column = url_data.column
+            result.level = url_data.recursion_level
+            result.name = url_data.name
+        logger.log_url(result)
+
+
+class Checker(task.LoggedCheckedTask):
     """URL check thread."""
 
     def __init__ (self, urlqueue, logger, add_request_session):
@@ -71,17 +111,4 @@ class Checker (task.LoggedCheckedTask):
         else:
             url = url_data.url.encode("ascii", "replace")
         self.setName("CheckThread-%s" % url)
-        if url_data.has_result:
-            self.logger.log_url(url_data.to_wire())
-        else:
-            cache = url_data.aggregate.result_cache
-            key = url_data.cache_key[1]
-            result = cache.get_result(key)
-            if result is None:
-                url_data.check()
-                result = url_data.to_wire()
-                cache.add_result(key, result)
-            else:
-                result = copy.copy(result)
-                result.parent_url = url_data.parent_url
-            self.logger.log_url(result)
+        check_url(url_data, self.logger)
