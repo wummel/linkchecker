@@ -630,7 +630,7 @@ else:
     extra_compile_args.append("-pedantic")
 
 if sys.platform == 'darwin':
-    define_macros.extend(('HAVE_STRLCPY', None), ('HAVE_STRLCAT', None))
+    define_macros.extend([('HAVE_STRLCPY', None), ('HAVE_STRLCAT', None)])
 
 myname = "Bastian Kleineidam"
 myemail = "bastian.kleineidam@web.de"
