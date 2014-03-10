@@ -312,7 +312,7 @@ def add_msvc_files (files):
 def add_requests_cert_file(files):
     """Add Python requests .pem file for installers."""
     import requests
-    filename = os.path.join(requests.__path__, 'cacert.pem')
+    filename = os.path.join(os.path.dirname(requests.__file__), 'cacert.pem')
     dirname = 'share/linkchecker'
     files.append((dirname, [filename]))
 
