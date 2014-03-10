@@ -1,5 +1,5 @@
 # required:
-requests>=2.2.1
+requests>=2.2.0
 # optional:
 argcomplete
 #twill

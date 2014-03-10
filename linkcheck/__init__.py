@@ -18,13 +18,17 @@
 Main function module for link checking.
 """
 
-# imports and checks
+# version checks
 import sys
 # Needs Python >= 2.7 because we use dictionary based logging config
 # Needs Python >= 2.7.2 which fixed http://bugs.python.org/issue11467
 if not (hasattr(sys, 'version_info') or
         sys.version_info < (2, 7, 2, 'final', 0)):
     raise SystemExit("This program requires Python 2.7.2 or later.")
+import requests
+if requests.__version__ <= '2.2.0':
+    raise SystemExit("This program requires Python requests 2.2.0 or later.")
+
 import os
 # add the custom linkcheck_dns directory to sys.path
 _dnspath = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'linkcheck_dns'))
