@@ -82,6 +82,10 @@ lognames = {
     "plugin": LOG_PLUGIN,
     "all": LOG_ROOT,
 }
+# XXX debug httplib
+#import httplib
+#httplib.HTTPConnection.debuglevel = 1
+
 lognamelist = ", ".join(repr(name) for name in lognames)
 
 # logging configuration
