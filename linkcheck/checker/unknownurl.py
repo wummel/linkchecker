@@ -137,16 +137,18 @@ is_unknown_scheme = ignored_schemes_re.match
 class UnknownUrl (urlbase.UrlBase):
     """Handle unknown or just plain broken URLs."""
 
-    def local_check (self):
+    def build_url (self):
         """Only logs that this URL is unknown."""
-        if self.ignored():
+        super(UnknownUrl, self).build_url()
+        if self.is_ignored():
             self.add_info(_("%(scheme)s URL ignored.") %
                           {"scheme": self.scheme.capitalize()})
+            self.set_result(_("ignored"))
         else:
             self.set_result(_("URL is unrecognized or has invalid syntax"),
                         valid=False)
 
-    def ignored (self):
+    def is_ignored (self):
         """Return True if this URL scheme is ignored."""
         return is_unknown_scheme(self.scheme)
 
