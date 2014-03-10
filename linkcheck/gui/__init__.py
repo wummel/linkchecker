@@ -177,7 +177,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         """Helper function to search for the QHC help file in different
         locations."""
         devel_dir = os.path.join(configuration.configdata.install_data, "doc", "html")
-        return configuration.get_share_file(devel_dir, 'lccollection.qhc')
+        return configuration.get_share_file('lccollection.qhc', devel_dir=devel_dir)
 
     def connect_widgets (self):
         """Connect widget signals. Some signals use the AutoConnect feature.

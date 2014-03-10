@@ -309,6 +309,14 @@ def add_msvc_files (files):
     files.append((dirname, [target]))
 
 
+def add_requests_cert_file(files):
+    """Add Python requests .pem file for installers."""
+    import requests
+    filename = os.path.join(requests.__path__, 'cacert.pem')
+    dirname = 'share/linkchecker'
+    files.append((dirname, [filename]))
+
+
 def insert_dns_path():
     """Let py2exe, py2app and cx_Freeze find the dns package."""
     lib_dir = "lib.%s-%s" % (util.get_platform(), sys.version[0:3])
@@ -670,12 +678,14 @@ if 'py2app' in sys.argv[1:]:
     add_qt_plugin_files(data_files)
     # needed for Qt to load the plugins
     data_files.append(('', ['osx/qt.conf']))
+    add_requests_cert_file(data_files)
     insert_dns_path()
 elif 'py2exe' in sys.argv[1:]:
     if not has_py2exe:
         raise SystemExit("py2exe module could not be imported")
     add_qt_plugin_files(data_files)
     add_msvc_files(data_files)
+    add_requests_cert_file(data_files)
     insert_dns_path()
 elif do_freeze:
     class MyInstallExe (install_exe, object):

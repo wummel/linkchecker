@@ -92,7 +92,7 @@ def get_modules_info ():
     return lines
 
 
-def get_share_file (devel_dir, filename):
+def get_share_file (filename, devel_dir=None):
     """Return a filename in the share directory.
     @param devel_dir: directory to search when developing
     @ptype devel_dir: string
@@ -103,14 +103,15 @@ def get_share_file (devel_dir, filename):
     @raises: ValueError if not found
     """
     paths = [
-        # when developing
-        devel_dir,
         # when running under py2exe
         os.path.join(os.path.dirname(os.path.abspath(sys.executable)),
                      "share", "linkchecker"),
         # after installing as a package
         configdata.config_dir,
     ]
+    if devel_dir is not None:
+        # when developing
+        paths.insert(0, devel_dir)
     for path in paths:
         fullpath = os.path.join(path, filename)
         if os.path.isfile(fullpath):
@@ -307,6 +308,7 @@ class Configuration (dict):
             self.sanitize_loginurl()
         self.sanitize_proxies()
         self.sanitize_plugins()
+        self.sanitize_ssl()
         # set default socket timeout
         socket.setdefaulttimeout(self['timeout'])
 
@@ -364,6 +366,14 @@ class Configuration (dict):
         for plugin in self["enabledplugins"]:
             if plugin not in self:
                 self[plugin] = {}
+
+    def sanitize_ssl(self):
+        """Use locally installed certificate file if available."""
+        if self["sslverify"] is True:
+            try:
+                self["sslverify"] = get_share_file('cacert.pem')
+            except ValueError:
+                pass
 
 
 def get_plugin_folders():
