@@ -4,10 +4,11 @@ real url file://%(curdir)s/%(datadir)s/file.php
 name %(datadir)s/file.php
 valid
 
-url anchor.html
-cache key file://%(curdir)s/%(datadir)s/anchor.html
-real url file://%(curdir)s/%(datadir)s/anchor.html
-name Bla
+url test_<?php echo $module ?>
+cache key file://%(curdir)s/%(datadir)s/test_%%3C?php%%20echo%%20%%24module%%20?%%3E
+real url file://%(curdir)s/%(datadir)s/test_%%3C?php%%20echo%%20%%24module%%20?%%3E
+name PHP 2
+info File URL ignored.
 valid
 
 url test_<? echo $module ?>
@@ -17,9 +18,8 @@ name PHP 1
 info File URL ignored.
 valid
 
-url test_<?php echo $module ?>
-cache key file://%(curdir)s/%(datadir)s/test_%%3C?php%%20echo%%20%%24module%%20?%%3E
-real url file://%(curdir)s/%(datadir)s/test_%%3C?php%%20echo%%20%%24module%%20?%%3E
-name PHP 2
-info File URL ignored.
+url anchor.html
+cache key file://%(curdir)s/%(datadir)s/anchor.html
+real url file://%(curdir)s/%(datadir)s/anchor.html
+name Bla
 valid

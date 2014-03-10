@@ -3,6 +3,12 @@ cache key http://localhost:%(port)d/%(datadir)s/http.html
 real url http://localhost:%(port)d/%(datadir)s/http.html
 valid
 
+url clsid:12345-67890
+cache key clsid:12345-67890
+real url clsid:12345-67890
+info Clsid URL ignored.
+valid
+
 url 
 cache key http://localhost:%(port)d/%(datadir)s/http.html
 real url http://localhost:%(port)d/%(datadir)s/http.html
@@ -62,12 +68,6 @@ url file.txt
 cache key http://localhost:%(port)d/tests/checker/data/file.txt
 real url http://localhost:%(port)d/tests/checker/data/file.txt
 name CSS urls
-valid
-
-url clsid:12345-67890
-cache key clsid:12345-67890
-real url clsid:12345-67890
-info Clsid URL ignored.
 valid
 
 url http://example.org/foo/ #a=1,2,3

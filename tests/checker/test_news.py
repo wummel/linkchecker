@@ -17,6 +17,7 @@
 """
 Test news checking.
 """
+import pytest
 from tests import need_newsserver, limit_time
 from . import LinkCheckTest
 
@@ -30,7 +31,8 @@ NNTP_INFO = u"200 news.uni-stuttgart.de InterNetNews NNRP server " \
 NNTP_TIMEOUT_SECS = 30
 
 # disabled for now until some stable news server comes up
-class _TestNews (LinkCheckTest):
+@pytest.mark.skipif("True")
+class TestNews (LinkCheckTest):
     """Test nntp: and news: link checking."""
 
     def newstest (self, url, resultlines):

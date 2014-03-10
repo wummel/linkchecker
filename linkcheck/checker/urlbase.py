@@ -118,6 +118,11 @@ class UrlBase (object):
         if recursion_level == 0:
             self.add_intern_pattern()
         self.set_extern(self.url)
+        if self.extern[0] and self.extern[1]:
+            self.add_info(_("The URL is outside of the domain "
+                          "filter, checked only syntax."))
+            if not self.has_result:
+                self.set_result(_("filtered"))
 
     def init (self, base_ref, base_url, parent_url, recursion_level,
               aggregate, line, column, name, url_encoding, extern):
@@ -594,11 +599,6 @@ class UrlBase (object):
             self.extern = (1, 0)
         else:
             self.extern = (1, 1)
-        if self.extern[0] and self.extern[1]:
-            self.add_info(_("The URL is outside of the domain "
-                          "filter, checked only syntax."))
-            if not self.has_result:
-                self.set_result(_("filtered"))
 
     def set_content_type (self):
         """Set content MIME type.

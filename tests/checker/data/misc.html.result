@@ -7,6 +7,7 @@ valid
 url 
 cache key None
 real url 
+info The URL is outside of the domain filter, checked only syntax.
 error
 
 url http://www.example.com/
