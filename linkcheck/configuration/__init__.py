@@ -28,7 +28,7 @@ import shutil
 import socket
 import _LinkChecker_configdata as configdata
 from .. import (log, LOG_CHECK, LOG_ROOT, ansicolor, lognames,
-    get_config_dir, fileutil, configdict)
+    get_install_data, fileutil, configdict)
 from . import confparse
 from ..decorators import memoized
 
@@ -92,6 +92,11 @@ def get_modules_info ():
     return lines
 
 
+def get_share_dir ():
+    """Return absolute path of LinkChecker example configuration."""
+    return os.path.join(get_install_data(), "share", "linkchecker")
+
+
 def get_share_file (filename, devel_dir=None):
     """Return a filename in the share directory.
     @param devel_dir: directory to search when developing
@@ -102,13 +107,7 @@ def get_share_file (filename, devel_dir=None):
     @rtype: string
     @raises: ValueError if not found
     """
-    paths = [
-        # when running under py2exe
-        os.path.join(os.path.dirname(os.path.abspath(sys.executable)),
-                     "share", "linkchecker"),
-        # after installing as a package
-        configdata.config_dir,
-    ]
+    paths = [get_share_dir()]
     if devel_dir is not None:
         # when developing
         paths.insert(0, devel_dir)
@@ -413,7 +412,7 @@ def get_user_config():
     @rtype string
     """
     # initial config (with all options explained)
-    initialconf = normpath(os.path.join(get_config_dir(), "linkcheckerrc"))
+    initialconf = normpath(os.path.join(get_share_dir(), "linkcheckerrc"))
     # per user config settings
     userconf = normpath("~/.linkchecker/linkcheckerrc")
     if os.path.isfile(initialconf) and not os.path.exists(userconf) and \

@@ -43,11 +43,6 @@ from . import i18n
 import _LinkChecker_configdata as configdata
 
 
-def main_is_frozen ():
-    """Return True iff running inside a py2exe-generated executable."""
-    return hasattr(sys, "frozen")
-
-
 def module_path ():
     """Return absolute directory of system executable."""
     return os.path.dirname(os.path.abspath(sys.executable))
@@ -55,14 +50,10 @@ def module_path ():
 
 def get_install_data ():
     """Return absolute path of LinkChecker data installation directory."""
-    if main_is_frozen():
+    from .loader import is_frozen
+    if is_frozen():
         return module_path()
     return configdata.install_data
-
-
-def get_config_dir ():
-    """Return absolute path of LinkChecker example configuration."""
-    return os.path.join(get_install_data(), "share", "linkchecker")
 
 
 # application log areas
