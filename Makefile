@@ -195,7 +195,7 @@ filescheck: localbuild
 update-copyright:
 	update-copyright --holder="Bastian Kleineidam" $(PY_FILES_DIRS)
 
-releasecheck: check update-certificates
+releasecheck: check
 	@if egrep -i "xx\.|xxxx|\.xx" doc/changelog.txt > /dev/null; then \
 	  echo "Could not release: edit doc/changelog.txt release date"; false; \
 	fi
@@ -253,12 +253,7 @@ count:
 ide:
 	eclipse -data $(CURDIR)/..
 
-update-certificates:	config/ca-certificates.crt
-
-config/ca-certificates.crt:	/etc/ssl/certs/ca-certificates.crt
-	cp $< $@
-
 .PHONY: test changelog gui count pyflakes ide login upload all clean distclean
 .PHONY: pep8 cleandeb locale localbuild deb diff dnsdiff sign
 .PHONY: filescheck update-copyright releasecheck check register announce
-.PHONY: chmod dist app rpm release homepage update-certificates
+.PHONY: chmod dist app rpm release homepage
