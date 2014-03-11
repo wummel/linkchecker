@@ -24,9 +24,7 @@ Suggests: clamav-daemon,
           python-gconf,
           python-geoip (>= 1.2.1-2),
           python-meliae,
-          python-optcomplete (>= 1.2-5),
-          python-twill,
-          python-utidylib
+          python-twill
 Description: check websites and HTML documents for broken links
  Provides a command line program and web interface to check links
  of websites and HTML documents.
