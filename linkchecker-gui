@@ -20,8 +20,9 @@ Check HTML pages for broken links. This is the GUI client.
 """
 import sys
 import signal
-from linkcheck import configuration, drop_privileges, i18n, main_is_frozen
-if main_is_frozen():
+from linkcheck import configuration, drop_privileges, i18n
+from linkcheck.loader import is_frozen
+if is_frozen():
     # Let Python find the C++ runtime DLLs for PyQt.
     import os
     from linkcheck import get_install_data
