@@ -16,6 +16,8 @@ Fixes:
   Closes: GH bug #472
 - checking: Fix URL result caching.
 - checking: Fix assertion in external link checking.
+- checking: Fix SSl errors on Windows.
+  Closes: GH bug #471
 
 
 9.0 "The Wolf of Wall Street" (released 3.3.2014)
