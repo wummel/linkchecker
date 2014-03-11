@@ -525,6 +525,11 @@ def get_content(url, user=None, password=None, proxy=None, data=None,
         method = 'POST'
     if proxy:
         kwargs['proxy'] = dict(http=proxy)
+    from .configuration import get_share_file
+    try:
+        kwargs["verify"] = get_share_file('cacert.pem')
+    except ValueError:
+        pass
     try:
         response = requests.request(method, url, **kwargs)
         return response.text, response.headers
