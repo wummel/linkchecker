@@ -1,0 +1,20 @@
+language: python
+python:
+  - "2.7"
+# whitelist of git branches to build
+branches:
+  only:
+    - master
+# install required programs
+before_install:
+  - sudo apt-get update -q -y
+  - sudo apt-get install -q -y python-dev qt4-dev-tools
+# command to install dependencies
+install:
+  - pip install -r requirements.txt --use-mirrors
+  - pip install pyftpdlib pytest-xdist --use-mirrors
+# command to run tests
+script: make test PYTESTOPTS="--tb=short" TESTS="tests/test_*.py tests/configuration/test_*.py tests/logger/test_*.py"
+# do not send emails of broken builds
+notifications:
+  email: false
