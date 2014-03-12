@@ -236,6 +236,14 @@
 # Check HTML anchors
 #[AnchorCheck]
 
+# Print HTTP header info
+#[HttpHeaderInfo]
+# Comma separated list of header prefixes to print.
+# The names are case insensitive.
+# The default list is empty, so it should be non-empty when activating
+# this plugin.
+#prefixes=Server,X-
+
 # Add country info to URLs
 #[LocationInfo]
 

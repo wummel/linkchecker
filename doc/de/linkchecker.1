@@ -294,12 +294,12 @@ Das untige Beispiel sendet zwei Cookies zu allen URLs die mit
  Set\-cookie: baggage="elitist"; comment="hologram"
 
 .SH "PROXY UNTERSTÜTZUNG"
-Um einen Proxy unter Unix oder Windows zu benutzen, setzen Sie die
-$http_proxy, $https_proxy oder $ftp_proxy Umgebungsvariablen auf die Proxy
-URL. Die URL sollte die Form
-\fBhttp://\fP[\fIuser\fP\fB:\fP\fIpass\fP\fB@\fP]\fIhost\fP[\fB:\fP\fIport\fP] besitzen. LinkChecker
-erkennt auch die Proxy\-Einstellungen des Internet Explorers auf einem
-Windows\-System. Auf einem Mac benutzen Sie die Internet Konfiguration.
+To use a proxy on Unix or Windows set the $http_proxy, $https_proxy or
+$ftp_proxy environment variables to the proxy URL. The URL should be of the
+form \fBhttp://\fP[\fIuser\fP\fB:\fP\fIpass\fP\fB@\fP]\fIhost\fP[\fB:\fP\fIport\fP].  LinkChecker
+also detects manual proxy settings of Internet Explorer under Windows
+systems, and gconf or KDE on Linux systems.  On a Mac use the Internet
+Config to select a proxy.
 .
 Sie können eine komma\-separierte Liste von Domainnamen in der $no_proxy
 Umgebungsvariable setzen, um alle Proxies für diese Domainnamen zu

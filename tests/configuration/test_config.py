@@ -86,7 +86,7 @@ class TestConfig (unittest.TestCase):
         self.assertFalse(config["quiet"])
         self.assertEqual(len(config["fileoutput"]), 8)
         # plugins
-        for plugin in ("AnchorCheck", "CssSyntaxCheck", "HtmlSyntaxCheck", "LocationInfo", "RegexCheck", "SslCertificateCheck", "VirusCheck"):
+        for plugin in ("AnchorCheck", "CssSyntaxCheck", "HtmlSyntaxCheck", "LocationInfo", "RegexCheck", "SslCertificateCheck", "VirusCheck", "HttpHeaderInfo"):
             self.assertTrue(plugin in config["enabledplugins"])
         # text logger section
         self.assertEqual(config["text"]["filename"], "imadoofus.txt")

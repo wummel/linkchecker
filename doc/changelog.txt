@@ -19,6 +19,7 @@ Fixes:
 - checking: Fix assertion in external link checking.
 - checking: Fix SSL errors on Windows.
   Closes: GH bug #471
+- checking: Add new HTTP header info plugin.
 
 
 9.0 "The Wolf of Wall Street" (released 3.3.2014)
