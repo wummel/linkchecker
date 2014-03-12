@@ -10,13 +10,14 @@ Changes:
 - checking: Ignored URLs are reported earlier now.
 - installation: Check requirement for Python requests >= 2.2.0.
   Closes: GH bug #478
+- checking: Updated the list of unkonwn or ignored URI schemes.
 
 Fixes:
 - checking: Fix internal errors in debug output.
   Closes: GH bug #472
 - checking: Fix URL result caching.
 - checking: Fix assertion in external link checking.
-- checking: Fix SSl errors on Windows.
+- checking: Fix SSL errors on Windows.
   Closes: GH bug #471
 
 
