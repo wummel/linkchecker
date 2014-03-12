@@ -18,7 +18,7 @@ DEBORIGFILE:=$(DEBUILDDIR)/$(LAPPNAME)_$(VERSION).orig.tar.xz
 DEBPACKAGEDIR:=$(DEBUILDDIR)/$(APPNAME)-$(VERSION)
 FILESCHECK_URL:=http://localhost/~calvin/
 SRCDIR:=${HOME}/src
-PY_FILES_DIRS:=linkcheck tests *.py linkchecker linkchecker-gui cgi-bin config doc/examples
+PY_FILES_DIRS:=linkcheck tests *.py linkchecker linkchecker-gui cgi-bin config doc/examples scripts
 MYPY_FILES_DIRS:=linkcheck/HtmlParser linkcheck/checker \
 	  linkcheck/cache linkcheck/configuration linkcheck/director \
 	  linkcheck/htmlutil linkcheck/logger linkcheck/network \
