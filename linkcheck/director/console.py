@@ -42,8 +42,7 @@ class StatusLogger (object):
         """Save file descriptor for logging."""
         self.fd = fd
 
-    def log_status (self, checked, in_progress, queue, duration,
-                    downloaded_bytes):
+    def log_status (self, checked, in_progress, queue, duration):
         """Write status message to file descriptor."""
         msg = _n("%2d thread active", "%2d threads active", in_progress) % \
           in_progress
@@ -53,8 +52,6 @@ class StatusLogger (object):
         msg = _n("%4d link checked", "%4d links checked", checked) % checked
         self.write(u"%s, " % msg)
         msg = _("runtime %s") % strformat.strduration_long(duration)
-        self.write(u"%s, " % msg)
-        msg = _("downloaded %s") % strformat.strsize(downloaded_bytes)
         self.writeln(msg)
         self.flush()
 

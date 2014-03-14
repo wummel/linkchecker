@@ -54,6 +54,4 @@ class Status (task.LoggedCheckedTask):
         """Log a status message."""
         duration = time.time() - self.start_time
         checked, in_progress, queue = self.aggregator.urlqueue.status()
-        downloaded_bytes = self.aggregator.downloaded_bytes
-        self.logger.log_status(checked, in_progress, queue, duration,
-                               downloaded_bytes)
+        self.logger.log_status(checked, in_progress, queue, duration)

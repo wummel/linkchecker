@@ -569,13 +569,11 @@ Version 2 or later.
         """Show given link in status bar."""
         self.statusBar.showMessage(link)
 
-    def log_status (self, checked, in_progress, queued, duration,
-                    downloaded_bytes):
+    def log_status (self, checked, in_progress, queued, duration):
         """Update number of checked, active and queued links."""
         self.label_checked.setText(u"%d" % checked)
         self.label_active.setText(u"%d" % in_progress)
         self.label_queued.setText(u"%d" % queued)
-        # XXX display downloaded bytes
 
     def log_stats (self, statistics):
         """Set statistic information for selected URL."""
