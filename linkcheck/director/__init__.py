@@ -204,7 +204,7 @@ def abort_now ():
 
 def get_aggregate (config):
     """Get an aggregator instance with given configuration."""
-    _urlqueue = urlqueue.UrlQueue(max_allowed_puts=config["maxnumurls"])
+    _urlqueue = urlqueue.UrlQueue(max_allowed_urls=config["maxnumurls"])
     _robots_txt = robots_txt.RobotsTxt()
     plugin_manager = plugins.PluginManager(config)
     result_cache = results.ResultCache()

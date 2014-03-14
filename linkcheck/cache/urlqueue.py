@@ -36,7 +36,7 @@ class UrlQueue (object):
     """A queue supporting several consumer tasks. The task_done() idea is
     from the Python 2.5 implementation of Queue.Queue()."""
 
-    def __init__ (self, max_allowed_puts=None):
+    def __init__ (self, max_allowed_urls=None):
         """Initialize the queue state and task counters."""
         # Note: don't put a maximum size on the queue since it would
         # lead to deadlocks when all worker threads called put().
@@ -56,9 +56,9 @@ class UrlQueue (object):
         self.shutdown = False
         # Each put() decreases the number of allowed puts.
         # This way we can restrict the number of URLs that are checked.
-        if max_allowed_puts is not None and max_allowed_puts <= 0:
-            raise ValueError("Non-positive number of allowed puts: %d" % max_allowed_puts)
-        self.allowed_puts = max_allowed_puts
+        if max_allowed_urls is not None and max_allowed_urls <= 0:
+            raise ValueError("Non-positive number of allowed URLs: %d" % max_allowed_urls)
+        self.max_allowed_urls = max_allowed_urls
 
     def qsize (self):
         """Return the approximate size of the queue (not reliable!)."""
@@ -114,14 +114,12 @@ class UrlQueue (object):
         """Determine if put() will not append the item on the queue.
         @return True (reliable) or False (unreliable)
         """
-        return self.shutdown or self.allowed_puts == 0
+        return self.shutdown or self.max_allowed_urls == 0
 
     def _put (self, url_data):
         """Put URL in queue, increase number of unfished tasks."""
         if self.put_denied(url_data):
             return
-        if self.allowed_puts is not None:
-            self.allowed_puts -= 1
         log.debug(LOG_CACHE, "queueing %s", url_data.url)
         key = url_data.cache_url
         cache = url_data.aggregate.result_cache
@@ -129,6 +127,8 @@ class UrlQueue (object):
             self.queue.appendleft(url_data)
         else:
             assert key is not None, "no result for None key: %s" % url_data
+            if self.max_allowed_urls is not None:
+                self.max_allowed_urls -= 1
             self.queue.append(url_data)
         self.unfinished_tasks += 1
 
