@@ -10,6 +10,8 @@ Features:
 Changes:
 - checking: Ignored URLs are reported earlier now.
 - checking: Updated the list of unkonwn or ignored URI schemes.
+- checking: Internal errors do not disable check threads anymore.
+- checking: Disable URL length warning for data: URLs.
 - installation: Check requirement for Python requests >= 2.2.0.
   Closes: GH bug #478
 
