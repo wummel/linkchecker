@@ -113,7 +113,7 @@ class SitemapXmlLogger (xmllog._XMLLogger):
         self.xml_endtag(u'url')
         self.flush()
 
-    def end_output (self, downloaded_bytes=None):
+    def end_output (self, downloaded_bytes=None, num_urls=None):
         """Write XML end tag."""
         self.xml_endtag(u"urlset")
         self.xml_end_output()

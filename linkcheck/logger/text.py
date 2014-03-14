@@ -221,9 +221,13 @@ class TextLogger (_Logger):
         """Write end of checking message."""
         self.writeln()
         self.write(_("That's it.") + " ")
-        self.write(_n("%d link checked.", "%d links checked.",
+        self.write(_n("%d link", "%d links",
                       self.stats.number) % self.stats.number)
         self.write(u" ")
+        if self.stats.num_urls is not None:
+            self.write(_n("in %d URL", "in %d URLs",
+                          self.stats.num_urls) % self.stats.num_urls)
+        self.write(u" checked. ")
         warning_text = _n("%d warning found", "%d warnings found",
              self.stats.warnings_printed) % self.stats.warnings_printed
         if self.stats.warnings_printed:
@@ -274,10 +278,11 @@ class TextLogger (_Logger):
         else:
             self.writeln(_("No statistics available since no URLs were checked."))
 
-    def end_output (self, downloaded_bytes=None):
+    def end_output (self, downloaded_bytes=None, num_urls=None):
         """Write end of output info, and flush all output buffers."""
+        self.stats.downloaded_bytes = downloaded_bytes
+        self.stats.num_urls = num_urls
         if self.has_part('stats'):
-            self.stats.downloaded_bytes = downloaded_bytes
             self.write_stats()
         if self.has_part('outro'):
             self.write_outro()

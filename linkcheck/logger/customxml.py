@@ -95,7 +95,7 @@ class CustomXMLLogger (xmllog._XMLLogger):
         self.xml_endtag(u'urldata')
         self.flush()
 
-    def end_output (self, downloaded_bytes=None):
+    def end_output (self, downloaded_bytes=None, num_urls=None):
         """
         Write XML end tag.
         """

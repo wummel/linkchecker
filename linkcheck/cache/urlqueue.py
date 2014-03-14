@@ -113,15 +113,9 @@ class UrlQueue (object):
             self._put(item)
             self.not_empty.notify()
 
-    def put_denied(self, url_data):
-        """Determine if put() will not append the item on the queue.
-        @return True (reliable) or False (unreliable)
-        """
-        return self.shutdown or self.max_allowed_urls == 0
-
     def _put (self, url_data):
         """Put URL in queue, increase number of unfished tasks."""
-        if self.put_denied(url_data):
+        if self.shutdown or self.max_allowed_urls == 0:
             return
         log.debug(LOG_CACHE, "queueing %s", url_data.url)
         key = url_data.cache_url

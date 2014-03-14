@@ -89,7 +89,7 @@ class TestLogger (linkcheck.logger._Logger):
         # note: do not append url_data.result since this is
         # platform dependent
 
-    def end_output (self, linknumber=-1):
+    def end_output (self, linknumber=-1, **kwargs):
         """
         Stores differences between expected and result in self.diff.
         """

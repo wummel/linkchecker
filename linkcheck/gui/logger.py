@@ -68,6 +68,6 @@ class StatusLogger (object):
         """Store given signal object."""
         self.signal = signal
 
-    def log_status (self, checked, in_progress, queued, duration):
+    def log_status (self, checked, in_progress, queued, duration, num_urls):
         """Emit signal with given status information."""
-        self.signal.emit(checked, in_progress, queued, duration)
+        self.signal.emit(checked, in_progress, queued, duration, num_urls)

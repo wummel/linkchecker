@@ -172,3 +172,11 @@ class Aggregate (object):
     def add_downloaded_bytes(self, numbytes):
         """Add to number of downloaded bytes."""
         self.downloaded_bytes += numbytes
+
+    def end_log_output(self):
+        """Print ending output to log."""
+        kwargs = dict(
+            downloaded_bytes=self.downloaded_bytes,
+            num_urls = len(self.result_cache),
+        )
+        self.logger.end_log_output(**kwargs)

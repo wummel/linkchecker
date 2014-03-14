@@ -124,7 +124,7 @@ def check_urls (aggregate):
             aggregate.start_threads()
         check_url(aggregate)
         aggregate.finish()
-        aggregate.logger.end_log_output(aggregate.downloaded_bytes)
+        aggregate.end_log_output()
     except LinkCheckerInterrupt:
         raise
     except KeyboardInterrupt:
@@ -178,11 +178,11 @@ def abort (aggregate):
         try:
             aggregate.abort()
             aggregate.finish()
-            aggregate.logger.end_log_output(aggregate.downloaded_bytes)
+            aggregate.end_log_output()
             break
         except KeyboardInterrupt:
             log.warn(LOG_CHECK, _("user abort; force shutdown"))
-            aggregate.logger.end_log_output(aggregate.downloaded_bytes)
+            aggregate.end_log_output()
             abort_now()
 
 

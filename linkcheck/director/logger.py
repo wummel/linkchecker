@@ -38,12 +38,12 @@ class Logger (object):
         for logger in self.loggers:
             logger.start_output()
 
-    def end_log_output (self, downloaded_bytes):
+    def end_log_output (self, **kwargs):
         """
         End output of all configured loggers.
         """
         for logger in self.loggers:
-            logger.end_output(downloaded_bytes)
+            logger.end_output(**kwargs)
 
     def do_print (self, url_data):
         """Determine if URL entry should be logged or not."""

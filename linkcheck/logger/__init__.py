@@ -401,7 +401,7 @@ class _Logger (object):
         pass
 
     @abc.abstractmethod
-    def end_output (self, downloaded_bytes=None):
+    def end_output (self, downloaded_bytes=None, num_urls=None):
         """
         End of output, used for cleanup (eg output buffer flushing).
         """
