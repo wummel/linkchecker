@@ -103,6 +103,8 @@ class Checker(task.LoggedCheckedTask):
                 self.setName(self.origname)
         except urlqueue.Empty:
             pass
+        except Exception:
+            self.internal_error()
 
     def check_url_data (self, url_data):
         """Check one URL data instance."""
