@@ -170,4 +170,5 @@ class Aggregate (object):
 
     @synchronized(_downloadedbytes_lock)
     def add_downloaded_bytes(self, numbytes):
+        """Add to number of downloaded bytes."""
         self.downloaded_bytes += numbytes
