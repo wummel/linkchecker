@@ -130,13 +130,20 @@ class UrlBase (object):
         Initialize internal data.
         """
         self.base_ref = base_ref
+        if self.base_ref is not None:
+            assert isinstance(self.base_ref, unicode), repr(self.base_ref)
         self.base_url = base_url.strip() if base_url else base_url
+        if self.base_url is not None:
+            assert isinstance(self.base_url, unicode), repr(self.base_url)
         self.parent_url = parent_url
+        if self.parent_url is not None:
+            assert isinstance(self.parent_url, unicode), repr(self.parent_url)
         self.recursion_level = recursion_level
         self.aggregate = aggregate
         self.line = line
         self.column = column
         self.name = name
+        assert isinstance(self.name, unicode), repr(self.name)
         self.encoding = url_encoding
         self.charset = None
         self.extern = extern
@@ -294,6 +301,8 @@ class UrlBase (object):
         # remove anchor from cached target url since we assume
         # URLs with different anchors to have the same content
         self.cache_url = urlutil.urlunsplit(self.urlparts[:4]+[u''])
+        if self.cache_url is not None:
+            assert isinstance(self.cache_url, unicode), repr(self.cache_url)
 
     def check_syntax (self):
         """
@@ -390,6 +399,8 @@ class UrlBase (object):
             self.urlparts[1] = host
         # safe anchor for later checking
         self.anchor = self.urlparts[4]
+        if self.anchor is not None:
+            assert isinstance(self.anchor, unicode), repr(self.anchor)
 
     def check_obfuscated_ip (self):
         """Warn if host of this URL is obfuscated IP address."""
@@ -661,19 +672,7 @@ class UrlBase (object):
         """
         Return serialized url check data as unicode string.
         """
-        sep = unicode_safe(sep)
-        if self.base_url is not None:
-            assert isinstance(self.base_url, unicode), repr(self.base_url)
-        if self.parent_url is not None:
-            assert isinstance(self.parent_url, unicode), repr(self.parent_url)
-        if self.base_ref is not None:
-            assert isinstance(self.base_ref, unicode), repr(self.base_ref)
-        assert isinstance(self.name, unicode), repr(self.name)
-        if self.anchor is not None:
-            assert isinstance(self.anchor, unicode), repr(self.anchor)
-        if self.cache_url is not None:
-            assert isinstance(self.cache_url, unicode), repr(self.cache_url)
-        return sep.join([
+        return unicode_safe(sep).join([
             u"%s link" % self.scheme,
             u"base_url=%r" % self.base_url,
             u"parent_url=%r" % self.parent_url,

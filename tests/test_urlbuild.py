@@ -21,8 +21,8 @@ Test url build method from url data objects.
 import unittest
 import linkcheck.configuration
 import linkcheck.director
-import linkcheck.checker.httpurl
 import linkcheck.checker.urlbase
+from linkcheck.checker import get_url_from
 
 
 def get_test_aggregate ():
@@ -44,10 +44,9 @@ class TestUrlBuild (unittest.TestCase):
         base_url = "http://foo"
         recursion_level = 0
         aggregate = get_test_aggregate()
-        o = linkcheck.checker.httpurl.HttpUrl(base_url, recursion_level,
-               aggregate, parent_url=parent_url)
+        o = get_url_from(base_url, recursion_level, aggregate, parent_url=parent_url)
         o.build_url()
-        self.assertEqual(o.url, 'http://foo')
+        self.assertEqual(o.url, u'http://foo')
 
     def test_urljoin (self):
         parent_url = "http://localhost:8001/test"
@@ -60,7 +59,7 @@ class TestUrlBuild (unittest.TestCase):
         base_url = "?c=d"
         recursion_level = 0
         aggregate = get_test_aggregate()
-        o = linkcheck.checker.fileurl.FileUrl(base_url, recursion_level,
+        o = get_url_from(base_url, recursion_level,
                aggregate, parent_url=parent_url)
         o.build_url()
         self.assertEqual(o.url, parent_url)
@@ -70,7 +69,6 @@ class TestUrlBuild (unittest.TestCase):
         base_url = u'#usemap'
         recursion_level = 0
         aggregate = get_test_aggregate()
-        o = linkcheck.checker.httpurl.HttpUrl(base_url, recursion_level,
-               aggregate, parent_url=parent_url)
+        o = get_url_from(base_url, recursion_level, aggregate, parent_url=parent_url)
         o.build_url()
         self.assertEqual(o.url, parent_url+base_url)
