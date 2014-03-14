@@ -89,6 +89,8 @@ class LogStatistics (object):
         self.min_url_length = 0
         self.avg_url_length = 0.0
         self.avg_number = 0
+        # overall downloaded bytes
+        self.downloaded_bytes = None
 
     def log_url (self, url_data, do_print):
         """Log URL statistics."""
@@ -399,7 +401,7 @@ class _Logger (object):
         pass
 
     @abc.abstractmethod
-    def end_output (self):
+    def end_output (self, downloaded_bytes=None):
         """
         End of output, used for cleanup (eg output buffer flushing).
         """

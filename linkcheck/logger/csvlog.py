@@ -130,7 +130,7 @@ class CSVLogger (_Logger):
         # empty queue
         self.queue.truncate(0)
 
-    def end_output (self):
+    def end_output (self, downloaded_bytes=None):
         """Write end of checking info as csv comment."""
         if self.has_part("outro"):
             self.write_outro()

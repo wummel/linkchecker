@@ -43,7 +43,7 @@ class NoneLogger (_Logger):
         """Do nothing."""
         pass
 
-    def end_output (self):
+    def end_output (self, downloaded_bytes=None):
         """
         Do nothing.
         """

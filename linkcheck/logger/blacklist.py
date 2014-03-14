@@ -66,7 +66,7 @@ class BlacklistLogger (_Logger):
             if not url_data.valid:
                 self.blacklist[key] = 1
 
-    def end_output (self):
+    def end_output (self, downloaded_bytes=None):
         """
         Write blacklist file.
         """

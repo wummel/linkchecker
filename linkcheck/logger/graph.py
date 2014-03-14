@@ -83,7 +83,7 @@ class _GraphLogger (_Logger):
         """Write end-of-graph marker."""
         pass
 
-    def end_output (self):
+    def end_output (self, downloaded_bytes=None):
         """Write edges and end of checking info as gml comment."""
         self.write_edges()
         self.end_graph()

@@ -22,7 +22,7 @@ from . import task
 class Status (task.LoggedCheckedTask):
     """Thread that gathers and logs the status periodically."""
 
-    def __init__ (self, urlqueue, logger, wait_seconds):
+    def __init__ (self, aggregator, wait_seconds):
         """Initialize the status logger task.
         @param urlqueue: the URL queue
         @ptype urlqueue: Urlqueue
@@ -31,8 +31,9 @@ class Status (task.LoggedCheckedTask):
         @param wait_seconds: interval in seconds to report status
         @ptype wait_seconds: int
         """
+        logger = aggregator.config.status_logger
         super(Status, self).__init__(logger)
-        self.urlqueue = urlqueue
+        self.aggregator = aggregator
         self.wait_seconds = wait_seconds
         assert self.wait_seconds >= 1
 
@@ -52,5 +53,7 @@ class Status (task.LoggedCheckedTask):
     def log_status (self):
         """Log a status message."""
         duration = time.time() - self.start_time
-        checked, in_progress, queue = self.urlqueue.status()
-        self.logger.log_status(checked, in_progress, queue, duration)
+        checked, in_progress, queue = self.aggregator.urlqueue.status()
+        downloaded_bytes = self.aggregator.downloaded_bytes
+        self.logger.log_status(checked, in_progress, queue, duration,
+                               downloaded_bytes)

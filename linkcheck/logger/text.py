@@ -260,6 +260,8 @@ class TextLogger (_Logger):
         """Write check statistic info."""
         self.writeln()
         self.writeln(_("Statistics:"))
+        if self.stats.downloaded_bytes is not None:
+            self.writeln(_("Downloaded: %s.") % strformat.strsize(self.stats.downloaded_bytes))
         if self.stats.number > 0:
             self.writeln(_(
               "Content types: %(image)d image, %(text)d text, %(video)d video, "
@@ -272,9 +274,10 @@ class TextLogger (_Logger):
         else:
             self.writeln(_("No statistics available since no URLs were checked."))
 
-    def end_output (self):
+    def end_output (self, downloaded_bytes=None):
         """Write end of output info, and flush all output buffers."""
         if self.has_part('stats'):
+            self.stats.downloaded_bytes = downloaded_bytes
             self.write_stats()
         if self.has_part('outro'):
             self.write_outro()

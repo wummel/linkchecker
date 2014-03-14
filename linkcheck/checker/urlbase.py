@@ -631,6 +631,8 @@ class UrlBase (object):
             if self.size == 0:
                 self.add_warning(_("Content size is zero."),
                              tag=WARN_URL_CONTENT_SIZE_ZERO)
+            else:
+                self.aggregate.add_downloaded_bytes(self.size)
         return self.data
 
     def read_content(self):

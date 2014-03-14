@@ -55,8 +55,9 @@ class SignalLogger (_Logger):
         """Emit URL data which gets logged in the main window."""
         self.log_url_signal.emit(url_data)
 
-    def end_output (self):
+    def end_output (self, downloaded_bytes=None):
         """Emit statistic data which gets logged in the main window."""
+        self.stats.downloaded_bytes = downloaded_bytes
         self.log_stats_signal.emit(self.stats)
 
 
@@ -67,6 +68,8 @@ class StatusLogger (object):
         """Store given signal object."""
         self.signal = signal
 
-    def log_status (self, checked, in_progress, queued, duration):
+    def log_status (self, checked, in_progress, queued, duration,
+                    downloaded_bytes):
         """Emit signal with given status information."""
-        self.signal.emit(checked, in_progress, queued, duration)
+        self.signal.emit(checked, in_progress, queued, duration,
+                         downloaded_bytes)

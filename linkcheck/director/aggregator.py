@@ -30,6 +30,7 @@ from . import logger, status, checker, interrupt
 
 _threads_lock = threading.RLock()
 _hosts_lock = threading.RLock()
+_downloadedbytes_lock = threading.RLock()
 
 def new_request_session(config):
     """Create a new request session."""
@@ -60,13 +61,13 @@ class Aggregate (object):
         requests_per_second = config["maxrequestspersecond"]
         self.wait_time_min = 1.0 / requests_per_second
         self.wait_time_max = max(self.wait_time_min + 0.5, 0.5)
+        self.downloaded_bytes = 0
 
     @synchronized(_threads_lock)
     def start_threads (self):
         """Spawn threads for URL checking and status printing."""
         if self.config["status"]:
-            t = status.Status(self.urlqueue, self.config.status_logger,
-                self.config["status_wait_seconds"])
+            t = status.Status(self, self.config["status_wait_seconds"])
             t.start()
             self.threads.append(t)
         if self.config["maxrunseconds"]:
@@ -166,3 +167,7 @@ class Aggregate (object):
         """Determine if checking is finished."""
         self.remove_stopped_threads()
         return self.urlqueue.empty() and not self.threads
+
+    @synchronized(_downloadedbytes_lock)
+    def add_downloaded_bytes(self, numbytes):
+        self.downloaded_bytes += numbytes

@@ -131,7 +131,7 @@ class SQLLogger (_Logger):
               })
         self.flush()
 
-    def end_output (self):
+    def end_output (self, downloaded_bytes=None):
         """
         Write end of checking info as sql comment.
         """
