@@ -570,7 +570,7 @@ Version 2 or later.
         self.statusBar.showMessage(link)
 
     def log_status (self, checked, in_progress, queued, duration):
-        """Update number of checked, active and queued URLs."""
+        """Update number of checked, active and queued links."""
         self.label_checked.setText(u"%d" % checked)
         self.label_active.setText(u"%d" % in_progress)
         self.label_queued.setText(u"%d" % queued)

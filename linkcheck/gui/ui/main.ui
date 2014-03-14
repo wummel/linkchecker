@@ -118,7 +118,7 @@
       <item>
        <widget class="QLabel" name="label_29">
         <property name="text">
-         <string>URLs: </string>
+         <string>Links: </string>
         </property>
        </widget>
       </item>

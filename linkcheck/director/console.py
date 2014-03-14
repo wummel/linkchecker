@@ -44,12 +44,12 @@ class StatusLogger (object):
 
     def log_status (self, checked, in_progress, queue, duration):
         """Write status message to file descriptor."""
-        msg = _n("%2d URL active", "%2d URLs active", in_progress) % \
+        msg = _n("%2d thread active", "%2d threads active", in_progress) % \
           in_progress
         self.write(u"%s, " % msg)
-        msg = _n("%5d URL queued", "%5d URLs queued", queue) % queue
+        msg = _n("%5d link queued", "%5d links queued", queue) % queue
         self.write(u"%s, " % msg)
-        msg = _n("%4d URL checked", "%4d URLs checked", checked) % checked
+        msg = _n("%4d link checked", "%4d links checked", checked) % checked
         self.write(u"%s, " % msg)
         msg = _("runtime %s") % strformat.strduration_long(duration)
         self.writeln(msg)
