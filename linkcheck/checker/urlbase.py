@@ -325,7 +325,7 @@ class UrlBase (object):
                              {"url": effectiveurl},
                              tag=WARN_URL_EFFECTIVE_URL)
             self.url = effectiveurl
-        if len(self.url) > URL_MAX_LENGTH:
+        if len(self.url) > URL_MAX_LENGTH and self.scheme != u"data":
             args = dict(len=len(self.url), max=URL_MAX_LENGTH)
             self.add_warning(_("URL length %(len)d is longer than %(max)d.") % args, tag=WARN_URL_TOO_LONG)
 
