@@ -58,7 +58,12 @@ class SslCertificateCheck(_ContentPlugin):
         if host in self.checked_hosts:
             return
         self.checked_hosts.add(host)
-        ssl_sock = url_data.url_connection.raw._connection.sock
+        raw_connection = url_data.url_connection.raw._connection
+        if raw_connection.sock is None:
+            # sometimes the socket is not yet connected
+            # see https://github.com/kennethreitz/requests/issues/1966
+            raw_connection.sock.connect()
+        ssl_sock = raw_connection.sock
         cert = ssl_sock.getpeercert()
         log.debug(LOG_PLUGIN, "Got SSL certificate %s", cert)
         #if not cert:
