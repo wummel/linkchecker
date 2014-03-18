@@ -12,6 +12,8 @@ Changes:
 - checking: Updated the list of unkonwn or ignored URI schemes.
 - checking: Internal errors do not disable check threads anymore.
 - checking: Disable URL length warning for data: URLs.
+- checking: Do not warn about missing addresses on mailto links that have
+  subjects.
 - installation: Check requirement for Python requests >= 2.2.0.
   Closes: GH bug #478
 - logging: Display downloaded bytes.

@@ -61,7 +61,8 @@ def is_missing_quote (addr):
 
 
 # list of CGI keys to search for email addresses
-EMAIL_CGI = ("to", "cc", "bcc")
+EMAIL_CGI_ADDRESS = ("to", "cc", "bcc")
+EMAIL_CGI_SUBJECT = "subject"
 
 class MailtoUrl (urlbase.UrlBase):
     """
@@ -74,14 +75,15 @@ class MailtoUrl (urlbase.UrlBase):
         """
         super(MailtoUrl, self).build_url()
         self.addresses = set()
+        self.subject = None
         self.parse_addresses()
         if self.addresses:
             for addr in sorted(self.addresses):
                 self.check_email_syntax(addr)
                 if not self.valid:
                     break
-        else:
-            self.add_warning(_("No mail addresses found in `%(url)s'.") % \
+        elif not self.subject:
+            self.add_warning(_("No mail addresses or email subject found in `%(url)s'.") % \
                 {"url": self.url})
 
     def parse_addresses (self):
@@ -116,9 +118,11 @@ class MailtoUrl (urlbase.UrlBase):
             try:
                 headers = urlparse.parse_qs(url[(i+1):], strict_parsing=True)
                 for key, vals in headers.items():
-                    if key.lower() in EMAIL_CGI:
+                    if key.lower() in EMAIL_CGI_ADDRESS:
                         # Only the first header value is added
                         self.addresses.update(getaddresses(urllib.unquote(vals[0])))
+                    if key.lower() == EMAIL_CGI_SUBJECT:
+                        self.subject = vals[0]
             except ValueError as err:
                 self.add_warning(_("Error parsing CGI values: %s") % str(err))
         else:

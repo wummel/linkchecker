@@ -111,7 +111,7 @@ class TestMailGood (MailTest):
             u"url %s" % url,
             u"cache key mailto:",
             u"real url %s" % url,
-            u"warning No mail addresses found in `%s'." % url,
+            u"warning No mail addresses or email subject found in `%s'." % url,
             u"valid",
         ]
         self.direct(url, resultlines)
@@ -151,6 +151,19 @@ class TestMailGood (MailTest):
             u"url %s" % url,
             u"cache key %s" % mailto,
             u"real url %s" % url,
+            u"valid",
+        ]
+        self.direct(url, resultlines)
+
+    @need_network
+    def test_mail_subject(self):
+        url = u"mailto:?subject=Halli hallo"
+        nurl = self.norm(url)
+        curl = u"mailto:"
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % curl,
+            u"real url %s" % nurl,
             u"valid",
         ]
         self.direct(url, resultlines)
