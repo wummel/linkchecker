@@ -31,8 +31,6 @@ from cStringIO import StringIO
 from . import absolute_url, get_url_from
 from .. import (log, LOG_CHECK,
   strformat, LinkCheckerError, url as urlutil, trace, get_link_pat)
-from ..HtmlParser import htmlsax
-from ..htmlutil import linkparse
 from ..network import iputil
 from .const import (WARN_URL_EFFECTIVE_URL,
     WARN_URL_ERROR_GETTING_CONTENT, WARN_URL_OBFUSCATED_IP,
@@ -551,33 +549,9 @@ class UrlBase (object):
         log.debug(LOG_CHECK, "... yes, recursion.")
         return True
 
-    def content_allows_robots (self):
-        """
-        Return False if the content of this URL forbids robots to
-        search for recursive links.
-        """
-        # XXX cleanup
-        if not self.is_html():
-            return True
-        if not (self.is_http() or self.is_file()):
-            return True
-        # construct parser object
-        handler = linkparse.MetaRobotsFinder()
-        parser = htmlsax.parser(handler)
-        handler.parser = parser
-        if self.charset:
-            parser.encoding = self.charset
-        # parse
-        try:
-            parser.feed(self.get_content())
-            parser.flush()
-        except linkparse.StopParse as msg:
-            log.debug(LOG_CHECK, "Stopped parsing: %s", msg)
-            pass
-        # break cyclic dependencies
-        handler.parser = None
-        parser.handler = None
-        return handler.follow
+    def content_allows_robots(self):
+        """Returns True: only check robots.txt on HTTP links."""
+        return True
 
     def set_extern (self, url):
         """

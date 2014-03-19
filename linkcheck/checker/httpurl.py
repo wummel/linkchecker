@@ -24,6 +24,8 @@ from cStringIO import StringIO
 from .. import (log, LOG_CHECK, strformat, fileutil,
     url as urlutil, LinkCheckerError)
 from . import (internpaturl, proxysupport, httpheaders as headers)
+from ..HtmlParser import htmlsax
+from ..htmlutil import linkparse
 # import warnings
 from .const import WARN_HTTP_EMPTY_CONTENT
 
@@ -59,6 +61,31 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         @rtype: bool
         """
         return self.aggregate.robots_txt.allows_url(self)
+
+    def content_allows_robots (self):
+        """
+        Return False if the content of this URL forbids robots to
+        search for recursive links.
+        """
+        if not self.is_html():
+            return True
+        # construct parser object
+        handler = linkparse.MetaRobotsFinder()
+        parser = htmlsax.parser(handler)
+        handler.parser = parser
+        if self.charset:
+            parser.encoding = self.charset
+        # parse
+        try:
+            parser.feed(self.get_content())
+            parser.flush()
+        except linkparse.StopParse as msg:
+            log.debug(LOG_CHECK, "Stopped parsing: %s", msg)
+            pass
+        # break cyclic dependencies
+        handler.parser = None
+        parser.handler = None
+        return handler.follow
 
     def add_size_info (self):
         """Get size of URL content from HTTP header."""
