@@ -52,6 +52,9 @@ class SslCertificateCheck(_ConnectionPlugin):
             return
         if not url_data.valid:
             return
+        if url_data.url_connection is None:
+            # not allowed to connect
+            return
         if url_data.scheme != 'https':
             return
         host = url_data.urlparts[1]
