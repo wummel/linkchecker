@@ -163,20 +163,14 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             allow_redirects=False,
         )
         if self.scheme == u"https" and self.aggregate.config["sslverify"]:
-            kwargs["verify"] = self.aggregate.config["sslverify"]
-            log.debug(LOG_CHECK, "Send request with %s", kwargs)
-            try:
-                self._send_request(request, **kwargs)
-            except requests.exceptions.SSLError:
-                # provide non-validated connection info
-                del kwargs["verify"]
-                self._send_request(request, **kwargs)
-                raise
+            kwargs['verify'] = self.aggregate.config["sslverify"]
         else:
-            self._send_request(request, **kwargs)
+            kwargs['verify'] = False
+        self._send_request(request, **kwargs)
 
     def _send_request(self, request, **kwargs):
         """Send GET request."""
+        log.debug(LOG_CHECK, "Send request with %s", kwargs)
         self.url_connection = self.session.send(request, **kwargs)
         self.headers = self.url_connection.headers
         if self.scheme == u'https':

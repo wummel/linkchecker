@@ -91,6 +91,10 @@ class SslCertificateCheck(_ConnectionPlugin):
             strTimeValid = strformat.strduration_long(secondsValid)
             msg = _('SSL certificate is only %s valid') % strTimeValid
             url_data.add_warning(msg)
+        else:
+            strTimeValid = strformat.strduration_long(secondsValid)
+            msg = _('SSL certificate is %s valid') % strTimeValid
+            url_data.add_info(msg)
 
     @classmethod
     def read_config(cls, configparser):
