@@ -162,11 +162,42 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             timeout=self.aggregate.config["timeout"],
             allow_redirects=False,
         )
-        if self.scheme == "https" and self.aggregate.config["sslverify"]:
+        if self.scheme == u"https" and self.aggregate.config["sslverify"]:
             kwargs["verify"] = self.aggregate.config["sslverify"]
-        log.debug(LOG_CHECK, "Send request with %s", kwargs)
+            log.debug(LOG_CHECK, "Send request with %s", kwargs)
+            try:
+                self._send_request(request, **kwargs)
+            except requests.exceptions.SSLError:
+                # provide non-validated connection info
+                del kwargs["verify"]
+                self._send_request(request, **kwargs)
+                raise
+        else:
+            self._send_request(request, **kwargs)
+
+    def _send_request(self, request, **kwargs):
+        """Send GET request."""
         self.url_connection = self.session.send(request, **kwargs)
         self.headers = self.url_connection.headers
+        if self.scheme == u'https':
+            self.add_ssl_cipher_info()
+
+    def get_ssl_sock(self):
+        """Get raw SSL socket."""
+        assert self.scheme == u"https", self
+        raw_connection = self.url_connection.raw._connection
+        if raw_connection.sock is None:
+            # sometimes the socket is not yet connected
+            # see https://github.com/kennethreitz/requests/issues/1966
+            raw_connection.connect()
+        return raw_connection.sock
+
+    def add_ssl_cipher_info(self):
+        """Add SSL cipher info."""
+        cipher_name, ssl_protocol, secret_bits = self.get_ssl_sock().cipher()
+        msg = _(u"SSL cipher %(cipher)s, %(protocol)s.")
+        attrs = dict(cipher=cipher_name, protocol=ssl_protocol)
+        self.add_info(msg % attrs)
 
     def construct_auth (self):
         """Construct HTTP Basic authentication credentials if there

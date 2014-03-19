@@ -61,25 +61,15 @@ class SslCertificateCheck(_ConnectionPlugin):
         if host in self.checked_hosts:
             return
         self.checked_hosts.add(host)
-        raw_connection = url_data.url_connection.raw._connection
-        if raw_connection.sock is None:
-            # sometimes the socket is not yet connected
-            # see https://github.com/kennethreitz/requests/issues/1966
-            raw_connection.connect()
-        ssl_sock = raw_connection.sock
-        cert = ssl_sock.getpeercert()
+        cert = url_data.get_ssl_sock().getpeercert()
         log.debug(LOG_PLUGIN, "Got SSL certificate %s", cert)
-        cipher_name, ssl_protocol, secret_bits = ssl_sock.cipher()
-        msg = _(u"SSL cipher %(cipher)s, %(protocol)s.")
-        attrs = dict(cipher=cipher_name, protocol=ssl_protocol)
-        url_data.add_info(msg % attrs)
         if 'notAfter' in cert:
-            self.check_ssl_valid_date(url_data, ssl_sock, cert)
+            self.check_ssl_valid_date(url_data, cert)
         else:
             msg = _('certificate did not include "notAfter" information')
             url_data.add_warning(msg)
 
-    def check_ssl_valid_date(self, url_data, ssl_sock, cert):
+    def check_ssl_valid_date(self, url_data, cert):
         """Check if the certificate is still valid, or if configured check
         if it's at least a number of days valid.
         """

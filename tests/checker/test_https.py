@@ -34,6 +34,7 @@ class TestHttps (LinkCheckTest):
             u"url %s" % url,
             u"cache key %s" % url,
             u"real url %s" % rurl,
+            u"info SSL cipher RC4-SHA, TLSv1/SSLv3.",
             u"info Redirected to `%s'." % rurl,
             u"valid",
         ]
