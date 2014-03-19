@@ -19,7 +19,7 @@ Handle https links.
 """
 import time
 import threading
-from . import _ContentPlugin
+from . import _ConnectionPlugin
 from .. import log, LOG_PLUGIN, strformat, LinkCheckerError
 from ..decorators import synchronized
 
@@ -28,7 +28,7 @@ _lock = threading.Lock()
 # configuration option names
 sslcertwarndays = "sslcertwarndays"
 
-class SslCertificateCheck(_ContentPlugin):
+class SslCertificateCheck(_ConnectionPlugin):
     """Check SSL certificate expiration date. Only internal https: links
     will be checked. A domain will only be checked once to avoid duplicate
     warnings.
@@ -62,17 +62,19 @@ class SslCertificateCheck(_ContentPlugin):
         if raw_connection.sock is None:
             # sometimes the socket is not yet connected
             # see https://github.com/kennethreitz/requests/issues/1966
-            raw_connection.sock.connect()
+            raw_connection.connect()
         ssl_sock = raw_connection.sock
         cert = ssl_sock.getpeercert()
         log.debug(LOG_PLUGIN, "Got SSL certificate %s", cert)
-        #if not cert:
-        #    return
+        cipher_name, ssl_protocol, secret_bits = ssl_sock.cipher()
+        msg = _(u"SSL cipher %(cipher)s, %(protocol)s.")
+        attrs = dict(cipher=cipher_name, protocol=ssl_protocol)
+        url_data.add_info(msg % attrs)
         if 'notAfter' in cert:
             self.check_ssl_valid_date(url_data, ssl_sock, cert)
         else:
             msg = _('certificate did not include "notAfter" information')
-            self.add_ssl_warning(url_data, ssl_sock, msg)
+            url_data.add_warning(msg)
 
     def check_ssl_valid_date(self, url_data, ssl_sock, cert):
         """Check if the certificate is still valid, or if configured check
@@ -82,27 +84,20 @@ class SslCertificateCheck(_ContentPlugin):
         try:
             notAfter = ssl.cert_time_to_seconds(cert['notAfter'])
         except ValueError as msg:
-            msg = _('invalid certficate "notAfter" value %r') % cert['notAfter']
-            self.add_ssl_warning(url_data, ssl_sock, msg)
+            msg = _('Invalid SSL certficate "notAfter" value %r') % cert['notAfter']
+            url_data.add_warning(msg)
             return
         curTime = time.time()
         # Calculate seconds until certifcate expires. Can be negative if
         # the certificate is already expired.
         secondsValid = notAfter - curTime
         if secondsValid < 0:
-            msg = _('certficate is expired on %s') % cert['notAfter']
-            self.add_ssl_warning(url_data, ssl_sock, msg)
+            msg = _('SSL certficate is expired on %s') % cert['notAfter']
+            url_data.add_warning(msg)
         elif secondsValid < self.warn_ssl_cert_secs_valid:
-            strSecondsValid = strformat.strduration_long(secondsValid)
-            msg = _('certificate is only %s valid') % strSecondsValid
-            self.add_ssl_warning(url_data, ssl_sock, msg)
-
-    def add_ssl_warning(self, url_data, ssl_sock, msg):
-        """Add a warning message about an SSL certificate error."""
-        cipher_name, ssl_protocol, secret_bits = ssl_sock.cipher()
-        err = _(u"SSL warning: %(msg)s. Cipher %(cipher)s, %(protocol)s.")
-        attrs = dict(msg=msg, cipher=cipher_name, protocol=ssl_protocol)
-        url_data.add_warning(err % attrs)
+            strTimeValid = strformat.strduration_long(secondsValid)
+            msg = _('SSL certificate is only %s valid') % strTimeValid
+            url_data.add_warning(msg)
 
     @classmethod
     def read_config(cls, configparser):
