@@ -131,6 +131,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         request = self.build_request()
         self.send_request(request)
         self.follow_redirections(request)
+        self.charset = self.url_connection.apparent_encoding
         self.check_response()
 
     def build_request(self):
