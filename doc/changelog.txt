@@ -25,6 +25,8 @@ Fixes:
 - checking: Fix assertion in external link checking.
 - checking: Fix SSL errors on Windows.
   Closes: GH bug #471
+- gui: Fix warning regex settings.
+  Closes: GH bug #485
 
 
 9.0 "The Wolf of Wall Street" (released 3.3.2014)

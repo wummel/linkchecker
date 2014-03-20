@@ -262,13 +262,9 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         if data["warninglines"]:
             lines = data["warninglines"].splitlines()
             pattern = warninglines2regex(lines)
-            try:
-                ro = re.compile(pattern)
-                self.backup_config("warningregex", ro)
-            except re.error as err:
-                msg = _("Invalid regular expression %r: %s" % (pattern, err))
-                self.set_statusmsg(msg)
-
+            args = dict(warningregex=pattern)
+            self.backup_config("enabledplugins", ["RegexCheck"])
+            self.config["RegexCheck"] = args
         # set ignore patterns
         ignorepats = data["ignorelines"].strip()
         if ignorepats:
@@ -281,6 +277,8 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
                 except re.error as err:
                     msg = _("Invalid regular expression %r: %s" % (pat, err))
                     self.set_statusmsg(msg)
+        # make sure the configuration is sane
+        self.config.sanitize()
 
     def backup_config (self, key, value=None):
         """Backup config key if not already done and set given value."""
