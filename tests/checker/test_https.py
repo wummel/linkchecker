@@ -38,4 +38,8 @@ class TestHttps (LinkCheckTest):
             u"info Redirected to `%s'." % rurl,
             u"valid",
         ]
-        self.direct(url, resultlines, recursionlevel=0)
+        confargs = dict(
+            enabledplugins=['SslCertificateCheck'],
+            SslCertificateCheck=dict(sslcertwarndays=10),
+        )
+        self.direct(url, resultlines, recursionlevel=0, confargs=confargs)

@@ -84,17 +84,18 @@ class SslCertificateCheck(_ConnectionPlugin):
         # Calculate seconds until certifcate expires. Can be negative if
         # the certificate is already expired.
         secondsValid = notAfter - curTime
+        args = dict(expire=cert['notAfter'])
         if secondsValid < 0:
-            msg = _('SSL certficate is expired on %s') % cert['notAfter']
-            url_data.add_warning(msg)
-        elif secondsValid < self.warn_ssl_cert_secs_valid:
-            strTimeValid = strformat.strduration_long(secondsValid)
-            msg = _('SSL certificate is only %s valid') % strTimeValid
-            url_data.add_warning(msg)
+            msg = _('SSL certficate is expired on %(expire)s.')
+            url_data.add_warning(msg % args)
         else:
-            strTimeValid = strformat.strduration_long(secondsValid)
-            msg = _('SSL certificate is %s valid') % strTimeValid
-            url_data.add_info(msg)
+            args['valid'] = strformat.strduration_long(secondsValid)
+            if secondsValid < self.warn_ssl_cert_secs_valid:
+                msg = _('SSL certificate expires on %(expire)s and is only %(valid)s valid.')
+                url_data.add_warning(msg % args)
+            else:
+                msg = _('SSL certificate expires on %(expire)s and is %(valid)s valid.')
+                url_data.add_info(msg % args)
 
     @classmethod
     def read_config(cls, configparser):
