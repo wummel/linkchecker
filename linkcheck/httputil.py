@@ -41,7 +41,9 @@ def x509_to_dict(x509):
     if notAfter is not None:
         parsedtime = asn1_generaltime_to_seconds(notAfter)
         if parsedtime is not None:
-            res['notAfter'] = parsedtime.ctime()
+            res['notAfter'] = parsedtime.strftime('%b %d %H:%M:%S %Y')
+            if parsedtime.tzinfo is None:
+                res['notAfter'] += ' GMT'
         else:
             # give up parsing, just set the string
             res['notAfter'] = notAfter
@@ -58,7 +60,7 @@ def asn1_generaltime_to_seconds(timestr):
     res = None
     timeformat = "%Y%m%d%H%M%S"
     try:
-        res = datetime.strptime(timestr, timeformat + '%Z')
+        res = datetime.strptime(timestr, timeformat + 'Z')
     except ValueError:
         try:
             res = datetime.strptime(timestr, timeformat + '%z')
