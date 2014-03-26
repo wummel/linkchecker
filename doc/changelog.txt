@@ -14,7 +14,8 @@ Changes:
 - checking: Disable URL length warning for data: URLs.
 - checking: Do not warn about missing addresses on mailto links that have
   subjects.
-- checking: Display SSL certificate info even on redirects.
+- checking: Check and display SSL certificate info even on redirects.
+  Closes: GH bug #489
 - installation: Check requirement for Python requests >= 2.2.0.
   Closes: GH bug #478
 - logging: Display downloaded bytes.
@@ -26,6 +27,8 @@ Fixes:
 - checking: Fix assertion in external link checking.
 - checking: Fix SSL errors on Windows.
   Closes: GH bug #471
+- checking: Fix error when SNI checks are enabled.
+  Closes: GH bug #488
 - gui: Fix warning regex settings.
   Closes: GH bug #485
 

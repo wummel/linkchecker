@@ -199,8 +199,9 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """Add SSL cipher info."""
         if self.scheme == u'https':
             sock = self._get_ssl_sock()
-            self.ssl_cipher = sock.cipher()
-            log.debug(LOG_CHECK, "Got SSL cipher %s", self.ssl_cipher)
+            if hasattr(sock, 'cipher'):
+                self.ssl_cipher = sock.cipher()
+                log.debug(LOG_CHECK, "Got SSL cipher %s", self.ssl_cipher)
             self.ssl_cert = sock.getpeercert()
             log.debug(LOG_CHECK, "Got SSL certificate %s", self.ssl_cert)
         else:
