@@ -20,7 +20,7 @@ Handle https links.
 import time
 import threading
 from . import _ConnectionPlugin
-from .. import log, LOG_PLUGIN, strformat, LinkCheckerError
+from .. import strformat, LinkCheckerError
 from ..decorators import synchronized
 
 _lock = threading.Lock()
@@ -61,12 +61,19 @@ class SslCertificateCheck(_ConnectionPlugin):
         if host in self.checked_hosts:
             return
         self.checked_hosts.add(host)
-        cert = url_data.get_ssl_sock().getpeercert()
-        log.debug(LOG_PLUGIN, "Got SSL certificate %s", cert)
-        if 'notAfter' in cert:
+        cert = url_data.ssl_cert
+        cipher_name, ssl_protocol, num_secret_bits = url_data.ssl_cipher
+        msg = _(u"SSL cipher %(cipher)s, %(protocol)s.")
+        attrs = dict(cipher=cipher_name, protocol=ssl_protocol)
+        url_data.add_info(msg % attrs)
+        config = url_data.aggregate.config
+        if cert and 'notAfter' in cert:
             self.check_ssl_valid_date(url_data, cert)
-        else:
+        elif config['sslverify']:
             msg = _('certificate did not include "notAfter" information')
+            url_data.add_warning(msg)
+        else:
+            msg = _('SSL verification is disabled; enable the sslverify option')
             url_data.add_warning(msg)
 
     def check_ssl_valid_date(self, url_data, cert):
