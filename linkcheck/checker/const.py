@@ -69,6 +69,13 @@ try:
 except ImportError:
     pass
 
+# pyOpenSSL errors
+try:
+    import OpenSSL
+    ExcCacheList.append(OpenSSL.SSL.Error)
+except ImportError:
+    pass
+
 
 ExcList = ExcCacheList + ExcNoCacheList
 

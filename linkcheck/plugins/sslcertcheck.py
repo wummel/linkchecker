@@ -62,11 +62,6 @@ class SslCertificateCheck(_ConnectionPlugin):
             return
         self.checked_hosts.add(host)
         cert = url_data.ssl_cert
-        if url_data.ssl_cipher is not None:
-            cipher_name, ssl_protocol, num_secret_bits = url_data.ssl_cipher
-            msg = _(u"SSL cipher %(cipher)s, %(protocol)s.")
-            attrs = dict(cipher=cipher_name, protocol=ssl_protocol)
-            url_data.add_info(msg % attrs)
         config = url_data.aggregate.config
         if cert and 'notAfter' in cert:
             self.check_ssl_valid_date(url_data, cert)

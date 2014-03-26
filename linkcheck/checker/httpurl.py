@@ -26,6 +26,7 @@ from .. import (log, LOG_CHECK, strformat, fileutil,
 from . import (internpaturl, proxysupport, httpheaders as headers)
 from ..HtmlParser import htmlsax
 from ..htmlutil import linkparse
+from ..httputil import x509_to_dict
 # import warnings
 from .const import WARN_HTTP_EMPTY_CONTENT
 from requests.sessions import REDIRECT_STATI
@@ -200,12 +201,13 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         if self.scheme == u'https':
             sock = self._get_ssl_sock()
             if hasattr(sock, 'cipher'):
-                self.ssl_cipher = sock.cipher()
-                log.debug(LOG_CHECK, "Got SSL cipher %s", self.ssl_cipher)
-            self.ssl_cert = sock.getpeercert()
+                self.ssl_cert = sock.getpeercert()
+            else:
+                # using pyopenssl
+                cert = sock.connection.get_peer_certificate()
+                self.ssl_cert = x509_to_dict(cert)
             log.debug(LOG_CHECK, "Got SSL certificate %s", self.ssl_cert)
         else:
-            self.ssl_cipher = None
             self.ssl_cert = None
 
     def construct_auth (self):
