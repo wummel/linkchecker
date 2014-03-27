@@ -23,6 +23,9 @@ from . import task
 from ..cache import urlqueue
 from .. import parser
 
+# Interval in which each check thread looks if it's stopped.
+QUEUE_POLL_INTERVALL_SECS = 1.0
+
 
 def check_urls (urlqueue, logger):
     """Check URLs without threading."""
@@ -94,7 +97,7 @@ class Checker(task.LoggedCheckedTask):
     def check_url (self):
         """Try to get URL data from queue and check it."""
         try:
-            url_data = self.urlqueue.get(timeout=0.2)
+            url_data = self.urlqueue.get(timeout=QUEUE_POLL_INTERVALL_SECS)
             if url_data is not None:
                 try:
                     self.check_url_data(url_data)
