@@ -275,9 +275,6 @@ class LinkFinder (TagFinder):
             urls.extend(url.split(u','))
         else:
             urls.append(url)
-        if not urls:
-            # no url found
-            return
         for u in urls:
             assert isinstance(u, unicode) or u is None, repr(u)
             log.debug(LOG_CHECK, u"LinkParser found link %r %r %r %r %r", tag, attr, u, name, base)

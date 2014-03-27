@@ -101,12 +101,13 @@ def get_url_from (base_url, recursion_level, aggregate,
         base_ref = strformat.unicode_safe(base_ref)
     name = strformat.unicode_safe(name)
     url = absolute_url(base_url_stripped, base_ref, parent_url).lower()
-    scheme = None
-    if not (url or name):
-        # use filename as base url, with slash as path seperator
-        name = base_url.replace("\\", "/")
-    elif ":" in url:
+    if ":" in url:
         scheme = url.split(":", 1)[0].lower()
+    else:
+        scheme = None
+        if not (url or name):
+            # use filename as base url, with slash as path seperator
+            name = base_url.replace("\\", "/")
     allowed_schemes = aggregate.config["allowedschemes"]
     # ignore local PHP files with execution directives
     local_php = (parent_content_type == 'application/x-httpd-php' and
