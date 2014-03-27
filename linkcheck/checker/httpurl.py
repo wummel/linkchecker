@@ -22,11 +22,10 @@ import requests
 from cStringIO import StringIO
 
 from .. import (log, LOG_CHECK, strformat, fileutil,
-    url as urlutil, LinkCheckerError)
-from . import (internpaturl, proxysupport, httpheaders as headers)
+    url as urlutil, LinkCheckerError, httputil)
+from . import (internpaturl, proxysupport)
 from ..HtmlParser import htmlsax
 from ..htmlutil import linkparse
-from ..httputil import x509_to_dict
 # import warnings
 from .const import WARN_HTTP_EMPTY_CONTENT
 from requests.sessions import REDIRECT_STATI
@@ -182,7 +181,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
 
     def _add_response_info(self):
         """Set info from established HTTP(S) connection."""
-        self.charset = self.url_connection.apparent_encoding
+        self.charset = httputil.get_charset(self.headers)
         self.set_content_type()
         self.add_size_info()
 
@@ -205,7 +204,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             else:
                 # using pyopenssl
                 cert = sock.connection.get_peer_certificate()
-                self.ssl_cert = x509_to_dict(cert)
+                self.ssl_cert = httputil.x509_to_dict(cert)
             log.debug(LOG_CHECK, "Got SSL certificate %s", self.ssl_cert)
         else:
             self.ssl_cert = None
@@ -222,7 +221,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
 
     def set_content_type (self):
         """Return content MIME type or empty string."""
-        self.content_type = headers.get_content_type(self.headers)
+        self.content_type = httputil.get_content_type(self.headers)
 
     def is_redirect(self):
         """Check if current response is a redirect."""
