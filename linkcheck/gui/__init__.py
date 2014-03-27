@@ -37,10 +37,9 @@ from .settings import Settings
 from .recentdocs import RecentDocumentModel
 from .projects import openproject, saveproject, loadproject, ProjectExt
 from .. import configuration, checker, director, get_link_pat, \
-    strformat, fileutil, LinkCheckerError, i18n
+    strformat, fileutil, LinkCheckerError, i18n, httputil
 from ..containers import enum
 from .. import url as urlutil
-from ..checker import httpheaders
 
 
 DocBaseUrl = "qthelp://bfk.app.linkchecker/doc/"
@@ -534,7 +533,7 @@ Version 2 or later.
             msg = u"An error occurred retreiving URL `%s': %s." % (url, info)
             self.editor.setText(msg)
         else:
-            content_type = httpheaders.get_content_type(info)
+            content_type = httputil.get_content_type(info)
             if not content_type:
                 # read function for content type guessing
                 read = lambda: data
