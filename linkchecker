@@ -42,8 +42,7 @@ import linkcheck.ansicolor
 from linkcheck.director import console, check_urls, get_aggregate
 # optional modules
 has_argcomplete = linkcheck.fileutil.has_module("argcomplete")
-has_profile = linkcheck.fileutil.has_module("cProfile")
-has_pstats = linkcheck.fileutil.has_module("pstats")
+has_profile = linkcheck.fileutil.has_module("yappi")
 has_meliae = linkcheck.fileutil.has_module("meliae")
 
 # default profiling filename
@@ -196,25 +195,6 @@ file entry:
 Epilog = u"\n".join((Examples, LoggerTypes, RegularExpressions, CookieFormat, ProxySupport, Notes, Retval, Warnings))
 
 
-def viewprof():
-    """Print profiling data and exit."""
-    if not has_pstats:
-        log.error(LOG_CMDLINE,
-                           _("The `pstats' Python module is not installed,"
-                           " therefore the --viewprof option is disabled."))
-        sys.exit(1)
-    if not os.path.isfile(_profile):
-        log.warn(LOG_CMDLINE,
-           _("Could not find profiling file %(file)r.") % {"file": _profile})
-        print >> sys.stderr, \
-                   _("Please run linkchecker with --profile to generate it.")
-        sys.exit(1)
-    import pstats
-    stats = pstats.Stats(_profile)
-    stats.strip_dirs().sort_stats("cumulative").print_stats(100)
-    sys.exit(0)
-
-
 def has_encoding (encoding):
     """Detect if Python can encode in a certain encoding."""
     try:
@@ -316,8 +296,6 @@ group.add_argument("--trace", action="store_true", dest="trace",
 group.add_argument("-v", "--verbose", action="store_true", dest="verbose",
                  help=_(
 """Log all URLs. Default is to log only errors and warnings."""))
-group.add_argument("--viewprof", action="store_true", dest="viewprof",
-                 help=argparse.SUPPRESS)
 # XXX deprecated: moved to plugin RegexCheck
 group.add_argument("-W", "--warning-regex", dest="warningregex",
                  metavar="REGEX",
@@ -542,8 +520,6 @@ if options.verbose:
     if options.verbose:
         config["verbose"] = True
         config["warnings"] = True
-if options.viewprof:
-    viewprof()
 if options.cookiefile is not None:
     config['cookiefile'] = options.cookiefile
 if constructauth:
@@ -602,14 +578,17 @@ Press Ctrl-C to cancel, RETURN to continue.""") % {"file": _profile}
                 sys.exit(1)
     else:
         log.warn(LOG_CMDLINE,
-                   _("The `cProfile' Python module is not installed,"
+                   _("The `yappi' Python module is not installed,"
                      " therefore the --profile option is disabled."))
         do_profile = False
 
 # finally, start checking
 if do_profile:
-    import cProfile
-    cProfile.run("check_urls(aggregate)", _profile)
+    import yappi
+    yappi.start()
+    check_urls(aggregate)
+    yappi.stop()
+    yappi.get_func_stats().save(_profile)
 else:
     check_urls(aggregate)
 if config["debugmemory"]:
