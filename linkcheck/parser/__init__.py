@@ -40,7 +40,7 @@ def parse_html (url_data):
     """Parse into HTML content and search for URLs to check.
     Found URLs are added to the URL queue.
     """
-    find_links(url_data, url_data.add_url)
+    find_links(url_data, url_data.add_url, linkparse.LinkTags)
 
 
 def parse_opera (url_data):
@@ -126,7 +126,7 @@ def parse_wml (url_data):
     """Parse into WML content and search for URLs to check.
     Found URLs are added to the URL queue.
     """
-    find_links(url_data, url_data.add_url, tags=linkparse.WmlTags)
+    find_links(url_data, url_data.add_url, linkparse.WmlTags)
 
 
 def get_temp_filename (content):
@@ -141,12 +141,12 @@ def get_temp_filename (content):
     return filename
 
 
-def find_links (url_data, callback, tags=None):
+def find_links (url_data, callback, tags):
     """Parse into content and search for URLs to check.
     Found URLs are added to the URL queue.
     """
     # construct parser object
-    handler = linkparse.LinkFinder(callback, tags=tags)
+    handler = linkparse.LinkFinder(callback, tags)
     parser = htmlsax.parser(handler)
     if url_data.charset:
         parser.encoding = url_data.charset

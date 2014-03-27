@@ -30,7 +30,7 @@ class TestLinkparser (unittest.TestCase):
 
     def _test_one_link (self, content, url):
         self.count_url = 0
-        h = linkparse.LinkFinder(self._test_one_url(url))
+        h = linkparse.LinkFinder(self._test_one_url(url), linkparse.LinkTags)
         p = linkcheck.HtmlParser.htmlsax.parser(h)
         h.parser = p
         try:
@@ -52,7 +52,7 @@ class TestLinkparser (unittest.TestCase):
     def _test_no_link (self, content):
         def callback (url, line, column, name, base):
             self.assertTrue(False, 'URL %r found' % url)
-        h = linkparse.LinkFinder(callback)
+        h = linkparse.LinkFinder(callback, linkparse.LinkTags)
         p = linkcheck.HtmlParser.htmlsax.parser(h)
         h.parser = p
         try:

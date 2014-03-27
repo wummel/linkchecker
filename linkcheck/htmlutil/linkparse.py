@@ -187,16 +187,18 @@ class LinkFinder (TagFinder):
     """Find HTML links, and apply them to the callback function with the
     format (url, lineno, column, name, codebase)."""
 
-    def __init__ (self, callback, tags=None):
+    def __init__ (self, callback, tags):
         """Store content in buffer and initialize URL list."""
         super(LinkFinder, self).__init__()
         self.callback = callback
-        if tags is None:
-            self.tags = LinkTags
-        else:
-            self.tags = tags
+        # set universal tag attributes using tagname None
+        self.universal_attrs = set(tags.get(None, []))
+        self.tags = dict()
+        for  tag, attrs in tags.items():
+            self.tags[tag] = set(attrs)
+            # add universal tag attributes
+            self.tags[tag].update(self.universal_attrs)
         self.base_ref = u''
-        log.debug(LOG_CHECK, "link finder")
 
     def start_element (self, tag, attrs):
         """Search for links and store found URLs in a list."""
@@ -204,15 +206,9 @@ class LinkFinder (TagFinder):
         log.debug(LOG_CHECK, "line %d col %d old line %d old col %d", self.parser.lineno(), self.parser.column(), self.parser.last_lineno(), self.parser.last_column())
         if tag == "base" and not self.base_ref:
             self.base_ref = unquote(attrs.get_true("href", u''))
-        tagattrs = self.tags.get(tag, [])
-        # add universal tag attributes using tagname None
-        tagattrs.extend(self.tags.get(None, []))
-        # eliminate duplicate tag attributes
-        tagattrs = set(tagattrs)
+        tagattrs = self.tags.get(tag, self.universal_attrs)
         # parse URLs in tag (possibly multiple URLs in CSS styles)
-        for attr in tagattrs:
-            if attr not in attrs:
-                continue
+        for attr in tagattrs.intersection(attrs):
             if tag == "meta" and not is_meta_url(attr, attrs):
                 continue
             if tag == "form" and not is_form_get(attr, attrs):
@@ -252,31 +248,31 @@ class LinkFinder (TagFinder):
             name = u""
         return name
 
-    def parse_tag (self, tag, attr, url, name, base):
+    def parse_tag (self, tag, attr, value, name, base):
         """Add given url data to url list."""
         assert isinstance(tag, unicode), repr(tag)
         assert isinstance(attr, unicode), repr(attr)
         assert isinstance(name, unicode), repr(name)
         assert isinstance(base, unicode), repr(base)
-        assert isinstance(url, unicode) or url is None, repr(url)
-        urls = []
+        assert isinstance(value, unicode) or value is None, repr(value)
         # look for meta refresh
-        if tag == u'meta' and url:
-            mo = refresh_re.match(url)
+        if tag == u'meta' and value:
+            mo = refresh_re.match(value)
             if mo:
-                urls.append(mo.group("url"))
+                self.found_url(mo.group("url"), name, base)
             elif attr != 'content':
-                urls.append(url)
-        elif attr == u'style' and url:
-            for mo in css_url_re.finditer(url):
-                u = mo.group("url")
-                urls.append(unquote(u, matching=True))
+                self.found_url(value, name, base)
+        elif attr == u'style' and value:
+            for mo in css_url_re.finditer(value):
+                url = unquote(mo.group("url"), matching=True)
+                self.found_url(url, name, base)
         elif attr == u'archive':
-            urls.extend(url.split(u','))
+            for url in value.split(u','):
+                self.found_url(url, name, base)
         else:
-            urls.append(url)
-        for u in urls:
-            assert isinstance(u, unicode) or u is None, repr(u)
-            log.debug(LOG_CHECK, u"LinkParser found link %r %r %r %r %r", tag, attr, u, name, base)
-            self.callback(u, self.parser.last_lineno(),
-                          self.parser.last_column(), name, base)
+            self.found_url(value, name, base)
+
+    def found_url(self, url, name, base):
+        assert isinstance(url, unicode) or url is None, repr(url)
+        self.callback(url, self.parser.last_lineno(),
+                      self.parser.last_column(), name, base)
