@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Bastian Kleineidam <bastian.kleineidam@web.de>
+# Copyright (C) 2014 Bastian Kleineidam <bastian.kleineidam@web.de>
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
