@@ -6,6 +6,9 @@ Features:
 - checking: Add new HTTP header info plugin.
 - logging: Support arbitrary encodings in CSV output.
   Closes: GH bug #467
+- installation: Use .gz compression for source release to support
+  "pip install".
+  Closes: GH bug #461
 
 Changes:
 - checking: Ignored URLs are reported earlier now.
