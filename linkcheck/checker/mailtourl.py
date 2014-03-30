@@ -227,15 +227,10 @@ class MailtoUrl (urlbase.UrlBase):
         Verify a list of email addresses. If one address fails,
         the whole list will fail.
 
-        For each mail address we check the following things:
-          1. Look up the MX DNS records. If we found no MX record,
-             print an error.
-          2. Check if one of the mail hosts accept an SMTP connection.
-             Check hosts with higher priority first.
-             If no host accepts SMTP, we print a warning.
-          3. Try to verify the address with the VRFY command. If we got
-             an answer, print the verified address as an info.
-             If not, print a warning.
+        For each mail address the MX DNS records are found.
+        If no MX records are found, print a warning and try
+        to look for A DNS records. If no A records are found either
+        print an error.
         """
         for mail in sorted(self.addresses):
             self.check_smtp_domain(mail)
