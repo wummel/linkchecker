@@ -1,4 +1,4 @@
-9.1 "" (released xx.xx.2014)
+9.1 "Don Jon" (released 30.3.2014)
 
 Features:
 - checking: Support parsing of sitemap and sitemap index XML files.

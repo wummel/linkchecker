@@ -20,6 +20,9 @@ Setup for GNU/Linux
 On all major Linux distributions (Debian, Mandriva, Redhat, Suse, Ubuntu),
 the ``linkchecker`` package is available for install.
 
+If ``pip`` is available, ``sudo pip install linkchecker`` installs
+LinkChecker to your system.
+
 
 Manual setup for Unix systems
 -----------------------------
