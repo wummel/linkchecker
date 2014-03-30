@@ -7,14 +7,15 @@ APPNAME:=$(shell $(PYTHON) setup.py --name)
 AUTHOR:=$(shell $(PYTHON) setup.py --author)
 MAINTAINER:=$(shell $(PYTHON) setup.py --maintainer)
 LAPPNAME:=$(shell echo $(APPNAME)|tr "[A-Z]" "[a-z]")
-ARCHIVE_SOURCE:=$(APPNAME)-$(VERSION).tar.xz
+ARCHIVE_SOURCE_EXT:=gz
+ARCHIVE_SOURCE:=$(APPNAME)-$(VERSION).tar.$(ARCHIVE_SOURCE_EXT)
 ARCHIVE_WIN32:=$(APPNAME)-$(VERSION).exe
 GITUSER:=wummel
 GITREPO:=$(LAPPNAME)
 HOMEPAGE:=$(HOME)/public_html/$(LAPPNAME)-webpage.git
 WEB_META:=doc/web/app.yaml
 DEBUILDDIR:=$(HOME)/projects/debian/official
-DEBORIGFILE:=$(DEBUILDDIR)/$(LAPPNAME)_$(VERSION).orig.tar.xz
+DEBORIGFILE:=$(DEBUILDDIR)/$(LAPPNAME)_$(VERSION).orig.tar.$(ARCHIVE_SOURCE_EXT)
 DEBPACKAGEDIR:=$(DEBUILDDIR)/$(APPNAME)-$(VERSION)
 FILESCHECK_URL:=http://localhost/~calvin/
 SRCDIR:=${HOME}/src
@@ -154,9 +155,9 @@ chmod:
 	find . -type d -exec chmod 755 {} \;
 
 dist: locale MANIFEST chmod
-	rm -f dist/$(APPNAME)-$(VERSION).tar.xz
+	rm -f dist/$(ARCHIVE_SOURCE)
 	$(PYTHON) setup.py sdist --formats=tar
-	xz dist/$(APPNAME)-$(VERSION).tar
+	gzip --best dist/$(APPNAME)-$(VERSION).tar
 	[ ! -f ../$(ARCHIVE_WIN32) ] || cp ../$(ARCHIVE_WIN32) dist
 
 # Build OSX installer with py2app
@@ -209,7 +210,7 @@ releasecheck: check
 	$(PYTHON) setup.py check --restructuredtext
 
 sign:
-	for f in $(shell find dist -name *.xz -o -name *.exe -o -name *.zip -o -name *.dmg); do \
+	for f in $(shell find dist -name *.$(ARCHIVE_SOURCE_EXT) -o -name *.exe -o -name *.zip -o -name *.dmg); do \
 	  [ -f $${f}.asc ] || gpg --detach-sign --armor $$f; \
 	done
 
@@ -228,7 +229,7 @@ pep8:
 
 # Compare custom Python files with the originals
 diff:
-	@for f in gzip robotparser httplib; do \
+	@for f in gzip robotparser; do \
 	  echo "Comparing $${f}.py"; \
 	  diff -u linkcheck/$${f}2.py $(SRCDIR)/cpython.hg/Lib/$${f}.py | $(PAGER); \
 	done
