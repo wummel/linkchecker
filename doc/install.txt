@@ -20,8 +20,13 @@ Setup for GNU/Linux
 On all major Linux distributions (Debian, Mandriva, Redhat, Suse, Ubuntu),
 the ``linkchecker`` package is available for install.
 
-If ``pip`` is available, ``sudo pip install linkchecker`` installs
-LinkChecker to your system.
+If ``pip`` is available, this command should install LinkChecker on
+the local system:
+
+``sudo pip --allow-external linkchecker --allow-unverified linkchecker install linkchecker``
+
+The ``--allow-external`` and ``--allow-unverified`` are necessary since the
+source package is hosted on github instead of the Pypi package index.
 
 
 Manual setup for Unix systems
