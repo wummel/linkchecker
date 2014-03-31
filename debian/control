@@ -6,6 +6,7 @@ Build-Depends: debhelper (>= 9),
                gettext,
                hardening-wrapper,
                python-all-dev (>= 2.7),
+               python-requests (>= 2.2.1),
                qt4-dev-tools
 X-Python-Version: >= 2.7
 Standards-Version: 3.9.5
