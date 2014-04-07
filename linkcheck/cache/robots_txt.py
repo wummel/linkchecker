@@ -21,7 +21,6 @@ from .. import robotparser2, configuration
 from ..containers import LFUCache
 from ..decorators import synchronized
 from ..lock import get_lock
-from ..checker import get_url_from
 
 
 # lock objects
@@ -76,11 +75,7 @@ class RobotsTxt (object):
         if rec_level >= 0 and url_data.recursion_level >= rec_level:
             return
         for sitemap_url, line in rp.sitemap_urls:
-            sitemap_url_data = get_url_from(sitemap_url,
-                url_data.recursion_level+1, url_data.aggregate,
-                parent_url=roboturl, line=line,
-                parent_content_type=url_data.content_type)
-            url_data.aggregate.urlqueue.put(sitemap_url_data)
+            url_data.add_url(sitemap_url, line=line)
 
     @synchronized(robot_lock)
     def get_lock(self, roboturl):
