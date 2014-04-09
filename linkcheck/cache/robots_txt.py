@@ -74,6 +74,8 @@ class RobotsTxt (object):
         rec_level = url_data.aggregate.config["recursionlevel"]
         if rec_level >= 0 and url_data.recursion_level >= rec_level:
             return
+        if url_data.extern[0]:
+            return
         for sitemap_url, line in rp.sitemap_urls:
             url_data.add_url(sitemap_url, line=line)
 

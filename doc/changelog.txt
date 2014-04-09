@@ -1,3 +1,10 @@
+9.2 "" (released xx.xx.2014)
+
+Fixes:
+- checking: Don't scan external robots.txt sitemap URLs.
+  Closes: GH bug #495
+
+
 9.1 "Don Jon" (released 30.3.2014)
 
 Features:
