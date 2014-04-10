@@ -46,7 +46,7 @@ LinkTags = {
     'html':     [u'manifest'], # HTML5
     'iframe':   [u'src', u'longdesc'],
     'ilayer':   [u'background'],
-    'img':      [u'src', u'lowsrc', u'longdesc', u'usemap'],
+    'img':      [u'src', u'lowsrc', u'longdesc', u'usemap', u'srcset'],
     'input':    [u'src', u'usemap', u'formaction'],
     'ins':      [u'cite'],
     'isindex':  [u'action'],
@@ -268,6 +268,10 @@ class LinkFinder (TagFinder):
                 self.found_url(url, name, base)
         elif attr == u'archive':
             for url in value.split(u','):
+                self.found_url(url, name, base)
+        elif attr == u'srcset':
+            for img_candidate in value.split(u','):
+                url = img_candidate.split()[0]
                 self.found_url(url, name, base)
         else:
             self.found_url(value, name, base)

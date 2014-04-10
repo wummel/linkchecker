@@ -75,6 +75,11 @@ class TestLinkparser (unittest.TestCase):
         url = u" alink "
         self._test_one_link(content % url, url)
 
+    def test_img_srcset_parsing(self):
+        content = u'<img srcset="%s 1x">'
+        url = u"imagesmall.jpg"
+        self._test_one_link(content % url, url)
+
     def test_form_parsing(self):
         # Test <form action> parsing
         content = u'<form action="%s">'
