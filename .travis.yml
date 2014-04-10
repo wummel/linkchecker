@@ -14,7 +14,7 @@ install:
   - pip install -r requirements.txt --use-mirrors
   - pip install pyftpdlib pytest-xdist --use-mirrors
 # command to run tests
-script: make test PYTESTOPTS="--tb=short" TESTS="tests/test_*.py tests/configuration/test_*.py tests/logger/test_*.py"
+script: make test PYTESTOPTS="--tb=short" TESTS="tests/test_*.py tests/configuration/test_*.py tests/logger/test_*.py tests/checker/test_httpbin.py"
 # do not send emails of broken builds
 notifications:
   email: false

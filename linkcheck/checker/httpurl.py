@@ -136,6 +136,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         self._add_response_info()
         self.follow_redirections(request)
         self.check_response()
+        if self.allows_simple_recursion():
+            self.parse_header_links()
 
     def build_request(self):
         """Build a prepared request object."""
@@ -291,6 +293,13 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
                 raise LinkCheckerError(_("File size too large"))
             buf.write(data)
         return buf.getvalue()
+
+    def parse_header_links(self):
+        """Parse Link: header URLs."""
+        for linktype, linkinfo in self.url_connection.links.items():
+            url = linkinfo["url"]
+            name = u"Link: header %s" % linktype
+            self.add_url(url, name=name)
 
     def is_parseable (self):
         """
