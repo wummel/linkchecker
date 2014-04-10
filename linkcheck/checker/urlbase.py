@@ -519,6 +519,17 @@ class UrlBase (object):
                        maxbytes=strformat.strsize(maxbytes)),
                 tag=WARN_URL_CONTENT_SIZE_TOO_LARGE)
 
+    def allows_simple_recursion(self):
+        """Check recursion level and extern status."""
+        rec_level = self.aggregate.config["recursionlevel"]
+        if rec_level >= 0 and self.recursion_level >= rec_level:
+            log.debug(LOG_CHECK, "... no, maximum recursion level reached.")
+            return False
+        if self.extern[0]:
+            log.debug(LOG_CHECK, "... no, extern.")
+            return False
+        return True
+
     def allows_recursion (self):
         """
         Return True iff we can recurse into the url's content.
@@ -530,12 +541,7 @@ class UrlBase (object):
         if not self.can_get_content():
             log.debug(LOG_CHECK, "... no, cannot get content.")
             return False
-        rec_level = self.aggregate.config["recursionlevel"]
-        if rec_level >= 0 and self.recursion_level >= rec_level:
-            log.debug(LOG_CHECK, "... no, maximum recursion level reached.")
-            return False
-        if self.extern[0]:
-            log.debug(LOG_CHECK, "... no, extern.")
+        if not self.allows_simple_recursion():
             return False
         if self.size > self.aggregate.config["maxfilesizeparse"]:
             log.debug(LOG_CHECK, "... no, maximum parse size.")
