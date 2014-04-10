@@ -17,7 +17,15 @@
 """
 Test http stuff with httpbin.org.
 """
+import re
 from . import LinkCheckTest
+
+
+def get_httpbin_url(path):
+    """Get httpbin URL. Note that this also could be a local
+    httpbin installation, but right now this uses the official site."""
+    return u"http://httpbin.org%s" % path
+
 
 class TestHttpbin(LinkCheckTest):
     """Test http:// link redirection checking."""
@@ -25,7 +33,7 @@ class TestHttpbin(LinkCheckTest):
     def test_http_link(self):
         linkurl = u"http://www.example.com"
         nlinkurl = self.norm(linkurl)
-        url = u"http://httpbin.org/response-headers?Link=<%s>;rel=previous" % linkurl
+        url = get_httpbin_url(u"/response-headers?Link=<%s>;rel=previous" % linkurl)
         nurl = self.norm(url)
         resultlines = [
             u"url %s" % url,
@@ -35,6 +43,26 @@ class TestHttpbin(LinkCheckTest):
             u"url %s" % linkurl,
             u"cache key %s" % nlinkurl,
             u"real url %s" % nlinkurl,
+            u"name Link: header previous",
             u"valid",
         ]
-        self.direct(url, resultlines)
+        self.direct(url, resultlines, recursionlevel=1)
+
+    def test_basic_auth(self):
+        user = u"testuser"
+        password = u"testpassword"
+        url = get_httpbin_url(u"/basic-auth/%s/%s" % (user, password))
+        nurl = self.norm(url)
+        entry = dict(
+            user=user,
+            password=password,
+            pattern=re.compile(r'.*'),
+        )
+        confargs = dict(authentication=[entry])
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % nurl,
+            u"valid",
+        ]
+        self.direct(url, resultlines, confargs=confargs)
