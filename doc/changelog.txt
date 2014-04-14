@@ -3,6 +3,8 @@
 Fixes:
 - checking: Don't scan external robots.txt sitemap URLs.
   Closes: GH bug #495
+- installation: Correct case for pip install command.
+  Closs: GH bug #498
 
 Features:
 - checking: Parse and check HTTP Link: headers.
