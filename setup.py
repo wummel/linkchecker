@@ -58,7 +58,7 @@ try:
     import setuptools
 except ImportError:
     # ignore when setuptools is not installed
-    pass
+    setuptools = None
 if do_freeze:
     from cx_Freeze import setup, Executable
 else:
@@ -987,4 +987,8 @@ if sys.platform == 'darwin':
 if executables:
     args["executables"] = executables
     args["cmdclass"]["install_exe"] = MyInstallExe
+if setuptools is not None:
+    args['install_requires'] = [
+        'requests >= 2.2.0',
+    ]
 setup(**args)
