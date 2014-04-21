@@ -20,8 +20,7 @@ Setup file for the distuils module.
 
 It includes the following features:
 - py2exe support (including InnoScript installer generation)
-- py2app support (including DMG package generation) - untested for quite some
-  time and probably broken
+- py2app support (including DMG package generation)
 - cx_Freeze support
 - Qt plugin installation for py2exe and py2app
 - Microsoft Visual C++ DLL installation for py2exe
