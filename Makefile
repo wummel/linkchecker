@@ -105,7 +105,7 @@ localbuild: MANIFEST locale
 	cp -f build/lib.$(PLATFORM)-$(PYVER)*/linkcheck/network/_network*.so linkcheck/network
 
 release: distclean releasecheck filescheck
-	$(MAKE) dist sign upload homepage tag register changelog deb
+	$(MAKE) dist sign register upload homepage tag changelog deb
 
 tag:
 	git tag upstream/$(VERSION)
@@ -137,6 +137,8 @@ register:
 	@echo "Register at Python Package Index..."
 	$(PYTHON) setup.py register
 	@echo "done."
+
+submit_freecode:
 	@echo "Submitting to Freecode..."
 	freecode-submit < $(LAPPNAME).freecode
 	@echo "done."
