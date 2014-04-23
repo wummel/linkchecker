@@ -111,9 +111,13 @@ tag:
 	git tag upstream/$(VERSION)
 	git push --tags origin upstream/$(VERSION)
 
-upload:
-	cp dist/$(ARCHIVE_SOURCE) dist/$(ARCHIVE_WIN32) \
-	  dist/$(ARCHIVE_SOURCE).asc dist/$(ARCHIVE_WIN32).asc \
+upload:	upload_source upload_binary
+
+upload_source:
+	twine upload dist/$(ARCHIVE_SOURCE) dist/$(ARCHIVE_SOURCE).asc
+
+upload_binary:
+	cp dist/$(ARCHIVE_WIN32) dist/$(ARCHIVE_WIN32).asc \
 	  $(HOMEPAGE)/dist
 
 homepage:
