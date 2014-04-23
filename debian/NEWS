@@ -1,3 +1,9 @@
+linkchecker (9.0-1) unstable; urgency=low
+
+    To check external links --check-extern must be used now.
+
+ -- Bastian Kleineidam <calvin@debian.org>  Wed, 23 Apr 2014 22:32:51 +0200
+
 linkchecker (7.7-1) unstable; urgency=low
 
     The web interface is now in a separate package linkchecker-web.

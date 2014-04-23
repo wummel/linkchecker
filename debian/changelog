@@ -1,3 +1,10 @@
+linkchecker (9.2-1) unstable; urgency=low
+
+  * New upstream release.
+  * Updated debian/copyright
+
+ -- Bastian Kleineidam <calvin@debian.org>  Wed, 23 Apr 2014 22:31:41 +0200
+
 linkchecker (9.1-1) unstable; urgency=low
 
   * New upstream release.
