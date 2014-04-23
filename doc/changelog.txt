@@ -9,6 +9,7 @@ Fixes:
 Features:
 - checking: Parse and check HTTP Link: headers.
 - checking: Support parsing of the <img> srcset attribute.
+- checking: Support parsing of itemtype attributes.
 
 
 9.1 "Don Jon" (released 30.3.2014)

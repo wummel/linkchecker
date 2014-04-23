@@ -80,6 +80,11 @@ class TestLinkparser (unittest.TestCase):
         url = u"imagesmall.jpg"
         self._test_one_link(content % url, url)
 
+    def test_itemtype_parsing(self):
+        content = u'<div itemtype="%s">'
+        url = u"http://example.org/Movie"
+        self._test_one_link(content % url, url)
+
     def test_form_parsing(self):
         # Test <form action> parsing
         content = u'<form action="%s">'

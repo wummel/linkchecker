@@ -64,7 +64,7 @@ LinkTags = {
     'track':    [u'src'], # HTML5
     'video':    [u'src'], # HTML5
     'xmp':      [u'href'],
-    None:       [u'style'],
+    None:       [u'style', u'itemtype'],
 }
 
 # HTML anchor tags
