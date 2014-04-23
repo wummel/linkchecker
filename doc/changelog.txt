@@ -1,4 +1,4 @@
-9.2 "" (released xx.xx.2014)
+9.2 "Rick and Morty" (released 23.4.2014)
 
 Fixes:
 - checking: Don't scan external robots.txt sitemap URLs.
@@ -8,8 +8,8 @@ Fixes:
 
 Features:
 - checking: Parse and check HTTP Link: headers.
-- checking: Support parsing of the <img> srcset attribute.
-- checking: Support parsing of itemtype attributes.
+- checking: Support parsing of HTML image srcset attributes.
+- checking: Support parsing of HTML schema itemtype attributes.
 
 
 9.1 "Don Jon" (released 30.3.2014)
