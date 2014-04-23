@@ -863,16 +863,6 @@ except ImportError:
         pass
 
 
-class MyRegister (register, object):
-    """Custom register command."""
-
-    def build_post_data(self, action):
-        """Force application name to lower case."""
-        data = super(MyRegister, self).build_post_data(action)
-        data['name'] = data['name'].lower()
-        return data
-
-
 args = dict(
     name = AppName,
     version = AppVersion,
@@ -910,7 +900,6 @@ o a command line, GUI and web interface
         'sdist': MySdist,
         'py2exe': MyPy2exe,
         'py2app': MyPy2app,
-        'register': MyRegister,
     },
     package_dir = {
         'linkcheck_dns.dns': 'third_party/dnspython/dns',
