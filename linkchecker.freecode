@@ -1,5 +1,5 @@
 Project: LinkChecker
-Version: 9.1
+Version: 9.2
 Hide: N
 Website-URL: http://wummel.github.io/linkchecker/
 Changelog-URL: https://github.com/wummel/linkchecker/blob/master/doc/changelog.txt
@@ -8,6 +8,6 @@ Debian-Package-URL: http://packages.debian.org/linkchecker
 GIT-Tree-URL: https://github.com/wummel/linkchecker.git
 Windows-installer-URL: http://wummel.github.io/linkchecker/dist/LinkChecker-${version}.exe
 
-XML Sitemap files are now checked and parsed. A new HTTP header info
-plugin has been added. Bugs with debug output, SSL checking and
-result caching have been fixed.
+HTML image srcset and schema itemtypes as well as HTTP "Link:" headers
+are now parsed and checked.
+Bugs with external robots.txt parsing have been fixed.
