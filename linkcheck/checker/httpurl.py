@@ -163,15 +163,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """Send request and store response in self.url_connection."""
         # throttle the number of requests to each host
         self.aggregate.wait_for_host(self.urlparts[1])
-        kwargs = dict(
-            stream=True,
-            timeout=self.aggregate.config["timeout"],
-            allow_redirects=False,
-        )
-        if self.scheme == u"https" and self.aggregate.config["sslverify"]:
-            kwargs['verify'] = self.aggregate.config["sslverify"]
-        else:
-            kwargs['verify'] = False
+        kwargs = self.get_request_kwargs()
+        kwargs["allow_redirects"] = False
         self._send_request(request, **kwargs)
 
     def _send_request(self, request, **kwargs):
@@ -230,20 +223,29 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         return ('location' in self.headers and
                 self.url_connection.status_code in REDIRECT_STATI)
 
+    def get_request_kwargs(self):
+        """Construct keyword parameters for Session.request() and
+        Session.resolve_redirects()."""
+        kwargs = dict(stream=True, timeout=self.aggregate.config["timeout"])
+        if self.scheme == u"https" and self.aggregate.config["sslverify"]:
+            kwargs['verify'] = self.aggregate.config["sslverify"]
+        else:
+            kwargs['verify'] = False
+        return kwargs
+
     def follow_redirections(self, request):
         """Follow all redirections of http response."""
         log.debug(LOG_CHECK, "follow all redirections")
         if self.is_redirect():
             # run plugins for old connection
             self.aggregate.plugin_manager.run_connection_plugins(self)
-        kwargs = dict(
-            stream=True,
-        )
+        kwargs = self.get_request_kwargs()
         response = None
         for response in self.session.resolve_redirects(self.url_connection, request, **kwargs):
             newurl = response.url
             log.debug(LOG_CHECK, "Redirected to %r", newurl)
             self.aliases.append(newurl)
+            # XXX on redirect errors this is not printed
             self.add_info(_("Redirected to `%(url)s'.") % {'url': newurl})
             self.urlparts = strformat.url_unicode_split(newurl)
             self.build_url_parts()
