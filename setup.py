@@ -68,7 +68,6 @@ from distutils.command.build_ext import build_ext
 from distutils.command.sdist import sdist
 from distutils.command.clean import clean
 from distutils.command.install_data import install_data
-from distutils.command.register import register
 from distutils.dir_util import remove_tree
 from distutils.file_util import write_file
 from distutils.spawn import find_executable
