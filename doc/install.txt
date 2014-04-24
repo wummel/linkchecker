@@ -3,6 +3,18 @@ Installation
 If you are upgrading from older versions of LinkChecker you should
 also read the upgrading documentation stored in upgrading.txt.
 
+Setup with pip
+------------------
+If pip_ is available, this command should install LinkChecker on
+the local system:
+
+.. _pip: https://pypi.python.org/pypi/pip
+
+``sudo pip install LinkChecker``
+
+Note that this needs the Python development and a C compiler installed.
+For example on Debian Linux systems use ``sudo apt-get install python-dev``.
+
 
 Setup for Windows
 -----------------
@@ -19,11 +31,6 @@ Setup for GNU/Linux
 -------------------
 On all major Linux distributions (Debian, Mandriva, Redhat, Suse, Ubuntu),
 the ``linkchecker`` package is available for install.
-
-If ``pip`` is available, this command should install LinkChecker on
-the local system:
-
-``sudo pip install LinkChecker``
 
 
 Manual setup for Unix systems
@@ -134,7 +141,6 @@ Manual setup for OSX systems
    brew install gettext
    # link gettext or put the msgfmt binary in your PATH
    brew link --force gettext
-   pip install -r requirements.txt --use-mirrors
 
 4. Install py2app 
    (from http://svn.pythonmac.org/py2app/py2app/trunk/doc/index.html#installation)
@@ -148,7 +154,7 @@ Manual setup for OSX systems
 
 6. cd linkchecker
 
-7. Run "make app"
+7. Run ``pip install -r requirements.txt --use-mirrors`` and after that ``make app``
 
 8. Install the resulting .dmg
 
