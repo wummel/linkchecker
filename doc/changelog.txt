@@ -1,3 +1,15 @@
+9.3 "" (released xx.xx.2014)
+
+Features:
+- checking: Parse and check links in PDF files.
+
+Changes:
+- plugins: PDF and Word checks are now parser plugins
+  (PdfParser, WordParser).
+- plugins: Print a warning for enabled plugins that could not
+  import needed third party modules.
+
+
 9.2 "Rick and Morty" (released 23.4.2014)
 
 Fixes:
