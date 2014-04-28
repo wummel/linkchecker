@@ -279,5 +279,5 @@ class LinkFinder (TagFinder):
     def found_url(self, url, name, base):
         """Add newly found URL to queue."""
         assert isinstance(url, unicode) or url is None, repr(url)
-        self.callback(url, self.parser.last_lineno(),
-                      self.parser.last_column(), name, base)
+        self.callback(url, line=self.parser.last_lineno(),
+                      column=self.parser.last_column(), name=name, base=base)

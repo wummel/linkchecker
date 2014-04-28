@@ -263,3 +263,9 @@
 #[SslCertificateCheck]
 #sslcertwarndays=14
 
+# Parse and check links in PDF files
+#[PdfParser]
+
+# Parse and check links in Word files
+#[WordParser]
+

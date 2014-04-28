@@ -21,7 +21,7 @@ import sys
 import socket
 import pytest
 from contextlib import contextmanager
-from linkcheck import LinkCheckerInterrupt, winutil
+from linkcheck import LinkCheckerInterrupt
 
 
 basedir = os.path.dirname(__file__)
@@ -243,7 +243,8 @@ need_x11 = _need_func(has_x11, 'X11')
 @memoized
 def has_word():
     """Test if Word is available."""
-    return winutil.has_word()
+    from linkcheck.plugins import parseword
+    return parseword.has_word()
 
 need_word = _need_func(has_word, 'Word')
 

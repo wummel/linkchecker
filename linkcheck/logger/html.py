@@ -187,8 +187,12 @@ class HtmlLogger (_Logger):
                    u'</td><td><a target="top" href="'+
                    url_data.parent_url+u'">'+
                    cgi.escape(url_data.parent_url)+u"</a>")
-        self.write(_(", line %d") % url_data.line)
-        self.write(_(", col %d") % url_data.column)
+        if url_data.line > 0:
+            self.write(_(", line %d") % url_data.line)
+        if url_data.column > 0:
+            self.write(_(", col %d") % url_data.column)
+        if url_data.page > 0:
+            self.write(_(", page %d") % url_data.page)
         if not url_data.valid:
             # on errors show HTML and CSS validation for parent url
             vhtml = validate_html % {'uri': url_data.parent_url}

@@ -87,13 +87,15 @@ class UrlBase (object):
         "text/vnd.wap.wml": "wml",
         "application/xml+sitemap": "sitemap",
         "application/xml+sitemapindex": "sitemapindex",
+        "application/pdf": "pdf",
+        "application/x-pdf": "pdf",
     }
 
     # Read in 16kb chunks
     ReadChunkBytes = 1024*16
 
     def __init__ (self, base_url, recursion_level, aggregate,
-                  parent_url=None, base_ref=None, line=-1, column=-1,
+                  parent_url=None, base_ref=None, line=-1, column=-1, page=-1,
                   name=u"", url_encoding=None, extern=None):
         """
         Initialize check data, and store given variables.
@@ -105,13 +107,14 @@ class UrlBase (object):
         @param base_ref: quoted and normed url of <base href=""> or None
         @param line: line number of url in parent content
         @param column: column number of url in parent content
+        @param page: page number of url in parent content
         @param name: name of url or empty
         @param url_encoding: encoding of URL or None
         @param extern: None or (is_extern, is_strict)
         """
         self.reset()
         self.init(base_ref, base_url, parent_url, recursion_level,
-                  aggregate, line, column, name, url_encoding, extern)
+                  aggregate, line, column, page, name, url_encoding, extern)
         self.check_syntax()
         if recursion_level == 0:
             self.add_intern_pattern()
@@ -123,7 +126,7 @@ class UrlBase (object):
                 self.set_result(_("filtered"))
 
     def init (self, base_ref, base_url, parent_url, recursion_level,
-              aggregate, line, column, name, url_encoding, extern):
+              aggregate, line, column, page, name, url_encoding, extern):
         """
         Initialize internal data.
         """
@@ -140,6 +143,7 @@ class UrlBase (object):
         self.aggregate = aggregate
         self.line = line
         self.column = column
+        self.page = page
         self.name = name
         assert isinstance(self.name, unicode), repr(self.name)
         self.encoding = url_encoding
@@ -639,7 +643,7 @@ class UrlBase (object):
             return urllib.splitpasswd(self.userinfo)
         return self.aggregate.config.get_user_password(self.url)
 
-    def add_url (self, url, line=0, column=0, name=u"", base=None):
+    def add_url (self, url, line=0, column=0, page=0, name=u"", base=None):
         """Add new URL to queue."""
         if base:
             base_ref = urlutil.url_norm(base)[0]
@@ -647,7 +651,7 @@ class UrlBase (object):
             base_ref = None
         url_data = get_url_from(url, self.recursion_level+1, self.aggregate,
             parent_url=self.url, base_ref=base_ref, line=line, column=column,
-            name=name, parent_content_type=self.content_type)
+            page=page, name=name, parent_content_type=self.content_type)
         self.aggregate.urlqueue.put(url_data)
 
     def serialized (self, sep=os.linesep):
@@ -663,6 +667,7 @@ class UrlBase (object):
             u"url_connection=%s" % self.url_connection,
             u"line=%d" % self.line,
             u"column=%d" % self.column,
+            u"page=%d" % self.page,
             u"name=%r" % self.name,
             u"anchor=%r" % self.anchor,
             u"cache_url=%s" % self.cache_url,
@@ -750,6 +755,8 @@ class UrlBase (object):
           Line number of this URL at parent document, or -1
         - url_data.column: int
           Column number of this URL at parent document, or -1
+        - url_data.page: int
+          Page number of this URL at parent document, or -1
         - url_data.cache_url: unicode
           Cache url for this URL.
         - url_data.content_type: unicode
@@ -776,6 +783,7 @@ class UrlBase (object):
           info=self.info,
           line=self.line,
           column=self.column,
+          page=self.page,
           cache_url=self.cache_url,
           content_type=self.content_type,
           level=self.recursion_level,
@@ -807,6 +815,7 @@ urlDataAttr = [
     'modified',
     'line',
     'column',
+    'page',
     'cache_url',
     'content_type',
     'level',

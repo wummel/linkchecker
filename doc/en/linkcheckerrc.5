@@ -495,6 +495,14 @@ A local clamav daemon must be installed.
 \fBclamavconf=\fP\fIfilename\fP
 Filename of \fBclamd.conf\fP config file.
 .
+.SS \fB[PdfParser]\fP
+Parse PDF files for URLs to check. Needs the \fBpdfminer\fP
+Python package installed.
+
+.SS \fB[WordParser]\fP
+Parse Word files for URLs to check. Needs the \fPpywin32\fP
+Python extension installed.
+
 .SH WARNINGS
 The following warnings are recognized in the 'ignorewarnings' config
 file entry:

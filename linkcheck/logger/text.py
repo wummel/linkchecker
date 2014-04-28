@@ -156,8 +156,12 @@ class TextLogger (_Logger):
         """Write url_data.parent_url."""
         self.write(self.part('parenturl') + self.spaces("parenturl"))
         txt = url_data.parent_url
-        txt += _(", line %d") % url_data.line
-        txt += _(", col %d") % url_data.column
+        if url_data.line > 0:
+            txt += _(", line %d") % url_data.line
+        if url_data.column > 0:
+            txt += _(", col %d") % url_data.column
+        if url_data.page > 0:
+            txt += _(", page %d") % url_data.page
         self.writeln(txt, color=self.colorparent)
 
     def write_base (self, url_data):

@@ -95,10 +95,10 @@ class FileUrl (urlbase.UrlBase):
     """
 
     def init (self, base_ref, base_url, parent_url, recursion_level,
-              aggregate, line, column, name, url_encoding, extern):
+              aggregate, line, column, page, name, url_encoding, extern):
         """Initialize the scheme."""
         super(FileUrl, self).init(base_ref, base_url, parent_url,
-         recursion_level, aggregate, line, column, name, url_encoding, extern)
+         recursion_level, aggregate, line, column, page, name, url_encoding, extern)
         self.scheme = u'file'
 
     def build_base_url(self):

@@ -17,7 +17,7 @@
 """
 Main functions for link parsing
 """
-from .. import winutil, fileutil, log, LOG_CHECK, strformat
+from .. import log, LOG_CHECK, strformat
 from ..htmlutil import linkparse
 from ..HtmlParser import htmlsax
 from ..bookmarks import firefox
@@ -26,14 +26,19 @@ from ..bookmarks import firefox
 def parse_url(url_data):
     """Parse a URL."""
     if url_data.is_directory():
-        # both ftp and file links present directories as HTML data
-        return parse_html(url_data)
-    if url_data.is_file() and firefox.has_sqlite and firefox.extension.search(url_data.url):
-        return parse_firefox(url_data)
-    # determine parse routine according to content types
-    mime = url_data.content_type
-    key = url_data.ContentMimetypes[mime]
-    return globals()["parse_"+key](url_data)
+        # both ftp and file links represent directories as HTML data
+        key = "html"
+    elif url_data.is_file() and firefox.has_sqlite and firefox.extension.search(url_data.url):
+        key = "firefox"
+    else:
+        # determine parse routine according to content types
+        mime = url_data.content_type
+        key = url_data.ContentMimetypes[mime]
+    funcname = "parse_"+key
+    if funcname in globals():
+        globals()[funcname](url_data)
+    else:
+        url_data.aggregate.plugin_manager.run_parser_plugins(url_data, pagetype=key)
 
 
 def parse_html (url_data):
@@ -99,46 +104,11 @@ def parse_swf (url_data):
         url_data.add_url(url)
 
 
-def parse_word (url_data):
-    """Parse a word file for hyperlinks."""
-    if not winutil.has_word():
-        return
-    filename = get_temp_filename()
-    # open word file and parse hyperlinks
-    try:
-        app = winutil.get_word_app()
-        try:
-            doc = winutil.open_wordfile(app, filename)
-            if doc is None:
-                raise winutil.Error("could not open word file %r" % filename)
-            try:
-                for link in doc.Hyperlinks:
-                    url_data.add_url(link.Address, name=link.TextToDisplay)
-            finally:
-                winutil.close_wordfile(doc)
-        finally:
-            winutil.close_word_app(app)
-    except winutil.Error as msg:
-        log.warn(LOG_CHECK, "Error parsing word file: %s", msg)
-
-
 def parse_wml (url_data):
     """Parse into WML content and search for URLs to check.
     Found URLs are added to the URL queue.
     """
     find_links(url_data, url_data.add_url, linkparse.WmlTags)
-
-
-def get_temp_filename (content):
-    """Get temporary filename for content to parse."""
-    # store content in temporary file
-    fd, filename = fileutil.get_temp_file(mode='wb', suffix='.doc',
-        prefix='lc_')
-    try:
-        fd.write(content)
-    finally:
-        fd.close()
-    return filename
 
 
 def find_links (url_data, callback, tags):

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2014-03-12 19:28+0100\n"
+"POT-Creation-Date: 2014-04-28 17:04+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1324,7 +1324,7 @@ msgid ""
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:485 en/linkcheckerrc.5:545 en/linkchecker-gui.1:16
+#: en/linkchecker.1:485 en/linkcheckerrc.5:553 en/linkchecker-gui.1:16
 #, no-wrap
 msgid "SEE ALSO"
 msgstr ""
@@ -1335,24 +1335,24 @@ msgid "B<linkcheckerrc>(5)"
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:488 en/linkcheckerrc.5:548 en/linkchecker-gui.1:19
+#: en/linkchecker.1:488 en/linkcheckerrc.5:556 en/linkchecker-gui.1:19
 #, no-wrap
 msgid "AUTHOR"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:490 en/linkcheckerrc.5:550 en/linkchecker-gui.1:21
+#: en/linkchecker.1:490 en/linkcheckerrc.5:558 en/linkchecker-gui.1:21
 msgid "Bastian Kleineidam E<lt>bastian.kleineidam@web.deE<gt>"
 msgstr ""
 
 #. type: SH
-#: en/linkchecker.1:491 en/linkcheckerrc.5:551 en/linkchecker-gui.1:22
+#: en/linkchecker.1:491 en/linkcheckerrc.5:559 en/linkchecker-gui.1:22
 #, no-wrap
 msgid "COPYRIGHT"
 msgstr ""
 
 #. type: Plain text
-#: en/linkchecker.1:492 en/linkcheckerrc.5:552
+#: en/linkchecker.1:492 en/linkcheckerrc.5:560
 msgid "Copyright \\(co 2000-2014 Bastian Kleineidam"
 msgstr ""
 
@@ -2520,175 +2520,201 @@ msgstr ""
 msgid "Filename of B<clamd.conf> config file."
 msgstr ""
 
-#. type: SH
+#. type: SS
 #: en/linkcheckerrc.5:498
+#, no-wrap
+msgid "[PdfParser]"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:501
+msgid ""
+"Parse PDF files for URLs to check. Needs the B<pdfminer> Python package "
+"installed."
+msgstr ""
+
+#. type: SS
+#: en/linkcheckerrc.5:502
+#, no-wrap
+msgid "[WordParser]"
+msgstr ""
+
+#. type: Plain text
+#: en/linkcheckerrc.5:505
+msgid ""
+"Parse Word files for URLs to check. Needs the B<pywin32> Python extension "
+"installed."
+msgstr ""
+
+#. type: SH
+#: en/linkcheckerrc.5:506
 #, no-wrap
 msgid "WARNINGS"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:501
+#: en/linkcheckerrc.5:509
 msgid ""
 "The following warnings are recognized in the 'ignorewarnings' config file "
 "entry:"
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:502
+#: en/linkcheckerrc.5:510
 #, no-wrap
 msgid "B<file-missing-slash>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:505
+#: en/linkcheckerrc.5:513
 msgid "The file: URL is missing a trailing slash."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:505
+#: en/linkcheckerrc.5:513
 #, no-wrap
 msgid "B<file-system-path>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:508
+#: en/linkcheckerrc.5:516
 msgid "The file: path is not the same as the system specific path."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:508
+#: en/linkcheckerrc.5:516
 #, no-wrap
 msgid "B<ftp-missing-slash>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:511
+#: en/linkcheckerrc.5:519
 msgid "The ftp: URL is missing a trailing slash."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:511
+#: en/linkcheckerrc.5:519
 #, no-wrap
 msgid "B<http-cookie-store-error>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:514
+#: en/linkcheckerrc.5:522
 msgid "An error occurred while storing a cookie."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:514
+#: en/linkcheckerrc.5:522
 #, no-wrap
 msgid "B<http-empty-content>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:517
+#: en/linkcheckerrc.5:525
 msgid "The URL had no content."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:517
+#: en/linkcheckerrc.5:525
 #, no-wrap
 msgid "B<mail-no-mx-host>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:520
+#: en/linkcheckerrc.5:528
 msgid "The mail MX host could not be found."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:520
+#: en/linkcheckerrc.5:528
 #, no-wrap
 msgid "B<nntp-no-newsgroup>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:523
+#: en/linkcheckerrc.5:531
 msgid "The NNTP newsgroup could not be found."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:523
+#: en/linkcheckerrc.5:531
 #, no-wrap
 msgid "B<nntp-no-server>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:526
+#: en/linkcheckerrc.5:534
 msgid "No NNTP server was found."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:526
+#: en/linkcheckerrc.5:534
 #, no-wrap
 msgid "B<url-content-size-zero>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:529
+#: en/linkcheckerrc.5:537
 msgid "The URL content size is zero."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:529
+#: en/linkcheckerrc.5:537
 #, no-wrap
 msgid "B<url-content-too-large>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:532
+#: en/linkcheckerrc.5:540
 msgid "The URL content size is too large."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:532
+#: en/linkcheckerrc.5:540
 #, no-wrap
 msgid "B<url-effective-url>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:535
+#: en/linkcheckerrc.5:543
 msgid "The effective URL is different from the original."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:535
+#: en/linkcheckerrc.5:543
 #, no-wrap
 msgid "B<url-error-getting-content>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:538
+#: en/linkcheckerrc.5:546
 msgid "Could not get the content of the URL."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:538
+#: en/linkcheckerrc.5:546
 #, no-wrap
 msgid "B<url-obfuscated-ip>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:541
+#: en/linkcheckerrc.5:549
 msgid "The IP is obfuscated."
 msgstr ""
 
 #. type: TP
-#: en/linkcheckerrc.5:541
+#: en/linkcheckerrc.5:549
 #, no-wrap
 msgid "B<url-whitespace>"
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:544
+#: en/linkcheckerrc.5:552
 msgid "The URL contains leading or trailing whitespace."
 msgstr ""
 
 #. type: Plain text
-#: en/linkcheckerrc.5:547
+#: en/linkcheckerrc.5:555
 msgid "linkchecker(1)"
 msgstr ""
 
