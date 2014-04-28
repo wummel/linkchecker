@@ -95,7 +95,7 @@ except ImportError:
     has_py2app = False
 
 # the application version
-AppVersion = "9.2"
+AppVersion = "9.3"
 # the application name
 AppName = "LinkChecker"
 
