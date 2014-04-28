@@ -26,14 +26,12 @@ from ..parser import find_links
 class AnchorCheck(_ContentPlugin):
     """Checks validity of HTML anchors."""
 
+    def applies_to(self, url_data):
+        """Check for HTML anchor existence."""
+        return url_data.is_html() and url_data.anchor
+
     def check(self, url_data):
         """Check content for invalid anchors."""
-        if not url_data.is_html():
-            # not an HTML page
-            return
-        if not url_data.anchor:
-            # no anchor
-            return
         log.debug(LOG_PLUGIN, "checking content for invalid anchors")
         # list of parsed anchors
         self.anchors = []

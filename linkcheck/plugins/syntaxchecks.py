@@ -53,14 +53,12 @@ class HtmlSyntaxCheck(_ContentPlugin):
         super(HtmlSyntaxCheck, self).__init__(config)
         self.timer = W3Timer()
 
+    def applies_to(self, url_data):
+        """Check for HTML and extern."""
+        return url_data.is_html() and not url_data.extern[0]
+
     def check(self, url_data):
         """Check HTML syntax of given URL."""
-        if url_data.extern[0]:
-            # only check internal pages
-            return
-        if not url_data.is_html():
-            # only check HTML pages
-            return
         self.timer.check_w3_time()
         session = url_data.session
         try:
@@ -74,8 +72,7 @@ class HtmlSyntaxCheck(_ContentPlugin):
         except requests.exceptions.RequestException:
             pass # ignore service failures
         except Exception as msg:
-            log.warn(LOG_PLUGIN,
-                _("HTML syntax check plugin error: %(msg)s ") % {"msg": msg})
+            log.warn(LOG_PLUGIN, _("HTML syntax check plugin error: %(msg)s ") % {"msg": msg})
 
 
 class CssSyntaxCheck(_ContentPlugin):
@@ -88,14 +85,12 @@ class CssSyntaxCheck(_ContentPlugin):
         super(CssSyntaxCheck, self).__init__(config)
         self.timer = W3Timer()
 
+    def applies_to(self, url_data):
+        """Check for CSS and extern."""
+        return url_data.is_css() and not url_data.extern[0]
+
     def check(self, url_data):
         """Check CSS syntax of given URL."""
-        if url_data.extern[0]:
-            # only check internal pages
-            return
-        if not url_data.is_css():
-            # only check CSS pages
-            return
         self.timer.check_w3_time()
         session = url_data.session
         try:
@@ -114,8 +109,7 @@ class CssSyntaxCheck(_ContentPlugin):
         except requests.exceptions.RequestException:
             pass # ignore service failures
         except Exception as msg:
-            log.warn(LOG_PLUGIN,
-                _("CSS syntax check plugin error: %(msg)s ") % {"msg": msg})
+            log.warn(LOG_PLUGIN, _("CSS syntax check plugin error: %(msg)s ") % {"msg": msg})
 
 
 def check_w3_errors (url_data, xml, w3type):

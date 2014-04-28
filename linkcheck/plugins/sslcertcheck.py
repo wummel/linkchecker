@@ -42,21 +42,16 @@ class SslCertificateCheck(_ConnectionPlugin):
         # do not check hosts multiple times
         self.checked_hosts = set()
 
+    def applies_to(self, url_data):
+        """Check validity, scheme, extern and url_connection."""
+        return url_data.valid and url_data.scheme == 'https' and \
+          not url_data.extern[0] and url_data.url_connection is not None
+
     @synchronized(_lock)
     def check(self, url_data):
         """Run all SSL certificate checks that have not yet been done.
         OpenSSL already checked the SSL notBefore and notAfter dates.
         """
-        if url_data.extern[0]:
-            # only check internal pages
-            return
-        if not url_data.valid:
-            return
-        if url_data.url_connection is None:
-            # not allowed to connect
-            return
-        if url_data.scheme != 'https':
-            return
         host = url_data.urlparts[1]
         if host in self.checked_hosts:
             return

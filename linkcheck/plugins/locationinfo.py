@@ -30,15 +30,22 @@ class LocationInfo(_ConnectionPlugin):
     """Adds the country and if possible city name of the URL host as info.
     Needs GeoIP or pygeoip and a local country or city lookup DB installed."""
 
+    def __init__(self, config):
+        """Check for geoip module."""
+        if not geoip:
+            log.warn(LOG_PLUGIN, "GeoIP or pygeoip not found for LocationInfo plugin.")
+        super(LocationInfo, self).__init__(config)
+
+    def applies_to(self, url_data):
+        """Check for validity, host existence and geoip module."""
+        return url_data.valid and url_data.host and geoip
+
     def check(self, url_data):
         """Try to ask GeoIP database for country info."""
-        if not url_data.valid:
-            return
-        if url_data.host and geoip:
-            location = get_location(url_data.host)
-            if location:
-                url_data.add_info(_("URL is located in %(location)s.") %
-                {"location": _(location)})
+        location = get_location(url_data.host)
+        if location:
+            url_data.add_info(_("URL is located in %(location)s.") %
+            {"location": _(location)})
 
 # It is unknown if the geoip library is already thread-safe, so
 # no risks should be taken here by using a lock.

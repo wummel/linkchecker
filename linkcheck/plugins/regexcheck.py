@@ -45,15 +45,12 @@ class RegexCheck(_ContentPlugin):
             except re.error as msg:
                 log.warn(LOG_PLUGIN, "Invalid regex pattern %r: %s" % (pattern, msg))
 
+    def applies_to(self, url_data):
+        """Check for warningregex, extern flag and parseability."""
+        return self.warningregex and not url_data.extern[0] and url_data.is_parseable()
+
     def check(self, url_data):
         """Check content."""
-        if not self.warningregex:
-            return
-        if url_data.extern[0]:
-            # only scan internal pages for warnings
-            return
-        if not url_data.is_parseable():
-            return
         log.debug(LOG_PLUGIN, "checking content for warning regex")
         content = url_data.get_content()
         # add warnings for found matches, up to the maximum allowed number

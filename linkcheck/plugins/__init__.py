@@ -18,6 +18,7 @@
 Module for plugin management.
 """
 from .. import loader, log, LOG_PLUGIN
+from ..decorators import notimplemented
 
 
 class _PluginBase(object):
@@ -28,6 +29,12 @@ class _PluginBase(object):
         """Add plugin-specific configuration."""
         pass
 
+    @notimplemented
+    def applies_to(self, url_data, **kwargs):
+        """See if url_data should be handled by this plugin."""
+        pass
+
+    @notimplemented
     def check(self, url_data):
         """Common check method run for all plugins."""
         pass
@@ -48,6 +55,11 @@ class _ContentPlugin(_PluginBase):
     pass
 
 
+class _ParserPlugin(_PluginBase):
+    """Plugins run for valid URLs to parse their contents."""
+    pass
+
+
 def get_plugin_modules(folders, package='plugins',
                        parentpackage='linkcheck.dummy'):
     """Get plugin modules for given folders."""
@@ -60,7 +72,7 @@ def get_plugin_modules(folders, package='plugins',
 
 def get_plugin_classes(modules):
     """Get plugin classes for given modules."""
-    classes = (_ConnectionPlugin, _ContentPlugin)
+    classes = (_ConnectionPlugin, _ContentPlugin, _ParserPlugin)
     return loader.get_plugins(modules, classes)
 
 
@@ -71,6 +83,7 @@ class PluginManager(object):
         """Load enabled plugins."""
         self.connection_plugins = []
         self.content_plugins = []
+        self.parser_plugins = []
         folders = config["pluginfolders"]
         modules = get_plugin_modules(folders)
         self.load_modules(modules, config)
@@ -83,9 +96,14 @@ class PluginManager(object):
                 if issubclass(pluginclass, _ConnectionPlugin):
                     log.debug(LOG_PLUGIN, "Enable connection plugin %s", name)
                     self.connection_plugins.append(pluginclass(config[name]))
-                else:
+                elif issubclass(pluginclass, _ContentPlugin):
                     log.debug(LOG_PLUGIN, "Enable content plugin %s", name)
                     self.content_plugins.append(pluginclass(config[name]))
+                elif issubclass(pluginclass, _ParserPlugin):
+                    log.debug(LOG_PLUGIN, "Enable parser plugin %s", name)
+                    self.parser_plugins.append(pluginclass(config[name]))
+                else:
+                    raise ValueError("Invalid plugin class %s" % pluginclass)
 
     def run_connection_plugins(self, url_data):
         """Run all connection plugins."""
@@ -95,9 +113,16 @@ class PluginManager(object):
         """Run all content plugins."""
         run_plugins(self.content_plugins, url_data)
 
+    def run_parser_plugins(self, url_data, pagetype):
+        """Run parser plugins for given pagetype."""
+        run_plugins(self.parser_plugins, url_data, stop_after_match=True, pagetype=pagetype)
 
-def run_plugins(plugins, url_data):
+
+def run_plugins(plugins, url_data, stop_after_match=False, **kwargs):
     """Run the check(url_data) method of given plugins."""
     for plugin in plugins:
         log.debug(LOG_PLUGIN, "Run plugin %s", plugin.__class__.__name__)
-        plugin.check(url_data)
+        if plugin.applies_to(url_data, **kwargs):
+            plugin.check(url_data)
+            if stop_after_match:
+                break

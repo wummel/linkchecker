@@ -28,13 +28,12 @@ class HttpHeaderInfo(_ConnectionPlugin):
         super(HttpHeaderInfo, self).__init__(config)
         self.prefixes = tuple(config["prefixes"])
 
+    def applies_to(self, url_data):
+        """Check for HTTP and prefix config."""
+        return self.prefixes and url_data.is_http()
+
     def check(self, url_data):
         """Check content for invalid anchors."""
-        if not url_data.is_http():
-            # not an HTTP URL
-            return
-        if not self.prefixes:
-            return
         headers = []
         for name, value in url_data.headers.items():
             if name.startswith(self.prefixes):

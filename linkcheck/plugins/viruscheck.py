@@ -33,15 +33,15 @@ class VirusCheck(_ContentPlugin):
         super(VirusCheck, self).__init__(config)
         # XXX read config
         self.clamav_conf = get_clamav_conf(canonical_clamav_conf())
+        if not self.clamav_conf:
+            log.warn(LOG_PLUGIN, "clamav daemon not found for VirusCheck plugin")
+
+    def applies_to(self, url_data):
+        """Check for clamav and extern."""
+        return self.clamav_conf and not url_data.extern[0]
 
     def check(self, url_data):
         """Try to ask GeoIP database for country info."""
-        if url_data.extern[0]:
-            # only scan internal pages for viruses
-            return
-        if not self.clamav_conf:
-            # No clamav available
-            return
         data = url_data.get_content()
         infected, errors = scan(data, self.clamav_conf)
         if infected or errors:
