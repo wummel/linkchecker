@@ -272,11 +272,11 @@ class FileUrl (urlbase.UrlBase):
                 url = url[:i+1]
         return re.escape(url)
 
-    def add_url (self, url, line=0, column=0, name=u"", base=None):
+    def add_url (self, url, line=0, column=0, page=0, name=u"", base=None):
         """If a local webroot directory is configured, replace absolute URLs
         with it. After that queue the URL data for checking."""
         webroot = self.aggregate.config["localwebroot"]
         if webroot and url and url.startswith(u"/"):
             url = webroot + url[1:]
             log.debug(LOG_CHECK, "Applied local webroot `%s' to `%s'.", webroot, url)
-        super(FileUrl, self).add_url(url, line=line, column=column, name=name, base=base)
+        super(FileUrl, self).add_url(url, line=line, column=column, page=page, name=name, base=base)
