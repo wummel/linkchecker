@@ -249,6 +249,14 @@ def has_word():
 need_word = _need_func(has_word, 'Word')
 
 
+@memoized
+def has_pdflib():
+    from linkcheck.plugins import parsepdf
+    return parsepdf.has_pdflib
+
+need_pdflib = _need_func(has_pdflib, 'pdflib')
+
+
 @contextmanager
 def _limit_time (seconds):
     """Raises LinkCheckerInterrupt if given number of seconds have passed."""

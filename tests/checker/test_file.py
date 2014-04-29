@@ -20,7 +20,7 @@ Test file parsing.
 import os
 import sys
 import zipfile
-from tests import need_word
+from tests import need_word, need_pdflib
 from . import LinkCheckTest, get_file
 
 
@@ -65,7 +65,13 @@ class TestFile (LinkCheckTest):
 
     @need_word
     def test_word (self):
-        self.file_test("file.doc")
+        confargs = dict(enabledplugins=["WordParser"])
+        self.file_test("file.doc", confargs=confargs)
+
+    @need_pdflib
+    def test_pdf(self):
+        confargs = dict(enabledplugins=["PdfParser"])
+        self.file_test("file.pdf", confargs=confargs)
 
     def test_urllist (self):
         self.file_test("urllist.txt")

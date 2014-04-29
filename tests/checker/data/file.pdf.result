@@ -1,0 +1,15 @@
+url file://%(curdir)s/%(datadir)s/file.pdf
+cache key file://%(curdir)s/%(datadir)s/file.pdf
+real url file://%(curdir)s/%(datadir)s/file.pdf
+name %(datadir)s/file.pdf
+valid
+
+url http://www.example.com/link1
+cache key http://www.example.com/link1
+real url http://www.example.com/link1
+error
+
+url http://www.example.com/link2
+cache key http://www.example.com/link2
+real url http://www.example.com/link2
+error

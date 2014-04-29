@@ -44,6 +44,9 @@ def search_url(obj, url_data, pageno, seen_objs):
     if isinstance(obj, dict):
         for key, value in obj.items():
             if key == 'URI' and isinstance(value, basestring):
+                # URIs should be 7bit ASCII encoded, but be safe and encode
+                # to unicode
+                # XXX this does not use an optional specified base URL
                 url = strformat.unicode_safe(value)
                 url_data.add_url(url, page=pageno)
             else:
@@ -78,7 +81,7 @@ class PdfParser(_ParserPlugin):
         try:
             parser = PDFParser(fp)
             doc = PDFDocument(parser, password=password)
-            for (pageno, page) in enumerate(PDFPage.create_pages(doc)):
+            for (pageno, page) in enumerate(PDFPage.create_pages(doc), start=1):
                 if "Contents" in page.attrs:
                     search_url(page.attrs["Contents"], url_data, pageno, set())
                 if "Annots" in page.attrs:
