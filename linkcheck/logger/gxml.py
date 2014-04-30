@@ -81,7 +81,7 @@ class GraphXMLLogger (_XMLLogger, _GraphLogger):
         self.xml_endtag(u"data")
         self.xml_endtag(u"edge")
 
-    def end_output (self, downloaded_bytes=None, num_urls=None):
+    def end_output (self, **kwargs):
         """Finish graph output, and print end of checking info as xml
         comment."""
         self.xml_endtag(u"graph")

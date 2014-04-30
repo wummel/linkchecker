@@ -163,7 +163,7 @@ def interrupt (aggregate):
     while True:
         try:
             log.warn(LOG_CHECK,
-               _("user interrupt; waiting for active threads to finish"))
+               _("interrupt; waiting for active threads to finish"))
             log.warn(LOG_CHECK,
                _("another interrupt will exit immediately"))
             abort(aggregate)
@@ -178,11 +178,11 @@ def abort (aggregate):
         try:
             aggregate.abort()
             aggregate.finish()
-            aggregate.end_log_output()
+            aggregate.end_log_output(interrupt=True)
             break
         except KeyboardInterrupt:
             log.warn(LOG_CHECK, _("user abort; force shutdown"))
-            aggregate.end_log_output()
+            aggregate.end_log_output(abort=True)
             abort_now()
 
 

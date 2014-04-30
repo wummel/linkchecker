@@ -328,7 +328,7 @@ class HtmlLogger (_Logger):
             configuration.DonateUrl+u"</a>."))
         self.writeln(u"</small></body></html>")
 
-    def end_output (self, downloaded_bytes=None, num_urls=None):
+    def end_output (self, **kwargs):
         """Write end of checking info as HTML."""
         if self.has_part("stats"):
             self.write_stats()

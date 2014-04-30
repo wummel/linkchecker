@@ -282,10 +282,10 @@ class TextLogger (_Logger):
         else:
             self.writeln(_("No statistics available since no URLs were checked."))
 
-    def end_output (self, downloaded_bytes=None, num_urls=None):
+    def end_output (self, **kwargs):
         """Write end of output info, and flush all output buffers."""
-        self.stats.downloaded_bytes = downloaded_bytes
-        self.stats.num_urls = num_urls
+        self.stats.downloaded_bytes = kwargs.get("downloaded_bytes")
+        self.stats.num_urls = kwargs.get("num_urls")
         if self.has_part('stats'):
             self.write_stats()
         if self.has_part('outro'):

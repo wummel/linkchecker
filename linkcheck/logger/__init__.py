@@ -139,9 +139,10 @@ class _Logger (object):
     * start_output()
         Initialize and start log output. Most loggers print a comment
         with copyright information.
-    * end_output()
+    * end_output(**kwargs)
         Finish log output, possibly flushing buffers. Most loggers also
         print some statistics.
+        Custom keyword arguments can be given for different loggers.
     * log_filter_url(url_data, do_print)
         Log a checked URL. The url_data object is a transport form of
         the UrlData class. The do_print flag indicates if this URL
@@ -151,7 +152,7 @@ class _Logger (object):
 
     * start_output()
         Also call the base class implementation of this.
-    * end_output()
+    * end_output(**kwargs)
         See above.
     * log_url(url_data)
         Log a checked URL. Called by log_filter_url if do_print is True.
@@ -401,7 +402,7 @@ class _Logger (object):
         pass
 
     @abc.abstractmethod
-    def end_output (self, downloaded_bytes=None, num_urls=None):
+    def end_output (self, **kwargs):
         """
         End of output, used for cleanup (eg output buffer flushing).
         """
