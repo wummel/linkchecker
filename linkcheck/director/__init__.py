@@ -182,7 +182,7 @@ def abort (aggregate):
             break
         except KeyboardInterrupt:
             log.warn(LOG_CHECK, _("user abort; force shutdown"))
-            aggregate.end_log_output(abort=True)
+            aggregate.end_log_output(interrupt=True)
             abort_now()
 
 

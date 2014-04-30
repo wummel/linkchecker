@@ -221,9 +221,11 @@ class TextLogger (_Logger):
             self.write(u": " + url_data.result, color=color)
         self.writeln()
 
-    def write_outro (self):
+    def write_outro (self, interrupt=False):
         """Write end of checking message."""
         self.writeln()
+        if interrupt:
+            self.writeln(_("The check has been interrupted; results are not complete."))
         self.write(_("That's it.") + " ")
         self.write(_n("%d link", "%d links",
                       self.stats.number) % self.stats.number)
@@ -289,5 +291,5 @@ class TextLogger (_Logger):
         if self.has_part('stats'):
             self.write_stats()
         if self.has_part('outro'):
-            self.write_outro()
+            self.write_outro(interrupt=kwargs.get("interrupt"))
         self.close_fileoutput()
