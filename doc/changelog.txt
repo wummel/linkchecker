@@ -5,7 +5,8 @@ Features:
 
 Changes:
 - plugins: PDF and Word checks are now parser plugins
-  (PdfParser, WordParser).
+  (PdfParser, WordParser). Both plugins are not enabled
+  by default since they require third party modules.
 - plugins: Print a warning for enabled plugins that could not
   import needed third party modules.
 
