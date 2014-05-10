@@ -28,12 +28,14 @@ import argparse
 import getpass
 # installs _() and _n() gettext functions into global namespace
 import linkcheck
+from linkcheck import logconf, LOG_CMDLINE
+logconf.init_log_config()
 # override argparse gettext method with the one from linkcheck.init_i18n()
 #argparse._ = _
 # now import the rest of the linkchecker gang
 from linkcheck.cmdline import print_version, print_usage, aggregate_url, \
   LCArgumentParser, print_plugins
-from linkcheck import log, LOG_CMDLINE, i18n, strformat
+from linkcheck import log, i18n, strformat
 import linkcheck.checker
 import linkcheck.configuration
 import linkcheck.fileutil
@@ -212,6 +214,7 @@ argparser = LCArgumentParser(
 
 # build a config object for this check session
 config = linkcheck.configuration.Configuration()
+config.set_status_logger(console.StatusLogger())
 
 ################# general options ##################
 group = argparser.add_argument_group(_("General options"))
@@ -253,7 +256,7 @@ The option can be given multiple times to debug with more
 than one logger.
 
 For accurate results, threading will be disabled during debug runs.""") % \
-{"lognamelist": linkcheck.lognamelist})
+{"lognamelist": logconf.lognamelist})
 group.add_argument("-F", "--file-output", action="append",
                  dest="fileoutput", metavar="TYPE[/ENCODING[/FILENAME]]",
                  help=_(
@@ -391,11 +394,11 @@ options = argparser.parse_args()
 
 # initialize logging
 if options.debug:
-    allowed_debugs = linkcheck.lognames.keys()
+    allowed_debugs = logconf.lognames.keys()
     for _name in options.debug:
         if _name not in allowed_debugs:
             print_usage(_("Invalid debug level %(level)r") % {'level': _name})
-config.init_logging(console.StatusLogger(), debug=options.debug)
+    # XXX set logging debug level
 log.debug(LOG_CMDLINE, _("Python %(version)s on %(platform)s") % \
    {"version": sys.version, "platform": sys.platform})
 # read configuration files

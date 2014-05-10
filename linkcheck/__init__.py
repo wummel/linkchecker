@@ -39,7 +39,16 @@ import re
 import signal
 import traceback
 
-from . import i18n
+from . import i18n, log
+from .logconf import (
+    LOG_ROOT,
+    LOG_CMDLINE,
+    LOG_CHECK,
+    LOG_CACHE,
+    LOG_GUI,
+    LOG_THREAD,
+    LOG_PLUGIN,
+)
 import _LinkChecker_configdata as configdata
 
 
@@ -54,51 +63,6 @@ def get_install_data ():
     if is_frozen():
         return module_path()
     return configdata.install_data
-
-
-# application log areas
-LOG_ROOT = "linkcheck"
-LOG_CMDLINE = "linkcheck.cmdline"
-LOG_CHECK = "linkcheck.check"
-LOG_CACHE = "linkcheck.cache"
-LOG_GUI = "linkcheck.gui"
-LOG_THREAD = "linkcheck.thread"
-LOG_PLUGIN = "linkcheck.plugin"
-lognames = {
-    "cmdline": LOG_CMDLINE,
-    "checking": LOG_CHECK,
-    "cache": LOG_CACHE,
-    "gui": LOG_GUI,
-    "thread": LOG_THREAD,
-    "plugin": LOG_PLUGIN,
-    "all": LOG_ROOT,
-}
-# XXX debug httplib
-#import httplib
-#httplib.HTTPConnection.debuglevel = 1
-
-lognamelist = ", ".join(repr(name) for name in lognames)
-
-# logging configuration
-configdict = {
-    'version': 1,
-    'loggers': {
-    },
-    'root': {
-      'level': 'DEBUG',
-    },
-}
-
-def init_log_config():
-    """Configure the application loggers."""
-    for applog in lognames.values():
-        # propagate except for root app logger 'linkcheck'
-        propagate = (applog != LOG_ROOT)
-        configdict['loggers'][applog] = dict(level='INFO', propagate=propagate)
-
-init_log_config()
-
-from . import log
 
 
 class LinkCheckerError (StandardError):
@@ -161,6 +125,7 @@ def init_i18n (loc=None):
     logging.addLevelName(logging.INFO, _('INFO'))
     logging.addLevelName(logging.DEBUG, _('DEBUG'))
     logging.addLevelName(logging.NOTSET, _('NOTSET'))
+
 
 # initialize i18n, puts _() and _n() function into global namespace
 init_i18n()

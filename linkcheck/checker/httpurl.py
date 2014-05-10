@@ -21,7 +21,7 @@ Handle http links.
 import requests
 from cStringIO import StringIO
 
-from .. import (log, LOG_CHECK, strformat, fileutil,
+from .. import (log, LOG_CHECK, strformat, mimeutil,
     url as urlutil, LinkCheckerError, httputil)
 from . import (internpaturl, proxysupport)
 from ..HtmlParser import htmlsax
@@ -314,7 +314,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             return False
         # some content types must be validated with the page content
         if self.content_type in ("application/xml", "text/xml"):
-            rtype = fileutil.guess_mimetype_read(self.get_content)
+            rtype = mimeutil.guess_mimetype_read(self.get_content)
             if rtype is not None:
                 # XXX side effect
                 self.content_type = rtype

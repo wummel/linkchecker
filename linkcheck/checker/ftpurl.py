@@ -21,7 +21,7 @@ Handle FTP links.
 import ftplib
 from cStringIO import StringIO
 
-from .. import log, LOG_CHECK, LinkCheckerError, fileutil
+from .. import log, LOG_CHECK, LinkCheckerError, mimeutil
 from . import proxysupport, httpurl, internpaturl, get_index_html
 from .const import WARN_FTP_MISSING_SLASH
 
@@ -179,7 +179,7 @@ class FtpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
     def set_content_type (self):
         """Set URL content type, or an empty string if content
         type could not be found."""
-        self.content_type = fileutil.guess_mimetype(self.url, read=self.get_content)
+        self.content_type = mimeutil.guess_mimetype(self.url, read=self.get_content)
 
     def read_content (self):
         """Return URL target content, or in case of directories a dummy HTML

@@ -37,7 +37,7 @@ from .settings import Settings
 from .recentdocs import RecentDocumentModel
 from .projects import openproject, saveproject, loadproject, ProjectExt
 from .. import configuration, checker, director, get_link_pat, \
-    strformat, fileutil, LinkCheckerError, i18n, httputil
+    strformat, mimeutil, LinkCheckerError, i18n, httputil, logconf
 from ..containers import enum
 from .. import url as urlutil
 
@@ -111,6 +111,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.label_busy.setText(u"")
         self.label_busy.setMovie(self.movie)
         # init the rest
+        self.init_logging()
         self.init_url(url)
         self.init_treeview()
         self.connect_widgets()
@@ -120,6 +121,11 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.init_menu()
         self.init_drop()
         self.init_app(project)
+
+    def init_logging(self):
+        """Initialize logging."""
+        self.handler = GuiLogHandler(self.debug.log_msg_signal)
+        logconf.init_log_config(handler=self.handler)
 
     def init_url (self, url):
         """Initialize URL input."""
@@ -228,6 +234,8 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
     def init_config (self):
         """Create a configuration object."""
         self.config = configuration.Configuration()
+        status = StatusLogger(self.log_status_signal)
+        self.config.set_status_logger(status)
         # dictionary holding overwritten values
         self.config_backup = {}
         # set standard GUI configuration values
@@ -236,9 +244,6 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
             signal=self.log_url_signal, stats=self.log_stats_signal)
         self.config["status"] = True
         self.config["status_wait_seconds"] = 2
-        self.handler = GuiLogHandler(self.debug.log_msg_signal)
-        status = StatusLogger(self.log_status_signal)
-        self.config.init_logging(status, handler=self.handler)
 
     def read_config (self, filename=None):
         """Read user and system configuration file."""
@@ -365,7 +370,7 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.settings.save_recent_documents(self.recent.get_documents())
         self.settings.save_misc(dict(saveresultas=self.saveresultas))
         self.settings.sync()
-        self.config.remove_loghandler(self.handler)
+        logconf.remove_loghandler(self.handler)
         if e is not None:
             e.accept()
 
@@ -537,7 +542,7 @@ Version 2 or later.
             if not content_type:
                 # read function for content type guessing
                 read = lambda: data
-                content_type = fileutil.guess_mimetype(url, read=read)
+                content_type = mimeutil.guess_mimetype(url, read=read)
             self.editor.setContentType(content_type)
             self.editor.setText(data, line=line, col=col)
         self.editor.show()

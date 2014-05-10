@@ -18,17 +18,14 @@
 Store metadata and options.
 """
 
-import sys
 import os
 import re
-import logging.config
 import urllib
 import urlparse
 import shutil
 import socket
 import _LinkChecker_configdata as configdata
-from .. import (log, LOG_CHECK, LOG_ROOT, ansicolor, lognames,
-    get_install_data, fileutil, configdict)
+from .. import (log, LOG_CHECK, get_install_data, fileutil)
 from . import confparse
 from ..decorators import memoized
 
@@ -182,56 +179,9 @@ class Configuration (dict):
             self[key] = {}
             self.loggers[key] = c
 
-    def init_logging (self, status_logger, debug=None, handler=None):
-        """
-        Set up the application logging (not to be confused with check
-        loggers). When debug is not None it is expected to be a list of
-        logger names for which debugging will be enabled.
-
-        If no thread debugging is enabled, threading will be disabled.
-        """
-        logging.config.dictConfig(configdict)
-        if handler is None:
-            handler = ansicolor.ColoredStreamHandler(strm=sys.stderr)
-        self.add_loghandler(handler, debug)
-        self.set_debug(debug)
+    def set_status_logger(self, status_logger):
+        """Set the status logger."""
         self.status_logger = status_logger
-
-    def set_debug (self, debug):
-        """Set debugging levels for configured loggers. The argument
-        is a list of logger names to enable debug for."""
-        self.set_loglevel(debug, logging.DEBUG)
-
-    def add_loghandler (self, handler, debug):
-        """Add log handler to root logger LOG_ROOT and set formatting."""
-        logging.getLogger(LOG_ROOT).addHandler(handler)
-        format = "%(levelname)s "
-        if debug:
-            format += "%(asctime)s "
-        if self['threads'] > 0:
-            format += "%(threadName)s "
-        format += "%(message)s"
-        handler.setFormatter(logging.Formatter(format))
-
-    def remove_loghandler (self, handler):
-        """Remove log handler from root logger LOG_ROOT."""
-        logging.getLogger(LOG_ROOT).removeHandler(handler)
-
-    def reset_loglevel (self):
-        """Reset log level to display only warnings and errors."""
-        self.set_loglevel(['all'], logging.WARN)
-
-    def set_loglevel (self, loggers, level):
-        """Set logging levels for given loggers."""
-        if not loggers:
-            return
-        if 'all' in loggers:
-            loggers = lognames.keys()
-        # disable threading if no thread debugging
-        if "thread" not in loggers and level == logging.DEBUG:
-            self['threads'] = 0
-        for key in loggers:
-            logging.getLogger(lognames[key]).setLevel(level)
 
     def logger_new (self, loggername, **kwargs):
         """Instantiate new logger and return it."""

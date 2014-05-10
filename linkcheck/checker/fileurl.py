@@ -26,7 +26,7 @@ import urllib2
 from datetime import datetime
 
 from . import urlbase, get_index_html
-from .. import log, LOG_CHECK, fileutil, LinkCheckerError, url as urlutil
+from .. import log, LOG_CHECK, fileutil, mimeutil, LinkCheckerError, url as urlutil
 from ..bookmarks import firefox
 from .const import WARN_FILE_MISSING_SLASH, WARN_FILE_SYSTEM_PATH
 
@@ -251,7 +251,7 @@ class FileUrl (urlbase.UrlBase):
         """Return URL content type, or an empty string if content
         type could not be found."""
         if self.url:
-            self.content_type = fileutil.guess_mimetype(self.url, read=self.get_content)
+            self.content_type = mimeutil.guess_mimetype(self.url, read=self.get_content)
         else:
             self.content_type = u""
 

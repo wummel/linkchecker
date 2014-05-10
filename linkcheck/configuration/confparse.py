@@ -18,7 +18,7 @@
 
 import ConfigParser
 import os
-from .. import LinkCheckerError, get_link_pat, LOG_CHECK, log, fileutil, plugins
+from .. import LinkCheckerError, get_link_pat, LOG_CHECK, log, fileutil, plugins, logconf
 
 
 def read_multiline (value):
@@ -113,7 +113,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
         if self.has_option(section, "debug"):
             val = self.get(section, "debug")
             parts = [f.strip().lower() for f in val.split(',')]
-            self.config.set_debug(parts)
+            logconf.set_debug(parts)
         self.read_boolean_option(section, "status")
         if self.has_option(section, "log"):
             val = self.get(section, "log").strip().lower()
