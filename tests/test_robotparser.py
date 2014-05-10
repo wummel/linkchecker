@@ -31,9 +31,6 @@ class TestRobotParser (unittest.TestCase):
     def setUp (self):
         """Initialize self.rp as a robots.txt parser."""
         self.rp = robotparser2.RobotFileParser()
-        config = configuration.Configuration()
-        # uncomment for debugging
-        config.init_logging(None, debug=["all"])
 
     def check (self, a, b):
         """Helper function comparing two results a and b."""
