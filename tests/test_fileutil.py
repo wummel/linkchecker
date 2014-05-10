@@ -19,8 +19,6 @@ Test file utility functions.
 """
 
 import unittest
-import os
-from . import get_file
 import linkcheck.fileutil
 
 file_existing = __file__
@@ -37,18 +35,3 @@ class TestFileutil (unittest.TestCase):
     def test_mtime (self):
         self.assertTrue(linkcheck.fileutil.get_mtime(file_existing) > 0)
         self.assertEqual(linkcheck.fileutil.get_mtime(file_non_existing), 0)
-
-    def mime_test (self, filename, mime_expected):
-        absfilename = get_file(filename)
-        with open(absfilename) as fd:
-            mime = linkcheck.fileutil.guess_mimetype(absfilename, read=fd.read)
-        self.assertEqual(mime, mime_expected)
-
-    def test_mime (self):
-        filename = os.path.join("plist_binary", "Bookmarks.plist")
-        self.mime_test(filename, "application/x-plist+safari")
-        filename = os.path.join("plist_xml", "Bookmarks.plist")
-        self.mime_test(filename, "application/x-plist+safari")
-        self.mime_test("file.wml", "text/vnd.wap.wml")
-        self.mime_test("sitemap.xml", "application/xml+sitemap")
-        self.mime_test("sitemapindex.xml", "application/xml+sitemapindex")

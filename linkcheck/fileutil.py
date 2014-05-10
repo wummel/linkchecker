@@ -19,17 +19,14 @@ File and path utilities.
 """
 
 import os
-import re
 import locale
 import stat
 import fnmatch
-import mimetypes
 import tempfile
 import importlib
 from distutils.spawn import find_executable
 
 from .decorators import memoized
-from . import log, LOG_CHECK
 
 def write_file (filename, content, backup=False, callback=None):
     """Overwrite a possibly existing file with new content. Do this
@@ -187,82 +184,6 @@ def has_changed (filename):
     return mtime > _mtime_cache[key]
 
 
-mimedb = None
-
-def init_mimedb():
-    """Initialize the local MIME database."""
-    global mimedb
-    try:
-        mimedb = mimetypes.MimeTypes(strict=False)
-    except StandardError as msg:
-        log.error(LOG_CHECK, "could not initialize MIME database: %s" % msg)
-        return
-    # For Opera bookmark files (opera6.adr)
-    add_mimetype(mimedb, 'text/plain', '.adr')
-    # To recognize PHP files as HTML with content check.
-    add_mimetype(mimedb, 'application/x-httpd-php', '.php')
-    # To recognize WML files
-    add_mimetype(mimedb, 'text/vnd.wap.wml', '.wml')
-
-
-def add_mimetype(mimedb, mimetype, extension):
-    """Add or replace a mimetype to be used with the given extension."""
-    # If extension is already a common type, strict=True must be used.
-    strict = extension in mimedb.types_map[True]
-    mimedb.add_type(mimetype, extension, strict=strict)
-
-
-# if file extension lookup was unsuccessful, look at the content
-PARSE_CONTENTS = {
-    "text/html": re.compile(r'^(?i)<(!DOCTYPE html|html|head|title)'),
-    "text/plain+opera": re.compile(r'^Opera Hotlist'),
-    "text/plain+chromium": re.compile(r'^{\s*"checksum":'),
-    "text/plain+linkchecker": re.compile(r'(?i)^# LinkChecker URL list'),
-    "application/xml+sitemapindex": re.compile(r'(?i)<\?xml[^<]+<sitemapindex\s+'),
-    "application/xml+sitemap": re.compile(r'(?i)<\?xml[^<]+<urlset\s+'),
-}
-
-def guess_mimetype (filename, read=None):
-    """Return MIME type of file, or 'application/octet-stream' if it could
-    not be determined."""
-    mime, encoding = None, None
-    if mimedb:
-        mime, encoding = mimedb.guess_type(filename, strict=False)
-    basename = os.path.basename(filename)
-    # Special case for Safari Bookmark files
-    if not mime and basename == 'Bookmarks.plist':
-        return 'application/x-plist+safari'
-    # Special case for Google Chrome Bookmark files.
-    if not mime and basename == 'Bookmarks':
-        mime = 'text/plain'
-    # Some mime types can be differentiated further with content reading.
-    if mime in ("text/plain", "application/xml", "text/xml") and read is not None:
-        read_mime = guess_mimetype_read(read)
-        if read_mime is not None:
-            mime = read_mime
-    if not mime:
-        mime = "application/octet-stream"
-    elif ";" in mime:
-        # split off not needed extension info
-        mime = mime.split(';')[0]
-    return mime.strip().lower()
-
-
-def guess_mimetype_read(read):
-    """Try to read some content and do a poor man's file(1)."""
-    mime = None
-    try:
-        data = read()[:70]
-    except Exception:
-        pass
-    else:
-        for cmime, ro in PARSE_CONTENTS.items():
-            if ro.search(data):
-                mime = cmime
-                break
-    return mime
-
-
 def get_temp_file (mode='r', **kwargs):
     """Return tuple (open file object, filename) pointing to a temporary
     file."""
@@ -304,5 +225,3 @@ def is_writable(filename):
         parentdir = os.path.dirname(filename)
         return os.path.isdir(parentdir) and os.access(parentdir, os.W_OK)
     return os.path.isfile(filename) and os.access(filename, os.W_OK)
-
-init_mimedb()
