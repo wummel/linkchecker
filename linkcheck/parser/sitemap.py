@@ -18,7 +18,8 @@
 Main functions for link parsing
 """
 from xml.parsers.expat import ParserCreate
-
+from xml.parsers.expat import ExpatError
+from ..checker.const import (WARN_XML_PARSE_ERROR)
 
 class XmlTagUrlParser(object):
     """Parse XML files and find URLs in text content of a tag name."""
@@ -40,8 +41,10 @@ class XmlTagUrlParser(object):
         self.url = u""
         data = url_data.get_content()
         isfinal = True
-        self.parser.Parse(data, isfinal)
-
+        try:
+            self.parser.Parse(data, isfinal)
+        except ExpatError as expaterr:
+            self.url_data.add_warning(expaterr.message,tag=WARN_XML_PARSE_ERROR)
     def start_element(self, name, attrs):
         """Set tag status for start element."""
         self.in_tag = (name == self.tag)
