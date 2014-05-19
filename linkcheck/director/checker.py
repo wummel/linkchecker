@@ -52,15 +52,15 @@ def check_url(url_data, logger):
                 url_data.check()
                 do_parse = url_data.check_content()
                 url_data.checktime = time.time() - check_start
+                # parse content recursively
+                if do_parse:
+                    parser.parse_url(url_data)
                 # Add result to cache
                 result = url_data.to_wire()
                 cache.add_result(key, result)
                 for alias in url_data.aliases:
                     # redirect aliases
                     cache.add_result(alias, result)
-                # parse content recursively
-                if do_parse:
-                    parser.parse_url(url_data)
             finally:
                 # close/release possible open connection
                 url_data.close_connection()
