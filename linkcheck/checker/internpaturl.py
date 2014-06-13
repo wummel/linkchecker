@@ -43,7 +43,7 @@ def get_intern_pattern (url):
     if args[0] in ('http', 'https'):
         args[0] = 'https?'
     args[1] = r"(www\.|)%s" % args[1]
-    return "%s://%s%s" % tuple(args)
+    return "^\s*%s://%s%s" % tuple(args)
 
 
 class InternPatternUrl (urlbase.UrlBase):
