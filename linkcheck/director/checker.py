@@ -59,6 +59,7 @@ def check_url(url_data, logger):
                     # redirect aliases
                     cache.add_result(alias, result)
                 # parse content recursively
+                # XXX this could add new warnings which should be cached.
                 if do_parse:
                     parser.parse_url(url_data)
             finally:
