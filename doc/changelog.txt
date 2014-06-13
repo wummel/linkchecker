@@ -10,6 +10,13 @@ Changes:
 - plugins: Print a warning for enabled plugins that could not
   import needed third party modules.
 
+Fixes:
+- checking: Catch XML parse errors in sitemap XML files and   print them
+  as warnings. Patch by Mark-Hetherington.
+  Closes: GH bug #516
+- checking: Fix internal URL match pattern. Patch by Mark-Hetherington.
+  Closes: GH bug #510
+
 
 9.2 "Rick and Morty" (released 23.4.2014)
 
