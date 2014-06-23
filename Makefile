@@ -138,11 +138,6 @@ register:
 	$(PYTHON) setup.py register
 	@echo "done."
 
-submit_freecode:
-	@echo "Submitting to Freecode..."
-	freecode-submit < $(LAPPNAME).freecode
-	@echo "done."
-
 deb:
 # build a debian package
 	[ -f $(DEBORIGFILE) ] || cp dist/$(ARCHIVE_SOURCE) $(DEBORIGFILE)
@@ -209,9 +204,6 @@ releasecheck: check
 	@if [ ! -f ../$(ARCHIVE_WIN32) ]; then \
 	  echo "Missing WIN32 distribution archive at ../$(ARCHIVE_WIN32)"; \
 	  false; \
-	fi
-	@if ! grep "Version: $(VERSION)" $(LAPPNAME).freecode > /dev/null; then \
-	  echo "Could not release: edit $(LAPPNAME).freecode version"; false; \
 	fi
 	$(PYTHON) setup.py check --restructuredtext
 
