@@ -2,6 +2,7 @@
 
 Features:
 - checking: Parse and check links in PDF files.
+- checking: Parse Refresh: and Content-Location: HTTP headers for URLs.
 
 Changes:
 - plugins: PDF and Word checks are now parser plugins
@@ -11,7 +12,7 @@ Changes:
   import needed third party modules.
 
 Fixes:
-- checking: Catch XML parse errors in sitemap XML files and   print them
+- checking: Catch XML parse errors in sitemap XML files and print them
   as warnings. Patch by Mark-Hetherington.
   Closes: GH bug #516
 - checking: Fix internal URL match pattern. Patch by Mark-Hetherington.

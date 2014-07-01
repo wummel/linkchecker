@@ -297,10 +297,22 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         return buf.getvalue()
 
     def parse_header_links(self):
-        """Parse Link: header URLs."""
+        """Parse URLs in HTTP headers Link:."""
         for linktype, linkinfo in self.url_connection.links.items():
             url = linkinfo["url"]
             name = u"Link: header %s" % linktype
+            self.add_url(url, name=name)
+        if 'Refresh' in self.headers:
+            from ..htmlutil.linkparse import refresh_re
+            value = self.headers['Refresh'].strip()
+            mo = refresh_re.match(value)
+            if mo:
+                url = unicode_safe(mo.group("url"))
+                name = u"Refresh: header"
+                self.add_url(url, name=name)
+        if 'Content-Location' in self.headers:
+            url = self.headers['Content-Location'].strip()
+            name = u"Content-Location: header"
             self.add_url(url, name=name)
 
     def is_parseable (self):

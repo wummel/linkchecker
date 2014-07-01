@@ -66,3 +66,39 @@ class TestHttpbin(LinkCheckTest):
             u"valid",
         ]
         self.direct(url, resultlines, confargs=confargs)
+
+    def test_http_refresh_header(self):
+        linkurl = u"http://www.example.com"
+        nlinkurl = self.norm(linkurl)
+        url = get_httpbin_url(u"/response-headers?Refresh=5;url=%s" % linkurl)
+        nurl = self.norm(url)
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % nurl,
+            u"valid",
+            u"url %s" % linkurl,
+            u"cache key %s" % nlinkurl,
+            u"real url %s" % nlinkurl,
+            u"name Refresh: header",
+            u"valid",
+        ]
+        self.direct(url, resultlines, recursionlevel=1)
+
+    def test_http_content_location_header(self):
+        linkurl = u"http://www.example.com"
+        nlinkurl = self.norm(linkurl)
+        url = get_httpbin_url(u"/response-headers?Content-Location=%s" % linkurl)
+        nurl = self.norm(url)
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % nurl,
+            u"real url %s" % nurl,
+            u"valid",
+            u"url %s" % linkurl,
+            u"cache key %s" % nlinkurl,
+            u"real url %s" % nlinkurl,
+            u"name Content-Location: header",
+            u"valid",
+        ]
+        self.direct(url, resultlines, recursionlevel=1)
