@@ -252,6 +252,11 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             self.aliases.append(newurl)
             # XXX on redirect errors this is not printed
             self.add_info(_("Redirected to `%(url)s'.") % {'url': newurl})
+
+            # Reset extern and recalculate
+            self.extern = None
+            self.set_extern(newurl)
+
             self.urlparts = strformat.url_unicode_split(newurl)
             self.build_url_parts()
             self.url_connection = response
