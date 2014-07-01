@@ -31,11 +31,11 @@ class TestUpdater (unittest.TestCase):
         res, value = linkcheck.updater.check_update()
         self.assertTrue(type(res) == bool)
         if res:
-            self.assertTrue(value is None or isinstance(value, tuple))
+            self.assertTrue(value is None or isinstance(value, tuple), repr(value))
             if isinstance(value, tuple):
                 self.assertEqual(len(value), 2)
                 version, url = value
-                self.assertTrue(isinstance(version, basestring))
-                self.assertTrue(url is None or isinstance(url, basestring))
+                self.assertTrue(isinstance(version, basestring), repr(version))
+                self.assertTrue(url is None or isinstance(url, basestring), repr(url))
         else:
-            self.assertTrue(isinstance(value, unicode))
+            self.assertTrue(isinstance(value, unicode), repr(value))
