@@ -17,6 +17,9 @@ Fixes:
   Closes: GH bug #516
 - checking: Fix internal URL match pattern. Patch by Mark-Hetherington.
   Closes: GH bug #510
+- checking: Recalculate extern status after HTTP redirection.
+  Patch by Mark-Hetherington.
+  Closes: GH bug #515
 
 
 9.2 "Rick and Morty" (released 23.4.2014)
