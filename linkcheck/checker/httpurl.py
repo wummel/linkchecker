@@ -233,15 +233,20 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
             kwargs['verify'] = False
         return kwargs
 
+    def get_redirects(self, request):
+        """Return iterator of redirects for given request."""
+        kwargs = self.get_request_kwargs()
+        return self.session.resolve_redirects(self.url_connection,
+            request, **kwargs)
+
     def follow_redirections(self, request):
         """Follow all redirections of http response."""
         log.debug(LOG_CHECK, "follow all redirections")
         if self.is_redirect():
-            # run plugins for old connection
+            # run connection plugins for old connection
             self.aggregate.plugin_manager.run_connection_plugins(self)
-        kwargs = self.get_request_kwargs()
         response = None
-        for response in self.session.resolve_redirects(self.url_connection, request, **kwargs):
+        for response in self.get_redirects(request):
             newurl = response.url
             log.debug(LOG_CHECK, "Redirected to %r", newurl)
             self.aliases.append(newurl)
