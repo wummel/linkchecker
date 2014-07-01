@@ -98,6 +98,15 @@ except ImportError:
 AppVersion = "9.3"
 # the application name
 AppName = "LinkChecker"
+Description = "check links in web documents or full websites"
+
+def get_long_description():
+    """Try to read long description from README.rst."""
+    try:
+        with open('README.rst') as f:
+            return f.read()
+    except:
+        return Description
 
 # Microsoft Visual C++ runtime version (tested with Python 2.7.2)
 MSVCP90Version = '9.0.30729.6161'
@@ -865,7 +874,7 @@ except ImportError:
 args = dict(
     name = AppName,
     version = AppVersion,
-    description = "check links in web documents or full websites",
+    description = Description,
     keywords = "link,url,site,checking,crawling,verification,validation",
     author = myname,
     author_email = myemail,
@@ -873,22 +882,7 @@ args = dict(
     maintainer_email = myemail,
     url = "http://wummel.github.io/linkchecker/",
     license = "GPL",
-    long_description = """Linkchecker features:
-
-o recursive and multithreaded checking and site crawling
-o output in colored or normal text, HTML, SQL, CSV, XML or a sitemap graph in different formats
-o HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Telnet and local file links support
-o restrict link checking with regular expression filters for URLs
-o proxy support
-o username/password authorization for HTTP, FTP and Telnet
-o honors robots.txt exclusion protocol
-o Cookie support
-o HTML5 support
-o HTML and CSS syntax check
-o Antivirus check
-o a command line, GUI and web interface
-
-""",
+    long_description = get_long_description(),
     distclass = MyDistribution,
     cmdclass = {
         'install_lib': MyInstallLib,
