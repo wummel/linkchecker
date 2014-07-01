@@ -1,9 +1,14 @@
 LinkChecker
 ============
 
-[![Build Status](https://travis-ci.org/valdergallo/django-compress-storage.png?branch=master)](https://travis-ci.org/valdergallo/django-compress-storage)
-[![Latest Version](http://img.shields.io/pypi/v/django-compress-storage.svg)](https://pypi.python.org/pypi/django-compress-storage)
-[![BSD License](http://img.shields.io/badge/license-BSD-yellow.svg)](http://opensource.org/licenses/BSD-3-Clause)
+|Build Status|_ |Latest Version|_ |License|_
+
+.. |Build Status| image:: https://travis-ci.org/wummel/linkchecker.png?branch=master
+.. _Build Status: https://travis-ci.org/wummel/linkchecker
+.. |Latest Version| image:: http://img.shields.io/pypi/v/LinkChecker.svg
+.. _Latest Version: https://pypi.python.org/pypi/LinkChecker
+.. |License| image:: http://img.shields.io/badge/license-GPL2-blue.svg
+.. _License: http://opensource.org/licenses/GPL-2.0
 
 Check for broken links in web sites.
 
