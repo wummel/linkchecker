@@ -7,7 +7,7 @@ LinkChecker
 .. _Build Status: https://travis-ci.org/wummel/linkchecker
 .. |Latest Version| image:: http://img.shields.io/pypi/v/LinkChecker.svg
 .. _Latest Version: https://pypi.python.org/pypi/LinkChecker
-.. |License| image:: http://img.shields.io/badge/license-GPL2-blue.svg
+.. |License| image:: http://img.shields.io/badge/license-GPL2-d49a6a.svg
 .. _License: http://opensource.org/licenses/GPL-2.0
 
 Check for broken links in web sites.
