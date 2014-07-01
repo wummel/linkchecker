@@ -398,7 +398,7 @@ if options.debug:
     for _name in options.debug:
         if _name not in allowed_debugs:
             print_usage(_("Invalid debug level %(level)r") % {'level': _name})
-    # XXX set logging debug level
+    logconf.set_debug(options.debug)
 log.debug(LOG_CMDLINE, _("Python %(version)s on %(platform)s") % \
    {"version": sys.version, "platform": sys.platform})
 # read configuration files
