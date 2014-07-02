@@ -433,7 +433,7 @@ if options.extern:
     config["externlinks"].extend(pats)
 if options.checkextern:
     config["checkextern"] = True
-else:
+elif not config["checkextern"]:
     log.info(LOG_CMDLINE, "Checking intern URLs only; use --check-extern to check extern URLs.")
 
 if options.output:
