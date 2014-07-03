@@ -5,10 +5,9 @@ name %(datadir)s/misc.html
 valid
 
 url 
-cache key None
-real url 
-info The URL is outside of the domain filter, checked only syntax.
-error
+cache key file://%(curdir)s/%(datadir)s/misc.html
+real url file://%(curdir)s/%(datadir)s/misc.html
+valid
 
 url http://www.example.com/
 cache key http://www.example.com/

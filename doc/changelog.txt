@@ -10,6 +10,8 @@ Changes:
   by default since they require third party modules.
 - plugins: Print a warning for enabled plugins that could not
   import needed third party modules.
+- checking: Treat empty URLs as same as parent URL.
+  Closes: GH bug #524
 
 Fixes:
 - checking: Catch XML parse errors in sitemap XML files and print them

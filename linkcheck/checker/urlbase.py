@@ -315,8 +315,7 @@ class UrlBase (object):
         """
         log.debug(LOG_CHECK, "checking syntax")
         if self.base_url is None:
-            self.set_result(_("URL is missing"), valid=False)
-            return
+            self.base_url = u""
         if not (self.base_url or self.parent_url):
             self.set_result(_("URL is empty"), valid=False)
             return
