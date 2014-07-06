@@ -258,11 +258,11 @@ class LinkCheckerMain (QtGui.QMainWindow, Ui_MainWindow):
         self.config["recursionlevel"] = data["recursionlevel"]
         self.config["verbose"] = data["verbose"]
         if data["debug"]:
-            self.config.set_debug(["all"])
+            logconf.set_debug(["all"])
             # make sure at least one thread is used
             self.config["threads"] = 1
         else:
-            self.config.reset_loglevel()
+            logconf.reset_loglevel()
         if data["warninglines"]:
             lines = data["warninglines"].splitlines()
             pattern = warninglines2regex(lines)
