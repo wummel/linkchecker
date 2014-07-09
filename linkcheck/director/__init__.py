@@ -116,10 +116,15 @@ def check_urls (aggregate):
         visit_loginurl(aggregate)
     except Exception as msg:
         log.warn(LOG_CHECK, _("Error using login URL: %(msg)s.") % \
-                 {'msg': str(msg)})
+                 dict(msg=msg))
         raise
     try:
         aggregate.logger.start_log_output()
+    except Exception as msg:
+        log.error(LOG_CHECK, _("Error starting log output: %(msg)s.") % \
+            dict(msg=msg))
+        raise
+    try:
         if not aggregate.urlqueue.empty():
             aggregate.start_threads()
         check_url(aggregate)
