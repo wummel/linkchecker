@@ -205,7 +205,7 @@ class LinkFinder (TagFinder):
         log.debug(LOG_CHECK, "LinkFinder tag %s attrs %s", tag, attrs)
         log.debug(LOG_CHECK, "line %d col %d old line %d old col %d", self.parser.lineno(), self.parser.column(), self.parser.last_lineno(), self.parser.last_column())
         if tag == "base" and not self.base_ref:
-            self.base_ref = unquote(attrs.get_true("href", u''))
+            self.base_ref = attrs.get_true("href", u'')
         tagattrs = self.tags.get(tag, self.universal_attrs)
         # parse URLs in tag (possibly multiple URLs in CSS styles)
         for attr in tagattrs.intersection(attrs):
@@ -218,11 +218,11 @@ class LinkFinder (TagFinder):
             # possible codebase
             base = u''
             if tag  == 'applet':
-                base = unquote(attrs.get_true('codebase', u''))
+                base = attrs.get_true('codebase', u'')
             if not base:
                 base = self.base_ref
             # note: value can be None
-            value = unquote(attrs.get(attr))
+            value = attrs.get(attr)
             if tag == 'link' and attrs.get('rel') == 'dns-prefetch':
                 if ':' in value:
                     value = value.split(':', 1)[1]
@@ -239,11 +239,11 @@ class LinkFinder (TagFinder):
             data = data.decode(self.parser.encoding, "ignore")
             name = linkname.href_name(data)
             if not name:
-                name = unquote(attrs.get_true('title', u''))
+                name = attrs.get_true('title', u'')
         elif tag == 'img':
-            name = unquote(attrs.get_true('alt', u''))
+            name = attrs.get_true('alt', u'')
             if not name:
-                name = unquote(attrs.get_true('title', u''))
+                name = attrs.get_true('title', u'')
         else:
             name = u""
         return name

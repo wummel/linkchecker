@@ -124,3 +124,8 @@ class TestLinkparser (unittest.TestCase):
         self.assertEqual(strip(content), "")
         content = "a/* */b/* */c"
         self.assertEqual(strip(content), "abc")
+
+    def test_url_quoting(self):
+        url = u'http://example.com/bla/a=b'
+        content = u'<a href="%s&quot;">'
+        self._test_one_link(content % url, url + u'"')
