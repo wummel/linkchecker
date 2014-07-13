@@ -178,6 +178,7 @@ def get_configuration(form, out):
     # avoid checking of local files or other nasty stuff
     pat = "!^%s$" % urlutil.safe_url_pattern
     config["externlinks"].append(get_link_pat(pat, strict=True))
+    config.sanitize()
     return config
 
 
