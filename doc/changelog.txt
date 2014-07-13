@@ -22,8 +22,10 @@ Fixes:
 - checking: Recalculate extern status after HTTP redirection.
   Patch by Mark-Hetherington.
   Closes: GH bug #515
-- checking: Do not strip quotes from already resolve URLs.
+- checking: Do not strip quotes from already resolved URLs.
   Closes: GH bug #521
+- cgi: Sanitize configuration.
+  Closes: GH bug #519
 
 
 9.2 "Rick and Morty" (released 23.4.2014)
