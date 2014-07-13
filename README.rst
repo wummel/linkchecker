@@ -30,6 +30,7 @@ Features
 Installation
 -------------
 See doc/install.txt in the source code archive.
+Python 2.7.2 or later is needed.
 
 Usage
 ------
