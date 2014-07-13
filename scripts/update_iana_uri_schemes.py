@@ -81,6 +81,7 @@ def main(args):
     print res
     return 0
 
+
 def get_regex(schemes):
     expr = ["|%s # %s" % (re.escape(scheme).ljust(10), description)
             for scheme, description in sorted(schemes.items())]
@@ -100,6 +101,6 @@ def parse_csv_file(url, res):
             scheme, template, description, reference = row
             res[scheme] = description
 
+
 if __name__ == '__main__':
     sys.exit(main(sys.argv[1:]))
-

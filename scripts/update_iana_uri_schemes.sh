@@ -1,7 +1,10 @@
-#!/bin/sh
+#!/bin/bash
+# Update the list of unknown and therefore ignored URL schemes.
 
-set -e
-set -u
+set -o nounset
+set -o errexit
+set -o pipefail
+#set -o xtrace
 
 target=linkcheck/checker/unknownurl.py
 
