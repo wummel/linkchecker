@@ -49,7 +49,8 @@ class UnknownUrl (urlbase.UrlBase):
         return False
 
 
-# do not edit anything below since these entries are generated from scripts/update.sh
+# do not edit anything below since these entries are generated from
+# scripts/update_iana_uri_schemes.sh
 # DO NOT REMOVE
 
 # from https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml
@@ -143,6 +144,7 @@ ignored_schemes_provisional = r"""
 |apt        # apt
 |attachment # attachment
 |aw         # aw
+|barion     # barion
 |beshare    # beshare
 |bitcoin    # bitcoin
 |bolo       # bolo
@@ -208,10 +210,12 @@ ignored_schemes_provisional = r"""
 |sgn        # sgn
 |skype      # skype
 |smb        # smb
+|smtp       # smtp
 |soldat     # soldat
 |spotify    # spotify
 |ssh        # ssh
 |steam      # steam
+|submit     # submit
 |svn        # svn
 |teamspeak  # teamspeak
 |things     # things
