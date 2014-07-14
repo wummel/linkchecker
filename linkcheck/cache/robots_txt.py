@@ -51,15 +51,13 @@ class RobotsTxt (object):
     def _allows_url (self, url_data, roboturl):
         """Ask robots.txt allowance. Assumes only single thread per robots.txt
         URL calls this function."""
-        user, password = url_data.get_user_password()
         with cache_lock:
             if roboturl in self.cache:
                 self.hits += 1
                 rp = self.cache[roboturl]
                 return rp.can_fetch(self.useragent, url_data.url)
             self.misses += 1
-        rp = robotparser2.RobotFileParser(proxy=url_data.proxy, user=user,
-            password=password)
+        rp = robotparser2.RobotFileParser(proxy=url_data.proxy, auth=url_data.auth)
         rp.set_url(roboturl)
         rp.read()
         with cache_lock:

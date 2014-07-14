@@ -26,6 +26,8 @@ Fixes:
   Closes: GH bug #521
 - cgi: Sanitize configuration.
   Closes: GH bug #519
+- checking: Use user-supplied authentication when requestiong robot.txt since
+  since some sites are completely password protected.
 
 
 9.2 "Rick and Morty" (released 23.4.2014)
