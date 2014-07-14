@@ -57,7 +57,10 @@ class RobotsTxt (object):
                 rp = self.cache[roboturl]
                 return rp.can_fetch(self.useragent, url_data.url)
             self.misses += 1
-        rp = robotparser2.RobotFileParser(proxy=url_data.proxy, auth=url_data.auth)
+        kwargs = dict(auth=url_data.auth, session=url_data.session)
+        if url_data.proxy:
+            kwargs["proxies"] = {url_data.proxy_type, url_data.proxy}
+        rp = robotparser2.RobotFileParser(**kwargs)
         rp.set_url(roboturl)
         rp.read()
         with cache_lock:

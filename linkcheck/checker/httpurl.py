@@ -141,10 +141,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
 
     def build_request(self):
         """Build a prepared request object."""
-        clientheaders = {
-            "User-Agent": self.aggregate.config["useragent"],
-            "DNT": "1",
-        }
+        clientheaders = {}
         if (self.parent_url and
             self.parent_url.lower().startswith(HTTP_SCHEMAS)):
             clientheaders["Referer"] = self.parent_url
@@ -227,6 +224,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """Construct keyword parameters for Session.request() and
         Session.resolve_redirects()."""
         kwargs = dict(stream=True, timeout=self.aggregate.config["timeout"])
+        if self.proxy:
+            kwargs["proxies"] = {self.proxytype: self.proxy}
         if self.scheme == u"https" and self.aggregate.config["sslverify"]:
             kwargs['verify'] = self.aggregate.config["sslverify"]
         else:

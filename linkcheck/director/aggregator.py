@@ -36,6 +36,10 @@ def new_request_session(config):
     """Create a new request session."""
     session = requests.Session()
     session.max_redirects = config["maxhttpredirects"]
+    session.headers = {
+        "User-Agent": config["useragent"],
+        "DNT": "1",
+    }
     # XXX proxies
     if config["cookiefile"]:
         for cookie in cookies.from_file(config["cookiefile"]):

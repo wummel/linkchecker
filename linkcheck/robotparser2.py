@@ -34,12 +34,15 @@ class RobotFileParser (object):
     """This class provides a set of methods to read, parse and answer
     questions about a single robots.txt file."""
 
-    def __init__ (self, url='', proxy=None, auth=None):
+    def __init__ (self, url='', session=None, proxies=None, auth=None):
         """Initialize internal entry lists and store given url and
         credentials."""
         self.set_url(url)
-        self.proxy = proxy
-        # XXX proxy
+        if session is None:
+            self.session = requests.Session()
+        else:
+            self.session = session
+        self.proxies = proxies
         self.auth = auth
         self._reset()
 
@@ -85,8 +88,10 @@ class RobotFileParser (object):
         )
         if self.auth:
             kwargs["auth"] = self.auth
+        if self.proxies:
+            kwargs["proxies"] = self.proxies
         try:
-            response = requests.get(self.url, **kwargs)
+            response = self.session.get(self.url, **kwargs)
             response.raise_for_status()
             content_type = response.headers.get('content-type')
             if content_type and content_type.lower().startswith('text/plain'):
