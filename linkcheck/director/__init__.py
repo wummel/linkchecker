@@ -20,91 +20,9 @@ Management of checking a queue of links with several threads.
 import os
 import thread
 import time
-from .. import log, LOG_CHECK, LinkCheckerInterrupt, dummy, \
-  fileutil, strformat, plugins
+from .. import log, LOG_CHECK, LinkCheckerInterrupt, plugins
 from ..cache import urlqueue, robots_txt, results
 from . import aggregator, console
-
-
-def visit_loginurl (aggregate):
-    """Check for a login URL and visit it."""
-    config = aggregate.config
-    url = config["loginurl"]
-    if not url:
-        return
-    if not fileutil.has_module("twill"):
-        msg = strformat.format_feature_warning(module=u'twill',
-            feature=u'login URL visit',
-            url=u'http://twill.idyll.org/')
-        log.warn(LOG_CHECK, msg)
-        return
-    from twill import commands as tc
-    log.debug(LOG_CHECK, u"Visiting login URL %s", url)
-    configure_twill(tc)
-    tc.go(url)
-    if tc.get_browser().get_code() != 200:
-        log.warn(LOG_CHECK, _("Error visiting login URL %(url)s.") % \
-          {"url": url})
-        return
-    submit_login_form(config, url, tc)
-    if tc.get_browser().get_code() != 200:
-        log.warn(LOG_CHECK, _("Error posting form at login URL %(url)s.") % \
-          {"url": url})
-        return
-    #XXX store_cookies(tc.get_browser().cj, aggregate.cookies, url)
-    resulturl = tc.get_browser().get_url()
-    log.debug(LOG_CHECK, u"URL after POST is %s" % resulturl)
-    # add result URL to check list
-    from ..checker import get_url_from
-    aggregate.urlqueue.put(get_url_from(resulturl, 0, aggregate))
-
-
-def configure_twill (tc):
-    """Configure twill to be used by LinkChecker.
-    Note that there is no need to set a proxy since twill uses the same
-    ones (provided from urllib) as LinkChecker does.
-    """
-    # make sure readonly controls are writeable (might be needed)
-    tc.config("readonly_controls_writeable", True)
-    # disable page refreshing
-    tc.config("acknowledge_equiv_refresh", False)
-    # fake IE 6.0 to talk sense into some sites (eg. SourceForge)
-    tc.agent("Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)")
-    # tell twill to shut up
-    tc.OUT = dummy.Dummy()
-    from twill import browser
-    browser.OUT = dummy.Dummy()
-    # set debug level
-    if log.is_debug(LOG_CHECK):
-        tc.debug("http", 1)
-
-
-def submit_login_form (config, url, tc):
-    """Fill and submit login form."""
-    user, password = config.get_user_password(url)
-    cgiuser = config["loginuserfield"]
-    cgipassword = config["loginpasswordfield"]
-    formname = search_formname((cgiuser, cgipassword), tc)
-    tc.formvalue(formname, cgiuser, user)
-    tc.formvalue(formname, cgipassword, password)
-    for key, value in config["loginextrafields"].items():
-        tc.formvalue(formname, key, value)
-    tc.submit()
-
-
-def search_formname (fieldnames, tc):
-    """Search form that has all given CGI fieldnames."""
-    browser = tc.get_browser()
-    for formcounter, form in enumerate(browser.get_all_forms()):
-        for name in fieldnames:
-            try:
-                browser.get_form_field(form, name)
-            except tc.TwillException:
-                break
-        else:
-            return form.name or form.attrs.get('id') or formcounter
-    # none found
-    return None
 
 
 def check_urls (aggregate):
@@ -113,7 +31,7 @@ def check_urls (aggregate):
     @return: None
     """
     try:
-        visit_loginurl(aggregate)
+        aggregate.visit_loginurl()
     except Exception as msg:
         log.warn(LOG_CHECK, _("Error using login URL: %(msg)s.") % \
                  dict(msg=msg))
@@ -210,7 +128,7 @@ def abort_now ():
 def get_aggregate (config):
     """Get an aggregator instance with given configuration."""
     _urlqueue = urlqueue.UrlQueue(max_allowed_urls=config["maxnumurls"])
-    _robots_txt = robots_txt.RobotsTxt()
+    _robots_txt = robots_txt.RobotsTxt(config["useragent"])
     plugin_manager = plugins.PluginManager(config)
     result_cache = results.ResultCache()
     return aggregator.Aggregate(config, _urlqueue, _robots_txt, plugin_manager,

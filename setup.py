@@ -115,8 +115,6 @@ MSVCP90Token = '1fc8b3b9a1e18e3b'
 
 # basic includes for py2exe and py2app
 py_includes = ['dns.rdtypes.IN.*', 'dns.rdtypes.ANY.*',
-    'twill.extensions.*', 'twill.extensions.match_parse.*',
-    'twill.other_packages.*', 'twill.other_packages._mechanize_dist.*',
     'linkcheck.logger.*',
 ]
 # basic excludes for py2exe and py2app
@@ -957,7 +955,6 @@ args = dict(
     # See also doc/install.txt for more detailed dependency documentation.
     #extra_requires = {
     #    "IP country info": ['GeoIP'], # http://www.maxmind.com/app/python
-    #    "Login form": ['twill'], # http://twill.idyll.org/
     #    "GNOME proxies": ['pygtk'], # http://www.pygtk.org/downloads.html
     #    "Bash completion": ['argcomplete'], # https://pypi.python.org/pypi/argcomplete
     #    "Memory debugging": ['meliae'], # https://launchpad.net/meliae

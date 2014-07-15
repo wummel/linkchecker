@@ -12,6 +12,7 @@ Changes:
   import needed third party modules.
 - checking: Treat empty URLs as same as parent URL.
   Closes: GH bug #524
+- installation: Replaced the twill dependency with local code.
 
 Fixes:
 - checking: Catch XML parse errors in sitemap XML files and print them

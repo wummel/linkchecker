@@ -39,9 +39,6 @@ installation is recommended.
 - *Optional, for displaying country codes:*
   Pygeoip from http://code.google.com/p/pygeoip/
 
-- *Optional, used for login form submission:*
-  Twill from http://twill.idyll.org/
-
 
 Setup for Unix/Linux
 --------------------

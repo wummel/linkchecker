@@ -63,7 +63,6 @@ Modules = (
     ("argcomplete", u"Argcomplete"),
     ("GeoIP", u"GeoIP"),   # on Unix systems
     ("pygeoip", u"GeoIP"), # on Windows systems
-    ("twill", u"Twill"),
     ("sqlite3", u"Sqlite"),
     ("gconf", u"Gconf"),
     ("meliae", u"Meliae"),

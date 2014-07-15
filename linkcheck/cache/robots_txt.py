@@ -33,14 +33,14 @@ class RobotsTxt (object):
     Thread-safe cache of downloaded robots.txt files.
     format: {cache key (string) -> robots.txt content (RobotFileParser)}
     """
-    useragent = str(configuration.UserAgent)
 
-    def __init__ (self):
+    def __init__ (self, useragent):
         """Initialize per-URL robots.txt cache."""
         # mapping {URL -> parsed robots.txt}
         self.cache = LFUCache(size=100)
         self.hits = self.misses = 0
         self.roboturl_locks = {}
+        self.useragent = useragent
 
     def allows_url (self, url_data):
         """Ask robots.txt allowance."""
