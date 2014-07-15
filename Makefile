@@ -2,7 +2,7 @@
 PYVER:=2.7
 PYTHON?=python$(PYVER)
 VERSION:=$(shell $(PYTHON) setup.py --version)
-PLATFORM:=$(shell $(PYTHON) -c "from distutils.util import get_platform; print get_platform()")
+PLATFORM:=$(shell $(PYTHON) -c "from __future__ import print_function; from distutils.util import get_platform; print(get_platform())")
 APPNAME:=$(shell $(PYTHON) setup.py --name)
 AUTHOR:=$(shell $(PYTHON) setup.py --author)
 MAINTAINER:=$(shell $(PYTHON) setup.py --maintainer)

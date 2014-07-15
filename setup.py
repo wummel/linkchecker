@@ -45,6 +45,10 @@ import subprocess
 import stat
 import glob
 import shutil
+try:
+    unicode
+except NameError:
+    unicode = lambda x: x
 
 # if a frozen Unix application should be built with cx_Freeze
 do_freeze = int(os.environ.get('LINKCHECKER_FREEZE', '0'))
@@ -293,7 +297,7 @@ def sign_the_code (dist_dir):
     print("*** signing the application code ***")
     try:
         subprocess.check_call(args)
-    except subprocess.CalledProcessError, msg:
+    except subprocess.CalledProcessError as msg:
         print("WARN: codesigning failed", msg)
 
 
@@ -418,8 +422,8 @@ class MyInstallData (install_data, object):
             for path in self.get_outputs():
                 mode = os.stat(path)[stat.ST_MODE]
                 if stat.S_ISDIR(mode):
-                    mode |= 011
-                mode |= 044
+                    mode |= 0o11
+                mode |= 0o44
                 os.chmod(path, mode)
 
 

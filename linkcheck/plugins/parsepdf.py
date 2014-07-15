@@ -86,7 +86,7 @@ class PdfParser(_ParserPlugin):
                     search_url(page.attrs["Contents"], url_data, pageno, set())
                 if "Annots" in page.attrs:
                     search_url(page.attrs["Annots"], url_data, pageno, set())
-        except PSException, msg:
+        except PSException as msg:
             if not msg.args:
                 # at least show the class name
                 msg = repr(msg)
