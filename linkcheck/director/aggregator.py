@@ -23,7 +23,7 @@ import requests
 import time
 import urlparse
 import random
-from .. import log, LOG_CHECK, strformat
+from .. import log, LOG_CHECK, strformat, LinkCheckerError
 from ..decorators import synchronized
 from ..cache import urlqueue
 from ..htmlutil import formsearch
@@ -89,9 +89,10 @@ class Aggregate (object):
         for key, value in self.config["loginextrafields"].items():
             form.data[key] = value
         formurl = urlparse.urljoin(url, form.url)
-        req = session.post(formurl, data=form.data)
-        self.cookies = req.cookies
-        print "XXX cookies", self.cookies
+        response = session.post(formurl, data=form.data)
+        self.cookies = session.cookies
+        if len(self.cookies) == 0:
+            raise LinkCheckerError("No cookies set by login URL %s" % url)
 
     @synchronized(_threads_lock)
     def start_threads (self):

@@ -218,7 +218,6 @@ class Configuration (dict):
                 filtered_cfiles.append(cfile)
         log.debug(LOG_CHECK, "reading configuration from %s", filtered_cfiles)
         confparse.LCConfigParser(self).read(filtered_cfiles)
-        self.sanitize()
 
     def add_auth (self, user=None, password=None, pattern=None):
         """Add given authentication data."""
