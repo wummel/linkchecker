@@ -29,6 +29,8 @@ Fixes:
   Closes: GH bug #519
 - checking: Use user-supplied authentication and proxies when requestiong
   robot.txt.
+- plugins: Fix Word file check plugin.
+  Closes: GH bug #530
 
 
 9.2 "Rick and Morty" (released 23.4.2014)
