@@ -280,7 +280,7 @@ def limit_time (seconds, skip=False):
             try:
                 with _limit_time(seconds):
                     return func(*args, **kwargs)
-            except LinkCheckerInterrupt, msg:
+            except LinkCheckerInterrupt as msg:
                 if skip:
                     pytest.skip("time limit of %d seconds exceeded" % seconds)
                 assert False, msg

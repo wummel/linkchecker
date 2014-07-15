@@ -99,7 +99,7 @@ class RobotFileParser (object):
             else:
                 log.debug(LOG_CHECK, "%r allow all (no text content)", self.url)
                 self.allow_all = True
-        except requests.HTTPError, x:
+        except requests.HTTPError as x:
             if x.response.status_code in (401, 403):
                 self.disallow_all = True
                 log.debug(LOG_CHECK, "%r disallow all (code %d)", self.url, x.response.status_code)
