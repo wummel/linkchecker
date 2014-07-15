@@ -17,7 +17,7 @@
 """
 Cache robots.txt contents.
 """
-from .. import robotparser2, configuration
+from .. import robotparser2
 from ..containers import LFUCache
 from ..decorators import synchronized
 from ..lock import get_lock
