@@ -21,20 +21,27 @@ from ..HtmlParser import htmlsax
 from .. import log, LOG_CHECK
 
 class Form(object):
+    """Store HTML form URL and form data."""
+
     def __init__(self, url):
+        """Set URL and empty form data."""
         self.url = url
         self.data = {}
 
     def add_value(self, key, value):
+        """Add a form value."""
         self.data[key] = value
 
     def __repr__(self):
+        """Return unicode representation displaying URL and form data."""
         return unicode(self)
 
     def __unicode__(self):
+        """Return unicode string displaying URL and form data."""
         return u"<url=%s data=%s>" % (self.url, self.data)
 
     def __str__(self):
+        """Return string displaying URL and form data."""
         return unicode(self).encode('utf-8')
 
 

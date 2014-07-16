@@ -32,7 +32,7 @@ from .. import fileutil, log, LOG_PLUGIN
 _initialized = False
 def init_win32com ():
     """Initialize the win32com.client cache."""
-    global _initialized 
+    global _initialized
     if _initialized:
         return
     import win32com.client
