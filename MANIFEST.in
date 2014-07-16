@@ -1,4 +1,4 @@
-include README.txt COPYING MANIFEST.in
+include README.rst COPYING MANIFEST.in
 include config/linkchecker-completion config/create.sql
 include config/linkcheckerrc
 include config/linkchecker.apache2.conf install-rpm.sh
