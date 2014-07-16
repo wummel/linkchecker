@@ -1,4 +1,4 @@
-9.3 "" (released xx.xx.2014)
+9.3 "Better Living Through Chemistry" (released 16.7.2014)
 
 Features:
 - checking: Parse and check links in PDF files.
