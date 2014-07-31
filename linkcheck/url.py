@@ -299,6 +299,14 @@ def url_norm (url, encoding=None):
     else:
         encode_unicode = False
     urlparts = list(urlparse.urlsplit(url))
+    # extract url from ios special install link
+    if urlparts[0].lower() == 'itms-services':
+        try:
+            query_dict = urlparse.parse_qs(urlparts[3])
+            urlparts = list(urlparse.urlsplit(query_dict['url'][0]))
+        except:
+            pass
+
     # scheme
     urlparts[0] = urllib.unquote(urlparts[0]).lower()
     # mailto: urlsplit is broken
