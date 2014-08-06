@@ -4,7 +4,6 @@ Priority: optional
 Maintainer: Bastian Kleineidam <calvin@debian.org>
 Build-Depends: debhelper (>= 9),
                gettext,
-               hardening-wrapper,
                python-all-dev (>= 2.7),
                python-requests (>= 2.2.1),
                qt4-dev-tools
