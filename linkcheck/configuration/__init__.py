@@ -116,6 +116,21 @@ def get_share_file (filename, devel_dir=None):
     raise ValueError(msg)
 
 
+def get_certifi_file():
+    """Get the SSL certifications installed by the certifi package.
+    @return: the filename to the cert file
+    @rtype: string
+    @raises: ImportError when certifi is not installed or ValueError when
+             the file is not found
+    """
+    import certifi
+    filename = certifi.where()
+    if os.path.isfile(filename):
+        return filename
+    msg = "%s not found; check your certifi installation" % filename
+    raise ValueError(msg)
+
+
 # dynamic options
 class Configuration (dict):
     """
@@ -320,7 +335,10 @@ class Configuration (dict):
             try:
                 self["sslverify"] = get_share_file('cacert.pem')
             except ValueError:
-                pass
+                try:
+                    self["sslverify"] = get_certifi_file()
+                except ImportError:
+                    pass
 
 
 def get_plugin_folders():
