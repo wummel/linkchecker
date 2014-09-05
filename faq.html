@@ -47,6 +47,12 @@ like LinkChecker. This is not a bug in LinkChecker but rather a
 policy by the webmaster running the website you are checking. Look in
 the <code>/robots.txt</code> file which follows the
 <a href="http://www.robotstxt.org/robotstxt.html">robots.txt exclusion standard</a>.</p>
+<p>For identification LinkChecker adds to each request a User-Agent header
+like this:</p>
+<div class="codehilite"><pre><span class="n">Mozilla</span><span class="o">/</span>5<span class="p">.</span>0 <span class="p">(</span><span class="n">compatible</span><span class="p">;</span> <span class="n">LinkChecker</span><span class="o">/</span>9<span class="p">.</span>3<span class="p">;</span> <span class="o">+</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">wummel</span><span class="p">.</span><span class="n">github</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">linkchecker</span><span class="o">/</span><span class="p">)</span>
+</pre></div>
+
+
 <p>If you yourself are the webmaster, consider allowing LinkChecker to
 check your web pages by adding the following to your robots.txt file:</p>
 <div class="codehilite"><pre><span class="n">User</span><span class="o">-</span><span class="n">Agent</span><span class="p">:</span> <span class="n">LinkChecker</span>
