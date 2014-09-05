@@ -17,7 +17,7 @@
 """
 Main functions for link parsing
 """
-from .. import log, LOG_CHECK, strformat
+from .. import log, LOG_CHECK, strformat, url as urlutil
 from ..htmlutil import linkparse
 from ..HtmlParser import htmlsax
 from ..bookmarks import firefox
@@ -30,6 +30,8 @@ def parse_url(url_data):
         key = "html"
     elif url_data.is_file() and firefox.has_sqlite and firefox.extension.search(url_data.url):
         key = "firefox"
+    elif url_data.scheme == "itms-services":
+        key = "itms_services"
     else:
         # determine parse routine according to content types
         mime = url_data.content_type
@@ -138,6 +140,15 @@ def parse_firefox (url_data):
     filename = url_data.get_os_filename()
     for url, name in firefox.parse_bookmark_file(filename):
         url_data.add_url(url, name=name)
+
+
+def parse_itms_services(url_data):
+    """Get "url" CGI parameter value as child URL."""
+    query = url_data.urlparts[3]
+    for k, v, sep in urlutil.parse_qsl(query, keep_blank_values=True):
+        if k == "url":
+            url_data.add_url(v)
+            break
 
 
 from .sitemap import parse_sitemap, parse_sitemapindex
