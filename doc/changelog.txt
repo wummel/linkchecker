@@ -4,6 +4,10 @@ Features:
 - checking: Support itms-services: URLs.
   Closes: GH bug #532
 
+Fixes:
+- checking: Correct typos in the proxy handling code.
+  Closes: GH bug #536
+
 
 9.3 "Better Living Through Chemistry" (released 16.7.2014)
 
