@@ -19,6 +19,11 @@ policy by the webmaster running the website you are checking. Look in
 the ``/robots.txt`` file which follows the
 [robots.txt exclusion standard](http://www.robotstxt.org/robotstxt.html).
 
+For identification LinkChecker adds to each request a User-Agent header
+like this:
+
+    Mozilla/5.0 (compatible; LinkChecker/9.3; +http://wummel.github.io/linkchecker/)
+
 If you yourself are the webmaster, consider allowing LinkChecker to
 check your web pages by adding the following to your robots.txt file:
 
