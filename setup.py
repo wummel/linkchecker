@@ -397,19 +397,12 @@ class MyInstallLib (install_lib, object):
 
 
 class MyInstallData (install_data, object):
-    """Handle locale files and permissions."""
+    """Fix file permissions."""
 
     def run (self):
         """Adjust permissions on POSIX systems."""
-        self.add_message_files()
         super(MyInstallData, self).run()
         self.fix_permissions()
-
-    def add_message_files (self):
-        """Add locale message files to data_files list."""
-        for (src, dst) in list_message_files(self.distribution.get_name()):
-            dstdir = os.path.dirname(dst)
-            self.data_files.append((dstdir, [os.path.join("build", dst)]))
 
     def fix_permissions (self):
         """Set correct read permissions on POSIX systems. Might also
@@ -551,7 +544,7 @@ class MyBuildExt (build_ext, object):
             self.build_extension(ext)
 
 
-def list_message_files (package, suffix=".po"):
+def list_message_files (package, suffix=".mo"):
     """Return list of all found message files and their installation paths."""
     for fname in glob.glob("po/*" + suffix):
         # basename (without extension) is a locale name
@@ -585,21 +578,9 @@ def check_manifest ():
 class MyBuild (build, object):
     """Custom build command."""
 
-    def build_message_files (self):
-        """For each po/*.po, build .mo file in target locale directory."""
-        # msgfmt.py is in the po/ subdirectory
-        sys.path.append('po')
-        import msgfmt
-        for (src, dst) in list_message_files(self.distribution.get_name()):
-            build_dst = os.path.join("build", dst)
-            self.mkpath(os.path.dirname(build_dst))
-            self.announce("Compiling %s -> %s" % (src, build_dst))
-            msgfmt.make(src, build_dst)
-
     def run (self):
-        """Check MANIFEST and build message files before building."""
+        """Check MANIFEST before building."""
         check_manifest()
-        self.build_message_files()
         build.run(self)
 
 
@@ -667,6 +648,9 @@ data_files = [
          'config/linkchecker.apache2.conf',
         ]),
 ]
+
+for (src, dst) in list_message_files(AppName):
+    data_files.append((src, dst))
 
 if os.name == 'posix':
     data_files.append(('share/man/man1', ['doc/en/linkchecker.1', 'doc/en/linkchecker-gui.1']))

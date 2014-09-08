@@ -29,7 +29,6 @@ Changelog.linkchecker*
 /doc/html/*.qch
 /.achievements
 /doc/*.mo
-/po/*.mo
 /LinkChecker-*-portable.zip
 /LinkChecker-*.exe
 /LinkChecker.egg-info

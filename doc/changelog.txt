@@ -4,6 +4,11 @@ Features:
 - checking: Support itms-services: URLs.
   Closes: GH bug #532
 
+Changes:
+- installation: Remove dependency on msgfmt.py by pre-generating the
+  *.mo files and adding them to version control.
+  Reason was the difficulty to run msgfmt.py under both Python 2 and 3.
+
 Fixes:
 - checking: Correct typos in the proxy handling code.
   Closes: GH bug #536
