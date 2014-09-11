@@ -116,6 +116,19 @@ def get_share_file (filename, devel_dir=None):
     raise ValueError(msg)
 
 
+def get_system_cert_file():
+    """Try to find a system-wide SSL certificate file.
+    @return: the filename to the cert file
+    @raises: ValueError when no system cert file could be found
+    """
+    if os.name == 'posix':
+        filename = "/etc/ssl/certs/ca-certificates.crt"
+        if os.path.isfile(filename):
+            return filename
+    msg = "no system certificate file found"
+    raise ValueError(msg)
+
+
 def get_certifi_file():
     """Get the SSL certifications installed by the certifi package.
     @return: the filename to the cert file
@@ -330,15 +343,20 @@ class Configuration (dict):
                 self[plugin] = {}
 
     def sanitize_ssl(self):
-        """Use locally installed certificate file if available."""
+        """Use local installed certificate file if available.
+        Tries to get system, then certifi, then the own
+        installed certificate file."""
         if self["sslverify"] is True:
             try:
-                self["sslverify"] = get_share_file('cacert.pem')
+                self["sslverify"] = get_system_cert_file()
             except ValueError:
                 try:
                     self["sslverify"] = get_certifi_file()
-                except ImportError:
-                    pass
+                except (ValueError, ImportError):
+                    try:
+                        self["sslverify"] = get_share_file('cacert.pem')
+                    except ValueError:
+                        pass
 
 
 def get_plugin_folders():
