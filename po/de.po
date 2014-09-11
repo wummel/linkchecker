@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: bastian.kleineidam@web.de\n"
-"POT-Creation-Date: 2014-07-15 18:36+0200\n"
+"POT-Creation-Date: 2014-09-11 21:18+0200\n"
 "PO-Revision-Date: 2012-11-13 18:13+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
@@ -15,11 +15,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../linkcheck/director/aggregator.py:149
+#: ../linkcheck/director/aggregator.py:150
 msgid "These URLs are still active:"
 msgstr "Folgende URLs sind noch aktiv:"
 
-#: ../linkcheck/director/aggregator.py:156
+#: ../linkcheck/director/aggregator.py:157
 #, python-format
 msgid ""
 "%(num)d URLs are still active. After a timeout of %(timeout)s the active "
@@ -204,56 +204,56 @@ msgstr ""
 "Siehe http://support.microsoft.com/kb/308419 für mehr Informationen über das "
 "Setzen von Dateiberechtigungen."
 
-#: ../linkcheck/configuration/__init__.py:214
+#: ../linkcheck/configuration/__init__.py:242
 #, python-format
 msgid "Configuration file %r does not exist."
 msgstr "Konfigurationsdatei %r existiert nicht."
 
-#: ../linkcheck/configuration/__init__.py:216
+#: ../linkcheck/configuration/__init__.py:244
 #, python-format
 msgid "Configuration file %r is not readable."
 msgstr "Konfigurationsdatei %r ist nicht lesbar."
 
-#: ../linkcheck/configuration/__init__.py:227
+#: ../linkcheck/configuration/__init__.py:254
 msgid "missing user or URL pattern in authentication data."
 msgstr ""
 "Fehlender Benutzer oder regulärer URL Ausdruck in Authentifizierungsdaten."
 
-#: ../linkcheck/configuration/__init__.py:266
+#: ../linkcheck/configuration/__init__.py:293
 msgid "activating text logger output."
 msgstr "aktiviere Loggerausgabe text."
 
-#: ../linkcheck/configuration/__init__.py:276
+#: ../linkcheck/configuration/__init__.py:303
 msgid "no CGI password fieldname given for login URL."
 msgstr " kein CGI Passwort Feldname für Login URL angegeben."
 
-#: ../linkcheck/configuration/__init__.py:280
+#: ../linkcheck/configuration/__init__.py:307
 msgid "no CGI user fieldname given for login URL."
 msgstr "kein CGI Benutzer Feldname für Login URL angegeben."
 
-#: ../linkcheck/configuration/__init__.py:284
+#: ../linkcheck/configuration/__init__.py:311
 msgid "no user/password authentication data found for login URL."
 msgstr "keine Benutzer/Passwort-Authentifizierung für Login URL gefunden."
 
-#: ../linkcheck/configuration/__init__.py:287
+#: ../linkcheck/configuration/__init__.py:314
 msgid "login URL is not a HTTP URL."
 msgstr "Login URL ist keine HTTP URL."
 
-#: ../linkcheck/configuration/__init__.py:291
+#: ../linkcheck/configuration/__init__.py:318
 msgid "login URL is incomplete."
 msgstr "Login URL ist unvollständig."
 
-#: ../linkcheck/configuration/__init__.py:295
+#: ../linkcheck/configuration/__init__.py:322
 #, python-format
 msgid "disabling login URL %(url)s."
 msgstr "deaktiviere Login URL %(url)s."
 
-#: ../linkcheck/configuration/__init__.py:335
+#: ../linkcheck/configuration/__init__.py:370
 #, fuzzy, python-format
 msgid "could not create plugin directory %(dirname)r: %(errmsg)r"
 msgstr "Konnte Projekt %(filename)s nicht laden: %(err)s"
 
-#: ../linkcheck/configuration/__init__.py:374
+#: ../linkcheck/configuration/__init__.py:409
 #, python-format
 msgid ""
 "could not copy initial configuration file %(src)r to %(dst)r: %(errmsg)r"
@@ -618,71 +618,71 @@ msgstr "%s URL ignoriert."
 msgid "URL is unrecognized or has invalid syntax"
 msgstr "URL ist unbekannt oder besitzt ungültige Syntax"
 
-#: ../linkcheck/checker/const.py:108
+#: ../linkcheck/checker/const.py:109
 msgid "The effective URL is different from the original."
 msgstr "Die effektive URL unterscheidet sich vom Original."
 
-#: ../linkcheck/checker/const.py:110
+#: ../linkcheck/checker/const.py:111
 msgid "Could not get the content of the URL."
 msgstr "Konnte den Inhalt der URL nicht bekommen."
 
-#: ../linkcheck/checker/const.py:111
+#: ../linkcheck/checker/const.py:112
 msgid "The URL content size is too large."
 msgstr "Der URL Inhalt ist zu groß."
 
-#: ../linkcheck/checker/const.py:112
+#: ../linkcheck/checker/const.py:113
 msgid "The URL content size is zero."
 msgstr "Der URL Inhaltsgrößenangabe ist Null."
 
-#: ../linkcheck/checker/const.py:113
+#: ../linkcheck/checker/const.py:114
 msgid "The URL is longer than the recommended size."
 msgstr "Die URL ist länger als die empfohlene Länge."
 
-#: ../linkcheck/checker/const.py:114
+#: ../linkcheck/checker/const.py:115
 msgid "The URL contains leading or trailing whitespace."
 msgstr "Die URL %(url)s enthält Leerzeichen am Anfang oder Ende."
 
-#: ../linkcheck/checker/const.py:115
+#: ../linkcheck/checker/const.py:116
 msgid "The file: URL is missing a trailing slash."
 msgstr "Der file: URL fehlt ein abschließender Schrägstrich."
 
-#: ../linkcheck/checker/const.py:117
+#: ../linkcheck/checker/const.py:118
 msgid "The file: path is not the same as the system specific path."
 msgstr "Der file: Pfad ist nicht derselbe wie der Systempfad."
 
-#: ../linkcheck/checker/const.py:118
+#: ../linkcheck/checker/const.py:119
 msgid "The ftp: URL is missing a trailing slash."
 msgstr "Der ftp: URL fehlt ein abschließender Schrägstrich."
 
-#: ../linkcheck/checker/const.py:119
+#: ../linkcheck/checker/const.py:120
 msgid "The URL had no content."
 msgstr "Die URL besitzt keinen Inhalt."
 
-#: ../linkcheck/checker/const.py:121
+#: ../linkcheck/checker/const.py:122
 msgid "An error occurred while storing a cookie."
 msgstr "Ein Fehler trat auf während des Speicherns eines Cookies."
 
-#: ../linkcheck/checker/const.py:122
+#: ../linkcheck/checker/const.py:123
 msgid "The URL has been ignored."
 msgstr "Die URL wurde ignoriert."
 
-#: ../linkcheck/checker/const.py:123
+#: ../linkcheck/checker/const.py:124
 msgid "The mail MX host could not be found."
 msgstr "Der MX Mail-Rechner konnte nicht gefunden werden."
 
-#: ../linkcheck/checker/const.py:124
+#: ../linkcheck/checker/const.py:125
 msgid "No NNTP server was found."
 msgstr "Es wurde kein NNTP Server gefunden."
 
-#: ../linkcheck/checker/const.py:125
+#: ../linkcheck/checker/const.py:126
 msgid "The NNTP newsgroup could not be found."
 msgstr "Die NNTP Nachrichtengruppe konnte nicht gefunden werden."
 
-#: ../linkcheck/checker/const.py:126
+#: ../linkcheck/checker/const.py:127
 msgid "The IP is obfuscated."
 msgstr "Die IP-Adresse ist verschleiert."
 
-#: ../linkcheck/checker/const.py:127
+#: ../linkcheck/checker/const.py:128
 #, fuzzy
 msgid "XML could not be parsed."
 msgstr "Der MX Mail-Rechner konnte nicht gefunden werden."
@@ -882,7 +882,7 @@ msgstr "Inhalt %(dlsize)s is größer als %(maxbytes)s."
 msgid "Content size is zero."
 msgstr "Größe des Inhalts ist Null."
 
-#: ../linkcheck/checker/urlbase.py:627 ../linkcheck/checker/httpurl.py:302
+#: ../linkcheck/checker/urlbase.py:627 ../linkcheck/checker/httpurl.py:309
 msgid "File size too large"
 msgstr "Dateigröße ist zu groß"
 
@@ -891,7 +891,7 @@ msgstr "Dateigröße ist zu groß"
 msgid "URL has unparsable domain name: %(domain)s"
 msgstr "URL besitzt einen nicht analysierbaren Rechnernamen: %(domain)s"
 
-#: ../linkcheck/checker/proxysupport.py:42
+#: ../linkcheck/checker/proxysupport.py:44
 #, python-format
 msgid "Proxy value `%(proxy)s' must start with 'http:' or 'https:'."
 msgstr "Proxy `%(proxy)s' muss mit 'http:' oder 'https:' beginnen."
@@ -915,6 +915,10 @@ msgstr ""
 #, fuzzy, python-format
 msgid "%(host)r could not be resolved"
 msgstr "Der MX Mail-Rechner konnte nicht gefunden werden."
+
+#: ../linkcheck/checker/itmsservicesurl.py:32
+msgid "Missing required url parameter"
+msgstr ""
 
 #: ../linkcheck/checker/ftpurl.py:92
 msgid "Got no answer from FTP server"
@@ -963,23 +967,23 @@ msgstr ""
 "Der URL Pfad %(path)r ist nicht derselbe wie der Systempfad %(realpath)r. "
 "Sie sollten immer den Systempfad in URLs benutzen."
 
-#: ../linkcheck/checker/httpurl.py:129
+#: ../linkcheck/checker/httpurl.py:136
 #, fuzzy
 msgid "Access denied by robots.txt, checked only syntax."
 msgstr ""
 "Zugriff zur Weiterleitungs-URL verweigert durch robots.txt; prüfe lediglich "
 "Syntax."
 
-#: ../linkcheck/checker/httpurl.py:130
+#: ../linkcheck/checker/httpurl.py:137
 msgid "syntax OK"
 msgstr "Syntax OK"
 
-#: ../linkcheck/checker/httpurl.py:253
+#: ../linkcheck/checker/httpurl.py:260
 #, python-format
 msgid "Redirected to `%(url)s'."
 msgstr "Zu `%(url)s' umgeleitet."
 
-#: ../linkcheck/checker/httpurl.py:293
+#: ../linkcheck/checker/httpurl.py:300
 msgid "OK"
 msgstr "OK"
 
