@@ -8,6 +8,8 @@ Changes:
 - installation: Remove dependency on msgfmt.py by pre-generating the
   *.mo files and adding them to version control.
   Reason was the difficulty to run msgfmt.py under both Python 2 and 3.
+- checking: When checking SSL certificates under POSIX systems try
+  to use the system certificate store.
 
 Fixes:
 - checking: Correct typos in the proxy handling code.
