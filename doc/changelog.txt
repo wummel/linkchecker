@@ -12,6 +12,7 @@ Changes:
 Fixes:
 - checking: Correct typos in the proxy handling code.
   Closes: GH bug #536
+- cmdline: Reactivate paging of help pages.
 
 
 9.3 "Better Living Through Chemistry" (released 16.7.2014)
