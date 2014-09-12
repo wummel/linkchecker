@@ -25,7 +25,7 @@ try:
     Error = pythoncom.com_error
 except ImportError:
     has_win32com = False
-    Error = StandardError
+    Error = Exception
 from .. import fileutil, log, LOG_PLUGIN
 
 

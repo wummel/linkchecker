@@ -21,7 +21,11 @@ Store metadata and options.
 import os
 import re
 import urllib
-import urlparse
+try:
+    import urlparse
+except ImportError:
+    # Python 3
+    from urllib import parse as urlparse
 import shutil
 import socket
 import _LinkChecker_configdata as configdata
@@ -366,7 +370,7 @@ def get_plugin_folders():
     if not os.path.exists(defaultfolder) and not Portable:
         try:
             make_userdir(defaultfolder)
-        except StandardError as errmsg:
+        except Exception as errmsg:
             msg = _("could not create plugin directory %(dirname)r: %(errmsg)r")
             args = dict(dirname=defaultfolder, errmsg=errmsg)
             log.warn(LOG_CHECK, msg % args)
@@ -405,7 +409,7 @@ def get_user_config():
         try:
             make_userdir(userconf)
             shutil.copy(initialconf, userconf)
-        except StandardError as errmsg:
+        except Exception as errmsg:
             msg = _("could not copy initial configuration file %(src)r to %(dst)r: %(errmsg)r")
             args = dict(src=initialconf, dst=userconf, errmsg=errmsg)
             log.warn(LOG_CHECK, msg % args)
@@ -427,7 +431,7 @@ def get_gconf_http_proxy ():
                 if not port:
                     port = 8080
                 return "%s:%d" % (host, port)
-    except StandardError as msg:
+    except Exception as msg:
         log.debug(LOG_CHECK, "error getting HTTP proxy from gconf: %s", msg)
         pass
     return None
@@ -447,7 +451,7 @@ def get_gconf_ftp_proxy ():
             if not port:
                 port = 8080
             return "%s:%d" % (host, port)
-    except StandardError as msg:
+    except Exception as msg:
         log.debug(LOG_CHECK, "error getting FTP proxy from gconf: %s", msg)
         pass
     return None
@@ -462,7 +466,7 @@ def get_kde_http_proxy ():
     try:
         data = read_kioslaverc(config_dir)
         return data.get("http_proxy")
-    except StandardError as msg:
+    except Exception as msg:
         log.debug(LOG_CHECK, "error getting HTTP proxy from KDE: %s", msg)
         pass
 
@@ -476,7 +480,7 @@ def get_kde_ftp_proxy ():
     try:
         data = read_kioslaverc(config_dir)
         return data.get("ftp_proxy")
-    except StandardError as msg:
+    except Exception as msg:
         log.debug(LOG_CHECK, "error getting FTP proxy from KDE: %s", msg)
         pass
 

@@ -33,7 +33,11 @@ import codecs
 import os
 import math
 import time
-import urlparse
+try:
+    import urlparse
+except ImportError:
+    # Python 3
+    from urllib import parse as urlparse
 import locale
 import pydoc
 from . import i18n

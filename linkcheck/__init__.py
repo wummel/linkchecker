@@ -65,11 +65,11 @@ def get_install_data ():
     return configdata.install_data
 
 
-class LinkCheckerError (StandardError):
+class LinkCheckerError(Exception):
     """Exception to be raised on linkchecker-specific check errors."""
     pass
 
-class LinkCheckerInterrupt (StandardError):
+class LinkCheckerInterrupt(Exception):
     """Used for testing."""
     pass
 

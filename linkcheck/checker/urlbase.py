@@ -19,14 +19,26 @@ Base URL handler.
 """
 import sys
 import os
-import urlparse
-import urllib2
+try:
+    import urlparse
+except ImportError:
+    # Python 3
+    from urllib import parse as urlparse
+try:
+    from urllib2 import urlopen
+except ImportError:
+    # Python 3
+    from urllib.request import urlopen
 import urllib
 import time
 import errno
 import socket
 import select
-from cStringIO import StringIO
+try:
+    from cStringIO import StringIO
+except ImportError:
+    # Python 3
+    from io import StringIO
 
 from . import absolute_url, get_url_from
 from .. import (log, LOG_CHECK,
@@ -506,10 +518,10 @@ class UrlBase (object):
 
     def check_connection (self):
         """
-        The basic connection check uses urllib2.urlopen to initialize
+        The basic connection check uses urlopen to initialize
         a connection object.
         """
-        self.url_connection = urllib2.urlopen(self.url)
+        self.url_connection = urlopen(self.url)
 
     def add_size_info (self):
         """Set size of URL content (if any)..

@@ -20,9 +20,17 @@ Handle local file: links.
 
 import re
 import os
-import urlparse
+try:
+    import urlparse
+except ImportError:
+    # Python 3
+    from urllib import parse as urlparse
 import urllib
-import urllib2
+try:
+    from urllib2 import urlopen
+except ImportError:
+    # Python 3
+    from urllib.request import urlopen
 from datetime import datetime
 
 from . import urlbase, get_index_html

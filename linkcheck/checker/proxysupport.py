@@ -18,7 +18,11 @@
 Mixin class for URLs that can be fetched over a proxy.
 """
 import urllib
-import urlparse
+try:
+    import urlparse
+except ImportError:
+    # Python 3
+    from urllib import parse as urlparse
 import os
 from .. import LinkCheckerError, log, LOG_CHECK, url as urlutil, httputil
 

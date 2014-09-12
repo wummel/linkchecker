@@ -16,7 +16,11 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import os
-import urlparse
+try:
+    import urlparse
+except ImportError:
+    # Python 3
+    from urllib import parse as urlparse
 from PyQt4 import QtGui, QtCore
 from .linkchecker_ui_editor import Ui_EditorDialog
 from ..checker.fileurl import get_os_filename

@@ -95,7 +95,7 @@ def strip_c_comments (text):
     return c_comment_re.sub('', text)
 
 
-class StopParse (StandardError):
+class StopParse(Exception):
     """Raised when parsing should stop."""
     pass
 

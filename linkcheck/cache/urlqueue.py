@@ -23,11 +23,11 @@ from time import time as _time
 from .. import log, LOG_CACHE
 
 
-class Timeout (StandardError):
+class Timeout(Exception):
     """Raised by join()"""
     pass
 
-class Empty (StandardError):
+class Empty(Exception):
     """Exception raised by get()."""
     pass
 

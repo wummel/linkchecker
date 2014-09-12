@@ -20,7 +20,11 @@ Handle for mailto: links.
 
 import re
 import urllib
-import urlparse
+try:
+    import urlparse
+except ImportError:
+    # Python 3
+    from urllib import parse as urlparse
 from email._parseaddr import AddressList
 
 from . import urlbase

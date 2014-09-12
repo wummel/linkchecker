@@ -20,7 +20,11 @@ Functions for parsing and matching URL strings.
 
 import re
 import os
-import urlparse
+try:
+    import urlparse
+except ImportError:
+    # Python 3
+    from urllib import parse as urlparse
 import urllib
 import requests
 from . import log, LOG_CHECK

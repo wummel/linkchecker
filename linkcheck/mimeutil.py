@@ -32,7 +32,7 @@ def init_mimedb():
     global mimedb
     try:
         mimedb = mimetypes.MimeTypes(strict=False)
-    except StandardError as msg:
+    except Exception as msg:
         log.error(LOG_CHECK, "could not initialize MIME database: %s" % msg)
         return
     # For Opera bookmark files (opera6.adr)

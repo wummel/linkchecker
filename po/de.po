@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: bastian.kleineidam@web.de\n"
-"POT-Creation-Date: 2014-09-11 21:18+0200\n"
+"POT-Creation-Date: 2014-09-12 19:26+0200\n"
 "PO-Revision-Date: 2012-11-13 18:13+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
@@ -15,11 +15,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../linkcheck/director/aggregator.py:150
+#: ../linkcheck/director/aggregator.py:154
 msgid "These URLs are still active:"
 msgstr "Folgende URLs sind noch aktiv:"
 
-#: ../linkcheck/director/aggregator.py:157
+#: ../linkcheck/director/aggregator.py:161
 #, python-format
 msgid ""
 "%(num)d URLs are still active. After a timeout of %(timeout)s the active "
@@ -204,56 +204,56 @@ msgstr ""
 "Siehe http://support.microsoft.com/kb/308419 für mehr Informationen über das "
 "Setzen von Dateiberechtigungen."
 
-#: ../linkcheck/configuration/__init__.py:242
+#: ../linkcheck/configuration/__init__.py:246
 #, python-format
 msgid "Configuration file %r does not exist."
 msgstr "Konfigurationsdatei %r existiert nicht."
 
-#: ../linkcheck/configuration/__init__.py:244
+#: ../linkcheck/configuration/__init__.py:248
 #, python-format
 msgid "Configuration file %r is not readable."
 msgstr "Konfigurationsdatei %r ist nicht lesbar."
 
-#: ../linkcheck/configuration/__init__.py:254
+#: ../linkcheck/configuration/__init__.py:258
 msgid "missing user or URL pattern in authentication data."
 msgstr ""
 "Fehlender Benutzer oder regulärer URL Ausdruck in Authentifizierungsdaten."
 
-#: ../linkcheck/configuration/__init__.py:293
+#: ../linkcheck/configuration/__init__.py:297
 msgid "activating text logger output."
 msgstr "aktiviere Loggerausgabe text."
 
-#: ../linkcheck/configuration/__init__.py:303
+#: ../linkcheck/configuration/__init__.py:307
 msgid "no CGI password fieldname given for login URL."
 msgstr " kein CGI Passwort Feldname für Login URL angegeben."
 
-#: ../linkcheck/configuration/__init__.py:307
+#: ../linkcheck/configuration/__init__.py:311
 msgid "no CGI user fieldname given for login URL."
 msgstr "kein CGI Benutzer Feldname für Login URL angegeben."
 
-#: ../linkcheck/configuration/__init__.py:311
+#: ../linkcheck/configuration/__init__.py:315
 msgid "no user/password authentication data found for login URL."
 msgstr "keine Benutzer/Passwort-Authentifizierung für Login URL gefunden."
 
-#: ../linkcheck/configuration/__init__.py:314
+#: ../linkcheck/configuration/__init__.py:318
 msgid "login URL is not a HTTP URL."
 msgstr "Login URL ist keine HTTP URL."
 
-#: ../linkcheck/configuration/__init__.py:318
+#: ../linkcheck/configuration/__init__.py:322
 msgid "login URL is incomplete."
 msgstr "Login URL ist unvollständig."
 
-#: ../linkcheck/configuration/__init__.py:322
+#: ../linkcheck/configuration/__init__.py:326
 #, python-format
 msgid "disabling login URL %(url)s."
 msgstr "deaktiviere Login URL %(url)s."
 
-#: ../linkcheck/configuration/__init__.py:370
+#: ../linkcheck/configuration/__init__.py:374
 #, fuzzy, python-format
 msgid "could not create plugin directory %(dirname)r: %(errmsg)r"
 msgstr "Konnte Projekt %(filename)s nicht laden: %(err)s"
 
-#: ../linkcheck/configuration/__init__.py:409
+#: ../linkcheck/configuration/__init__.py:413
 #, python-format
 msgid ""
 "could not copy initial configuration file %(src)r to %(dst)r: %(errmsg)r"
@@ -687,17 +687,17 @@ msgstr "Die IP-Adresse ist verschleiert."
 msgid "XML could not be parsed."
 msgstr "Der MX Mail-Rechner konnte nicht gefunden werden."
 
-#: ../linkcheck/checker/mailtourl.py:86
+#: ../linkcheck/checker/mailtourl.py:90
 #, fuzzy, python-format
 msgid "No mail addresses or email subject found in `%(url)s'."
 msgstr "Keine Adressen wurden in `%(url)s' gefunden."
 
-#: ../linkcheck/checker/mailtourl.py:127
+#: ../linkcheck/checker/mailtourl.py:131
 #, python-format
 msgid "Error parsing CGI values: %s"
 msgstr "Fehler beim Parsen der CGI-Werte: %s"
 
-#: ../linkcheck/checker/mailtourl.py:150
+#: ../linkcheck/checker/mailtourl.py:154
 #, python-format
 msgid ""
 "Mail address `%(addr)s' too long. Allowed 256 chars, was %(length)d chars."
@@ -705,22 +705,22 @@ msgstr ""
 "E-Mail-Adresse `%(addr)s' ist zu lang. Erlaubt sind 256 Zeichen, es waren "
 "aber %(length)d Zeichen."
 
-#: ../linkcheck/checker/mailtourl.py:154
+#: ../linkcheck/checker/mailtourl.py:158
 #, python-format
 msgid "Missing `@' in mail address `%(addr)s'."
 msgstr "Fehlendes `@' in E-Mail-Adresse `%(addr)s'."
 
-#: ../linkcheck/checker/mailtourl.py:160
+#: ../linkcheck/checker/mailtourl.py:164
 #, python-format
 msgid "Missing local part of mail address `%(addr)s'."
 msgstr "Fehlender lokaler Teil der E-Mail-Adresse `%(addr)s'."
 
-#: ../linkcheck/checker/mailtourl.py:164
+#: ../linkcheck/checker/mailtourl.py:168
 #, python-format
 msgid "Missing domain part of mail address `%(addr)s'."
 msgstr "Fehlender Domänen-Teil der E-Mail-Adresse `%(addr)s'."
 
-#: ../linkcheck/checker/mailtourl.py:168
+#: ../linkcheck/checker/mailtourl.py:172
 #, python-format
 msgid ""
 "Local part of mail address `%(addr)s' too long. Allowed 64 chars, was "
@@ -729,7 +729,7 @@ msgstr ""
 "Lokaler Teil der E-Mail-Adresse `%(addr)s' ist zu lang. Erlaubt sind 64 "
 "Zeichen, es waren aber %(length)d Zeichen."
 
-#: ../linkcheck/checker/mailtourl.py:172
+#: ../linkcheck/checker/mailtourl.py:176
 #, python-format
 msgid ""
 "Domain part of mail address `%(addr)s' too long. Allowed 255 chars, was "
@@ -738,35 +738,35 @@ msgstr ""
 "Domänen-Teil der E-Mail-Adresse `%(addr)s' ist zu lang. Erlaubt sind 255 "
 "Zeichen, es waren aber %(length)d Zeichen."
 
-#: ../linkcheck/checker/mailtourl.py:181
+#: ../linkcheck/checker/mailtourl.py:185
 #, python-format
 msgid "Unquoted double quote or backslash in mail address `%(addr)s'."
 msgstr ""
 "Nicht kodiertes doppeltes Anführungszeichen oder Escape in E-Mail-Adresse `"
 "%(addr)s'."
 
-#: ../linkcheck/checker/mailtourl.py:186
+#: ../linkcheck/checker/mailtourl.py:190
 #, python-format
 msgid "Local part of mail address `%(addr)s' may not start with a dot."
 msgstr ""
 "Der lokale Teil der E-Mail-Adresse `%(addr)s' darf nicht mit einem Punkt "
 "beginnen."
 
-#: ../linkcheck/checker/mailtourl.py:190
+#: ../linkcheck/checker/mailtourl.py:194
 #, python-format
 msgid "Local part of mail address `%(addr)s' may not end with a dot."
 msgstr ""
 "Der lokale Teil der E-Mail-Adresse `%(addr)s' darf nicht mit einem Punkt "
 "enden."
 
-#: ../linkcheck/checker/mailtourl.py:194
+#: ../linkcheck/checker/mailtourl.py:198
 #, python-format
 msgid "Local part of mail address `%(addr)s' may not contain two dots."
 msgstr ""
 "Der lokale Teil der E-Mail-Adresse `%(addr)s' darf nicht zwei Punkte "
 "beinhalten."
 
-#: ../linkcheck/checker/mailtourl.py:199
+#: ../linkcheck/checker/mailtourl.py:203
 #, python-format
 msgid ""
 "Local part of mail address `%(addr)s' contains unquoted character `%(char)s."
@@ -774,134 +774,134 @@ msgstr ""
 "Lokaler Teil der E-Mail-Adresse `%(addr)s' beinhaltet ein nicht kodiertes "
 "Zeichen `%(char)s."
 
-#: ../linkcheck/checker/mailtourl.py:211
+#: ../linkcheck/checker/mailtourl.py:215
 #, python-format
 msgid "Domain part of mail address `%(addr)s' has invalid IP."
 msgstr ""
 "Domänen-Teil der E-Mail-Adresse `%(addr)s' besitzt eine ungültige IP-Adresse."
 
-#: ../linkcheck/checker/mailtourl.py:217
+#: ../linkcheck/checker/mailtourl.py:221
 #, python-format
 msgid "Invalid domain part of mail address `%(addr)s'."
 msgstr "Ungültige Domänen-Teil der E-Mail-Adresse `%(addr)s'."
 
-#: ../linkcheck/checker/mailtourl.py:221
+#: ../linkcheck/checker/mailtourl.py:225
 #, python-format
 msgid "Invalid top level domain part of mail address `%(addr)s'."
 msgstr "Ungültige Toplevel-Domänen-Teil der E-Mail-Adresse `%(addr)s'."
 
-#: ../linkcheck/checker/mailtourl.py:254
+#: ../linkcheck/checker/mailtourl.py:258
 #, python-format
 msgid "No MX mail host for %(domain)s found."
 msgstr "Kein MX mail host für %(domain)s gefunden."
 
-#: ../linkcheck/checker/mailtourl.py:262
+#: ../linkcheck/checker/mailtourl.py:266
 #, python-format
 msgid "No host for %(domain)s found."
 msgstr "Kein Rechner für %(domain)s gefunden."
 
-#: ../linkcheck/checker/mailtourl.py:276
+#: ../linkcheck/checker/mailtourl.py:280
 #, python-format
 msgid "Got invalid DNS answer %(answer)s for %(domain)s."
 msgstr "Ungültige DNS Antwort %(answer)s für %(domain)s erhalten."
 
-#: ../linkcheck/checker/mailtourl.py:288
+#: ../linkcheck/checker/mailtourl.py:292
 #, fuzzy
 msgid "Valid mail address syntax"
 msgstr "Ungültige Mail Syntax"
 
-#: ../linkcheck/checker/urlbase.py:64
+#: ../linkcheck/checker/urlbase.py:68
 #, python-format
 msgid "URL has unparsable domain name: %(name)s"
 msgstr "URL besitzt einen nicht analysierbaren Rechnernamen: %(name)s"
 
-#: ../linkcheck/checker/urlbase.py:123
+#: ../linkcheck/checker/urlbase.py:127
 #, fuzzy
 msgid "The URL is outside of the domain filter, checked only syntax."
 msgstr ""
 "Die Weiterleitungs-URL ist außerhalb des Domain Filters; prüfe lediglich "
 "Syntax."
 
-#: ../linkcheck/checker/urlbase.py:126
+#: ../linkcheck/checker/urlbase.py:130
 msgid "filtered"
 msgstr "gefiltert"
 
-#: ../linkcheck/checker/urlbase.py:162
+#: ../linkcheck/checker/urlbase.py:166
 #, python-format
 msgid "Leading or trailing whitespace in URL `%(url)s'."
 msgstr "Die URL %(url)s enthält Leerzeichen am Anfang oder Ende."
 
-#: ../linkcheck/checker/urlbase.py:320
+#: ../linkcheck/checker/urlbase.py:324
 msgid "URL is empty"
 msgstr "URL ist leer"
 
-#: ../linkcheck/checker/urlbase.py:334
+#: ../linkcheck/checker/urlbase.py:338
 #, python-format
 msgid "Effective URL %(url)r."
 msgstr "Effektive URL %(url)r."
 
-#: ../linkcheck/checker/urlbase.py:340
+#: ../linkcheck/checker/urlbase.py:344
 #, fuzzy, python-format
 msgid "URL length %(len)d is longer than %(max)d."
 msgstr "URL-Länge %(len)d ist länger als %(warn)d."
 
-#: ../linkcheck/checker/urlbase.py:384
+#: ../linkcheck/checker/urlbase.py:388
 #, python-format
 msgid "URL host %(host)r has invalid port"
 msgstr "URL Rechner %(host)r hat eine ungültige Portnummer"
 
-#: ../linkcheck/checker/urlbase.py:391
+#: ../linkcheck/checker/urlbase.py:395
 msgid "URL has empty hostname"
 msgstr "URL hat leeren Rechnernamen"
 
-#: ../linkcheck/checker/urlbase.py:415
+#: ../linkcheck/checker/urlbase.py:419
 #, python-format
 msgid "URL %(url)s has obfuscated IP address %(ip)s"
 msgstr "URL %(url)s besitzt die verschleierte IP-Adresse %(ip)s"
 
-#: ../linkcheck/checker/urlbase.py:450
+#: ../linkcheck/checker/urlbase.py:454
 msgid "Hostname not found"
 msgstr "Rechnername nicht gefunden"
 
-#: ../linkcheck/checker/urlbase.py:453
+#: ../linkcheck/checker/urlbase.py:457
 #, fuzzy, python-format
 msgid "Bad hostname %(host)r: %(msg)s"
 msgstr "konnte Rechnernamen %(host)r nicht parsen: %(msg)s"
 
-#: ../linkcheck/checker/urlbase.py:469
+#: ../linkcheck/checker/urlbase.py:473
 #, python-format
 msgid "could not get content: %(msg)s"
 msgstr "konnte Inhalt nicht lesen: %(msg)s"
 
-#: ../linkcheck/checker/urlbase.py:520
+#: ../linkcheck/checker/urlbase.py:524
 #, fuzzy, python-format
 msgid "Content size %(size)s is larger than %(maxbytes)s."
 msgstr "Inhalt %(dlsize)s is größer als %(maxbytes)s."
 
-#: ../linkcheck/checker/urlbase.py:615
+#: ../linkcheck/checker/urlbase.py:619
 msgid "Content size is zero."
 msgstr "Größe des Inhalts ist Null."
 
-#: ../linkcheck/checker/urlbase.py:627 ../linkcheck/checker/httpurl.py:309
+#: ../linkcheck/checker/urlbase.py:631 ../linkcheck/checker/httpurl.py:309
 msgid "File size too large"
 msgstr "Dateigröße ist zu groß"
 
-#: ../linkcheck/checker/urlbase.py:693
+#: ../linkcheck/checker/urlbase.py:697
 #, python-format
 msgid "URL has unparsable domain name: %(domain)s"
 msgstr "URL besitzt einen nicht analysierbaren Rechnernamen: %(domain)s"
 
-#: ../linkcheck/checker/proxysupport.py:44
+#: ../linkcheck/checker/proxysupport.py:48
 #, python-format
 msgid "Proxy value `%(proxy)s' must start with 'http:' or 'https:'."
 msgstr "Proxy `%(proxy)s' muss mit 'http:' oder 'https:' beginnen."
 
-#: ../linkcheck/checker/proxysupport.py:50
+#: ../linkcheck/checker/proxysupport.py:54
 #, python-format
 msgid "Ignoring proxy setting `%(proxy)s'."
 msgstr "Ignoriere Proxy Einstellung `%(proxy)s'"
 
-#: ../linkcheck/checker/proxysupport.py:55
+#: ../linkcheck/checker/proxysupport.py:59
 #, python-format
 msgid "Using proxy `%(proxy)s'."
 msgstr "Verwende Proxy `%(proxy)s'."
@@ -937,16 +937,16 @@ msgstr "Fehlender / am Ende der FTP url."
 msgid "FTP file size too large"
 msgstr "FTP Dateigröße ist zu groß"
 
-#: ../linkcheck/checker/fileurl.py:119
+#: ../linkcheck/checker/fileurl.py:123
 #, python-format
 msgid "Could not get current working directory: %(msg)s"
 msgstr "Konnte aktuelles Arbeitsverzeichnis nicht ermitteln: %(msg)s"
 
-#: ../linkcheck/checker/fileurl.py:153
+#: ../linkcheck/checker/fileurl.py:157
 msgid "Added trailing slash to directory."
 msgstr "Schrägstrich wurde zu Verzeichnis hinzugefügt."
 
-#: ../linkcheck/checker/fileurl.py:175
+#: ../linkcheck/checker/fileurl.py:179
 msgid ""
 "local files are only checked without parent URL or when the parent URL is "
 "also a file"
@@ -954,11 +954,11 @@ msgstr ""
 "lokale Dateien werden nur ohne Vater-URL geprüft oder wenn die Vater-URL "
 "auch eine Datei ist"
 
-#: ../linkcheck/checker/fileurl.py:178
+#: ../linkcheck/checker/fileurl.py:182
 msgid "directory"
 msgstr "Verzeichnis"
 
-#: ../linkcheck/checker/fileurl.py:195
+#: ../linkcheck/checker/fileurl.py:199
 #, python-format
 msgid ""
 "The URL path %(path)r is not the same as the system path %(realpath)r. You "
@@ -1282,23 +1282,23 @@ msgstr "Projekt &speichern..."
 msgid "Ctrl+S"
 msgstr "Strg+S"
 
-#: ../linkcheck/gui/editor.py:104
+#: ../linkcheck/gui/editor.py:108
 msgid "Save file?"
 msgstr "Datei speichern?"
 
-#: ../linkcheck/gui/editor.py:105
+#: ../linkcheck/gui/editor.py:109
 msgid "The document has been modified."
 msgstr "Das Dokument wurde verändert."
 
-#: ../linkcheck/gui/editor.py:106
+#: ../linkcheck/gui/editor.py:110
 msgid "Do you want to save your changes?"
 msgstr "Wollen Sie Ihre Änderungen speichern?"
 
-#: ../linkcheck/gui/editor.py:115
+#: ../linkcheck/gui/editor.py:119
 msgid "Save File As"
 msgstr "Speichern unter"
 
-#: ../linkcheck/gui/editor.py:158
+#: ../linkcheck/gui/editor.py:162
 msgid "readonly"
 msgstr "nur lesen"
 
@@ -1618,35 +1618,35 @@ msgstr "Fehler: %(msg)s"
 msgid "Execute '%(program)s -h' for help"
 msgstr "Führen Sie '%(program)s -h' aus, um Hilfe zu erhalten"
 
-#: ../linkcheck/lc_cgi.py:206
+#: ../linkcheck/lc_cgi.py:210
 #, python-format
 msgid "unsupported language %r"
 msgstr "nicht unterstützte Sprache %r"
 
-#: ../linkcheck/lc_cgi.py:211
+#: ../linkcheck/lc_cgi.py:215
 msgid "empty url was given"
 msgstr "leere URL wurde angegeben"
 
-#: ../linkcheck/lc_cgi.py:213
+#: ../linkcheck/lc_cgi.py:217
 #, python-format
 msgid "disallowed url %r was given"
 msgstr "ungültige URL %r wurde angegeben"
 
-#: ../linkcheck/lc_cgi.py:215
+#: ../linkcheck/lc_cgi.py:219
 msgid "no url was given"
 msgstr "keine URL wurde angegeben"
 
-#: ../linkcheck/lc_cgi.py:220
+#: ../linkcheck/lc_cgi.py:224
 #, python-format
 msgid "invalid recursion level %r"
 msgstr "ungültiger Rekursionslevel %r"
 
-#: ../linkcheck/lc_cgi.py:226
+#: ../linkcheck/lc_cgi.py:230
 #, python-format
 msgid "invalid %s option %r"
 msgstr "ungültige %s Option %r"
 
-#: ../linkcheck/lc_cgi.py:250
+#: ../linkcheck/lc_cgi.py:254
 #, fuzzy, python-format
 msgid ""
 "<!DOCTYPE HTML>\n"
@@ -1677,47 +1677,47 @@ msgstr ""
 "enth&auml;lt: <code>A-Za-z0-9./_~-</code><br><br>Fehler werden geloggt.\n"
 "</blockquote></body></html>"
 
-#: ../linkcheck/strformat.py:244
+#: ../linkcheck/strformat.py:248
 #, python-format
 msgid "%(prefix)s%(duration).02f seconds"
 msgstr "%(prefix)s%(duration).02f Sekunden"
 
-#: ../linkcheck/strformat.py:247
+#: ../linkcheck/strformat.py:251
 #, python-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] "%d Sekunde"
 msgstr[1] "%d Sekunden"
 
-#: ../linkcheck/strformat.py:248
+#: ../linkcheck/strformat.py:252
 #, python-format
 msgid "%d minute"
 msgid_plural "%d minutes"
 msgstr[0] "%d Minute"
 msgstr[1] "%d Minuten"
 
-#: ../linkcheck/strformat.py:249
+#: ../linkcheck/strformat.py:253
 #, python-format
 msgid "%d hour"
 msgid_plural "%d hours"
 msgstr[0] "%d Stunde"
 msgstr[1] "%d Stunden"
 
-#: ../linkcheck/strformat.py:250
+#: ../linkcheck/strformat.py:254
 #, python-format
 msgid "%d day"
 msgid_plural "%d days"
 msgstr[0] "%d Tag"
 msgstr[1] "%d Tage"
 
-#: ../linkcheck/strformat.py:251
+#: ../linkcheck/strformat.py:255
 #, python-format
 msgid "%d year"
 msgid_plural "%d years"
 msgstr[0] "%d Jahr"
 msgstr[1] "%d Jahre"
 
-#: ../linkcheck/strformat.py:320
+#: ../linkcheck/strformat.py:324
 #, python-format
 msgid ""
 "Could not import %(module)s for %(feature)s. Install %(module)s from %(url)s "

@@ -506,7 +506,7 @@ def cc_run (args):
     @return: successful exit flag
     @rtype: bool
     """
-    prog = "int main(){}\n"
+    prog = b"int main(){}\n"
     pipe = subprocess.Popen(args,
         stdin=subprocess.PIPE, stdout=subprocess.PIPE, close_fds=True)
     pipe.communicate(input=prog)

@@ -24,7 +24,11 @@ import threading
 import locale
 import re
 import time
-import urlparse
+try:
+    import urlparse
+except ImportError:
+    # Python 3
+    from urllib import parse as urlparse
 from . import configuration, strformat, checker, director, get_link_pat, \
     init_i18n, url as urlutil
 from .decorators import synchronized
@@ -67,7 +71,7 @@ lang_locale = {
 }
 _is_level = re.compile(r'^(0|1|2|3|-1)$').match
 
-class LCFormError (StandardError):
+class LCFormError(Exception):
     """Form related errors."""
     pass
 

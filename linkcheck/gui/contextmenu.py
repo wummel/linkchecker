@@ -16,7 +16,11 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 from PyQt4 import QtGui
 import os
-import urlparse
+try:
+    import urlparse
+except ImportError:
+    # Python 3
+    from urllib import parse as urlparse
 from linkcheck.checker.fileurl import get_os_filename
 
 class ContextMenu (QtGui.QMenu):

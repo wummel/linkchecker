@@ -33,15 +33,21 @@ default_domain = None
 
 def install_builtin (translator, do_unicode):
     """Install _() and _n() gettext methods into default namespace."""
-    import __builtin__
-    if do_unicode:
-        __builtin__.__dict__['_'] = translator.ugettext
+    try:
+        import __builtin__ as builtins
+    except ImportError:
+        # Python 3
+        import builtins
+    # Python 3 has no ugettext
+    has_unicode = hasattr(translator, 'ugettext')
+    if do_unicode and has_unicode:
+        builtins.__dict__['_'] = translator.ugettext
         # also install ngettext
-        __builtin__.__dict__['_n'] = translator.ungettext
+        builtins.__dict__['_n'] = translator.ungettext
     else:
-        __builtin__.__dict__['_'] = translator.gettext
+        builtins.__dict__['_'] = translator.gettext
         # also install ngettext
-        __builtin__.__dict__['_n'] = translator.ngettext
+        builtins.__dict__['_n'] = translator.ngettext
 
 class Translator (gettext.GNUTranslations):
     """A translation class always installing its gettext methods into the

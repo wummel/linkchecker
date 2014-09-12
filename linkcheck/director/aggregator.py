@@ -21,7 +21,11 @@ import threading
 import thread
 import requests
 import time
-import urlparse
+try:
+    import urlparse
+except ImportError:
+    # Python 3
+    from urllib import parse as urlparse
 import random
 from .. import log, LOG_CHECK, strformat, LinkCheckerError
 from ..decorators import synchronized

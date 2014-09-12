@@ -23,9 +23,12 @@ import os
 import inspect
 import traceback
 try:
-    from cStringIO import StringIO
+    from io import StringIO
 except ImportError:
-    from StringIO import StringIO
+    try:
+        from cStringIO import StringIO
+    except ImportError:
+        from StringIO import StringIO
 
 # memory leak debugging
 #import gc
@@ -53,7 +56,7 @@ def _stack_format (stack):
                 try:
                     s.write(repr(value))
                     s.write(os.linesep)
-                except StandardError:
+                except Exception:
                     s.write("error in repr() call%s" % os.linesep)
     return s.getvalue()
 

@@ -575,7 +575,7 @@ static void parser_dealloc (parser_object* self) {
     PyMem_Del(self->userData->buf);
     PyMem_Del(self->userData->tmp_buf);
     PyMem_Del(self->userData);
-    self->ob_type->tp_free((PyObject*)self);
+    Py_TYPE(self)->tp_free((PyObject*)self);
 }
 
 

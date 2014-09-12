@@ -20,7 +20,11 @@ Robots.txt parser.
 The robots.txt Exclusion Protocol is implemented as specified in
 http://www.robotstxt.org/wc/norobots-rfc.html
 """
-import urlparse
+try:
+    import urlparse
+except ImportError:
+    # Python 3
+    from urllib import parse as urlparse
 import urllib
 import time
 import requests
