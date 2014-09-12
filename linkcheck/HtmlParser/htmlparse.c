@@ -113,6 +113,25 @@ static int yyerror (char* msg) {
     return 0;
 }
 
+/* Python 2/3 compatibility */
+#if PY_MAJOR_VERSION >= 3
+  #define MOD_ERROR_VAL NULL
+  #define MOD_SUCCESS_VAL(val) val
+  #define MOD_INIT(name) PyMODINIT_FUNC PyInit_##name(void)
+  #define MOD_DEF(ob, name, doc, methods) \
+          static struct PyModuleDef moduledef = { \
+            PyModuleDef_HEAD_INIT, name, doc, -1, methods, }; \
+          ob = PyModule_Create(&moduledef)
+  #define PyInt_FromLong PyLong_FromLong
+#else
+  #define MOD_ERROR_VAL
+  #define MOD_SUCCESS_VAL(val)
+  #define MOD_INIT(name) void init##name(void)
+  #define MOD_DEF(ob, name, doc, methods) \
+          ob = Py_InitModule3(name, methods, doc)
+#endif
+
+
 /* existing Python methods */
 
 /* parser.resolve_entities */
@@ -223,7 +242,7 @@ finish_html_end_tag:
 
 
 /* Line 268 of yacc.c  */
-#line 227 "htmlparse.c"
+#line 246 "htmlparse.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -279,7 +298,7 @@ typedef int YYSTYPE;
 
 
 /* Line 343 of yacc.c  */
-#line 283 "htmlparse.c"
+#line 302 "htmlparse.c"
 
 #ifdef short
 # undef short
@@ -569,8 +588,8 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   180,   180,   183,   188,   192,   199,   240,   288,   324,
-     343,   361,   380,   403,   427,   451
+       0,   199,   199,   202,   207,   211,   218,   259,   307,   343,
+     362,   380,   399,   422,   446,   470
 };
 #endif
 
@@ -1505,7 +1524,7 @@ yyreduce:
         case 2:
 
 /* Line 1806 of yacc.c  */
-#line 180 "htmlparse.y"
+#line 199 "htmlparse.y"
     {
     /* parse a single element */
 }
@@ -1514,7 +1533,7 @@ yyreduce:
   case 3:
 
 /* Line 1806 of yacc.c  */
-#line 183 "htmlparse.y"
+#line 202 "htmlparse.y"
     {
     /* parse a list of elements */
 }
@@ -1523,7 +1542,7 @@ yyreduce:
   case 4:
 
 /* Line 1806 of yacc.c  */
-#line 188 "htmlparse.y"
+#line 207 "htmlparse.y"
     {
     /* wait for more lexer input */
     YYACCEPT;
@@ -1533,7 +1552,7 @@ yyreduce:
   case 5:
 
 /* Line 1806 of yacc.c  */
-#line 193 "htmlparse.y"
+#line 212 "htmlparse.y"
     {
     /* an error occured in the scanner, the python exception must be set */
     UserData* ud = yyget_extra(scanner);
@@ -1545,7 +1564,7 @@ yyreduce:
   case 6:
 
 /* Line 1806 of yacc.c  */
-#line 200 "htmlparse.y"
+#line 219 "htmlparse.y"
     {
     /* parsed HTML start tag (eg. <a href="blubb">)
        $1 is a PyTuple (<tag>, <attrs>)
@@ -1591,7 +1610,7 @@ finish_start:
   case 7:
 
 /* Line 1806 of yacc.c  */
-#line 241 "htmlparse.y"
+#line 260 "htmlparse.y"
     {
     /* parsed HTML start-end tag (eg. <br/>)
        $1 is a PyTuple (<tag>, <attrs>)
@@ -1644,7 +1663,7 @@ finish_start_end:
   case 8:
 
 /* Line 1806 of yacc.c  */
-#line 289 "htmlparse.y"
+#line 308 "htmlparse.y"
     {
     /* parsed HTML end tag (eg. </b>)
        $1 is a PyUnicode with the tag name */
@@ -1685,7 +1704,7 @@ finish_end:
   case 9:
 
 /* Line 1806 of yacc.c  */
-#line 325 "htmlparse.y"
+#line 344 "htmlparse.y"
     {
     /* parsed HTML comment (eg. <!-- bla -->)
        $1 is a PyUnicode with the comment content */
@@ -1709,7 +1728,7 @@ finish_comment:
   case 10:
 
 /* Line 1806 of yacc.c  */
-#line 344 "htmlparse.y"
+#line 363 "htmlparse.y"
     {
     /* $1 is a PyUnicode */
     UserData* ud = yyget_extra(scanner);
@@ -1732,7 +1751,7 @@ finish_pi:
   case 11:
 
 /* Line 1806 of yacc.c  */
-#line 362 "htmlparse.y"
+#line 381 "htmlparse.y"
     {
     /* parsed HTML CDATA (eg. <![CDATA[spam and eggs ...]]>)
        $1 is a PyUnicode with the CDATA content */
@@ -1756,7 +1775,7 @@ finish_cdata:
   case 12:
 
 /* Line 1806 of yacc.c  */
-#line 381 "htmlparse.y"
+#line 400 "htmlparse.y"
     {
     /* parsed HTML doctype (eg. <!DOCTYPE imadoofus system>)
        $1 is a PyUnicode with the doctype content */
@@ -1784,7 +1803,7 @@ finish_doctype:
   case 13:
 
 /* Line 1806 of yacc.c  */
-#line 404 "htmlparse.y"
+#line 423 "htmlparse.y"
     {
     /* parsed HTML script content (plus end tag which is omitted)
        $1 is a PyUnicode with the script content */
@@ -1813,7 +1832,7 @@ finish_script:
   case 14:
 
 /* Line 1806 of yacc.c  */
-#line 428 "htmlparse.y"
+#line 447 "htmlparse.y"
     {
     /* parsed HTML style content (plus end tag which is omitted)
        $1 is a PyUnicode with the style content */
@@ -1842,7 +1861,7 @@ finish_style:
   case 15:
 
 /* Line 1806 of yacc.c  */
-#line 452 "htmlparse.y"
+#line 471 "htmlparse.y"
     {
     /* parsed HTML text data
        $1 is a PyUnicode with the text */
@@ -1868,7 +1887,7 @@ finish_characters:
 
 
 /* Line 1806 of yacc.c  */
-#line 1872 "htmlparse.c"
+#line 1891 "htmlparse.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2099,7 +2118,7 @@ yyreturn:
 
 
 /* Line 2067 of yacc.c  */
-#line 474 "htmlparse.y"
+#line 493 "htmlparse.y"
 
 
 /* create parser object */
@@ -2530,8 +2549,7 @@ static PyMethodDef parser_methods[] = {
 
 
 static PyTypeObject parser_type = {
-    PyObject_HEAD_INIT(NULL)
-    0,              /* ob_size */
+    PyVarObject_HEAD_INIT(NULL, 0)
     "linkcheck.HtmlParser.htmlsax.parser",      /* tp_name */
     sizeof(parser_object), /* tp_size */
     0,              /* tp_itemsize */
@@ -2587,17 +2605,15 @@ static PyMethodDef htmlsax_methods[] = {
 };
 
 
-#ifndef PyMODINIT_FUNC	/* declarations for DLL import/export */
-#define PyMODINIT_FUNC void
-#endif
 /* initialization of the htmlsax module */
-PyMODINIT_FUNC inithtmlsax (void) {
+MOD_INIT(htmlsax) {
     PyObject* m = NULL;
-    if (PyType_Ready(&parser_type) < 0) {
-        return;
+    MOD_DEF(m, "htmlsax", "SAX HTML parser routines", htmlsax_methods);
+    if (m == NULL) {
+        return MOD_ERROR_VAL;
     }
-    if ((m = Py_InitModule3("htmlsax", htmlsax_methods, "SAX HTML parser routines")) == NULL) {
-        return;
+    if (PyType_Ready(&parser_type) < 0) {
+        return MOD_ERROR_VAL;
     }
     Py_INCREF(&parser_type);
     if (PyModule_AddObject(m, "parser", (PyObject*)&parser_type) == -1) {
@@ -2605,34 +2621,35 @@ PyMODINIT_FUNC inithtmlsax (void) {
         PyErr_Print();
     }
     if ((m = PyImport_ImportModule("linkcheck.HtmlParser")) == NULL) {
-        return;
+        return MOD_ERROR_VAL;
     }
     if ((resolve_entities = PyObject_GetAttrString(m, "resolve_entities")) == NULL) {
         Py_DECREF(m);
-        return;
+        return MOD_ERROR_VAL;
     }
     if ((set_encoding = PyObject_GetAttrString(m, "set_encoding")) == NULL) {
         Py_DECREF(resolve_entities);
         Py_DECREF(m);
-        return;
+        return MOD_ERROR_VAL;
     }
     if ((set_doctype = PyObject_GetAttrString(m, "set_doctype")) == NULL) {
         Py_DECREF(resolve_entities);
         Py_DECREF(set_encoding);
         Py_DECREF(m);
-        return;
+        return MOD_ERROR_VAL;
     }
     Py_DECREF(m);
     if ((u_meta = PyString_Decode("meta", 4, "ascii", "ignore")) == NULL) {
-        return;
+        return MOD_ERROR_VAL;
     }
     if ((m = PyImport_ImportModule("linkcheck.containers")) == NULL) {
-        return;
+        return MOD_ERROR_VAL;
     }
     if ((list_dict = PyObject_GetAttrString(m, "ListDict")) == NULL) {
         Py_DECREF(m);
-        return;
+        return MOD_ERROR_VAL;
     }
     Py_DECREF(m);
+    return MOD_SUCCESS_VAL(m);
 }
 

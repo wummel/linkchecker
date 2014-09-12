@@ -55,6 +55,9 @@ class Option(object):
         """
         raise NotImplementedError
 
+    def __hash__(self):
+        return hash(self.otype)
+
     def __eq__(self, other):
         if not isinstance(other, Option):
             return False

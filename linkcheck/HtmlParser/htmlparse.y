@@ -44,6 +44,25 @@ static int yyerror (char* msg) {
     return 0;
 }
 
+/* Python 2/3 compatibility */
+#if PY_MAJOR_VERSION >= 3
+  #define MOD_ERROR_VAL NULL
+  #define MOD_SUCCESS_VAL(val) val
+  #define MOD_INIT(name) PyMODINIT_FUNC PyInit_##name(void)
+  #define MOD_DEF(ob, name, doc, methods) \
+          static struct PyModuleDef moduledef = { \
+            PyModuleDef_HEAD_INIT, name, doc, -1, methods, }; \
+          ob = PyModule_Create(&moduledef)
+  #define PyInt_FromLong PyLong_FromLong
+#else
+  #define MOD_ERROR_VAL
+  #define MOD_SUCCESS_VAL(val)
+  #define MOD_INIT(name) void init##name(void)
+  #define MOD_DEF(ob, name, doc, methods) \
+          ob = Py_InitModule3(name, methods, doc)
+#endif
+
+
 /* existing Python methods */
 
 /* parser.resolve_entities */
@@ -901,8 +920,7 @@ static PyMethodDef parser_methods[] = {
 
 
 static PyTypeObject parser_type = {
-    PyObject_HEAD_INIT(NULL)
-    0,              /* ob_size */
+    PyVarObject_HEAD_INIT(NULL, 0)
     "linkcheck.HtmlParser.htmlsax.parser",      /* tp_name */
     sizeof(parser_object), /* tp_size */
     0,              /* tp_itemsize */
@@ -958,17 +976,15 @@ static PyMethodDef htmlsax_methods[] = {
 };
 
 
-#ifndef PyMODINIT_FUNC	/* declarations for DLL import/export */
-#define PyMODINIT_FUNC void
-#endif
 /* initialization of the htmlsax module */
-PyMODINIT_FUNC inithtmlsax (void) {
+MOD_INIT(htmlsax) {
     PyObject* m = NULL;
-    if (PyType_Ready(&parser_type) < 0) {
-        return;
+    MOD_DEF(m, "htmlsax", "SAX HTML parser routines", htmlsax_methods);
+    if (m == NULL) {
+        return MOD_ERROR_VAL;
     }
-    if ((m = Py_InitModule3("htmlsax", htmlsax_methods, "SAX HTML parser routines")) == NULL) {
-        return;
+    if (PyType_Ready(&parser_type) < 0) {
+        return MOD_ERROR_VAL;
     }
     Py_INCREF(&parser_type);
     if (PyModule_AddObject(m, "parser", (PyObject*)&parser_type) == -1) {
@@ -976,33 +992,34 @@ PyMODINIT_FUNC inithtmlsax (void) {
         PyErr_Print();
     }
     if ((m = PyImport_ImportModule("linkcheck.HtmlParser")) == NULL) {
-        return;
+        return MOD_ERROR_VAL;
     }
     if ((resolve_entities = PyObject_GetAttrString(m, "resolve_entities")) == NULL) {
         Py_DECREF(m);
-        return;
+        return MOD_ERROR_VAL;
     }
     if ((set_encoding = PyObject_GetAttrString(m, "set_encoding")) == NULL) {
         Py_DECREF(resolve_entities);
         Py_DECREF(m);
-        return;
+        return MOD_ERROR_VAL;
     }
     if ((set_doctype = PyObject_GetAttrString(m, "set_doctype")) == NULL) {
         Py_DECREF(resolve_entities);
         Py_DECREF(set_encoding);
         Py_DECREF(m);
-        return;
+        return MOD_ERROR_VAL;
     }
     Py_DECREF(m);
     if ((u_meta = PyString_Decode("meta", 4, "ascii", "ignore")) == NULL) {
-        return;
+        return MOD_ERROR_VAL;
     }
     if ((m = PyImport_ImportModule("linkcheck.containers")) == NULL) {
-        return;
+        return MOD_ERROR_VAL;
     }
     if ((list_dict = PyObject_GetAttrString(m, "ListDict")) == NULL) {
         Py_DECREF(m);
-        return;
+        return MOD_ERROR_VAL;
     }
     Py_DECREF(m);
+    return MOD_SUCCESS_VAL(m);
 }

@@ -40,19 +40,13 @@ ExcCacheList = [
     socket.error,
     select.error,
     # nttp errors (including EOFError)
-    nntplib.error_reply,
-    nntplib.error_temp,
-    nntplib.error_perm,
-    nntplib.error_proto,
+    nntplib.NNTPError,
     EOFError,
     # http errors
     requests.exceptions.RequestException,
     requests.packages.urllib3.exceptions.HTTPError,
     # ftp errors
-    ftplib.error_reply,
-    ftplib.error_temp,
-    ftplib.error_perm,
-    ftplib.error_proto,
+    ftplib.Error,
     # idna.encode(), called from socket.create_connection()
     UnicodeError,
 ]

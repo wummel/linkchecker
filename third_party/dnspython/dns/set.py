@@ -204,6 +204,9 @@ class Set(object):
         """Make the set empty."""
         self.items = []
 
+    def __hash__(self):
+        return hash(self.items)
+
     def __eq__(self, other):
         # Yes, this is inefficient but the sets we're dealing with are
         # usually quite small, so it shouldn't hurt too much.

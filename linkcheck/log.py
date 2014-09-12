@@ -23,12 +23,10 @@ import os
 import inspect
 import traceback
 try:
-    from io import StringIO
+    from cStringIO import StringIO
 except ImportError:
-    try:
-        from cStringIO import StringIO
-    except ImportError:
-        from StringIO import StringIO
+    # Python 3
+    from io import StringIO
 
 # memory leak debugging
 #import gc

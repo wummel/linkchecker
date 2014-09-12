@@ -82,11 +82,11 @@ def af_for_address(text):
     try:
         junk = dns.ipv4.inet_aton(text)
         return AF_INET
-    except StandardError:
+    except Exception:
         try:
             junk = dns.ipv6.inet_aton(text)
             return AF_INET6
-        except StandardError:
+        except Exception:
             raise ValueError
 
 def is_multicast(text):
@@ -99,10 +99,10 @@ def is_multicast(text):
     try:
         first = ord(dns.ipv4.inet_aton(text)[0])
         return (first >= 224 and first <= 239)
-    except StandardError:
+    except Exception:
         try:
             first = ord(dns.ipv6.inet_aton(text)[0])
             return (first == 255)
-        except StandardError:
+        except Exception:
             raise ValueError
 

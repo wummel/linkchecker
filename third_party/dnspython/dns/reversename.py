@@ -39,7 +39,7 @@ def from_address(text):
     try:
         parts = list(dns.ipv6.inet_aton(text).encode('hex_codec'))
         origin = ipv6_reverse_domain
-    except StandardError:
+    except Exception:
         parts = ['%d' % ord(byte) for byte in dns.ipv4.inet_aton(text)]
         origin = ipv4_reverse_domain
     parts.reverse()

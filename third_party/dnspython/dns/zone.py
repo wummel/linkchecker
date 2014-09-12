@@ -607,14 +607,14 @@ class _MasterReader(object):
                 raise dns.exception.SyntaxError
         except dns.exception.SyntaxError:
             raise
-        except StandardError:
+        except Exception:
             rdclass = self.zone.rdclass
         if rdclass != self.zone.rdclass:
             raise dns.exception.SyntaxError("RR class is not zone's class")
         # Type
         try:
             rdtype = dns.rdatatype.from_text(token.value)
-        except StandardError:
+        except Exception:
             raise dns.exception.SyntaxError("unknown rdatatype '%s'" % token.value)
         n = self.zone.nodes.get(name)
         if n is None:
@@ -627,7 +627,7 @@ class _MasterReader(object):
             # Catch and reraise.
             (ty, va) = sys.exc_info()[:2]
             raise va
-        except StandardError:
+        except Exception:
             # All exceptions that occur in the processing of rdata
             # are treated as syntax errors.  This is not strictly
             # correct, but it is correct almost all of the time.

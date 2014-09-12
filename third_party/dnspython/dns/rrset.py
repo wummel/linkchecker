@@ -62,6 +62,9 @@ class RRset(dns.rdataset.Rdataset):
     def __str__(self):
         return self.to_text()
 
+    def __hash__(self):
+        return hash(self.name) + super(RRSet, self).__hash__()
+
     def __eq__(self, other):
         """Two RRsets are equal if they have the same name and the same
         rdataset

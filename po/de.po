@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: bastian.kleineidam@web.de\n"
-"POT-Creation-Date: 2014-09-12 19:26+0200\n"
+"POT-Creation-Date: 2014-09-12 21:38+0200\n"
 "PO-Revision-Date: 2012-11-13 18:13+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
@@ -618,71 +618,71 @@ msgstr "%s URL ignoriert."
 msgid "URL is unrecognized or has invalid syntax"
 msgstr "URL ist unbekannt oder besitzt ungültige Syntax"
 
-#: ../linkcheck/checker/const.py:109
+#: ../linkcheck/checker/const.py:103
 msgid "The effective URL is different from the original."
 msgstr "Die effektive URL unterscheidet sich vom Original."
 
-#: ../linkcheck/checker/const.py:111
+#: ../linkcheck/checker/const.py:105
 msgid "Could not get the content of the URL."
 msgstr "Konnte den Inhalt der URL nicht bekommen."
 
-#: ../linkcheck/checker/const.py:112
+#: ../linkcheck/checker/const.py:106
 msgid "The URL content size is too large."
 msgstr "Der URL Inhalt ist zu groß."
 
-#: ../linkcheck/checker/const.py:113
+#: ../linkcheck/checker/const.py:107
 msgid "The URL content size is zero."
 msgstr "Der URL Inhaltsgrößenangabe ist Null."
 
-#: ../linkcheck/checker/const.py:114
+#: ../linkcheck/checker/const.py:108
 msgid "The URL is longer than the recommended size."
 msgstr "Die URL ist länger als die empfohlene Länge."
 
-#: ../linkcheck/checker/const.py:115
+#: ../linkcheck/checker/const.py:109
 msgid "The URL contains leading or trailing whitespace."
 msgstr "Die URL %(url)s enthält Leerzeichen am Anfang oder Ende."
 
-#: ../linkcheck/checker/const.py:116
+#: ../linkcheck/checker/const.py:110
 msgid "The file: URL is missing a trailing slash."
 msgstr "Der file: URL fehlt ein abschließender Schrägstrich."
 
-#: ../linkcheck/checker/const.py:118
+#: ../linkcheck/checker/const.py:112
 msgid "The file: path is not the same as the system specific path."
 msgstr "Der file: Pfad ist nicht derselbe wie der Systempfad."
 
-#: ../linkcheck/checker/const.py:119
+#: ../linkcheck/checker/const.py:113
 msgid "The ftp: URL is missing a trailing slash."
 msgstr "Der ftp: URL fehlt ein abschließender Schrägstrich."
 
-#: ../linkcheck/checker/const.py:120
+#: ../linkcheck/checker/const.py:114
 msgid "The URL had no content."
 msgstr "Die URL besitzt keinen Inhalt."
 
-#: ../linkcheck/checker/const.py:122
+#: ../linkcheck/checker/const.py:116
 msgid "An error occurred while storing a cookie."
 msgstr "Ein Fehler trat auf während des Speicherns eines Cookies."
 
-#: ../linkcheck/checker/const.py:123
+#: ../linkcheck/checker/const.py:117
 msgid "The URL has been ignored."
 msgstr "Die URL wurde ignoriert."
 
-#: ../linkcheck/checker/const.py:124
+#: ../linkcheck/checker/const.py:118
 msgid "The mail MX host could not be found."
 msgstr "Der MX Mail-Rechner konnte nicht gefunden werden."
 
-#: ../linkcheck/checker/const.py:125
+#: ../linkcheck/checker/const.py:119
 msgid "No NNTP server was found."
 msgstr "Es wurde kein NNTP Server gefunden."
 
-#: ../linkcheck/checker/const.py:126
+#: ../linkcheck/checker/const.py:120
 msgid "The NNTP newsgroup could not be found."
 msgstr "Die NNTP Nachrichtengruppe konnte nicht gefunden werden."
 
-#: ../linkcheck/checker/const.py:127
+#: ../linkcheck/checker/const.py:121
 msgid "The IP is obfuscated."
 msgstr "Die IP-Adresse ist verschleiert."
 
-#: ../linkcheck/checker/const.py:128
+#: ../linkcheck/checker/const.py:122
 #, fuzzy
 msgid "XML could not be parsed."
 msgstr "Der MX Mail-Rechner konnte nicht gefunden werden."
@@ -810,83 +810,83 @@ msgstr "Ungültige DNS Antwort %(answer)s für %(domain)s erhalten."
 msgid "Valid mail address syntax"
 msgstr "Ungültige Mail Syntax"
 
-#: ../linkcheck/checker/urlbase.py:68
+#: ../linkcheck/checker/urlbase.py:76
 #, python-format
 msgid "URL has unparsable domain name: %(name)s"
 msgstr "URL besitzt einen nicht analysierbaren Rechnernamen: %(name)s"
 
-#: ../linkcheck/checker/urlbase.py:127
+#: ../linkcheck/checker/urlbase.py:135
 #, fuzzy
 msgid "The URL is outside of the domain filter, checked only syntax."
 msgstr ""
 "Die Weiterleitungs-URL ist außerhalb des Domain Filters; prüfe lediglich "
 "Syntax."
 
-#: ../linkcheck/checker/urlbase.py:130
+#: ../linkcheck/checker/urlbase.py:138
 msgid "filtered"
 msgstr "gefiltert"
 
-#: ../linkcheck/checker/urlbase.py:166
+#: ../linkcheck/checker/urlbase.py:174
 #, python-format
 msgid "Leading or trailing whitespace in URL `%(url)s'."
 msgstr "Die URL %(url)s enthält Leerzeichen am Anfang oder Ende."
 
-#: ../linkcheck/checker/urlbase.py:324
+#: ../linkcheck/checker/urlbase.py:332
 msgid "URL is empty"
 msgstr "URL ist leer"
 
-#: ../linkcheck/checker/urlbase.py:338
+#: ../linkcheck/checker/urlbase.py:346
 #, python-format
 msgid "Effective URL %(url)r."
 msgstr "Effektive URL %(url)r."
 
-#: ../linkcheck/checker/urlbase.py:344
+#: ../linkcheck/checker/urlbase.py:352
 #, fuzzy, python-format
 msgid "URL length %(len)d is longer than %(max)d."
 msgstr "URL-Länge %(len)d ist länger als %(warn)d."
 
-#: ../linkcheck/checker/urlbase.py:388
+#: ../linkcheck/checker/urlbase.py:396
 #, python-format
 msgid "URL host %(host)r has invalid port"
 msgstr "URL Rechner %(host)r hat eine ungültige Portnummer"
 
-#: ../linkcheck/checker/urlbase.py:395
+#: ../linkcheck/checker/urlbase.py:403
 msgid "URL has empty hostname"
 msgstr "URL hat leeren Rechnernamen"
 
-#: ../linkcheck/checker/urlbase.py:419
+#: ../linkcheck/checker/urlbase.py:427
 #, python-format
 msgid "URL %(url)s has obfuscated IP address %(ip)s"
 msgstr "URL %(url)s besitzt die verschleierte IP-Adresse %(ip)s"
 
-#: ../linkcheck/checker/urlbase.py:454
+#: ../linkcheck/checker/urlbase.py:462
 msgid "Hostname not found"
 msgstr "Rechnername nicht gefunden"
 
-#: ../linkcheck/checker/urlbase.py:457
+#: ../linkcheck/checker/urlbase.py:465
 #, fuzzy, python-format
 msgid "Bad hostname %(host)r: %(msg)s"
 msgstr "konnte Rechnernamen %(host)r nicht parsen: %(msg)s"
 
-#: ../linkcheck/checker/urlbase.py:473
+#: ../linkcheck/checker/urlbase.py:481
 #, python-format
 msgid "could not get content: %(msg)s"
 msgstr "konnte Inhalt nicht lesen: %(msg)s"
 
-#: ../linkcheck/checker/urlbase.py:524
+#: ../linkcheck/checker/urlbase.py:532
 #, fuzzy, python-format
 msgid "Content size %(size)s is larger than %(maxbytes)s."
 msgstr "Inhalt %(dlsize)s is größer als %(maxbytes)s."
 
-#: ../linkcheck/checker/urlbase.py:619
+#: ../linkcheck/checker/urlbase.py:627
 msgid "Content size is zero."
 msgstr "Größe des Inhalts ist Null."
 
-#: ../linkcheck/checker/urlbase.py:631 ../linkcheck/checker/httpurl.py:309
+#: ../linkcheck/checker/urlbase.py:639 ../linkcheck/checker/httpurl.py:313
 msgid "File size too large"
 msgstr "Dateigröße ist zu groß"
 
-#: ../linkcheck/checker/urlbase.py:697
+#: ../linkcheck/checker/urlbase.py:705
 #, python-format
 msgid "URL has unparsable domain name: %(domain)s"
 msgstr "URL besitzt einen nicht analysierbaren Rechnernamen: %(domain)s"
@@ -920,33 +920,33 @@ msgstr "Der MX Mail-Rechner konnte nicht gefunden werden."
 msgid "Missing required url parameter"
 msgstr ""
 
-#: ../linkcheck/checker/ftpurl.py:92
+#: ../linkcheck/checker/ftpurl.py:96
 msgid "Got no answer from FTP server"
 msgstr "Keine Antwort vom FTP Server"
 
-#: ../linkcheck/checker/ftpurl.py:95
+#: ../linkcheck/checker/ftpurl.py:99
 #, python-format
 msgid "Remote host has closed connection: %(msg)s"
 msgstr "Entfernter Rechner hat die Verbindung geschlossen: %(msg)s"
 
-#: ../linkcheck/checker/ftpurl.py:139
+#: ../linkcheck/checker/ftpurl.py:143
 msgid "Missing trailing directory slash in ftp url."
 msgstr "Fehlender / am Ende der FTP url."
 
-#: ../linkcheck/checker/ftpurl.py:200
+#: ../linkcheck/checker/ftpurl.py:204
 msgid "FTP file size too large"
 msgstr "FTP Dateigröße ist zu groß"
 
-#: ../linkcheck/checker/fileurl.py:123
+#: ../linkcheck/checker/fileurl.py:127
 #, python-format
 msgid "Could not get current working directory: %(msg)s"
 msgstr "Konnte aktuelles Arbeitsverzeichnis nicht ermitteln: %(msg)s"
 
-#: ../linkcheck/checker/fileurl.py:157
+#: ../linkcheck/checker/fileurl.py:161
 msgid "Added trailing slash to directory."
 msgstr "Schrägstrich wurde zu Verzeichnis hinzugefügt."
 
-#: ../linkcheck/checker/fileurl.py:179
+#: ../linkcheck/checker/fileurl.py:183
 msgid ""
 "local files are only checked without parent URL or when the parent URL is "
 "also a file"
@@ -954,11 +954,11 @@ msgstr ""
 "lokale Dateien werden nur ohne Vater-URL geprüft oder wenn die Vater-URL "
 "auch eine Datei ist"
 
-#: ../linkcheck/checker/fileurl.py:182
+#: ../linkcheck/checker/fileurl.py:186
 msgid "directory"
 msgstr "Verzeichnis"
 
-#: ../linkcheck/checker/fileurl.py:199
+#: ../linkcheck/checker/fileurl.py:203
 #, python-format
 msgid ""
 "The URL path %(path)r is not the same as the system path %(realpath)r. You "
@@ -967,23 +967,23 @@ msgstr ""
 "Der URL Pfad %(path)r ist nicht derselbe wie der Systempfad %(realpath)r. "
 "Sie sollten immer den Systempfad in URLs benutzen."
 
-#: ../linkcheck/checker/httpurl.py:136
+#: ../linkcheck/checker/httpurl.py:140
 #, fuzzy
 msgid "Access denied by robots.txt, checked only syntax."
 msgstr ""
 "Zugriff zur Weiterleitungs-URL verweigert durch robots.txt; prüfe lediglich "
 "Syntax."
 
-#: ../linkcheck/checker/httpurl.py:137
+#: ../linkcheck/checker/httpurl.py:141
 msgid "syntax OK"
 msgstr "Syntax OK"
 
-#: ../linkcheck/checker/httpurl.py:260
+#: ../linkcheck/checker/httpurl.py:264
 #, python-format
 msgid "Redirected to `%(url)s'."
 msgstr "Zu `%(url)s' umgeleitet."
 
-#: ../linkcheck/checker/httpurl.py:300
+#: ../linkcheck/checker/httpurl.py:304
 msgid "OK"
 msgstr "OK"
 

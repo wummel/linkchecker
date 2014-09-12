@@ -151,6 +151,10 @@ class Rdataset(dns.set.Set):
     def __str__(self):
         return self.to_text()
 
+    def __hash__(self):
+        return hash((self.rdclass, self.rdtype, self.covers)) + \
+            super(Rdataset, self).__hash__()
+
     def __eq__(self, other):
         """Two rdatasets are equal if they have the same class, type, and
         covers, and contain the same rdata.

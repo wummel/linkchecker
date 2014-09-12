@@ -79,6 +79,7 @@ clean:
 	$(MAKE) -C linkcheck/HtmlParser clean
 	rm -f linkcheck/network/_network*.so
 	find . -name '*.py[co]' -exec rm -f {} \;
+	find . -depth -name '__pycache__' -exec rm -rf {} \;
 
 distclean: clean
 	rm -rf build dist $(APPNAME).egg-info

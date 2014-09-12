@@ -186,7 +186,7 @@ class FileUrl (urlbase.UrlBase):
             self.set_result(_("directory"))
         else:
             url = fileutil.pathencode(self.url)
-            self.url_connection = urllib2.urlopen(url)
+            self.url_connection = urlopen(url)
             self.check_case_sensitivity()
 
     def check_case_sensitivity (self):

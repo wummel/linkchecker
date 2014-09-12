@@ -147,7 +147,7 @@ def cidr2mask (n):
     """
     Return a mask where the n left-most of 32 bits are set.
     """
-    return ((1L << n) - 1) << (32 - n)
+    return ((1 << n) - 1) << (32 - n)
 
 
 def netmask2mask (ip):

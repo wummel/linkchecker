@@ -95,6 +95,9 @@ class Token(object):
     def is_eol_or_eof(self):
         return (self.ttype == EOL or self.ttype == EOF)
 
+    def __hash__(self):
+        return hash((self.ttype, self.value))
+
     def __eq__(self, other):
         if not isinstance(other, Token):
             return False

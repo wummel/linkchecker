@@ -173,7 +173,7 @@ class Message(object):
         self.index = {}
 
     def __repr__(self):
-        return '<DNS message, ID ' + `self.id` + '>'
+        return '<DNS message, ID ' + repr(self.id) + '>'
 
     def __str__(self):
         return self.to_text()
@@ -228,6 +228,10 @@ class Message(object):
         # formatting
         #
         return s.getvalue()[:-1]
+
+    def __hash__(self):
+        return hash((self.id, self.flags, self.question, self.answer,
+            self.authority))
 
     def __eq__(self, other):
         """Two messages are equal if they have the same content in the
@@ -869,7 +873,7 @@ class _TextReader(object):
                 raise dns.exception.SyntaxError
         except dns.exception.SyntaxError:
             raise dns.exception.SyntaxError
-        except StandardError:
+        except Exception:
             rdclass = dns.rdataclass.IN
         # Type
         rdtype = dns.rdatatype.from_text(token.value)
@@ -902,7 +906,7 @@ class _TextReader(object):
                 raise dns.exception.SyntaxError
         except dns.exception.SyntaxError:
             raise dns.exception.SyntaxError
-        except StandardError:
+        except Exception:
             ttl = 0
         # Class
         try:
@@ -915,7 +919,7 @@ class _TextReader(object):
                 rdclass = self.zone_rdclass
         except dns.exception.SyntaxError:
             raise dns.exception.SyntaxError
-        except StandardError:
+        except Exception:
             rdclass = dns.rdataclass.IN
         # Type
         rdtype = dns.rdatatype.from_text(token.value)

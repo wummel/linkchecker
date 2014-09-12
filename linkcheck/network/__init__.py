@@ -7,7 +7,7 @@ import errno
 import array
 import struct
 import subprocess
-from _network import ifreq_size
+from ._network import ifreq_size
 from .. import log, LOG_CHECK
 
 

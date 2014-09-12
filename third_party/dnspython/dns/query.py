@@ -178,7 +178,7 @@ def udp(q, where, timeout=None, port=53, af=None, source=None, source_port=0,
     if af is None:
         try:
             af = dns.inet.af_for_address(where)
-        except StandardError:
+        except Exception:
             af = dns.inet.AF_INET
     if af == dns.inet.AF_INET:
         destination = (where, port)
@@ -283,7 +283,7 @@ def tcp(q, where, timeout=None, port=53, af=None, source=None, source_port=0,
     if af is None:
         try:
             af = dns.inet.af_for_address(where)
-        except StandardError:
+        except Exception:
             af = dns.inet.AF_INET
     if af == dns.inet.AF_INET:
         destination = (where, port)
@@ -387,7 +387,7 @@ def xfr(where, zone, rdtype=dns.rdatatype.AXFR, rdclass=dns.rdataclass.IN,
     if af is None:
         try:
             af = dns.inet.af_for_address(where)
-        except StandardError:
+        except Exception:
             af = dns.inet.AF_INET
     if af == dns.inet.AF_INET:
         destination = (where, port)

@@ -15,7 +15,7 @@
 
 """Common DNS Exceptions."""
 
-class DNSException(StandardError):
+class DNSException(Exception):
     """Abstract base class shared by all dnspython exceptions."""
     pass
 

@@ -19,7 +19,11 @@ Handle FTP links.
 """
 
 import ftplib
-from cStringIO import StringIO
+try:
+    from cStringIO import StringIO
+except ImportError:
+    # Python 3
+    from io import StringIO
 
 from .. import log, LOG_CHECK, LinkCheckerError, mimeutil
 from . import proxysupport, httpurl, internpaturl, get_index_html

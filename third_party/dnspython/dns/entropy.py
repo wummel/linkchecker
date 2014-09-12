@@ -30,12 +30,12 @@ class EntropyPool(object):
             import hashlib
             self.hash = hashlib.sha1()
             self.hash_len = 20
-        except StandardError:
+        except Exception:
             try:
                 import sha
                 self.hash = sha.new()
                 self.hash_len = 20
-            except StandardError:
+            except Exception:
                 import md5
                 self.hash = md5.new()
                 self.hash_len = 16
@@ -66,14 +66,14 @@ class EntropyPool(object):
         if not self.seeded:
             try:
                 seed = os.urandom(16)
-            except StandardError:
+            except Exception:
                 try:
                     r = file('/dev/urandom', 'r', 0)
                     try:
                         seed = r.read(16)
                     finally:
                         r.close()
-                except StandardError:
+                except Exception:
                     seed = str(time.time())
             self.seeded = True
             self.stir(seed, True)
