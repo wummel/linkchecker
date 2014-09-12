@@ -75,7 +75,6 @@ all:
 clean:
 	-$(PYTHON) setup.py clean --all
 	rm -f $(LAPPNAME)-out.* *-stamp*
-	$(MAKE) -C po clean
 	$(MAKE) -C doc/html clean
 	$(MAKE) -C linkcheck/HtmlParser clean
 	rm -f linkcheck/network/_network*.so
@@ -94,7 +93,7 @@ MANIFEST: MANIFEST.in setup.py
 	$(PYTHON) setup.py sdist --manifest-only
 
 locale:
-	$(MAKE) -C po mofiles
+	$(MAKE) -C po
 
 # to build in the current directory
 localbuild: MANIFEST locale

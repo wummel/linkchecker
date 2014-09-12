@@ -1,7 +1,7 @@
+Date: 15.7.2014
+
 Porting status of dependent Python packages
 ============================================
-
-Date: 3.3.2014
 
 OK   Python
 OK   requests
@@ -11,4 +11,8 @@ OK   argcomplete from https://pypi.python.org/pypi/argcomplete
 OK   dnspython (as dnspython3)
 OK   pygeoip from https://pypi.python.org/pypi/pygeoip/
 OK   Port Python Gtk stuff to PyGObject https://live.gnome.org/PyGObject/IntrospectionPorting
-TODO(optional) Twill from http://twill.idyll.org/
+
+Overall Porting status
+=======================
+
+NOT STARTED

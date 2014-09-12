@@ -18,6 +18,7 @@
 Mixin class for URLs that can be fetched over a proxy.
 """
 import urllib
+import urlparse
 import os
 from .. import LinkCheckerError, log, LOG_CHECK, url as urlutil, httputil
 
@@ -35,29 +36,30 @@ class ProxySupport (object):
         self.proxyauth = None
         if not self.proxy:
             return
-        self.proxytype, self.proxy = urllib.splittype(self.proxy)
+        proxyurl = urlparse.urlparse(self.proxy)
+        self.proxytype = proxyurl.scheme
         if self.proxytype not in ('http', 'https'):
             # Note that invalid proxies might raise TypeError in urllib2,
             # so make sure to stop checking at this point, not later.
             msg = _("Proxy value `%(proxy)s' must start with 'http:' or 'https:'.") \
                  % dict(proxy=proxy)
             raise LinkCheckerError(msg)
-        self.proxy = urllib.splithost(self.proxy)[0]
-        self.proxyauth, self.proxy = urllib.splituser(self.proxy)
         if self.ignore_proxy_host():
             # log proxy without auth info
             log.debug(LOG_CHECK, "ignoring proxy %r", self.proxy)
             self.add_info(_("Ignoring proxy setting `%(proxy)s'.") %
                 dict(proxy=proxy))
-            self.proxy = self.proxyauth = None
+            self.proxy = None
             return
         log.debug(LOG_CHECK, "using proxy %r", self.proxy)
         self.add_info(_("Using proxy `%(proxy)s'.") % dict(proxy=self.proxy))
-        if self.proxyauth is not None:
-            if ":" not in self.proxyauth:
-                self.proxyauth += ":"
-            self.proxyauth = httputil.encode_base64(self.proxyauth)
-            self.proxyauth = "Basic "+self.proxyauth
+        self.proxyhost = proxyurl.hostname
+        self.proxyport = proxyurl.port
+        if proxyurl.username is not None:
+            username = proxyurl.username
+            password = proxyurl.password if proxy.password is not None else ""
+            auth = "%s:%s" % (username, password)
+            self.proxyauth = "Basic "+httputil.encode_base64(auth)
 
     def ignore_proxy_host (self):
         """Check if self.host is in the $no_proxy ignore list."""
@@ -79,7 +81,8 @@ class ProxySupport (object):
         """
         if self.proxy:
             scheme = self.proxytype
-            host, port = urlutil.splitport(self.proxy)
+            host = self.proxyhost
+            port = self.proxyport
         else:
             scheme = self.scheme
             host = self.host

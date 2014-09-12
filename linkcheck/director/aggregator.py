@@ -21,10 +21,12 @@ import threading
 import thread
 import requests
 import time
+import urlparse
 import random
-from .. import log, LOG_CHECK, strformat, cookies
+from .. import log, LOG_CHECK, strformat, LinkCheckerError
 from ..decorators import synchronized
 from ..cache import urlqueue
+from ..htmlutil import formsearch
 from . import logger, status, checker, interrupt
 
 
@@ -32,15 +34,15 @@ _threads_lock = threading.RLock()
 _hosts_lock = threading.RLock()
 _downloadedbytes_lock = threading.RLock()
 
-def new_request_session(config):
+def new_request_session(config, cookies):
     """Create a new request session."""
     session = requests.Session()
+    if cookies:
+        session.cookies = cookies
     session.max_redirects = config["maxhttpredirects"]
     session.headers = {
         "User-Agent": config["useragent"],
-        "DNT": "1",
     }
-    # XXX proxies
     if config["cookiefile"]:
         for cookie in cookies.from_file(config["cookiefile"]):
             session.cookies = requests.cookies.merge_cookies(session.cookies, cookie)
@@ -62,10 +64,35 @@ class Aggregate (object):
         self.plugin_manager = plugin_manager
         self.result_cache = result_cache
         self.times = {}
+        self.cookies = None
         requests_per_second = config["maxrequestspersecond"]
         self.wait_time_min = 1.0 / requests_per_second
         self.wait_time_max = max(self.wait_time_min + 0.5, 0.5)
         self.downloaded_bytes = 0
+
+    def visit_loginurl(self):
+        """Check for a login URL and visit it."""
+        url = self.config["loginurl"]
+        if not url:
+            return
+        user, password = self.config.get_user_password(url)
+        session = requests.Session()
+        # XXX user-agent header
+        # XXX timeout
+        response = session.get(url)
+        cgiuser = self.config["loginuserfield"]
+        cgipassword = self.config["loginpasswordfield"]
+        form = formsearch.search_form(response.content, cgiuser, cgipassword,
+              encoding=response.encoding)
+        form.data[cgiuser] = user
+        form.data[cgipassword] = password
+        for key, value in self.config["loginextrafields"].items():
+            form.data[key] = value
+        formurl = urlparse.urljoin(url, form.url)
+        response = session.post(formurl, data=form.data)
+        self.cookies = session.cookies
+        if len(self.cookies) == 0:
+            raise LinkCheckerError("No cookies set by login URL %s" % url)
 
     @synchronized(_threads_lock)
     def start_threads (self):
@@ -85,13 +112,13 @@ class Aggregate (object):
                 self.threads.append(t)
                 t.start()
         else:
-            self.request_sessions[thread.get_ident()] = new_request_session(self.config)
+            self.request_sessions[thread.get_ident()] = new_request_session(self.config, self.cookies)
             checker.check_urls(self.urlqueue, self.logger)
 
     @synchronized(_threads_lock)
     def add_request_session(self):
         """Add a request session for current thread."""
-        session = new_request_session(self.config)
+        session = new_request_session(self.config, self.cookies)
         self.request_sessions[thread.get_ident()] = session
 
     @synchronized(_threads_lock)

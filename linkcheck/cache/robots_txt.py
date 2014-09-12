@@ -17,7 +17,7 @@
 """
 Cache robots.txt contents.
 """
-from .. import robotparser2, configuration
+from .. import robotparser2
 from ..containers import LFUCache
 from ..decorators import synchronized
 from ..lock import get_lock
@@ -33,14 +33,14 @@ class RobotsTxt (object):
     Thread-safe cache of downloaded robots.txt files.
     format: {cache key (string) -> robots.txt content (RobotFileParser)}
     """
-    useragent = str(configuration.UserAgent)
 
-    def __init__ (self):
+    def __init__ (self, useragent):
         """Initialize per-URL robots.txt cache."""
         # mapping {URL -> parsed robots.txt}
         self.cache = LFUCache(size=100)
         self.hits = self.misses = 0
         self.roboturl_locks = {}
+        self.useragent = useragent
 
     def allows_url (self, url_data):
         """Ask robots.txt allowance."""
@@ -59,7 +59,7 @@ class RobotsTxt (object):
             self.misses += 1
         kwargs = dict(auth=url_data.auth, session=url_data.session)
         if url_data.proxy:
-            kwargs["proxies"] = {url_data.proxy_type, url_data.proxy}
+            kwargs["proxies"] = {url_data.proxytype: url_data.proxy}
         rp = robotparser2.RobotFileParser(**kwargs)
         rp.set_url(roboturl)
         rp.read()

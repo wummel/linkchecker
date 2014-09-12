@@ -32,7 +32,7 @@ from .. import fileutil, log, LOG_PLUGIN
 _initialized = False
 def init_win32com ():
     """Initialize the win32com.client cache."""
-    global _initialized 
+    global _initialized
     if _initialized:
         return
     import win32com.client
@@ -117,7 +117,8 @@ class WordParser(_ParserPlugin):
 
     def check(self, url_data):
         """Parse Word data."""
-        filename = get_temp_filename()
+        content = url_data.get_content()
+        filename = get_temp_filename(content)
         # open word file and parse hyperlinks
         try:
             app = get_word_app()

@@ -73,15 +73,12 @@ First, install the required software.
 7. *Optional, used for Virus checking:*
    ClamAv from http://www.clamav.net/
 
-8. *Optional, used for login form submission:*
-   Twill from http://twill.idyll.org/
-
-9. *Optional, for GNOME proxy setting parsing:*
+8. *Optional, for GNOME proxy setting parsing:*
     Python Gtk from http://www.pygtk.org/downloads.html
 
-10. *Optional, to run the WSGI web interface:*
-    Apache from http://httpd.apache.org/
-    mod_wsgi from http://code.google.com/p/modwsgi/
+9. *Optional, to run the WSGI web interface:*
+   Apache from http://httpd.apache.org/
+   mod_wsgi from http://code.google.com/p/modwsgi/
 
 
 Now install the application.

@@ -47,6 +47,7 @@ ExcCacheList = [
     EOFError,
     # http errors
     requests.exceptions.RequestException,
+    requests.packages.urllib3.exceptions.HTTPError,
     # ftp errors
     ftplib.error_reply,
     ftplib.error_temp,

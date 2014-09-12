@@ -15,14 +15,14 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """
-Test miscellaneous html tag parsing.
+Test miscellaneous html tag parsing and URL types
 """
 from . import LinkCheckTest
 
 
 class TestMisc (LinkCheckTest):
     """
-    Test link checking of HTML tags.
+    Test misc link types.
     """
 
     def test_misc (self):
@@ -33,3 +33,17 @@ class TestMisc (LinkCheckTest):
 
     def test_archive (self):
         self.file_test("archive.html")
+
+    def test_itms_services(self):
+        url = u"itms-services:?action=download-manifest&url=http://www.example.com/"
+        resultlines = [
+            u"url %s" % url,
+            u"cache key %s" % url,
+            u"real url %s" % url,
+            u"valid",
+            u"url http://www.example.com/",
+            u"cache key http://www.example.com/",
+            u"real url http://www.example.com/",
+            u"valid",
+        ]
+        self.direct(url, resultlines, recursionlevel=1)

@@ -63,7 +63,6 @@ Modules = (
     ("argcomplete", u"Argcomplete"),
     ("GeoIP", u"GeoIP"),   # on Unix systems
     ("pygeoip", u"GeoIP"), # on Windows systems
-    ("twill", u"Twill"),
     ("sqlite3", u"Sqlite"),
     ("gconf", u"Gconf"),
     ("meliae", u"Meliae"),
@@ -114,6 +113,34 @@ def get_share_file (filename, devel_dir=None):
             return fullpath
     # not found
     msg = "%s not found in %s; check your installation" % (filename, paths)
+    raise ValueError(msg)
+
+
+def get_system_cert_file():
+    """Try to find a system-wide SSL certificate file.
+    @return: the filename to the cert file
+    @raises: ValueError when no system cert file could be found
+    """
+    if os.name == 'posix':
+        filename = "/etc/ssl/certs/ca-certificates.crt"
+        if os.path.isfile(filename):
+            return filename
+    msg = "no system certificate file found"
+    raise ValueError(msg)
+
+
+def get_certifi_file():
+    """Get the SSL certifications installed by the certifi package.
+    @return: the filename to the cert file
+    @rtype: string
+    @raises: ImportError when certifi is not installed or ValueError when
+             the file is not found
+    """
+    import certifi
+    filename = certifi.where()
+    if os.path.isfile(filename):
+        return filename
+    msg = "%s not found; check your certifi installation" % filename
     raise ValueError(msg)
 
 
@@ -219,7 +246,6 @@ class Configuration (dict):
                 filtered_cfiles.append(cfile)
         log.debug(LOG_CHECK, "reading configuration from %s", filtered_cfiles)
         confparse.LCConfigParser(self).read(filtered_cfiles)
-        self.sanitize()
 
     def add_auth (self, user=None, password=None, pattern=None):
         """Add given authentication data."""
@@ -317,12 +343,20 @@ class Configuration (dict):
                 self[plugin] = {}
 
     def sanitize_ssl(self):
-        """Use locally installed certificate file if available."""
+        """Use local installed certificate file if available.
+        Tries to get system, then certifi, then the own
+        installed certificate file."""
         if self["sslverify"] is True:
             try:
-                self["sslverify"] = get_share_file('cacert.pem')
+                self["sslverify"] = get_system_cert_file()
             except ValueError:
-                pass
+                try:
+                    self["sslverify"] = get_certifi_file()
+                except (ValueError, ImportError):
+                    try:
+                        self["sslverify"] = get_share_file('cacert.pem')
+                    except ValueError:
+                        pass
 
 
 def get_plugin_folders():

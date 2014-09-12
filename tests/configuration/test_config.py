@@ -38,6 +38,7 @@ class TestConfig (unittest.TestCase):
         config = linkcheck.configuration.Configuration()
         files = [get_file("config0.ini")]
         config.read(files)
+        config.sanitize()
         # checking section
         for scheme in ("http", "https", "ftp"):
             self.assertTrue(scheme in config["allowedschemes"])

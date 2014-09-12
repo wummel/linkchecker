@@ -1,4 +1,23 @@
-9.3 "" (released xx.xx.2014)
+9.4 "" (released xx.xx.xxxx)
+
+Features:
+- checking: Support itms-services: URLs.
+  Closes: GH bug #532
+
+Changes:
+- installation: Remove dependency on msgfmt.py by pre-generating the
+  *.mo files and adding them to version control.
+  Reason was the difficulty to run msgfmt.py under both Python 2 and 3.
+- checking: When checking SSL certificates under POSIX systems try
+  to use the system certificate store.
+
+Fixes:
+- checking: Correct typos in the proxy handling code.
+  Closes: GH bug #536
+- cmdline: Reactivate paging of help pages.
+
+
+9.3 "Better Living Through Chemistry" (released 16.7.2014)
 
 Features:
 - checking: Parse and check links in PDF files.
@@ -12,6 +31,7 @@ Changes:
   import needed third party modules.
 - checking: Treat empty URLs as same as parent URL.
   Closes: GH bug #524
+- installation: Replaced the twill dependency with local code.
 
 Fixes:
 - checking: Catch XML parse errors in sitemap XML files and print them
@@ -28,6 +48,8 @@ Fixes:
   Closes: GH bug #519
 - checking: Use user-supplied authentication and proxies when requestiong
   robot.txt.
+- plugins: Fix Word file check plugin.
+  Closes: GH bug #530
 
 
 9.2 "Rick and Morty" (released 23.4.2014)

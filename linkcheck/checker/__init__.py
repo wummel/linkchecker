@@ -143,6 +143,8 @@ def get_urlclass_from (scheme, assume_local_file=False):
         klass = nntpurl.NntpUrl
     elif scheme == "dns":
         klass = dnsurl.DnsUrl
+    elif scheme == "itms-services":
+        klass = itmsservicesurl.ItmsServicesUrl
     elif scheme and unknownurl.is_unknown_scheme(scheme):
         klass = unknownurl.UnknownUrl
     elif assume_local_file:
@@ -174,4 +176,4 @@ def get_index_html (urls):
 
 # all the URL classes
 from . import (fileurl, unknownurl, ftpurl, httpurl, dnsurl,
-    mailtourl, telneturl, nntpurl, ignoreurl)
+    mailtourl, telneturl, nntpurl, ignoreurl, itmsservicesurl)

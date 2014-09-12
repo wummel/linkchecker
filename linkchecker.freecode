@@ -1,5 +1,5 @@
 Project: LinkChecker
-Version: 9.2
+Version: 9.3
 Website-URL: http://wummel.github.io/linkchecker/
 Changelog-URL: https://github.com/wummel/linkchecker/blob/master/doc/changelog.txt
 Source-Package-URL: https://pypi.python.org/packages/source/L/LinkChecker/LinkChecker-${version}.tar.gz

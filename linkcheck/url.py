@@ -255,7 +255,7 @@ def url_parse_query (query, encoding=None):
         query, rest = query.rsplit('?', 1)
         append = '?'+url_parse_query(rest)+append
     l = []
-    for k, v, sep in parse_qsl(query, True):
+    for k, v, sep in parse_qsl(query, keep_blank_values=True):
         k = url_quote_part(k, '/-:,;')
         if v:
             v = url_quote_part(v, '/-:,;')
@@ -373,7 +373,7 @@ def collapse_segments (path):
     return path
 
 
-url_is_absolute = re.compile("^[a-z]+:", re.I).match
+url_is_absolute = re.compile(r"^[-\.a-z]+:", re.I).match
 
 
 def url_quote (url):

@@ -6,7 +6,9 @@ Introduction
 LinkChecker is a free, [GPL](http://www.gnu.org/licenses/gpl-2.0.html)
 licensed website validator.
 LinkChecker checks links in web documents or full websites.
-It runs on systems with Python 2.7.2 or later.
+It runs on Python 2 systems, requiring Python 2.7.2 or later.
+Python 3 is not (yet) supported.
+
 
 Features
 ---------
