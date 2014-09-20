@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: bastian.kleineidam@web.de\n"
-"POT-Creation-Date: 2014-09-12 21:58+0200\n"
+"POT-Creation-Date: 2014-09-20 12:20+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -831,7 +831,7 @@ msgstr ""
 msgid "Content size is zero."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:639 ../linkcheck/checker/httpurl.py:313
+#: ../linkcheck/checker/urlbase.py:639 ../linkcheck/checker/httpurl.py:315
 msgid "File size too large"
 msgstr ""
 
@@ -912,20 +912,20 @@ msgid ""
 "should always use the system path in URLs."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:140
+#: ../linkcheck/checker/httpurl.py:141
 msgid "Access denied by robots.txt, checked only syntax."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:141
+#: ../linkcheck/checker/httpurl.py:142
 msgid "syntax OK"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:264
+#: ../linkcheck/checker/httpurl.py:266
 #, python-format
 msgid "Redirected to `%(url)s'."
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:304
+#: ../linkcheck/checker/httpurl.py:306
 msgid "OK"
 msgstr ""
 

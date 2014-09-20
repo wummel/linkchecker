@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: $Id$\n"
 "Report-Msgid-Bugs-To: bastian.kleineidam@web.de\n"
-"POT-Creation-Date: 2014-09-12 21:38+0200\n"
+"POT-Creation-Date: 2014-09-20 12:20+0200\n"
 "PO-Revision-Date: 2012-11-13 18:13+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
@@ -882,7 +882,7 @@ msgstr "Inhalt %(dlsize)s is größer als %(maxbytes)s."
 msgid "Content size is zero."
 msgstr "Größe des Inhalts ist Null."
 
-#: ../linkcheck/checker/urlbase.py:639 ../linkcheck/checker/httpurl.py:313
+#: ../linkcheck/checker/urlbase.py:639 ../linkcheck/checker/httpurl.py:315
 msgid "File size too large"
 msgstr "Dateigröße ist zu groß"
 
@@ -967,23 +967,23 @@ msgstr ""
 "Der URL Pfad %(path)r ist nicht derselbe wie der Systempfad %(realpath)r. "
 "Sie sollten immer den Systempfad in URLs benutzen."
 
-#: ../linkcheck/checker/httpurl.py:140
+#: ../linkcheck/checker/httpurl.py:141
 #, fuzzy
 msgid "Access denied by robots.txt, checked only syntax."
 msgstr ""
 "Zugriff zur Weiterleitungs-URL verweigert durch robots.txt; prüfe lediglich "
 "Syntax."
 
-#: ../linkcheck/checker/httpurl.py:141
+#: ../linkcheck/checker/httpurl.py:142
 msgid "syntax OK"
 msgstr "Syntax OK"
 
-#: ../linkcheck/checker/httpurl.py:264
+#: ../linkcheck/checker/httpurl.py:266
 #, python-format
 msgid "Redirected to `%(url)s'."
 msgstr "Zu `%(url)s' umgeleitet."
 
-#: ../linkcheck/checker/httpurl.py:304
+#: ../linkcheck/checker/httpurl.py:306
 msgid "OK"
 msgstr "OK"
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 2.8\n"
 "Report-Msgid-Bugs-To: bastian.kleineidam@web.de\n"
-"POT-Creation-Date: 2014-09-12 21:38+0200\n"
+"POT-Creation-Date: 2014-09-20 12:20+0200\n"
 "PO-Revision-Date: 2011-02-16 15:24+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
@@ -858,7 +858,7 @@ msgstr "El tamaño del contenido %(dlsize)s es más grande que %(maxbytes)s."
 msgid "Content size is zero."
 msgstr ""
 
-#: ../linkcheck/checker/urlbase.py:639 ../linkcheck/checker/httpurl.py:313
+#: ../linkcheck/checker/urlbase.py:639 ../linkcheck/checker/httpurl.py:315
 msgid "File size too large"
 msgstr ""
 
@@ -943,21 +943,21 @@ msgstr ""
 "sistema.\n"
 "Debería usar siempre el camino del sistema en los URLs."
 
-#: ../linkcheck/checker/httpurl.py:140
+#: ../linkcheck/checker/httpurl.py:141
 #, fuzzy
 msgid "Access denied by robots.txt, checked only syntax."
 msgstr "Denegado el acceso por robots.txt, chequeando sólo la sintaxis."
 
-#: ../linkcheck/checker/httpurl.py:141
+#: ../linkcheck/checker/httpurl.py:142
 msgid "syntax OK"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:264
+#: ../linkcheck/checker/httpurl.py:266
 #, python-format
 msgid "Redirected to `%(url)s'."
 msgstr "Redireccionado a `%(url)s'."
 
-#: ../linkcheck/checker/httpurl.py:304
+#: ../linkcheck/checker/httpurl.py:306
 msgid "OK"
 msgstr ""
 

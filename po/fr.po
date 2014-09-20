@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: bastian.kleineidam@web.de\n"
-"POT-Creation-Date: 2014-09-12 21:38+0200\n"
+"POT-Creation-Date: 2014-09-20 12:20+0200\n"
 "PO-Revision-Date: 2011-02-16 15:27+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: français <kde-francophone@kde.org>\n"
@@ -867,7 +867,7 @@ msgstr "La taille du contenu (%s) est supérieure à %s."
 msgid "Content size is zero."
 msgstr "La taille du contenu est nulle."
 
-#: ../linkcheck/checker/urlbase.py:639 ../linkcheck/checker/httpurl.py:313
+#: ../linkcheck/checker/urlbase.py:639 ../linkcheck/checker/httpurl.py:315
 msgid "File size too large"
 msgstr ""
 
@@ -950,21 +950,21 @@ msgstr ""
 "L'URL %r n'est pas la même que le chemin du système %r. Vous devez toujours "
 "utiliser le chemin du système dans les URL."
 
-#: ../linkcheck/checker/httpurl.py:140
+#: ../linkcheck/checker/httpurl.py:141
 #, fuzzy
 msgid "Access denied by robots.txt, checked only syntax."
 msgstr "Accès refusé par robots.txt, analyse de la syntaxe seulement."
 
-#: ../linkcheck/checker/httpurl.py:141
+#: ../linkcheck/checker/httpurl.py:142
 msgid "syntax OK"
 msgstr ""
 
-#: ../linkcheck/checker/httpurl.py:264
+#: ../linkcheck/checker/httpurl.py:266
 #, fuzzy, python-format
 msgid "Redirected to `%(url)s'."
 msgstr "Redirigé vers %(url)s."
 
-#: ../linkcheck/checker/httpurl.py:304
+#: ../linkcheck/checker/httpurl.py:306
 msgid "OK"
 msgstr ""
 
