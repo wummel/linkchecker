@@ -44,9 +44,9 @@ def new_request_session(config, cookies):
     if cookies:
         session.cookies = cookies
     session.max_redirects = config["maxhttpredirects"]
-    session.headers = {
+    session.headers.update({
         "User-Agent": config["useragent"],
-    }
+    })
     if config["cookiefile"]:
         for cookie in cookies.from_file(config["cookiefile"]):
             session.cookies = requests.cookies.merge_cookies(session.cookies, cookie)

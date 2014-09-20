@@ -14,6 +14,7 @@ Changes:
 Fixes:
 - checking: Correct typos in the proxy handling code.
   Closes: GH bug #536
+- checking: Add to default HTTP client headers instead of replacing.
 - cmdline: Reactivate paging of help pages.
 
 
