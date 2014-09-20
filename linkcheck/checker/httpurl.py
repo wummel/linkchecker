@@ -59,6 +59,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """
         super(HttpUrl, self).reset()
         # initialize check data
+        # server headers
         self.headers = {}
         self.auth = None
         self.ssl_cipher = None
@@ -177,7 +178,8 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
 
     def _send_request(self, request, **kwargs):
         """Send GET request."""
-        log.debug(LOG_CHECK, "Send request with %s", kwargs)
+        log.debug(LOG_CHECK, "Send request %s with %s", request, kwargs)
+        log.debug(LOG_CHECK, "Request headers %s", request.headers)
         self.url_connection = self.session.send(request, **kwargs)
         self.headers = self.url_connection.headers
         self._add_ssl_info()
