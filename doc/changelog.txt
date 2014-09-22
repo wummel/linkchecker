@@ -16,6 +16,8 @@ Fixes:
   Closes: GH bug #536
 - checking: Add to default HTTP client headers instead of replacing.
 - cmdline: Reactivate paging of help pages.
+- requirements: Fix requests module version check.
+  Closes: GH bug #548
 
 
 9.3 "Better Living Through Chemistry" (released 16.7.2014)

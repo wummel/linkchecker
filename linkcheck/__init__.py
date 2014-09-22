@@ -26,7 +26,7 @@ if not (hasattr(sys, 'version_info') or
         sys.version_info < (2, 7, 2, 'final', 0)):
     raise SystemExit("This program requires Python 2.7.2 or later.")
 import requests
-if requests.__version__ <= '2.2.0':
+if requests.__version__ < '2.2.0':
     raise SystemExit("This program requires Python requests 2.2.0 or later.")
 
 import os
