@@ -73,6 +73,10 @@ class TestFile (LinkCheckTest):
         confargs = dict(enabledplugins=["PdfParser"])
         self.file_test("file.pdf", confargs=confargs)
 
+    def test_markdown(self):
+        confargs = dict(enabledplugins=["MarkdownCheck"])
+        self.file_test("file.markdown", confargs=confargs)
+
     def test_urllist (self):
         self.file_test("urllist.txt")
 

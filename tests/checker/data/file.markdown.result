@@ -1,0 +1,42 @@
+url file://%(curdir)s/%(datadir)s/file.markdown
+cache key file://%(curdir)s/%(datadir)s/file.markdown
+real url file://%(curdir)s/%(datadir)s/file.markdown
+name %(datadir)s/file.markdown
+valid
+
+url http://www.url.com
+cache key http://www.url.com
+real url http://search.url.com/
+info Redirected to `http://search.url.com/'.
+valid
+
+url http://www.url2.com
+cache key http://www.url2.com
+real url http://www.url2.com
+valid
+
+url http://www.urldef1.com
+cache key http://www.urldef1.com
+real url http://www.urldef1.com
+error
+
+url http://www.urldef2.com
+cache key http://www.urldef2.com
+real url http://www.urldef2.com
+error
+
+url http://www.urllink.com
+cache key http://www.urllink.com
+real url http://www.urllink.com
+valid
+
+url http://www.urllink2.com
+cache key http://www.urllink2.com
+real url http://www.urllink2.com
+error
+
+url http://www.urlimg.com
+cache key http://www.urlimg.com
+real url http://www.urlimg.com
+valid
+
