@@ -270,5 +270,5 @@
 #[WordParser]
 
 # Search for and check links in page contents using regular expression 
-[RegexLinkCheck]
-linkregex=:"([^"]*\.html)"
+#[RegexLinkCheck]
+#linkregex=:"([^"]*\.html)"
