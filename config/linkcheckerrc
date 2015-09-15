@@ -128,7 +128,7 @@
 ##################### checking options ##########################
 [checking]
 # number of threads
-#threads=100
+#threads=10
 # connection timeout in seconds
 #timeout=60
 # Time to wait for checks to finish after the user aborts the first time
