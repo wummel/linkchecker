@@ -25,8 +25,6 @@
 
 /* bison type definitions */
 #define YYSTYPE PyObject*
-#define YYPARSE_PARAM scanner
-#define YYLEX_PARAM scanner
 /* extern functions found in htmllex.l */
 extern int yylex(YYSTYPE* yylvalp, void* scanner);
 extern int htmllexInit (void** scanner, UserData* data);
@@ -39,9 +37,8 @@ extern int yyget_lineno(void*);
 #define YYERROR_VERBOSE 1
 
 /* standard error reporting, indicating an internal error */
-static int yyerror (char* msg) {
+static void yyerror (YYSTYPE *locp, char const *msg) {
     fprintf(stderr, "htmlsax: internal parse error: %s\n", msg);
-    return 0;
 }
 
 /* Python 2/3 compatibility */
@@ -176,8 +173,8 @@ finish_html_end_tag:
 %verbose
 %debug
 %defines
-%output="htmlparse.c"
-%pure_parser
+%pure-parser
+%param {PyObject* scanner}
 
 /* parser tokens, see below for what they mean */
 %token T_WAIT
