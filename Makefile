@@ -9,7 +9,6 @@ MAINTAINER:=$(shell $(PYTHON) setup.py --maintainer)
 LAPPNAME:=$(shell echo $(APPNAME)|tr "[A-Z]" "[a-z]")
 ARCHIVE_SOURCE_EXT:=gz
 ARCHIVE_SOURCE:=$(APPNAME)-$(VERSION).tar.$(ARCHIVE_SOURCE_EXT)
-ARCHIVE_WIN32:=$(APPNAME)-$(VERSION).exe
 GITUSER:=wummel
 GITREPO:=$(LAPPNAME)
 HOMEPAGE:=$(HOME)/public_html/$(LAPPNAME)-webpage.git
@@ -111,14 +110,9 @@ tag:
 	git tag upstream/$(VERSION)
 	git push --tags origin upstream/$(VERSION)
 
-upload:	upload_source upload_binary
-
-upload_source:
+upload:
 	twine upload dist/$(ARCHIVE_SOURCE) dist/$(ARCHIVE_SOURCE).asc
 
-upload_binary:
-	cp dist/$(ARCHIVE_WIN32) dist/$(ARCHIVE_WIN32).asc \
-	  $(HOMEPAGE)/dist
 
 homepage:
 # update metadata
@@ -159,21 +153,6 @@ dist: locale MANIFEST chmod
 	rm -f dist/$(ARCHIVE_SOURCE)
 	$(PYTHON) setup.py sdist --formats=tar
 	gzip --best dist/$(APPNAME)-$(VERSION).tar
-	[ ! -f ../$(ARCHIVE_WIN32) ] || cp ../$(ARCHIVE_WIN32) dist
-
-# Build OSX installer with py2app
-app: distclean localbuild chmod
-	$(PYTHON) setup.py py2app $(PY2APPOPTS)
-
-# Build RPM installer with cx_Freeze
-rpm:
-	$(MAKE) -C doc/html
-	$(MAKE) -C linkcheck/HtmlParser
-	$(PYTHON) setup.py bdist_rpm
-
-# Build portable Linux app
-binary:	distclean localbuild chmod
-	LINKCHECKER_FREEZE=1 $(PYTHON) setup.py bdist
 
 # The check programs used here are mostly local scripts on my private system.
 # So for other developers there is no need to execute this target.
@@ -201,10 +180,6 @@ releasecheck: check
 	@if egrep -i "xx\.|xxxx|\.xx" doc/changelog.txt > /dev/null; then \
 	  echo "Could not release: edit doc/changelog.txt release date"; false; \
 	fi
-	@if [ ! -f ../$(ARCHIVE_WIN32) ]; then \
-	  echo "Missing WIN32 distribution archive at ../$(ARCHIVE_WIN32)"; \
-	  false; \
-	fi
 	$(PYTHON) setup.py check --restructuredtext
 
 sign:
@@ -218,7 +193,7 @@ test:	localbuild
 pyflakes:
 	pyflakes $(PY_FILES_DIRS) 2>&1 | \
           grep -v "local variable 'dummy' is assigned to but never used" | \
-          grep -v -E "'(py2exe|py2app|PyQt4|biplist|setuptools|win32com|find_executable|parse_sitemap|parse_sitemapindex|parse_bookmark_data|parse_bookmark_file|wsgiref|pyftpdlib|linkchecker_rc)' imported but unused" | \
+          grep -v -E "'(PyQt4|biplist|setuptools|win32com|find_executable|parse_sitemap|parse_sitemapindex|parse_bookmark_data|parse_bookmark_file|wsgiref|pyftpdlib|linkchecker_rc)' imported but unused" | \
           grep -v "undefined name '_'" | \
 	  grep -v "undefined name '_n'" | cat
 
@@ -255,4 +230,4 @@ ide:
 .PHONY: test changelog gui count pyflakes ide login upload all clean distclean
 .PHONY: pep8 cleandeb locale localbuild deb diff dnsdiff sign
 .PHONY: filescheck update-copyright releasecheck check register announce
-.PHONY: chmod dist app rpm release homepage
+.PHONY: chmod dist release homepage
