@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: linkchecker 3.4\n"
-"POT-Creation-Date: 2014-04-28 17:04+0300\n"
+"POT-Creation-Date: 2015-09-15 10:52+0200\n"
 "PO-Revision-Date: 2013-12-12 21:51+0100\n"
 "Last-Translator: Bastian Kleineidam <calvin@users.sourceforge.net>\n"
 "Language-Team: de <de@li.org>\n"
@@ -338,12 +338,16 @@ msgstr "B<-t>I<NUMMER>, B<--threads=>I<NUMMER>"
 # type: Plain text
 #. type: Plain text
 #: en/linkchecker.1:76 en/linkcheckerrc.5:47
+#, fuzzy
+#| msgid ""
+#| "Generate no more than the given number of threads. Default number of "
+#| "threads is 10. To disable threading specify a non-positive number."
 msgid ""
 "Generate no more than the given number of threads. Default number of threads "
-"is 100. To disable threading specify a non-positive number."
+"is 10. To disable threading specify a non-positive number."
 msgstr ""
-"Generiere nicht mehr als die angegebene Anzahl von Threads. Standard Anzahl "
-"von Threads ist 100. Um Threads zu deaktivieren, geben Sie eine nicht "
+"Generiere nicht mehr als die angegebene Anzahl von Threads. Die Standardanzahl "
+"von Threads ist 10. Um Threads zu deaktivieren, geben Sie eine nicht "
 "positive Nummer an."
 
 # type: TP
@@ -779,8 +783,8 @@ msgstr "KONFIGURATIONSDATEIEN"
 #: en/linkchecker.1:207
 msgid ""
 "Configuration files can specify all options above. They can also specify "
-"some options that cannot be set on the command line.  See B<linkcheckerrc>"
-"(5) for more info."
+"some options that cannot be set on the command line.  See "
+"B<linkcheckerrc>(5) for more info."
 msgstr ""
 "Konfigurationsdateien können alle obigen Optionen enthalten. Sie können "
 "zudem Optionen enthalten, welche nicht auf der Kommandozeile gesetzt werden "
@@ -1803,8 +1807,8 @@ msgid ""
 "Read a file with initial cookie data. The cookie data format is explained in "
 "linkchecker(1)."
 msgstr ""
-"Lese eine Datei mit Cookie-Daten. Das Cookie Datenformat wird in linkchecker"
-"(1) erklärt."
+"Lese eine Datei mit Cookie-Daten. Das Cookie Datenformat wird in "
+"linkchecker(1) erklärt."
 
 # type: Plain text
 #. type: Plain text
