@@ -269,3 +269,11 @@
 # Parse and check links in Word files
 #[WordParser]
 
+# Parse and check links in Markdown files.
+# Supported links are:
+#        <http://autolink.com>
+#        [name](http://link.com "Optional title")
+#        [id]: http://link.com "Optional title"
+#[MarkdownCheck]
+# Regexp of filename
+#filename_re=.*\.(blog|markdown|md(own)?|mkdn?)$
