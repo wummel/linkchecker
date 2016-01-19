@@ -1,18 +1,18 @@
 # Test #
 
-<http://www.url.com>  text <http://www.url2.com>
+<http://url.example.com>  text <http://url2.example.com>
 
-[link](     http://www.urllink.com)
+[link](     http://urllink.example.com)
 
-[link2](http://www
-  .urllink2.com)
+[link2](http://urllink2
+  .example.com)
 
 [test][id1]
 [URL][id2]
 
 [id1]:       
-http://www.urldef1.com
+http://urldef1.example.com
 
-[id2]: http://www.urldef2.com "URL"
+[id2]: http://urldef2.example.com "URL"
 
-![img](http://www.urlimg.com)
+![img](http://urlimg.example.com)
