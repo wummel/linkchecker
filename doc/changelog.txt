@@ -10,6 +10,7 @@ Changes:
   Reason was the difficulty to run msgfmt.py under both Python 2 and 3.
 - checking: When checking SSL certificates under POSIX systems try
   to use the system certificate store.
+- logging: improved debugging by also enabling urllib3 output
 
 Fixes:
 - checking: Correct typos in the proxy handling code.

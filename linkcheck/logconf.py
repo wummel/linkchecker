@@ -47,16 +47,13 @@ configdict = {
     'loggers': {
     },
     'root': {
-      'level': 'DEBUG',
+      'level': 'WARN',
     },
+    'incremental': True,
 }
 
 def init_log_config(handler=None):
-    """
-    Set up the application logging (not to be confused with check
-    loggers). When debug is not None it is expected to be a list of
-    logger names for which debugging will be enabled.
-
+    """Set up the application logging (not to be confused with check loggers).
     """
     for applog in lognames.values():
         # propagate except for root app logger 'linkcheck'
@@ -70,15 +67,17 @@ def init_log_config(handler=None):
 
 
 def add_loghandler (handler):
-    """Add log handler to root logger LOG_ROOT and set formatting."""
-    logging.getLogger(LOG_ROOT).addHandler(handler)
-    format = "%(levelname)s %(asctime)s %(threadName)s %(message)s"
+    """Add log handler to root logger and LOG_ROOT and set formatting."""
+    format = "%(levelname)s %(name)s %(asctime)s %(threadName)s %(message)s"
     handler.setFormatter(logging.Formatter(format))
+    logging.getLogger(LOG_ROOT).addHandler(handler)
+    logging.getLogger().addHandler(handler)
 
 
 def remove_loghandler (handler):
-    """Remove log handler from root logger LOG_ROOT."""
+    """Remove log handler from root logger and LOG_ROOT."""
     logging.getLogger(LOG_ROOT).removeHandler(handler)
+    logging.getLogger().removeHandler(handler)
 
 
 def reset_loglevel():
@@ -89,6 +88,9 @@ def reset_loglevel():
 def set_debug(loggers):
     """Set debugging log level."""
     set_loglevel(loggers, logging.DEBUG)
+    # enable for httplib debugging (used by requests.packages.urllib3)
+    #import httplib
+    #httplib.HTTPConnection.debuglevel = 1
 
 
 def set_loglevel(loggers, level):
