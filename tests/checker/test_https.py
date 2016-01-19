@@ -29,13 +29,13 @@ class TestHttps (LinkCheckTest):
     @need_network
     def test_https (self):
         url = u"https://www.amazon.com/"
-        rurl = u"http://www.amazon.com/"
+        rurl = u"https://www.amazon.com/"
         resultlines = [
             u"url %s" % url,
             u"cache key %s" % url,
             u"real url %s" % rurl,
             #u"info SSL cipher RC4-SHA, TLSv1/SSLv3.",
-            u"info Redirected to `%s'." % rurl,
+            u"info Access denied by robots.txt, checked only syntax.",
             u"valid",
         ]
         confargs = dict(
