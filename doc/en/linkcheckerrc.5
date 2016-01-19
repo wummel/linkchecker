@@ -77,7 +77,7 @@ Command line option: none
 .TP
 \fBmaxrunseconds=\fP\fINUMBER\fP
 Stop checking new URLs after the given number of seconds. Same as if the
-user stops (by hitting Ctrl-C or clicking the abort buttin in the GUI)
+user stops (by hitting Ctrl-C or clicking the abort button in the GUI)
 after the given number of seconds.
 .br
 The default is not to stop until all URLs are checked.
@@ -106,7 +106,7 @@ Command line option: \fB\-\-ignore\-url\fP
 .TP
 \fBignorewarnings=\fP\fINAME\fP[\fB,\fP\fINAME\fP...]
 Ignore the comma-separated list of warnings. See
-\fBWARNIGS\fP for the list of supported warnings.
+\fBWARNINGS\fP for the list of supported warnings.
 .br
 Command line option: none
 .TP
@@ -275,7 +275,7 @@ Set warning color. Default is \fBbold;yellow\fP.
 Set download time color. Default is \fBdefault\fP.
 .TP
 \fBcolorreset=\fP\fISTRING\fP
-Set reset color. Default is \fBdeault\fP.
+Set reset color. Default is \fBdefault\fP.
 .SS \fB[gml]\fP
 .TP
 \fBfilename=\fP\fISTRING\fP
@@ -327,7 +327,7 @@ See [text] section above.
 Set database name to store into. Default is \fBlinksdb\fP.
 .TP
 \fBseparator=\fP\fICHAR\fP
-Set SQL command separator character. Default is a semicolor (\fB;\fP).
+Set SQL command separator character. Default is a semicolon (\fB;\fP).
 .SS \fB[html]\fP
 .TP
 \fBfilename=\fP\fISTRING\fP
@@ -402,7 +402,7 @@ A number between 0.0 and 1.0 determining the priority. The default
 priority for the first URL is 1.0, for all child URLs 0.5.
 .TP
 \fBfrequency=\fP[\fBalways\fP|\fBhourly\fP|\fBdaily\fP|\fBweekly\fP|\fBmonthly\fP|\fByearly\fP|\fBnever\fP]
-The frequence pages are changing with.
+How frequently pages are changing.
 .
 .SH "LOGGER PARTS"
  \fBall\fP       (for all parts)
@@ -457,10 +457,11 @@ Needs GeoIP or pygeoip and a local country or city lookup DB installed.
 Define a regular expression which prints a warning if it matches
 any content of the checked link. This applies only to valid pages,
 so we can get their content.
-
+.TP
+\fBwarningregex=\fP\fIREGEX\fP
 Use this to check for pages that contain some form of error
-message, for example 'This page has moved' or 'Oracle
-Application error'.
+message, for example "This page has moved" or "Oracle
+Application error". \fIREGEX\fP should be unquoted.
 
 Note that multiple values can be combined in the regular expression,
 for example "(This page has moved|Oracle Application error)".
