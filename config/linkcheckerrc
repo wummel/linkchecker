@@ -269,3 +269,6 @@
 # Parse and check links in Word files
 #[WordParser]
 
+# Search for and check links in page contents using regular expression 
+#[RegexLinkCheck]
+#linkregex=:"([^"]*\.html)"
