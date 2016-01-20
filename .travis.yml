@@ -6,9 +6,14 @@ branches:
   only:
     - master
 # install required programs
-before_install:
-  - sudo apt-get update -q -y
-  - sudo apt-get install -q -y python-dev qt4-dev-tools
+addons:
+  apt:
+    packages:
+    - python-dev
+    - qt4-dev-tools
+#before_install:
+#  - sudo apt-get update -q -y
+#  - sudo apt-get install -q -y python-dev qt4-dev-tools
 # command to install dependencies
 install:
   - pip install -r requirements.txt --use-mirrors
