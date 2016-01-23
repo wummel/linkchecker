@@ -45,7 +45,6 @@ from .logconf import (
     LOG_CMDLINE,
     LOG_CHECK,
     LOG_CACHE,
-    LOG_GUI,
     LOG_THREAD,
     LOG_PLUGIN,
 )

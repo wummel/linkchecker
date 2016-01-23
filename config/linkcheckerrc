@@ -1,6 +1,6 @@
 # Sample configuration file; see the linkcheckerrc(5) man page or
 # execute linkchecker -h for help on these options.
-# Commandline or GUI options override these settings.
+# Commandline options override these settings.
 
 ##################### output configuration ##########################
 [output]
@@ -21,10 +21,6 @@
 
 
 ##################### logger configuration ##########################
-# Note that the logger configuration is ignored by the linkchecker-gui
-# program. Results in the GUI can be saved to a file with the command
-# File -> Save results.
-#
 # logger output part names:
 # all       For all parts
 # realurl   The full url link

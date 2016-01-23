@@ -47,8 +47,8 @@ bewirkt unendliche Rekursion. Standard Tiefe ist unendlich.
 Kommandozeilenoption: \fB\-\-recursion\-level\fP
 .TP 
 \fBthreads=\fP\fINUMBER\fP
-Generiere nicht mehr als die angegebene Anzahl von Threads. Die Standardanzahl von Threads ist 10.
-Um Threads zu deaktivieren, geben Sie eine nicht positive Nummer an.
+Generate no more than the given number of threads. Default number of threads
+is 10. To disable threading specify a non\-positive number.
 .br
 Kommandozeilenoption: \fB\-\-threads\fP
 .TP 
@@ -82,8 +82,7 @@ Kommandozeilenoption: keine
 \fBmaxrunseconds=\fP\fINUMBER\fP
 Hört nach der angegebenen Anzahl von Sekunden auf, neue URLs zu prüfen. Dies
 ist dasselbe als wenn der Benutzer nach der gegebenen Anzahl von Sekunden
-stoppt (durch Drücken von Strg\-C oder Klicken auf den Knopf Abbrechen im
-GUI).
+stoppt (durch Drücken von Strg\-C).
 .br
 Standard ist nicht zu stoppen bis alle URLs geprüft sind.
 .br
@@ -111,8 +110,8 @@ Ausdruck entsprechen.
 Kommandozeilenoption: \fB\-\-ignore\-url\fP
 .TP 
 \fBignorewarnings=\fP\fINAME\fP[\fB,\fP\fINAME\fP...]
-Ignoriere die kommagetrennte Liste von Warnungen. Siehe \fBWARNUNGEN\fP für die
-Liste von erkannten Warnungen.
+Ignore the comma\-separated list of warnings. See \fBWARNINGS\fP for the list of
+supported warnings.
 .br
 Kommandozeilenoption: keine
 .TP 
@@ -167,9 +166,9 @@ automatisch übermittelt.
 .SS [output]
 .TP 
 \fBdebug=\fP\fISTRING\fP[\fB,\fP\fISTRING\fP...]
-Gebe Testmeldungen aus für den angegebenen Logger. Verfügbare Logger sind
-\fBcmdline\fP, \fBchecking\fP,\fBcache\fP, \fBgui\fP, \fBdns\fP, \fBthread\fP und \fBall\fP. Die
-Angabe \fBall\fP ist ein Synonym für alle verfügbaren Logger.
+Print debugging output for the given modules.  Available debug modules are
+\fBcmdline\fP, \fBchecking\fP, \fBcache\fP, \fBdns\fP, \fBthread\fP, \fBplugins\fP and
+\fBall\fP.  Specifying \fBall\fP is an alias for specifying all available loggers.
 .br
 [output]
 .TP 
@@ -277,7 +276,7 @@ Setze Warnfarbe. Standard ist \fBbold;yellow\fP.
 Setze Downloadzeitfarbe. Standard ist \fBdefault\fP.
 .TP 
 \fBcolorreset=\fP\fISTRING\fP
-Setze Reset Farbe. Standard ist \fBdefault\fP.
+Set reset color. Default is \fBdefault\fP.
 .SS [gml]
 .TP 
 \fBfilename=\fP\fISTRING\fP
@@ -329,7 +328,7 @@ Siehe [text] Sektion weiter oben.
 Setze Datenbankname zum Speichern. Standard ist \fBlinksdb\fP.
 .TP 
 \fBseparator=\fP\fICHAR\fP
-Setze SQL Kommandotrennzeichen. Standard ist ein Strichpunkt (\fB;\fP).
+Set SQL command separator character. Default is a semicolon (\fB;\fP).
 .SS [html]
 .TP 
 \fBfilename=\fP\fISTRING\fP
@@ -404,7 +403,7 @@ Eine Nummer zwischen 0.0 und 1.0, welche die Priorität festlegt. Die
 Standardpriorität für die erste URL ist 1.0, für alle Kind\-URLs ist sie 0.5.
 .TP 
 \fBfrequency=\fP[\fBalways\fP|\fBhourly\fP|\fBdaily\fP|\fBweekly\fP|\fBmonthly\fP|\fByearly\fP|\fBnever\fP]
-Die Häufigkeit mit der Seiten sich ändern.
+How frequently pages are changing.
 .
 .SH "AUSGABE PARTS"
  \fBall\fP       (für alle Teile)
@@ -458,9 +457,11 @@ GeoIP or pygeoip and a local country or city lookup DB installed.
 Define a regular expression which prints a warning if it matches any content
 of the checked link. This applies only to valid pages, so we can get their
 content.
-
+.TP 
+\fBwarningregex=\fP\fIREGEX\fP
 Use this to check for pages that contain some form of error message, for
-example 'This page has moved' or 'Oracle Application error'.
+example "This page has moved" or "Oracle Application error". \fIREGEX\fP should
+be unquoted.
 
 Man beachte, dass mehrere Werte in dem regulären Ausdruck kombiniert
 werden können, zum Beispiel "(Diese Seite ist umgezogen|Oracle

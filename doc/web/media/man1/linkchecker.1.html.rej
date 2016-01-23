@@ -1,0 +1,30 @@
+--- linkchecker.1.html.orig	2011-06-14 21:14:55.016011206 +0200
++++ linkchecker.1.html	2011-06-14 21:17:07.108913849 +0200
+@@ -38,7 +38,7 @@
+ 
+ The most common use checks the given domain recursively, plus any
+ URL pointing outside of the domain:
+-<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;<A HREF="http://www.example.net/">http://www.example.net/</A></B>
++<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;http://www.example.net/</B>
+ <BR>
+ 
+ Beware that this checks the whole site which can have thousands of URLs.
+@@ -59,15 +59,15 @@
+ <BR>
+ 
+ You can skip the <B>http://</B> url part if the domain starts with <B>www.</B>:
+-<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;<A HREF="http://www.example.com">www.example.com</A></B>
++<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;www.example.com</B>
+ <BR>
+ 
+ You can skip the <B>ftp://</B> url part if the domain starts with <B>ftp.</B>:
+-<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;-r0&nbsp;<A HREF="ftp://ftp.example.org">ftp.example.org</A></B>
++<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;-r0&nbsp;ftp.example.org</B>
+ <BR>
+ 
+ Generate a sitemap graph and convert it with the graphviz dot utility:
+-<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;-odot&nbsp;-v&nbsp;<A HREF="http://www.example.com">www.example.com</A>&nbsp;|&nbsp;dot&nbsp;-Tps&nbsp;&gt;&nbsp;sitemap.ps</B>
++<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;-odot&nbsp;-v&nbsp;www.example.com&nbsp;|&nbsp;dot&nbsp;-Tps&nbsp;&gt;&nbsp;sitemap.ps</B>
+ <A NAME="lbAF">&nbsp;</A>
+ <H2>OPTIONS</H2>
+ 

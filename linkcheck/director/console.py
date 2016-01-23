@@ -149,8 +149,7 @@ def print_app_info (out=stderr):
                     {"version": sys.version, "platform": sys.platform}, file=out)
     for key in PYTHON_ENV_VARS:
         print_env_info(key, out=out)
-    for line in configuration.get_modules_info():
-        print(line, file=out)
+    print(configuration.get_modules_info(), file=out)
     stime = strformat.strtime(time.time())
     print(_("Local time:"), stime, file=out)
     print(_("sys.argv:"), sys.argv, file=out)

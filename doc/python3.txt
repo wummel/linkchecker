@@ -5,7 +5,6 @@ Porting status of dependent Python packages
 
 OK   Python
 OK   requests
-OK   Qt/PyQt
 OK   mod_wsgi from http://code.google.com/p/modwsgi/
 OK   argcomplete from https://pypi.python.org/pypi/argcomplete
 OK   dnspython (as dnspython3)

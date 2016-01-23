@@ -18,33 +18,14 @@ DEBORIGFILE:=$(DEBUILDDIR)/$(LAPPNAME)_$(VERSION).orig.tar.$(ARCHIVE_SOURCE_EXT)
 DEBPACKAGEDIR:=$(DEBUILDDIR)/$(APPNAME)-$(VERSION)
 FILESCHECK_URL:=http://localhost/~calvin/
 SRCDIR:=${HOME}/src
-PY_FILES_DIRS:=linkcheck tests *.py linkchecker linkchecker-gui cgi-bin config doc/examples scripts
+PY_FILES_DIRS:=linkcheck tests *.py linkchecker cgi-bin config doc/examples scripts
 MYPY_FILES_DIRS:=linkcheck/HtmlParser linkcheck/checker \
 	  linkcheck/cache linkcheck/configuration linkcheck/director \
 	  linkcheck/htmlutil linkcheck/logger linkcheck/network \
 	  linkcheck/bookmarks linkcheck/plugins linkcheck/parser \
-	  linkcheck/gui/__init__.py \
-	  linkcheck/gui/checker.py \
-	  linkcheck/gui/contextmenu.py \
-	  linkcheck/gui/debug.py \
-	  linkcheck/gui/editor.py \
-	  linkcheck/gui/editor_qsci.py \
-	  linkcheck/gui/editor_qt.py \
-	  linkcheck/gui/lineedit.py \
-	  linkcheck/gui/help.py \
-	  linkcheck/gui/logger.py \
-	  linkcheck/gui/options.py \
-	  linkcheck/gui/properties.py \
-	  linkcheck/gui/settings.py \
-	  linkcheck/gui/statistics.py \
-	  linkcheck/gui/syntax.py \
-	  linkcheck/gui/updater.py \
-	  linkcheck/gui/urlmodel.py \
-	  linkcheck/gui/urlsave.py \
 	  $(filter-out %2.py,$(wildcard linkcheck/*.py)) \
 	  cgi-bin/lc.wsgi \
 	  linkchecker \
-	  linkchecker-gui \
 	  *.py
 
 TESTS ?= tests
@@ -74,10 +55,10 @@ all:
 clean:
 	-$(PYTHON) setup.py clean --all
 	rm -f $(LAPPNAME)-out.* *-stamp*
-	$(MAKE) -C doc/html clean
 	$(MAKE) -C linkcheck/HtmlParser clean
 	rm -f linkcheck/network/_network*.so
 	find . -name '*.py[co]' -exec rm -f {} \;
+	find . -name '*.bak' -exec rm -f {} \;
 	find . -depth -name '__pycache__' -exec rm -rf {} \;
 
 distclean: clean
@@ -97,7 +78,6 @@ locale:
 
 # to build in the current directory
 localbuild: MANIFEST locale
-	$(MAKE) -C doc/html
 	$(MAKE) -C linkcheck/HtmlParser
 	$(PYTHON) setup.py build
 	cp -f build/lib.$(PLATFORM)-$(PYVER)*/linkcheck/HtmlParser/htmlsax*.so linkcheck/HtmlParser
@@ -193,7 +173,7 @@ test:	localbuild
 pyflakes:
 	pyflakes $(PY_FILES_DIRS) 2>&1 | \
           grep -v "local variable 'dummy' is assigned to but never used" | \
-          grep -v -E "'(PyQt4|biplist|setuptools|win32com|find_executable|parse_sitemap|parse_sitemapindex|parse_bookmark_data|parse_bookmark_file|wsgiref|pyftpdlib|linkchecker_rc)' imported but unused" | \
+          grep -v -E "'(biplist|setuptools|win32com|find_executable|parse_sitemap|parse_sitemapindex|parse_bookmark_data|parse_bookmark_file|wsgiref|pyftpdlib|linkchecker_rc)' imported but unused" | \
           grep -v "undefined name '_'" | \
 	  grep -v "undefined name '_n'" | cat
 
@@ -217,17 +197,14 @@ dnsdiff:
 changelog:
 	github-changelog $(DRYRUN) $(GITUSER) $(GITREPO) doc/changelog.txt
 
-gui:
-	$(MAKE) -C linkcheck/gui
-
 count:
-	@sloccount linkchecker linkchecker-gui linkcheck tests
+	@sloccount linkchecker linkcheck tests
 
 # run eclipse ide
 ide:
 	eclipse -data $(CURDIR)/..
 
-.PHONY: test changelog gui count pyflakes ide login upload all clean distclean
+.PHONY: test changelog count pyflakes ide login upload all clean distclean
 .PHONY: pep8 cleandeb locale localbuild deb diff dnsdiff sign
 .PHONY: filescheck update-copyright releasecheck check register announce
 .PHONY: chmod dist release homepage

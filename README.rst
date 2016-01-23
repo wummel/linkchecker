@@ -24,7 +24,7 @@ Features
 - honors robots.txt exclusion protocol
 - Cookie support
 - HTML5 support
-- a command line, GUI and web interface
+- a command line and web interface
 - various check plugins available, eg. HTML syntax and antivirus checks.
 
 Installation

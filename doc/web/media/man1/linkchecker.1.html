@@ -44,22 +44,21 @@ HTML and CSS syntax check
 <DT>&bull;<DD>
 Antivirus check
 <DT>&bull;<DD>
-a command line, GUI and web interface
+a command line and web interface
 </DL>
 <A NAME="lbAE">&nbsp;</A>
 <H2>EXAMPLES</H2>
 
-The most common use checks the given domain recursively, plus any
-URL pointing outside of the domain:
-<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;http://www.example.net/</B>
+The most common use checks the given domain recursively:
+<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;<A HREF="http://www.example.com/">http://www.example.com/</A></B>
 <BR>
 
 Beware that this checks the whole site which can have thousands of URLs.
 Use the <B>-r</B> option to restrict the recursion depth.
 <BR>
 
-Don't check <B>mailto:</B> URLs. All other links are checked as usual:
-<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;--ignore-url=^mailto:&nbsp;mysite.example.org</B>
+Don't check URLs with <B>/secret</B> in its name. All other links are checked as usual:
+<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;--ignore-url=/secret&nbsp;mysite.example.com</B>
 <BR>
 
 Checking a local HTML file on Unix:
@@ -71,15 +70,15 @@ Checking a local HTML file on Windows:
 <BR>
 
 You can skip the <B>http://</B> url part if the domain starts with <B>www.</B>:
-<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;www.example.com</B>
+<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;<A HREF="http://www.example.com">www.example.com</A></B>
 <BR>
 
 You can skip the <B>ftp://</B> url part if the domain starts with <B>ftp.</B>:
-<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;-r0&nbsp;ftp.example.org</B>
+<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;-r0&nbsp;<A HREF="ftp://ftp.example.com">ftp.example.com</A></B>
 <BR>
 
 Generate a sitemap graph and convert it with the graphviz dot utility:
-<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;-odot&nbsp;-v&nbsp;www.example.com&nbsp;|&nbsp;dot&nbsp;-Tps&nbsp;&gt;&nbsp;sitemap.ps</B>
+<BR>&nbsp;&nbsp;<B>linkchecker&nbsp;-odot&nbsp;-v&nbsp;<A HREF="http://www.example.com">www.example.com</A>&nbsp;|&nbsp;dot&nbsp;-Tps&nbsp;&gt;&nbsp;sitemap.ps</B>
 <A NAME="lbAF">&nbsp;</A>
 <H2>OPTIONS</H2>
 
@@ -99,21 +98,17 @@ Generate no more than the given number of threads. Default number
 of threads is 10. To disable threading specify a non-positive number.
 <DT><B>-V</B>, <B>--version</B><DD>
 Print version and exit.
+<DT><B>--list-plugins</B><DD>
+Print available check plugins and exit.
 </DL>
 <A NAME="lbAH">&nbsp;</A>
 <H3>Output options</H3>
 
 <DL COMPACT>
-<DT><B>--check-css</B><DD>
-Check syntax of CSS URLs with the W3C online validator.
-<DT><B>--check-html</B><DD>
-Check syntax of HTML URLs with the W3C online validator.
-<DT><B>--complete</B><DD>
-Log all URLs, including duplicates. Default is to log duplicate URLs only once.
 <DT><B>-D</B><I>STRING</I>, <B>--debug=</B><I>STRING</I><DD>
 Print debugging output for the given logger.
 Available loggers are <B>cmdline</B>, <B>checking</B>,
-<B>cache</B>, <B>gui</B>, <B>dns</B> and <B>all</B>.
+<B>cache</B>, <B>dns</B> and <B>all</B>.
 Specifying <B>all</B> is an alias for specifying all available loggers.
 The option can be given multiple times to debug with more
 than one logger.
@@ -156,10 +151,6 @@ that of your locale. Valid encodings are listed at
 <DT><B>-q</B>, <B>--quiet</B><DD>
 Quiet operation, an alias for <B>-o none</B>.
 This is only useful with <B>-F</B>.
-<DT><B>--scan-virus</B><DD>
-Scan content of URLs for viruses with ClamAV.
-<DT><B>--trace</B><DD>
-Print tracing information.
 <DT><B>-v</B>, <B>--verbose</B><DD>
 Log all checked URLs. Default is to log only errors and warnings.
 <DT><B>-W</B><I>REGEX</I>, <B>--warning-regex=</B><I>REGEX</I><DD>
@@ -177,26 +168,17 @@ for example &quot;(This page has moved|Oracle Application error)&quot;.
 <BR>
 
 See section <B>REGULAR EXPRESSIONS</B> for more info.
-<DT><B>--warning-size-bytes=</B><I>NUMBER</I><DD>
-Print a warning if content size info is available and exceeds the given
-number of <I>bytes</I>.
 </DL>
 <A NAME="lbAI">&nbsp;</A>
 <H3>Checking options</H3>
 
 <DL COMPACT>
-<DT><B>-a</B>, <B>--anchors</B><DD>
-Check HTTP anchor references. Default is not to check anchors.
-This option enables logging of the warning <B>url-anchor-not-found</B>.
-<DT><B>-C</B>, <B>--cookies</B><DD>
-Accept and send HTTP cookies according to RFC 2109. Only cookies
-which are sent back to the originating server are accepted.
-Sent and accepted cookies are provided as additional logging
-information.
 <DT><B>--cookiefile=</B><I>FILENAME</I><DD>
 Read a file with initial cookie data. The cookie data
 format is explained below.
-<DT><B>--ignore-url=</B><I>REGEX</I><DD>
+<DT><B>--check-extern<DD>
+Check external URLs.
+<DT>--ignore-url=</B><I>REGEX</I><DD>
 URLs matching the given regular expression will be ignored and not checked.
 <BR>
 
@@ -221,9 +203,6 @@ See section <B>REGULAR EXPRESSIONS</B> for more info.
 Read a password from console and use it for HTTP and FTP authorization.
 For FTP the default password is <B>anonymous@</B>. For HTTP there is
 no default password. See also <B>-u</B>.
-<DT><B>-P</B><I>NUMBER</I>, <B>--pause=</B><I>NUMBER</I><DD>
-Pause the given number of seconds between two subsequent connection
-requests to the same host. Default is no pause between requests.
 <DT><B>-r</B><I>NUMBER</I>, <B>--recursion-level=</B><I>NUMBER</I><DD>
 Check recursively all links up to given depth.
 A negative depth will enable infinite recursion.
@@ -299,13 +278,11 @@ expression.
 A cookie file contains standard HTTP header (RFC 2616) data with the
 following possible names:
 <DL COMPACT>
-<DT><B>Scheme</B> (optional)<DD>
-Sets the scheme the cookies are valid for; default scheme is <B>http</B>.
 <DT><B>Host</B> (required)<DD>
 Sets the domain the cookies are valid for.
 <DT><B>Path</B> (optional)<DD>
 Gives the path the cookies are value for; default path is <B>/</B>.
-<DT><B>Set-cookie</B> (optional)<DD>
+<DT><B>Set-cookie</B> (required)<DD>
 Set cookie name/value. Can be given more than once.
 </DL>
 <P>
@@ -320,7 +297,6 @@ with <B>https://example.org/</B>:
 <BR>&nbsp;Set-cookie:&nbsp;ID=&quot;smee&quot;
 <BR>&nbsp;Set-cookie:&nbsp;spam=&quot;egg&quot;
 <P>
-<BR>&nbsp;Scheme:&nbsp;https
 <BR>&nbsp;Host:&nbsp;example.org
 <BR>&nbsp;Set-cookie:&nbsp;baggage=&quot;elitist&quot;;&nbsp;comment=&quot;hologram&quot;
 <P>
@@ -331,7 +307,8 @@ To use a proxy on Unix or Windows set the $http_proxy, $https_proxy or $ftp_prox
 environment variables to the proxy URL. The URL should be of the form
 <B>http://</B>[<I>user</I><B>:</B><I>pass</I><B>@</B>]<I>host</I>[<B>:</B><I>port</I>].
 LinkChecker also detects manual proxy settings of Internet Explorer under
-Windows systems. On a Mac use the Internet Config to select a proxy.
+Windows systems, and gconf or KDE on Linux systems.
+On a Mac use the Internet Config to select a proxy.
 You can also set a comma-separated domain list in the $no_proxy environment
 variables to ignore any proxy settings for these domains.
 Setting a HTTP proxy on Unix for example looks like this:
@@ -360,7 +337,6 @@ After connecting to the given HTTP server the given path
 or query is requested. All redirections are followed, and
 if user/password is given it will be used as authorization
 when necessary.
-Permanently moved pages issue a warning.
 All final HTTP status codes other than 2xx are errors.
 HTML page contents are checked for recursion.
 <DT>Local files (<B>file:</B>)<DD>
@@ -412,6 +388,19 @@ For each mail address we check the following things:
 <P>
 </DL>
 <A NAME="lbAP">&nbsp;</A>
+<H2>PLUGINS</H2>
+
+There are two plugin types: connection and content plugins.
+Connection plugins are run after a successful connection to the
+URL host.
+Content plugins are run if the URL type has content
+(mailto: URLs have no content for example) and if the check is not
+forbidden (ie. by HTTP robots.txt).
+See <B>linkchecker --list-plugins</B> for a list of plugins and
+their documentation. All plugins are enabled via the <B><A HREF="../man5/linkcheckerrc.5.html">linkcheckerrc</A></B>(5)
+configuration file.
+<P>
+<A NAME="lbAQ">&nbsp;</A>
 <H2>RECURSION</H2>
 
 Before descending recursively into a URL, it has to fulfill several
@@ -441,7 +430,7 @@ conditions. They are checked in this order:
 Note that the directory recursion reads all files in that
 directory, not just a subset like <B>index.htm*</B>.
 <P>
-<A NAME="lbAQ">&nbsp;</A>
+<A NAME="lbAR">&nbsp;</A>
 <H2>NOTES</H2>
 
 URLs on the commandline starting with <B>ftp.</B> are treated like
@@ -463,7 +452,7 @@ You can supply multiple user/password pairs in a configuration file.
 <P>
 When checking <B>news:</B> links the given NNTP host doesn't need to be the
 same as the host of the user browsing your pages.
-<A NAME="lbAR">&nbsp;</A>
+<A NAME="lbAS">&nbsp;</A>
 <H2>ENVIRONMENT</H2>
 
 <B>NNTP_SERVER</B> - specifies default NNTP server
@@ -479,7 +468,7 @@ same as the host of the user browsing your pages.
 <BR>
 
 <B>LC_MESSAGES</B>, <B>LANG</B>, <B>LANGUAGE</B> - specify output language
-<A NAME="lbAS">&nbsp;</A>
+<A NAME="lbAT">&nbsp;</A>
 <H2>RETURN VALUE</H2>
 
 The return value is 2 when
@@ -499,13 +488,13 @@ link warnings were found and warnings are enabled
 <P>
 
 Else the return value is zero.
-<A NAME="lbAT">&nbsp;</A>
+<A NAME="lbAU">&nbsp;</A>
 <H2>LIMITATIONS</H2>
 
 LinkChecker consumes memory for each queued URL to check. With thousands
 of queued URLs the amount of consumed memory can become quite large. This
 might slow down the program or even the whole system.
-<A NAME="lbAU">&nbsp;</A>
+<A NAME="lbAV">&nbsp;</A>
 <H2>FILES</H2>
 
 <B>~/.linkchecker/linkcheckerrc</B> - default configuration file
@@ -522,15 +511,15 @@ might slow down the program or even the whole system.
 
 <B><A HREF="http://docs.python.org/howto/regex.html">http://docs.python.org/howto/regex.html</A></B> - regular expression documentation
 <P>
-<A NAME="lbAV">&nbsp;</A>
+<A NAME="lbAW">&nbsp;</A>
 <H2>SEE ALSO</H2>
 
 <B><A HREF="../man5/linkcheckerrc.5.html">linkcheckerrc</A></B>(5)
-<A NAME="lbAW">&nbsp;</A>
+<A NAME="lbAX">&nbsp;</A>
 <H2>AUTHOR</H2>
 
 Bastian Kleineidam &lt;<A HREF="mailto:bastian.kleineidam@web.de">bastian.kleineidam@web.de</A>&gt;
-<A NAME="lbAX">&nbsp;</A>
+<A NAME="lbAY">&nbsp;</A>
 <H2>COPYRIGHT</H2>
 
 Copyright &#169; 2000-2014 Bastian Kleineidam
@@ -555,15 +544,16 @@ Copyright &#169; 2000-2014 Bastian Kleineidam
 <DT><A HREF="#lbAM">COOKIE FILES</A><DD>
 <DT><A HREF="#lbAN">PROXY SUPPORT</A><DD>
 <DT><A HREF="#lbAO">PERFORMED CHECKS</A><DD>
-<DT><A HREF="#lbAP">RECURSION</A><DD>
-<DT><A HREF="#lbAQ">NOTES</A><DD>
-<DT><A HREF="#lbAR">ENVIRONMENT</A><DD>
-<DT><A HREF="#lbAS">RETURN VALUE</A><DD>
-<DT><A HREF="#lbAT">LIMITATIONS</A><DD>
-<DT><A HREF="#lbAU">FILES</A><DD>
-<DT><A HREF="#lbAV">SEE ALSO</A><DD>
-<DT><A HREF="#lbAW">AUTHOR</A><DD>
-<DT><A HREF="#lbAX">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAP">PLUGINS</A><DD>
+<DT><A HREF="#lbAQ">RECURSION</A><DD>
+<DT><A HREF="#lbAR">NOTES</A><DD>
+<DT><A HREF="#lbAS">ENVIRONMENT</A><DD>
+<DT><A HREF="#lbAT">RETURN VALUE</A><DD>
+<DT><A HREF="#lbAU">LIMITATIONS</A><DD>
+<DT><A HREF="#lbAV">FILES</A><DD>
+<DT><A HREF="#lbAW">SEE ALSO</A><DD>
+<DT><A HREF="#lbAX">AUTHOR</A><DD>
+<DT><A HREF="#lbAY">COPYRIGHT</A><DD>
 </DL>
 <HR>
 This document was created by

@@ -55,39 +55,28 @@ First, install the required software.
    On most distributions, the distutils module is included in
    an extra ``python-dev`` package.
 
-3. Qt development tools
-   
-   The binary "qcollectiongenerator" is used to generate the
-   documentation files.
-   On Debian or Ubuntu systems, install the package qt4-dev-tools.
-   On Redhat systems, install the package qt-devel.
+3. Python requests module from https://pypi.python.org/pypi/requests
 
-4. Python requests module from https://pypi.python.org/pypi/requests
-
-5. *Optional, for bash-completion:*
+4. *Optional, for bash-completion:*
    argcomplete Python module from https://pypi.python.org/pypi/argcomplete
 
-6. *Optional, for displaying country codes:*
+5. *Optional, for displaying country codes:*
    GeoIP from http://www.maxmind.com/app/python
 
-7. *Optional, used for Virus checking:*
+6. *Optional, used for Virus checking:*
    ClamAv from http://www.clamav.net/
 
-8. *Optional, for GNOME proxy setting parsing:*
+7. *Optional, for GNOME proxy setting parsing:*
     Python Gtk from http://www.pygtk.org/downloads.html
 
-9. *Optional, to run the WSGI web interface:*
+8. *Optional, to run the WSGI web interface:*
    Apache from http://httpd.apache.org/
    mod_wsgi from http://code.google.com/p/modwsgi/
 
 
 Now install the application.
 
-1. Generate Qt documentation
-   
-   Run ``make -C doc/html`` to generate the Qt help file.
-
-2. Compile Python modules
+1. Compile Python modules
    
    Run ``python setup.py sdist --manifest-only`` to create the MANIFEST
    file.
@@ -97,7 +86,7 @@ Now install the application.
    The CC environment variable is checked before compilation, so you can
    change the default C compiler with ``export CC=myccompiler``.
 
-3.
+2.
    a) Installation as root
       
       Run ``sudo python setup.py install`` to install LinkChecker.
@@ -134,7 +123,6 @@ Manual setup for OSX systems
 
    brew update
    brew install python
-   brew install pyqt
    brew install gettext
    # link gettext or put the msgfmt binary in your PATH
    brew link --force gettext

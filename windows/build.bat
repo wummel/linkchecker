@@ -18,9 +18,6 @@
 set PYDIR=C:\Python27
 set PYVER=2.7
 
-:: PyQt installation
-set QTDEV=%PYDIR%\Lib\site-packages\PyQt4
-
 :: END configuration, no need to change anything below
 
 :: set platform architecture
@@ -44,7 +41,5 @@ if defined MSSdk (
 :: copy .pyd files to start linkchecker in local directory
 copy build\lib.%PLATFORM%-%PYVER%\linkcheck\HtmlParser\htmlsax.pyd linkcheck\HtmlParser
 copy build\lib.%PLATFORM%-%PYVER%\linkcheck\network\_network.pyd linkcheck\network
-:: generate GUI documentation
-%QTDEV%\qcollectiongenerator.exe doc\html\lccollection.qhcp -o doc\html\lccollection.qhc
 
 :finish

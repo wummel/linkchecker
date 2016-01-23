@@ -77,8 +77,7 @@ Command line option: none
 .TP
 \fBmaxrunseconds=\fP\fINUMBER\fP
 Stop checking new URLs after the given number of seconds. Same as if the
-user stops (by hitting Ctrl-C or clicking the abort button in the GUI)
-after the given number of seconds.
+user stops (by hitting Ctrl-C) after the given number of seconds.
 .br
 The default is not to stop until all URLs are checked.
 .br
@@ -161,9 +160,9 @@ values are submitted automatically.
 .SS \fB[output]\fP
 .TP
 \fBdebug=\fP\fISTRING\fP[\fB,\fP\fISTRING\fP...]
-Print debugging output for the given loggers.
-Available loggers are \fBcmdline\fP, \fBchecking\fP,
-\fBcache\fP, \fBgui\fP, \fBdns\fP, \fBthread\fP and \fBall\fP.
+Print debugging output for the given modules.
+Available debug modules are \fBcmdline\fP, \fBchecking\fP,
+\fBcache\fP, \fBdns\fP, \fBthread\fP, \fBplugins\fP and \fBall\fP.
 Specifying \fBall\fP is an alias for specifying all available loggers.
 .br
 Command line option: \fB\-\-debug\fP

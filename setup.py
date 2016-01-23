@@ -359,7 +359,7 @@ library_dirs = []
 # libraries
 libraries = []
 # scripts
-scripts = ['linkchecker', 'linkchecker-gui']
+scripts = ['linkchecker']
 
 if os.name == 'nt':
     # windows does not have unistd.h
@@ -393,9 +393,9 @@ for (src, dst) in list_message_files(AppName):
     data_files.append((dst, [src]))
 
 if os.name == 'posix':
-    data_files.append(('share/man/man1', ['doc/en/linkchecker.1', 'doc/en/linkchecker-gui.1']))
+    data_files.append(('share/man/man1', ['doc/en/linkchecker.1']))
     data_files.append(('share/man/man5', ['doc/en/linkcheckerrc.5']))
-    data_files.append(('share/man/de/man1', ['doc/de/linkchecker.1', 'doc/de/linkchecker-gui.1']))
+    data_files.append(('share/man/de/man1', ['doc/de/linkchecker.1']))
     data_files.append(('share/man/de/man5', ['doc/de/linkcheckerrc.5']))
     data_files.append(('share/linkchecker/examples',
               ['config/linkchecker-completion',
@@ -403,7 +403,6 @@ if os.name == 'posix':
                'doc/examples/check_for_x_errors.sh',
                'doc/examples/check_urls.sh']))
     data_files.append(('share/applications', ['doc/linkchecker.desktop']))
-    data_files.append(('share/applications', ['doc/linkchecker-gui.desktop']))
 
 args = dict(
     name = AppName,
@@ -436,7 +435,6 @@ args = dict(
         'linkcheck.checker',
         'linkcheck.configuration',
         'linkcheck.director',
-        'linkcheck.gui',
         'linkcheck.htmlutil',
         'linkcheck.HtmlParser',
         'linkcheck.logger',

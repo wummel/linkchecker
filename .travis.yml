@@ -10,7 +10,6 @@ addons:
   apt:
     packages:
     - python-dev
-    - qt4-dev-tools
 # command to install dependencies
 install:
   - pip install -r requirements.txt

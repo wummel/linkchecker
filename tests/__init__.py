@@ -219,18 +219,6 @@ def need_newsserver (server):
     return check_func
 
 
-@memoized
-def has_pyqt ():
-    """Test if PyQT is installed."""
-    try:
-        import PyQt4
-        return True
-    except ImportError:
-        pass
-    return False
-
-need_pyqt = _need_func(has_pyqt, "PyQT")
-
 
 @memoized
 def has_x11 ():
@@ -305,5 +293,4 @@ if __name__ == '__main__':
     print "has msgfmt", has_msgfmt()
     print "has POSIX", has_posix()
     print "has proxy", has_proxy()
-    print "has PyQt", has_pyqt()
     print "has X11", has_x11()

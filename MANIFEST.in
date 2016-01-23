@@ -12,11 +12,6 @@ include linkcheck/HtmlParser/htmllex.l
 include linkcheck/HtmlParser/htmlparse.y
 include linkcheck/HtmlParser/*.h
 include linkcheck/HtmlParser/fixincludes.awk
-include linkcheck/gui/Makefile
-include linkcheck/gui/rc/Makefile
-include linkcheck/gui/rc/*.png
-include linkcheck/gui/rc/*.qrc
-include linkcheck/gui/ui/*.ui
 include po/*.po po/*.mo po/*.pot po/Makefile
 include doc/*.example doc/*.txt
 include doc/html/*.ico

@@ -1,10 +1,9 @@
 HTMLDIR:=web/media
 MANHTMLFILES:= \
 	$(HTMLDIR)/man1/linkchecker.1.html \
-	$(HTMLDIR)/man5/linkcheckerrc.5.html \
-	$(HTMLDIR)/man1/linkchecker-gui.1.html
+	$(HTMLDIR)/man5/linkcheckerrc.5.html
 
-MANFILES:=linkchecker.1 linkcheckerrc.5 linkchecker-gui.1
+MANFILES:=linkchecker.1 linkcheckerrc.5
 LOCALES:=en de
 
 all:
@@ -21,10 +20,6 @@ $(HTMLDIR)/man1/linkchecker.1.html: en/linkchecker.1 linkchecker.1.html.diff
 $(HTMLDIR)/man5/linkcheckerrc.5.html: en/linkcheckerrc.5 linkcheckerrc.5.html.diff
 	man2html -r $< | tail -n +2 | sed 's/Time:.*//g' | sed 's@/:@/@g' > $@
 	patch --no-backup-if-mismatch --quiet $@ linkcheckerrc.5.html.diff
-
-$(HTMLDIR)/man1/linkchecker-gui.1.html: en/linkchecker-gui.1 linkchecker-gui.1.html.diff
-	man2html -r $< | tail -n +2 | sed 's/Time:.*//g' | sed 's@/:@/@g' > $@
-	patch --no-backup-if-mismatch --quiet $@ linkchecker-gui.1.html.diff
 
 # check all makefiles for formatting warnings
 check:

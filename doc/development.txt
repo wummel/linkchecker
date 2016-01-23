@@ -11,22 +11,8 @@ installation is recommended.
 
 - Install Python >= 2.7.2 from http://www.python.org/
 
-- Qt4 SDK development tools from http://qt.nokia.com/downloads
-  The binary "qcollectiongenerator" is used to generate the
-  documentation files.
-
-- Install PyQt >= 4.8 from
-  http://www.riverbankcomputing.co.uk/software/pyqt/download
-
-- *Optional, for syntax highlighting in the GUI editor*, install
-  QScintilla from
-  http://www.riverbankcomputing.co.uk/software/qscintilla/download
-  
 - *On Windows only*, install the Windows SDK
   http://msdn.microsoft.com/de-de/windows/bb980924
-
-- *On Windows only*, install InnoSetup from
-  http://www.jrsoftware.org/isinfo.php
 
 - *On Windows only*, download and install the Microsoft
   Visual C++ 2008 runtime from
@@ -43,7 +29,7 @@ installation is recommended.
 Setup for Unix/Linux
 --------------------
 Execute ``make localbuild`` to compile a local version and execute
-``./linkchecker`` or ``./linkchecker-gui``.
+``./linkchecker``.
 Execute ``make test`` to run the unittest suite.
 Execute ``make dist`` to build a distributable source package.
 
@@ -51,7 +37,7 @@ Execute ``make dist`` to build a distributable source package.
 Setup for Mac OS X
 ------------------
 Execute ``make localbuild`` to compile a local version and execute
-``./linkchecker`` or ``./linkchecker-gui``.
+``./linkchecker``.
 Execute ``make test`` to run the unittest suite.
 Execute ``make app`` to build a distributable source package.
 

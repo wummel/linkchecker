@@ -27,7 +27,7 @@ Features
 - [Plugin support](plugins.html)
   allowing custom page checks. Currently available are 
   HTML and CSS syntax checks, Antivirus checks, and more.
-- Different interfaces: command line, GUI and web interface
+- Different interfaces: command line and web interface
 - ... and a lot more check options documented in the
   [manual page](man1/linkchecker.1.html).
 
@@ -35,15 +35,14 @@ Features
 Screenshots
 ------------
 
-[![CLI screenshot](images/shot1_thumb.jpg)](images/shot1.png) | [![GUI screenshot](images/shot2_thumb.jpg)](images/shot2.png) | [![CGI screenshot](images/shot3_thumb.jpg)](images/shot3.png)
---------------------------------------------------------------|---------------------------------------------------------------|--------------------------------------------------------------
-Commandline interface                                         | GUI client                                                    | CGI web interface
+[![CLI screenshot](images/shot1_thumb.jpg)](images/shot1.png) | [![CGI screenshot](images/shot3_thumb.jpg)](images/shot3.png)
+--------------------------------------------------------------|--------------------------------------------------------------
+Commandline interface                                         | CGI web interface
 
 Basic usage
 ------------
 To check a URL like `http://www.example.org/myhomepage/` it is enough to
-enter `http://www.example.org/myhomepage/` in the GUI client or
-web interface, or execute
+enter `http://www.example.org/myhomepage/` in the web interface, or execute
 `linkchecker http://www.example.org/myhomepage/` on the command line.
 
 This check will validate recursively all pages starting with

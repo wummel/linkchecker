@@ -39,7 +39,7 @@ HTML\- und CSS\-Syntaxprüfung
 .IP \(bu
 Antivirusprüfung
 .IP \(bu
-ein Kommandozeilenprogramm, GUI und web interface
+ein Kommandozeilenprogramm und web interface
 .SH BEISPIELE
 The most common use checks the given domain recursively:
   \fBlinkchecker http://www.example.com/\fP
@@ -81,8 +81,8 @@ Lese Liste von URLs zum Prüfen von der Standardeingabe, getrennt durch
 Leerzeichen.
 .TP 
 \fB\-t\fP\fINUMMER\fP, \fB\-\-threads=\fP\fINUMMER\fP
-Generiere nicht mehr als die angegebene Anzahl von Threads. Die Standardanzahl von Threads ist 10.
-Um Threads zu deaktivieren, geben Sie eine nicht positive Nummer an.
+Generate no more than the given number of threads. Default number of threads
+is 10. To disable threading specify a non\-positive number.
 .TP 
 \fB\-V\fP, \fB\-\-version\fP
 Gebe die Version aus und beende das Programm.
@@ -94,7 +94,7 @@ Print available check plugins and exit.
 .TP 
 \fB\-D\fP\fINAME\fP, \fB\-\-debug=\fP\fINAME\fP
 Gebe Testmeldungen aus für den angegebenen Logger. Verfügbare Logger sind
-\fBcmdline\fP, \fBchecking\fP,\fBcache\fP, \fBgui\fP, \fBdns\fP und \fBall\fP. Die Angabe
+\fBcmdline\fP, \fBchecking\fP,\fBcache\fP, \fBdns\fP, \fBplugins\fP und \fBall\fP. Die Angabe
 \fBall\fP ist ein Synonym für alle verfügbaren Logger. Diese Option kann
 mehrmals angegeben werden, um mit mehr als einem Logger zu testen. Um
 akkurate Ergebnisse zu erzielen, werden Threads deaktiviert.

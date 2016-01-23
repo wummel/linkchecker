@@ -11,7 +11,6 @@ branches:
 before_install:
   - brew update
   - brew install python
-  - brew install pyqt
   - brew install gettext
   - brew link --force gettext
 # command to install dependencies

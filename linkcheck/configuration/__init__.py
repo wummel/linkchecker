@@ -61,35 +61,35 @@ def normpath (path):
     return os.path.normcase(os.path.normpath(expanded))
 
 
-# List optional Python modules in the form (module, name)
+# List Python modules in the form (module, name, version attribute)
 Modules = (
-    ("PyQt4.Qsci", u"QScintilla"),
-    ("argcomplete", u"Argcomplete"),
-    ("GeoIP", u"GeoIP"),   # on Unix systems
-    ("pygeoip", u"GeoIP"), # on Windows systems
-    ("sqlite3", u"Sqlite"),
-    ("gconf", u"Gconf"),
-    ("meliae", u"Meliae"),
+# required modules
+    ("requests", "Requests", "__version__"),
+# optional modules
+    ("argcomplete", u"Argcomplete", None),
+    ("GeoIP", u"GeoIP", 'lib_version'),   # on Unix systems
+    ("pygeoip", u"GeoIP", 'lib_version'), # on Windows systems
+    ("sqlite3", u"Pysqlite", 'version'),
+    ("sqlite3", u"Sqlite", 'sqlite_version'),
+    ("gconf", u"Gconf", '__version__'),
+    ("meliae", u"Meliae", '__version__'),
 )
 
-def get_modules_info ():
-    """Return list of unicode strings with detected module info."""
-    lines = []
-    # requests
-    import requests
-    lines.append(u"Requests: %s" % requests.__version__)
-    # PyQt
-    try:
-        from PyQt4 import QtCore
-        lines.append(u"Qt: %s / PyQt: %s" %
-                     (QtCore.QT_VERSION_STR, QtCore.PYQT_VERSION_STR))
-    except (ImportError, AttributeError):
-        pass
-    # modules
-    modules = [name for (mod, name) in Modules if fileutil.has_module(mod)]
-    if modules:
-        lines.append(u"Modules: %s" % (u", ".join(modules)))
-    return lines
+def get_modules_info():
+    """Return unicode string with detected module info."""
+    module_infos = []
+    for (mod, name, version_attr) in Modules:
+        if not fileutil.has_module(mod):
+            continue
+        if hasattr(mod, version_attr):
+            attr = getattr(mod, version_attr)
+            version = attr() if callable(attr) else attr
+            module_infos.append("%s %s" % (name, version))
+        else:
+            # ignore attribute errors in case library developers
+            # change the version information attribute
+            module_infos.append(name)
+    return u"Modules: %s" % (u", ".join(module_infos))
 
 
 def get_share_dir ():
