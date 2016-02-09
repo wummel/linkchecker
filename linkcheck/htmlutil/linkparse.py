@@ -271,7 +271,10 @@ class LinkFinder (TagFinder):
                 self.found_url(url, name, base)
         elif attr == u'srcset':
             for img_candidate in value.split(u','):
-                url = img_candidate.split()[0]
+                try:
+                    url = img_candidate.split()[0]
+                except IndexError:
+                    url = None
                 self.found_url(url, name, base)
         else:
             self.found_url(value, name, base)
