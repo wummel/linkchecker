@@ -23,8 +23,9 @@ Execute ``LinkChecker-x.y.exe`` and follow the instructions.
 
 Setup for Mac OS X
 ------------------
-Double click ``LinkChecker-x.y.dmg`` and drop the LinkChecker application
-in your programs folder
+Nobody is currently offering a "dmg" download for Mac OS X
+See https://github.com/wummel/linkchecker/issues/625
+...however the steps for compiling it from source are given below.
 
 
 Setup for GNU/Linux
