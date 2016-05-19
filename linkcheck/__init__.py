@@ -18,6 +18,22 @@
 Main function module for link checking.
 """
 
+# Returns True if found > minimum where each is a semver string of numeric tokens:
+#  0.10.0 >= 0.9.0  <== True
+#  10.1.3 >= 10.1.3 <== True
+#  10.1.3 >= 10.1   <== True
+#  10.1.0 >= 10.1   <== True
+#  10.1   >= 10.1.3 <== False
+def semver_gte(found, minimum):
+    min_tokens = minimum.split(".")
+    found_tokens = found.split(".")
+    while len(found_tokens) < len(min_tokens):
+        found_tokens.append('0')
+    for min_token, found_token in zip(min_tokens, found_tokens):
+        if int(found_token) < int(min_token):
+            return False;
+    return True;
+    
 # version checks
 import sys
 # Needs Python >= 2.7 because we use dictionary based logging config
@@ -26,7 +42,7 @@ if not (hasattr(sys, 'version_info') or
         sys.version_info < (2, 7, 2, 'final', 0)):
     raise SystemExit("This program requires Python 2.7.2 or later.")
 import requests
-if requests.__version__ < '2.2.0':
+if not semver_gte(requests.__version__, '2.2.0'):
     raise SystemExit("This program requires Python requests 2.2.0 or later.")
 
 import os
