@@ -163,6 +163,7 @@ class Configuration (dict):
         ## checking options
         self["allowedschemes"] = []
         self['cookiefile'] = None
+        self['robotstxt'] = True
         self["debugmemory"] = False
         self["localwebroot"] = None
         self["maxfilesizeparse"] = 1*1024*1024

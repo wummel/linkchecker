@@ -149,6 +149,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
                  self.get(section, 'allowedschemes').split(',')]
         self.read_boolean_option(section, "debugmemory")
         self.read_string_option(section, "cookiefile")
+        self.read_boolean_option(section, "robotstxt")
         self.read_string_option(section, "localwebroot")
         try:
             self.read_boolean_option(section, "sslverify")
