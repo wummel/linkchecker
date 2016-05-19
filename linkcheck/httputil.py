@@ -32,14 +32,14 @@ def x509_to_dict(x509):
     """Parse a x509 pyopenssl object to a dictionary with keys
     subject, subjectAltName and optional notAfter.
     """
-    from requests.packages.urllib3.contrib.pyopenssl import get_subj_alt_name
+    import requests.packages.urllib3.contrib.pyopenssl as SSL
     res = {
             'subject': (
                 (('commonName', x509.get_subject().CN),),
             ),
             'subjectAltName': [
                 ('DNS', value)
-                for value in get_subj_alt_name(x509)
+                for value in SSL.get_subj_alt_name(x509)
             ]
     }
     notAfter = x509.get_notAfter()
