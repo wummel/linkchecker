@@ -24,10 +24,17 @@ import sys
 # Needs Python >= 2.7.2 which fixed http://bugs.python.org/issue11467
 if not (hasattr(sys, 'version_info') or
         sys.version_info < (2, 7, 2, 'final', 0)):
-    raise SystemExit("This program requires Python 2.7.2 or later.")
+    import platform
+    version = platform.python_version()
+    raise SystemExit("This program requires Python 2.7.2 or later instead of %s." % version)
+# require a reasonably recent requests module: 2.4.0 from 2014-08-29
 import requests
-if requests.__version__ < '2.2.0':
-    raise SystemExit("This program requires Python requests 2.2.0 or later.")
+# PEP 396 has only version strings, bummer! PEP 386 is also not helpful.
+requests_version = requests.__version__.split('.')
+# Depends on the version scheme of Python requests
+if int(requests_version[0]) < 2 or \
+   (int(requests_version[0]) == 2 and int(requests_version[1]) < 4):
+    raise SystemExit("This program requires Python requests 2.4.0 or later instead of %s." % requests.__version__)
 
 import os
 # add the custom linkcheck_dns directory to sys.path
