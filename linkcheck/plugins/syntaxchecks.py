@@ -52,6 +52,7 @@ class HtmlSyntaxCheck(_ContentPlugin):
         """Initialize plugin."""
         super(HtmlSyntaxCheck, self).__init__(config)
         self.timer = W3Timer()
+        self.validator_url = config['validatorurl']
 
     def applies_to(self, url_data):
         """Check for HTML and extern."""
@@ -63,7 +64,7 @@ class HtmlSyntaxCheck(_ContentPlugin):
         session = url_data.session
         try:
             body = {'uri': url_data.url, 'output': 'soap12'}
-            response = session.post('http://validator.w3.org/check', data=body)
+            response = session.post(self.validator_url, data=body)
             response.raise_for_status()
             if response.headers.get('x-w3c-validator-status', 'Invalid') == 'Valid':
                 url_data.add_info(u"W3C Validator: %s" % _("valid HTML syntax"))
@@ -74,6 +75,18 @@ class HtmlSyntaxCheck(_ContentPlugin):
         except Exception as msg:
             log.warn(LOG_PLUGIN, _("HTML syntax check plugin error: %(msg)s ") % {"msg": msg})
 
+    @classmethod
+    def read_config(cls, configparser):
+        """Read configuration file options."""
+        config = dict()
+        section = cls.__name__
+        option = "validatorurl"
+        if configparser.has_option(section, option):
+            value = configparser.get(section, option)
+        else:
+            value = "http://validator.w3.org/check"
+        config[option] = value
+        return config
 
 class CssSyntaxCheck(_ContentPlugin):
     """Check the syntax of HTML pages with the online W3C CSS validator.
