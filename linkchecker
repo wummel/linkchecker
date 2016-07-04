@@ -264,7 +264,7 @@ group.add_argument("-F", "--file-output", action="append",
 'blacklist' output, or FILENAME if specified.
 The ENCODING specifies the output encoding, the default is that of your
 locale.
-Valid encodings are listed at http://docs.python.org/lib/standard-encodings.html.
+Valid encodings are listed at http://docs.python.org/library/codecs.html.
 The FILENAME and ENCODING parts of the 'none' output type will be ignored,
 else if the file already exists, it will be overwritten.
 You can specify this option more than once. Valid file output types
@@ -283,7 +283,7 @@ group.add_argument("-o", "--output", dest="output", metavar="TYPE[/ENCODING]",
 The ENCODING specifies the output encoding, the default is that of your
 locale.
 Valid encodings are listed at """ \
-"""http://docs.python.org/lib/standard-encodings.html.""") % \
+"""http://docs.python.org/library/codecs.html.""") % \
 {'loggertypes': linkcheck.logger.LoggerKeys})
 group.add_argument("--profile", action="store_true", dest="profile",
                  help=argparse.SUPPRESS)
