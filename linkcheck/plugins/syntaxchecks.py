@@ -17,7 +17,7 @@
 import threading
 import time
 import requests
-from xml.dom.minidom import parseString
+from xml.etree import ElementTree
 from . import _ContentPlugin
 from .. import log, LOG_PLUGIN
 from ..decorators import synchronized
@@ -25,6 +25,8 @@ from ..decorators import synchronized
 
 _w3_time_lock = threading.Lock()
 
+# configuration option names
+checker_url = "checkerurl"
 
 class W3Timer(object):
     """Ensure W3C apis are not hammered."""
@@ -51,6 +53,7 @@ class HtmlSyntaxCheck(_ContentPlugin):
     def __init__(self, config):
         """Initialize plugin."""
         super(HtmlSyntaxCheck, self).__init__(config)
+        self.checker_url = config[checker_url]
         self.timer = W3Timer()
 
     def applies_to(self, url_data):
@@ -62,8 +65,9 @@ class HtmlSyntaxCheck(_ContentPlugin):
         self.timer.check_w3_time()
         session = url_data.session
         try:
-            body = {'uri': url_data.url, 'output': 'soap12'}
-            response = session.post('http://validator.w3.org/check', data=body)
+            response = session.post(
+                self.checker_url, data=url_data.url_connection.content, headers={"Content-Type": "text/html"}
+            )
             response.raise_for_status()
             if response.headers.get('x-w3c-validator-status', 'Invalid') == 'Valid':
                 url_data.add_info(u"W3C Validator: %s" % _("valid HTML syntax"))
@@ -73,6 +77,19 @@ class HtmlSyntaxCheck(_ContentPlugin):
             pass # ignore service failures
         except Exception as msg:
             log.warn(LOG_PLUGIN, _("HTML syntax check plugin error: %(msg)s ") % {"msg": msg})
+
+    @classmethod
+    def read_config(cls, configparser):
+        """Read configuration file options."""
+        config = dict()
+        section = cls.__name__
+        option = checker_url
+        if configparser.has_option(section, option):
+            value = configparser.get(section, option)
+            config[option] = "%s?out=xml" % value.strip().lower()
+        else:
+            config[option] = "http://validator.w3.org/nu/?out=xml"
+        return config
 
 
 class CssSyntaxCheck(_ContentPlugin):
@@ -115,16 +132,26 @@ class CssSyntaxCheck(_ContentPlugin):
 def check_w3_errors (url_data, xml, w3type):
     """Add warnings for W3C HTML or CSS errors in xml format.
     w3type is either "W3C HTML" or "W3C CSS"."""
-    dom = parseString(xml)
-    for error in dom.getElementsByTagName('m:error'):
-        warnmsg = _("%(w3type)s validation error at line %(line)s col %(column)s: %(msg)s")
-        attrs = {
-            "w3type": w3type,
-            "line": getXmlText(error, "m:line"),
-            "column": getXmlText(error, "m:col"),
-            "msg": getXmlText(error, "m:message"),
-        }
-        url_data.add_warning(warnmsg % attrs)
+    root = ElementTree.XML(xml.encode('utf-8'))
+    errors = root.findall('{http://n.validator.nu/messages/}error')
+
+    for error in errors:
+        message = error.find('{http://n.validator.nu/messages/}message')
+
+        warnmsg = "Validcation error"
+        if error.get('first-line') and error.get('last-line'):
+            warnmsg += (" at lines [%s-%s]" % (error.get('first-line'), error.get('last-line')))
+        elif error.get('last-line'):
+            warnmsg += (" at line [%s]" % error.get('last-line'))
+
+        if error.get('first-column') and error.get('last-column'):
+            warnmsg += (" columns [%s-%s]" % (error.get('first-column'), error.get('last-column')))
+        elif error.get('last-column'):
+            warnmsg += (" column [%s]" % error.get('last-column'))
+
+        warnmsg += ": %s" % ElementTree.tostring(message, method="text")
+
+        url_data.add_warning(warnmsg)
 
 
 def getXmlText (parent, tag):
