@@ -34,13 +34,14 @@ class RobotsTxt (object):
     format: {cache key (string) -> robots.txt content (RobotFileParser)}
     """
 
-    def __init__ (self, useragent):
+    def __init__ (self, useragent, timeout):
         """Initialize per-URL robots.txt cache."""
         # mapping {URL -> parsed robots.txt}
         self.cache = LFUCache(size=100)
         self.hits = self.misses = 0
         self.roboturl_locks = {}
         self.useragent = useragent
+        self.timeout = timeout
 
     def allows_url (self, url_data):
         """Ask robots.txt allowance."""
@@ -57,7 +58,7 @@ class RobotsTxt (object):
                 rp = self.cache[roboturl]
                 return rp.can_fetch(self.useragent, url_data.url)
             self.misses += 1
-        kwargs = dict(auth=url_data.auth, session=url_data.session)
+        kwargs = dict(auth=url_data.auth, session=url_data.session, timeout=self.timeout)
         if hasattr(url_data, "proxy") and hasattr(url_data, "proxy_type"):
             kwargs["proxies"] = {url_data.proxytype: url_data.proxy}
         rp = robotparser2.RobotFileParser(**kwargs)
