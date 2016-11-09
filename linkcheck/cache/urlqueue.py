@@ -120,17 +120,19 @@ class UrlQueue (object):
         log.debug(LOG_CACHE, "queueing %s", url_data.url)
         key = url_data.cache_url
         cache = url_data.aggregate.result_cache
-        if url_data.has_result or cache.has_result(key):
-            self.queue.appendleft(url_data)
-        else:
-            assert key is not None, "no result for None key: %s" % url_data
-            if self.max_allowed_urls is not None:
-                self.max_allowed_urls -= 1
-            self.num_puts += 1
-            if self.num_puts >= NUM_PUTS_CLEANUP:
-                self.cleanup()
-            self.queue.append(url_data)
-        self.unfinished_tasks += 1
+        if not cache.has_result(key):
+            if url_data.has_result:
+                self.queue.appendleft(url_data)
+            else:
+                assert key is not None, "no result for None key: %s" % url_data
+                if self.max_allowed_urls is not None:
+                    self.max_allowed_urls -= 1
+                self.num_puts += 1
+                if self.num_puts >= NUM_PUTS_CLEANUP:
+                    self.cleanup()
+                self.queue.append(url_data)
+            self.unfinished_tasks += 1
+            cache.add_result(key, None) # add none value to cache to prevent checking this url multiple times
 
     def cleanup(self):
         """Move cached elements to top."""
@@ -139,7 +141,7 @@ class UrlQueue (object):
         for i, url_data in enumerate(self.queue):
             key = url_data.cache_url
             cache = url_data.aggregate.result_cache
-            if cache.has_result(key):
+            if cache.has_non_empty_result(key):
                 cached.append(i)
         for pos in cached:
             self._move_to_top(pos)
