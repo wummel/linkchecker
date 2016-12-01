@@ -20,12 +20,14 @@ Robots.txt parser.
 The robots.txt Exclusion Protocol is implemented as specified in
 http://www.robotstxt.org/wc/norobots-rfc.html
 """
-try:
-    import urlparse
-except ImportError:
-    # Python 3
+try: # Python 3
+    from urllib import parse as urllib_parse
+except ImportError: # Python 2
+    import urllib as urllib_parse
+try: # Python 3
     from urllib import parse as urlparse
-import urllib
+except ImportError: # Python 2
+    import urlparse
 import time
 import requests
 from . import log, LOG_CHECK, configuration
@@ -141,6 +143,8 @@ class RobotFileParser (object):
         entry = Entry()
 
         for line in lines:
+            if isinstance(line, bytes):
+                line = line.decode("utf-8")
             line = line.strip()
             linenumber += 1
             if not line:
@@ -162,7 +166,7 @@ class RobotFileParser (object):
             line = line.split(':', 1)
             if len(line) == 2:
                 line[0] = line[0].strip().lower()
-                line[1] = urllib.unquote(line[1].strip())
+                line[1] = urllib_parse.unquote(line[1].strip())
                 if line[0] == "user-agent":
                     if state == 2:
                         log.debug(LOG_CHECK, "%r line %d: missing blank line before user-agent directive", self.url, linenumber)
@@ -230,7 +234,7 @@ class RobotFileParser (object):
             return True
         # search for given user agent matches
         # the first match counts
-        url = urllib.quote(urlparse.urlparse(urllib.unquote(url))[2]) or "/"
+        url = urllib_parse.quote(urlparse.urlparse(urllib_parse.unquote(url))[2]) or "/"
         for entry in self.entries:
             if entry.applies_to(useragent):
                 return entry.allowance(url)
@@ -276,7 +280,7 @@ class RuleLine (object):
             # an empty value means allow all
             allowance = True
             path = '/'
-        self.path = urllib.quote(path)
+        self.path = urllib_parse.quote(path)
         self.allowance = allowance
 
     def applies_to (self, path):

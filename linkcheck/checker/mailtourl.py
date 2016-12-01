@@ -57,8 +57,8 @@ def is_literal (domain):
     return domain.startswith(u'[') and domain.endswith(u']')
 
 
-_remove_quoted = re.compile(ur'\\.').sub
-_quotes = re.compile(ur'["\\]')
+_remove_quoted = re.compile(r'\\.').sub
+_quotes = re.compile(r'["\\]')
 def is_missing_quote (addr):
     """Return True iff mail address is not correctly quoted."""
     return _quotes.match(_remove_quoted(u"", addr[1:-1]))

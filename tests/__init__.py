@@ -22,6 +22,7 @@ import socket
 import pytest
 from contextlib import contextmanager
 from linkcheck import LinkCheckerInterrupt
+from builtins import str
 
 
 basedir = os.path.dirname(__file__)
@@ -88,7 +89,7 @@ def _need_func (testfunc, name):
             if not testfunc():
                 pytest.skip("%s is not available" % name)
             return func(*args, **kwargs)
-        newfunc.func_name = func.func_name
+        newfunc.__name = func.__name__
         return newfunc
     return check_func
 
@@ -101,7 +102,7 @@ def has_network ():
         s.connect(("www.python.org", 80))
         s.close()
         return True
-    except StandardError:
+    except Exception:
         pass
     return False
 
@@ -151,7 +152,7 @@ def has_clamav ():
             s.connect(sock)
             s.close()
             return True
-    except StandardError:
+    except Exception:
         pass
     return False
 
@@ -166,7 +167,7 @@ def has_proxy ():
         s.connect(("localhost", 8081))
         s.close()
         return True
-    except StandardError:
+    except Exception:
         return False
 
 need_proxy = _need_func(has_proxy, "proxy")
@@ -283,14 +284,14 @@ def get_file (filename=None):
     """
     directory = os.path.join("tests", "checker", "data")
     if filename:
-        return unicode(os.path.join(directory, filename))
-    return unicode(directory)
+        return str(os.path.join(directory, filename))
+    return str(directory)
 
 
 if __name__ == '__main__':
-    print "has clamav", has_clamav()
-    print "has network", has_network()
-    print "has msgfmt", has_msgfmt()
-    print "has POSIX", has_posix()
-    print "has proxy", has_proxy()
-    print "has X11", has_x11()
+    print("has clamav", has_clamav())
+    print("has network", has_network())
+    print("has msgfmt", has_msgfmt())
+    print("has POSIX", has_posix())
+    print("has proxy", has_proxy())
+    print("has X11", has_x11())

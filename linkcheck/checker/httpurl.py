@@ -26,12 +26,6 @@ import requests
 import warnings
 warnings.simplefilter('ignore', requests.packages.urllib3.exceptions.InsecureRequestWarning)
 
-try:
-    from cStringIO import StringIO
-except ImportError:
-    # Python 3
-    from io import StringIO
-
 from .. import (log, LOG_CHECK, strformat, mimeutil,
     url as urlutil, LinkCheckerError, httputil)
 from . import (internpaturl, proxysupport)

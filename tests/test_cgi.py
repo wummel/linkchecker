@@ -20,7 +20,7 @@ Test cgi form routines.
 import unittest
 import wsgiref
 import urllib
-from StringIO import StringIO
+from io import BytesIO
 from wsgiref.util import setup_testing_defaults
 from linkcheck.lc_cgi import checkform, checklink, LCFormError, application
 from linkcheck.strformat import limit
@@ -59,7 +59,7 @@ class TestWsgi (unittest.TestCase):
     def test_application (self):
         form = dict(url="http://www.example.com/", level="0")
         formdata = urllib.urlencode(form)
-        environ = {'wsgi.input': StringIO(formdata)}
+        environ = {'wsgi.input': BytesIO(formdata)}
         setup_testing_defaults(environ)
         test_response = ""
         test_headers = [None]

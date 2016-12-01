@@ -20,7 +20,7 @@ Test decorators.
 
 import unittest
 import time
-from cStringIO import StringIO
+from io import BytesIO
 import linkcheck.decorators
 
 
@@ -36,10 +36,11 @@ class TestDecorators (unittest.TestCase):
         self.assertEqual(f(), 42)
 
     def test_timeit2 (self):
-        log = StringIO()
+        log = BytesIO()
         @linkcheck.decorators.timed(log=log, limit=0)
         def f ():
             time.sleep(1)
             return 42
         self.assertEqual(f(), 42)
-        self.assertTrue(log.getvalue())
+        log_value = log.getvalue()
+        self.assertEquals(log_value, b'f took 1.00 seconds\n()\n{}\n')

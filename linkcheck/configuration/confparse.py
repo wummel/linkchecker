@@ -16,9 +16,13 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """Parse configuration files"""
 
-import ConfigParser
+try: # Python 3
+    from configparser import RawConfigParser
+except ImportError: # Python 2
+    from ConfigParser import RawConfigParser
 import os
 from .. import LinkCheckerError, get_link_pat, LOG_CHECK, log, fileutil, plugins, logconf
+from builtins import str
 
 
 def read_multiline (value):
@@ -30,7 +34,7 @@ def read_multiline (value):
         yield line
 
 
-class LCConfigParser (ConfigParser.RawConfigParser, object):
+class LCConfigParser (RawConfigParser, object):
     """
     Parse a LinkChecker configuration file.
     """
@@ -59,7 +63,7 @@ class LCConfigParser (ConfigParser.RawConfigParser, object):
             self.read_plugin_config()
         except Exception as msg:
             raise LinkCheckerError(
-              _("Error parsing configuration: %s") % unicode(msg))
+              _("Error parsing configuration: %s") % str(msg))
 
     def read_string_option (self, section, option, allowempty=False):
         """Read a string option."""

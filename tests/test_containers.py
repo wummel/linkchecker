@@ -22,6 +22,7 @@ import unittest
 import random
 import linkcheck.containers
 
+from builtins import range
 
 class TestAttrDict (unittest.TestCase):
 
@@ -69,7 +70,7 @@ class TestListDict (unittest.TestCase):
 
     def test_sorting (self):
         self.assertTrue(not self.d)
-        toinsert = random.sample(xrange(10000000), 60)
+        toinsert = random.sample(range(10000000), 60)
         for x in toinsert:
             self.d[x] = x
         for i, k in enumerate(self.d.keys()):

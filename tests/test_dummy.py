@@ -21,6 +21,8 @@ Test dummy object.
 import unittest
 import linkcheck.dummy
 
+from builtins import str
+
 
 class TestDummy (unittest.TestCase):
     """
@@ -60,4 +62,4 @@ class TestDummy (unittest.TestCase):
         del dummy[2:3]
         str(dummy)
         repr(dummy)
-        unicode(dummy)
+        str(dummy)

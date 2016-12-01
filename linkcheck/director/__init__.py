@@ -18,7 +18,10 @@
 Management of checking a queue of links with several threads.
 """
 import os
-import thread
+try: # Python 3
+    from _thread import error as thread_error
+except ImportError: # Python 2
+    from thread import error as thread_error
 import time
 from .. import log, LOG_CHECK, LinkCheckerInterrupt, plugins
 from ..cache import urlqueue, robots_txt, results
@@ -52,7 +55,7 @@ def check_urls (aggregate):
         raise
     except KeyboardInterrupt:
         interrupt(aggregate)
-    except thread.error:
+    except thread_error:
         log.warn(LOG_CHECK,
              _("Could not start a new thread. Check that the current user" \
                " is allowed to start new threads."))

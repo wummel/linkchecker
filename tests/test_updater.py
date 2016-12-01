@@ -21,6 +21,7 @@ Test update check functionality.
 import unittest
 from tests import need_network
 import linkcheck.updater
+from builtins import str
 
 
 class TestUpdater (unittest.TestCase):
@@ -35,7 +36,7 @@ class TestUpdater (unittest.TestCase):
             if isinstance(value, tuple):
                 self.assertEqual(len(value), 2)
                 version, url = value
-                self.assertTrue(isinstance(version, basestring), repr(version))
-                self.assertTrue(url is None or isinstance(url, basestring), repr(url))
+                self.assertTrue(isinstance(version, str), repr(version))
+                self.assertTrue(url is None or isinstance(url, str), repr(url))
         else:
             self.assertTrue(isinstance(value, unicode), repr(value))

@@ -36,12 +36,15 @@ def h ():
 
 """
 from __future__ import print_function
+
+import codecs
 import warnings
 import signal
 import os
 import sys
 import time
 
+from builtins import bytes
 
 def update_func_meta (fake_func, real_func):
     """Set meta information (eg. __doc__) of fake function to that
@@ -125,9 +128,9 @@ def timeit (func, log, limit):
         res = func(*args, **kwargs)
         duration = time.time() - t
         if duration > limit:
-            print(func.__name__, "took %0.2f seconds" % duration, file=log)
-            print(args, file=log)
-            print(kwargs, file=log)
+            log.write(bytes("%s took %0.2f seconds\n" %(func.__name__, duration), "utf8"))
+            log.write(bytes("%s\n" % str(args), "utf8"))
+            log.write(bytes("%s\n" % str(kwargs), "utf8"))
         return res
     return update_func_meta(newfunc, func)
 

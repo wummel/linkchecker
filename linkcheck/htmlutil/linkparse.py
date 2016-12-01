@@ -82,11 +82,11 @@ WmlTags = {
 
 
 # matcher for <meta http-equiv=refresh> tags
-refresh_re = re.compile(ur"(?i)^\d+;\s*url=(?P<url>.+)$")
-_quoted_pat = ur"('[^']+'|\"[^\"]+\"|[^\)\s]+)"
-css_url_re = re.compile(ur"url\(\s*(?P<url>%s)\s*\)" % _quoted_pat)
+refresh_re = re.compile(r"(?i)^\d+;\s*url=(?P<url>.+)$")
+_quoted_pat = r"('[^']+'|\"[^\"]+\"|[^\)\s]+)"
+css_url_re = re.compile(r"url\(\s*(?P<url>%s)\s*\)" % _quoted_pat)
 swf_url_re = re.compile("(?i)%s" % urlutil.safe_url_pattern)
-c_comment_re = re.compile(ur"/\*.*?\*/", re.DOTALL)
+c_comment_re = re.compile(r"/\*.*?\*/", re.DOTALL)
 
 
 def strip_c_comments (text):

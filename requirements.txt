@@ -7,3 +7,4 @@ argcomplete
 #pyftpdlib
 # for building on osx:
 #py2app
+future

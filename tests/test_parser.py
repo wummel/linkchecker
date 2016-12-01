@@ -20,7 +20,7 @@ Test html parsing.
 
 import linkcheck.HtmlParser.htmlsax
 import linkcheck.HtmlParser.htmllib
-from cStringIO import StringIO
+from io import BytesIO
 import unittest
 
 
@@ -206,7 +206,7 @@ class TestParser (unittest.TestCase):
     def test_parse (self):
         # Parse all test patterns in one go.
         for _in, _out in parsetests:
-            out = StringIO()
+            out = BytesIO()
             handler = linkcheck.HtmlParser.htmllib.HtmlPrettyPrinter(out)
             self.htmlparser.handler = handler
             self.htmlparser.feed(_in)
@@ -226,7 +226,7 @@ class TestParser (unittest.TestCase):
     def test_feed (self):
         # Parse all test patterns sequentially.
         for _in, _out in parsetests:
-            out = StringIO()
+            out = BytesIO()
             handler = linkcheck.HtmlParser.htmllib.HtmlPrettyPrinter(out)
             self.htmlparser.handler = handler
             for c in _in:
@@ -236,8 +236,8 @@ class TestParser (unittest.TestCase):
     def test_interwoven (self):
         # Parse all test patterns on two parsers interwoven.
         for _in, _out in parsetests:
-            out = StringIO()
-            out2 = StringIO()
+            out = BytesIO()
+            out2 = BytesIO()
             handler = linkcheck.HtmlParser.htmllib.HtmlPrettyPrinter(out)
             self.htmlparser.handler = handler
             handler2 = linkcheck.HtmlParser.htmllib.HtmlPrettyPrinter(out2)
@@ -250,8 +250,8 @@ class TestParser (unittest.TestCase):
 
     def test_handler (self):
         for _in, _out in parsetests:
-            out = StringIO()
-            out2 = StringIO()
+            out = BytesIO()
+            out2 = BytesIO()
             handler = linkcheck.HtmlParser.htmllib.HtmlPrinter(out)
             self.htmlparser.handler = handler
             handler2 = linkcheck.HtmlParser.htmllib.HtmlPrinter(out2)
@@ -264,7 +264,7 @@ class TestParser (unittest.TestCase):
     def test_flush (self):
         # Test parser flushing.
         for _in, _out in flushtests:
-            out = StringIO()
+            out = BytesIO()
             handler = linkcheck.HtmlParser.htmllib.HtmlPrettyPrinter(out)
             self.htmlparser.handler = handler
             self.htmlparser.feed(_in)

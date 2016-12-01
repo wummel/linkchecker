@@ -19,6 +19,7 @@ Special container classes.
 """
 
 from collections import namedtuple
+from past.builtins import basestring
 
 class AttrDict (dict):
     """Dictionary allowing attribute access to its elements if they

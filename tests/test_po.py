@@ -22,6 +22,7 @@ Test gettext .po files.
 import unittest
 import os
 import glob
+
 from tests import need_msgfmt, need_posix
 
 
@@ -56,16 +57,13 @@ class TestGTranslator (unittest.TestCase):
     def test_gtranslator (self):
         """Test all pofiles for GTranslator brokenness."""
         for f in get_pofiles():
-            fd = file(f)
-            try:
+            with open(f, 'rb') as fd:
                 self.check_file(fd, f)
-            finally:
-                fd.close()
 
     def check_file (self, fd, f):
         """Test for GTranslator broken syntax."""
         for line in fd:
-            if line.strip().startswith("#"):
+            if line.strip().startswith(b"#"):
                 continue
-            self.assertFalse("\xc2\xb7" in line,
+            self.assertFalse(b"\xc2\xb7" in line,
                  "Broken GTranslator copy/paste in %r:\n%r" % (f, line))

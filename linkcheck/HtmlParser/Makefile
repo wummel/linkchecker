@@ -2,7 +2,7 @@
 # reentrant bison parser support and uses features of bison >= 3.0.x
 LEX = flex
 YACC = bison
-PYINCLUDE=-I/usr/include/python2.7
+PYINCLUDE=-I/usr/include/python
 
 all: htmllex.c htmlparse.c
 

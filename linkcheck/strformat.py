@@ -42,6 +42,8 @@ import locale
 import pydoc
 from . import i18n
 
+from builtins import str as unicode
+
 
 def unicode_safe (s, encoding=i18n.default_encoding, errors='replace'):
     """Get unicode string without raising encoding errors. Unknown

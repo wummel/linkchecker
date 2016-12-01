@@ -108,7 +108,7 @@ class IfConfig (object):
         # 80kB buffer should be enough for most boxen
         max_bufsize = bufsize * 10
         while True:
-            buf = array.array('c', '\0' * bufsize)
+            buf = array.array('b', b'\0' * bufsize)
             ifreq = struct.pack("iP", buf.buffer_info()[1], buf.buffer_info()[0])
             try:
                 result = self._ioctl(self.SIOCGIFCONF, ifreq)
@@ -127,7 +127,7 @@ class IfConfig (object):
         while i < size:
             ifconf = data[i:i+self.ifr_size]
             name = struct.unpack("16s%ds" % (self.ifr_size-16), ifconf)[0]
-            name = name.split('\0', 1)[0]
+            name = name.split(b'\0', 1)[0]
             if name:
                 if flags and not (self.getFlags(name) & flags):
                     continue

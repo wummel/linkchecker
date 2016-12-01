@@ -89,7 +89,7 @@ class BlacklistLogger (_Logger):
         """
         Write the blacklist.
         """
-        oldmask = os.umask(0077)
+        oldmask = os.umask(0o077)
         for key, value in self.blacklist.items():
             self.write(u"%d %s%s" % (value, repr(key), os.linesep))
         self.close_fileoutput()

@@ -18,7 +18,10 @@
 Aggregate needed object instances for checker threads.
 """
 import threading
-import thread
+try: # Python 3
+    import _thread as thread
+except ImportError:
+    import thread
 import requests
 import time
 try:

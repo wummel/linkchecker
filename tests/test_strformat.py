@@ -169,9 +169,9 @@ class TestStrFormat (unittest.TestCase):
 
     def test_ascii_safe (self):
         ascii_safe = linkcheck.strformat.ascii_safe
-        self.assertEqual(ascii_safe("a"), "a")
-        self.assertEqual(ascii_safe(u"a"), "a")
-        self.assertEqual(ascii_safe(u"ä"), "")
+        self.assertEqual(ascii_safe("a"), b"a")
+        self.assertEqual(ascii_safe(u"a"), b"a")
+        self.assertEqual(ascii_safe(u"ä"), b"")
 
     def test_strip_control_chars(self):
         strip = linkcheck.strformat.strip_control_chars

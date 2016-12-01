@@ -20,12 +20,12 @@ Store metadata and options.
 
 import os
 import re
-import urllib
-try:
-    import urlparse
-except ImportError:
-    # Python 3
+try: # Python 3
     from urllib import parse as urlparse
+    from urllib import request as urllib_request
+except ImportError: # Python 2
+    import urlparse
+    import urllib as urllib_request
 import shutil
 import socket
 import _LinkChecker_configdata as configdata
@@ -172,7 +172,7 @@ class Configuration (dict):
         self["maxrequestspersecond"] = 10
         self["maxhttpredirects"] = 10
         self["nntpserver"] = os.environ.get("NNTP_SERVER", None)
-        self["proxy"] = urllib.getproxies()
+        self["proxy"] = urllib_request.getproxies()
         self["sslverify"] = True
         self["threads"] = 10
         self["timeout"] = 60
@@ -387,7 +387,7 @@ def make_userdir(child):
             # Windows forbids filenames with leading dot unless
             # a trailing dot is added.
             userdir += "."
-        os.mkdir(userdir, 0700)
+        os.mkdir(userdir, 0o700)
 
 
 def get_user_config():

@@ -115,9 +115,9 @@ typedef struct {
     PyObject_HEAD
     /* the handler object */
     PyObject* handler;
-    /* the charset encoding (PyStringObject) */
+    /* the charset encoding (PyBytesObject) */
     PyObject* encoding;
-    /* the document type (PyStringObject) */
+    /* the document type (PyBytesObject) */
     PyObject* doctype;
     UserData* userData;
     void* scanner;
@@ -139,11 +139,11 @@ static int html_end_tag (PyObject* ptag, PyObject* parser) {
     int ret = 1;
     pdoctype = PyObject_GetAttrString(parser, "doctype");
     CHECK_ERROR((pdoctype == NULL), finish_html_end_tag);
-    doctype = PyString_AsString(pdoctype);
+    doctype = PyBytes_AsString(pdoctype);
     CHECK_ERROR((doctype == NULL), finish_html_end_tag);
     /* check for HTML (else it's presumably XHTML) */
     if (strcmp(doctype, "HTML") == 0) {
-        char* tag = PyString_AsString(ptag);
+        char* tag = PyBytes_AsString(ptag);
         CHECK_ERROR((tag == NULL), finish_html_end_tag);
         ret = strcmp(tag, "area")!=0 &&
             strcmp(tag, "base")!=0 &&
@@ -530,13 +530,13 @@ static PyObject* parser_new (PyTypeObject* type, PyObject* args, PyObject* kwds)
         Py_DECREF(self);
         return NULL;
     }
-    self->encoding = PyString_FromString("iso8859-1");
+    self->encoding = PyBytes_FromString("iso8859-1");
     if (self->encoding == NULL) {
         Py_DECREF(self->handler);
         Py_DECREF(self);
         return NULL;
     }
-    self->doctype = PyString_FromString("HTML");
+    self->doctype = PyBytes_FromString("HTML");
     if (self->doctype == NULL) {
         Py_DECREF(self->encoding);
         Py_DECREF(self->handler);
@@ -656,7 +656,7 @@ static PyObject* parser_flush (parser_object* self, PyObject* args) {
             }
             else ++(self->userData->column);
         }
-        enc = PyString_AsString(self->encoding);
+        enc = PyBytes_AsString(self->encoding);
         s = PyUnicode_Decode(self->userData->buf,
                (Py_ssize_t)strlen(self->userData->buf), enc, "ignore");
         /* reset buffer */
@@ -751,12 +751,12 @@ static PyObject* parser_peek (parser_object* self, PyObject* args) {
     }
     buflen = strlen(self->userData->buf);
     if (!buflen || self->userData->bufpos >= buflen) {
-        return PyString_FromString("");
+        return PyBytes_FromString("");
     }
     if (self->userData->bufpos + len >= buflen) {
         len = buflen - self->userData->bufpos - 1;
     }
-    return PyString_FromStringAndSize(self->userData->buf + self->userData->bufpos, len);
+    return PyBytes_FromStringAndSize(self->userData->buf + self->userData->bufpos, len);
 }
 
 
@@ -837,7 +837,7 @@ static int parser_setencoding (parser_object* self, PyObject* value, void* closu
         PyErr_SetString(PyExc_TypeError, "Cannot delete encoding");
         return -1;
     }
-    if (!PyString_CheckExact(value)) {
+    if (!PyBytes_CheckExact(value)) {
         PyErr_SetString(PyExc_TypeError, "encoding must be string");
         return -1;
     }
@@ -850,7 +850,7 @@ static int parser_setencoding (parser_object* self, PyObject* value, void* closu
         if (repr == NULL) {
             return -1;
         }
-        fprintf(stderr, "htmlsax: set encoding to %s\n", PyString_AsString(repr));
+        fprintf(stderr, "htmlsax: set encoding to %s\n", PyBytes_AsString(repr));
         Py_DECREF(repr);
     }
     return 0;
@@ -870,9 +870,9 @@ static int parser_setdoctype (parser_object* self, PyObject* value, void* closur
         PyErr_SetString(PyExc_TypeError, "Cannot delete doctype");
         return -1;
     }
-    if (!PyString_CheckExact(value)) {
+    if (!PyBytes_CheckExact(value)) {
         PyObject* repr = PyObject_Repr(value);
-        char* cp = PyString_AsString(repr);
+        char* cp = PyBytes_AsString(repr);
         if (NULL == cp)
             return -1;
         PyErr_Format(PyExc_TypeError, "doctype %s must be string", cp);
@@ -988,35 +988,36 @@ MOD_INIT(htmlsax) {
         /* init error */
         PyErr_Print();
     }
-    if ((m = PyImport_ImportModule("linkcheck.HtmlParser")) == NULL) {
+    PyObject* h = NULL;
+    if ((h = PyImport_ImportModule("linkcheck.HtmlParser")) == NULL) {
         return MOD_ERROR_VAL;
     }
-    if ((resolve_entities = PyObject_GetAttrString(m, "resolve_entities")) == NULL) {
-        Py_DECREF(m);
+    if ((resolve_entities = PyObject_GetAttrString(h, "resolve_entities")) == NULL) {
+        Py_DECREF(h);
         return MOD_ERROR_VAL;
     }
-    if ((set_encoding = PyObject_GetAttrString(m, "set_encoding")) == NULL) {
+    if ((set_encoding = PyObject_GetAttrString(h, "set_encoding")) == NULL) {
         Py_DECREF(resolve_entities);
-        Py_DECREF(m);
+        Py_DECREF(h);
         return MOD_ERROR_VAL;
     }
-    if ((set_doctype = PyObject_GetAttrString(m, "set_doctype")) == NULL) {
+    if ((set_doctype = PyObject_GetAttrString(h, "set_doctype")) == NULL) {
         Py_DECREF(resolve_entities);
         Py_DECREF(set_encoding);
-        Py_DECREF(m);
+        Py_DECREF(h);
         return MOD_ERROR_VAL;
     }
-    Py_DECREF(m);
-    if ((u_meta = PyString_Decode("meta", 4, "ascii", "ignore")) == NULL) {
+    Py_DECREF(h);
+    if ((u_meta = PyUnicode_Decode("meta", 4, "ascii", "ignore")) == NULL) {
         return MOD_ERROR_VAL;
     }
-    if ((m = PyImport_ImportModule("linkcheck.containers")) == NULL) {
+    if ((h = PyImport_ImportModule("linkcheck.containers")) == NULL) {
         return MOD_ERROR_VAL;
     }
-    if ((list_dict = PyObject_GetAttrString(m, "ListDict")) == NULL) {
-        Py_DECREF(m);
+    if ((list_dict = PyObject_GetAttrString(h, "ListDict")) == NULL) {
+        Py_DECREF(h);
         return MOD_ERROR_VAL;
     }
-    Py_DECREF(m);
+    Py_DECREF(h);
     return MOD_SUCCESS_VAL(m);
 }
