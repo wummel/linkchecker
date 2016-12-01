@@ -81,7 +81,7 @@ def get_modules_info():
     for (mod, name, version_attr) in Modules:
         if not fileutil.has_module(mod):
             continue
-        if hasattr(mod, version_attr):
+        if version_attr and hasattr(mod, version_attr):
             attr = getattr(mod, version_attr)
             version = attr() if callable(attr) else attr
             module_infos.append("%s %s" % (name, version))
