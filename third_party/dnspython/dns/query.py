@@ -30,14 +30,26 @@ import dns.name
 import dns.message
 import dns.rdataclass
 import dns.rdatatype
+from ._compat import long, string_types
+
+if sys.version_info > (3,):
+    select_error = OSError
+else:
+    select_error = select.error
+
+# Function used to create a socket.  Can be overridden if needed in special
+# situations.
+socket_factory = socket.socket
 
 class UnexpectedSource(dns.exception.DNSException):
-    """Raised if a query response comes from an unexpected address or port."""
-    pass
+
+    """A DNS query response came from an unexpected address or port."""
+
 
 class BadResponse(dns.exception.FormError):
-    """Raised if a query response does not respond to the question asked."""
-    pass
+
+    """A DNS query response does not respond to the question asked."""
+
 
 def _compute_expiration(timeout):
     if timeout is None:
@@ -45,13 +57,17 @@ def _compute_expiration(timeout):
     else:
         return time.time() + timeout
 
-def _poll_for(fd, readable, writable, error, timeout):
-    """
-    @param fd: File descriptor (int).
-    @param readable: Whether to wait for readability (bool).
-    @param writable: Whether to wait for writability (bool).
-    @param expiration: Deadline timeout (expiration time, in seconds (float)).
 
+def _poll_for(fd, readable, writable, error, timeout):
+    """Poll polling backend.
+    @param fd: File descriptor
+    @type fd: int
+    @param readable: Whether to wait for readability
+    @type readable: bool
+    @param writable: Whether to wait for writability
+    @type writable: bool
+    @param timeout: Deadline timeout (expiration time, in seconds)
+    @type timeout: float
     @return True on success, False on timeout
     """
     event_mask = 0
@@ -72,13 +88,17 @@ def _poll_for(fd, readable, writable, error, timeout):
 
     return bool(event_list)
 
-def _select_for(fd, readable, writable, error, timeout):
-    """
-    @param fd: File descriptor (int).
-    @param readable: Whether to wait for readability (bool).
-    @param writable: Whether to wait for writability (bool).
-    @param expiration: Deadline timeout (expiration time, in seconds (float)).
 
+def _select_for(fd, readable, writable, error, timeout):
+    """Select polling backend.
+    @param fd: File descriptor
+    @type fd: int
+    @param readable: Whether to wait for readability
+    @type readable: bool
+    @param writable: Whether to wait for writability
+    @type writable: bool
+    @param timeout: Deadline timeout (expiration time, in seconds)
+    @type timeout: float
     @return True on success, False on timeout
     """
     rset, wset, xset = [], [], []
@@ -97,6 +117,7 @@ def _select_for(fd, readable, writable, error, timeout):
 
     return bool((rcount or wcount or xcount))
 
+
 def _wait_for(fd, readable, writable, error, expiration):
     done = False
     while not done:
@@ -109,10 +130,11 @@ def _wait_for(fd, readable, writable, error, expiration):
         try:
             if not _polling_backend(fd, readable, writable, error, timeout):
                 raise dns.exception.Timeout
-        except select.error, e:
+        except select_error as e:
             if e.args[0] != errno.EINTR:
                 raise e
         done = True
+
 
 def _set_polling_backend(fn):
     """
@@ -130,11 +152,14 @@ if hasattr(select, 'poll'):
 else:
     _polling_backend = _select_for
 
+
 def _wait_for_readable(s, expiration):
     _wait_for(s, True, False, True, expiration)
 
+
 def _wait_for_writable(s, expiration):
     _wait_for(s, False, True, True, expiration)
+
 
 def _addresses_equal(af, a1, a2):
     # Convert the first value of the tuple, which is a textual format
@@ -143,6 +168,96 @@ def _addresses_equal(af, a1, a2):
     n1 = dns.inet.inet_pton(af, a1[0])
     n2 = dns.inet.inet_pton(af, a2[0])
     return n1 == n2 and a1[1:] == a2[1:]
+
+
+def _destination_and_source(af, where, port, source, source_port):
+    # Apply defaults and compute destination and source tuples
+    # suitable for use in connect(), sendto(), or bind().
+    if af is None:
+        try:
+            af = dns.inet.af_for_address(where)
+        except Exception:
+            af = dns.inet.AF_INET
+    if af == dns.inet.AF_INET:
+        destination = (where, port)
+        if source is not None or source_port != 0:
+            if source is None:
+                source = '0.0.0.0'
+            source = (source, source_port)
+    elif af == dns.inet.AF_INET6:
+        destination = (where, port, 0, 0)
+        if source is not None or source_port != 0:
+            if source is None:
+                source = '::'
+            source = (source, source_port, 0, 0)
+    return (af, destination, source)
+
+
+def send_udp(sock, what, destination, expiration=None):
+    """Send a DNS message to the specified UDP socket.
+
+    @param sock: the socket
+    @type sock: socket.socket
+    @param what: the message to send
+    @type what: wire format bytes or a dns.message.Message
+    @param destination: where to send the query
+    @type destination: tuple appropriate for the address family of the socket
+    @param expiration: The absolute time at which a timeout exception should
+    be raised.
+    @type expiration: float
+    @rtype: (int, double) tuple of bytes sent and the sent time.
+    """
+    if isinstance(what, dns.message.Message):
+        what = what.to_wire()
+    _wait_for_writable(sock, expiration)
+    sent_time = time.time()
+    n = sock.sendto(what, destination)
+    return (n, sent_time)
+
+
+def receive_udp(sock, destination, expiration=None, af=None,
+                ignore_unexpected=False, one_rr_per_rrset=False,
+                keyring=None, request_mac=b''):
+    """Read a DNS message from a UDP socket.
+
+    @param sock: the socket
+    @type sock: socket.socket
+    @param af: the address family to use.  The default is None, which
+    causes the address family to use to be inferred from the form of
+    destination.  If the inference attempt fails, AF_INET is used.
+    @type af: int
+    @param ignore_unexpected: If True, ignore responses from unexpected
+    sources.  The default is False.
+    @type ignore_unexpected: bool
+    @param one_rr_per_rrset: Put each RR into its own RRset
+    @type one_rr_per_rrset: bool
+    @param keyring: the keyring to use for TSIG
+    @type keyring: keyring dict
+    @param request_mac: the MAC of the request (for TSIG)
+    @type request_mac: bytes
+    @rtype: dns.message.Message object
+    """
+    if af is None:
+        try:
+            af = dns.inet.af_for_address(destination[0])
+        except Exception:
+            af = dns.inet.AF_INET
+    wire = b''
+    while 1:
+        _wait_for_readable(sock, expiration)
+        (wire, from_address) = sock.recvfrom(65535)
+        if _addresses_equal(af, from_address, destination) or \
+           (dns.inet.is_multicast(destination[0]) and
+            from_address[1:] == destination[1:]):
+            break
+        if not ignore_unexpected:
+            raise UnexpectedSource('got a response from '
+                                   '%s instead of %s' % (from_address,
+                                                         destination))
+    received_time = time.time()
+    r = dns.message.from_wire(wire, keyring=keyring, request_mac=request_mac,
+                              one_rr_per_rrset=one_rr_per_rrset)
+    return (r, received_time)
 
 def udp(q, where, timeout=None, port=53, af=None, source=None, source_port=0,
         ignore_unexpected=False, one_rr_per_rrset=False):
@@ -158,11 +273,10 @@ def udp(q, where, timeout=None, port=53, af=None, source=None, source_port=0,
     @param port: The port to which to send the message.  The default is 53.
     @type port: int
     @param af: the address family to use.  The default is None, which
-    causes the address family to use to be inferred from the form of of where.
+    causes the address family to use to be inferred from the form of where.
     If the inference attempt fails, AF_INET is used.
     @type af: int
-    @rtype: dns.message.Message object
-    @param source: source address.  The default is the IPv4 wildcard address.
+    @param source: source address.  The default is the wildcard address.
     @type source: string
     @param source_port: The port from which to send the message.
     The default is 0.
@@ -172,48 +286,35 @@ def udp(q, where, timeout=None, port=53, af=None, source=None, source_port=0,
     @type ignore_unexpected: bool
     @param one_rr_per_rrset: Put each RR into its own RRset
     @type one_rr_per_rrset: bool
+    @rtype: dns.message.Message object
     """
 
     wire = q.to_wire()
-    if af is None:
-        try:
-            af = dns.inet.af_for_address(where)
-        except Exception:
-            af = dns.inet.AF_INET
-    if af == dns.inet.AF_INET:
-        destination = (where, port)
-        if source is not None:
-            source = (source, source_port)
-    elif af == dns.inet.AF_INET6:
-        destination = (where, port, 0, 0)
-        if source is not None:
-            source = (source, source_port, 0, 0)
-    s = socket.socket(af, socket.SOCK_DGRAM, 0)
+    (af, destination, source) = _destination_and_source(af, where, port,
+                                                        source, source_port)
+    s = socket_factory(af, socket.SOCK_DGRAM, 0)
+    received_time = None
+    sent_time = None
     try:
         expiration = _compute_expiration(timeout)
         s.setblocking(0)
         if source is not None:
             s.bind(source)
-        _wait_for_writable(s, expiration)
-        s.sendto(wire, destination)
-        while 1:
-            _wait_for_readable(s, expiration)
-            (wire, from_address) = s.recvfrom(65535)
-            if _addresses_equal(af, from_address, destination) or \
-                    (dns.inet.is_multicast(where) and \
-                         from_address[1:] == destination[1:]):
-                break
-            if not ignore_unexpected:
-                raise UnexpectedSource('got a response from '
-                                       '%s instead of %s' % (from_address,
-                                                             destination))
+        (_, sent_time) = send_udp(s, wire, destination, expiration)
+        (r, received_time) = receive_udp(s, destination, expiration, af,
+                                         ignore_unexpected, one_rr_per_rrset,
+                                         q.keyring, q.request_mac)
     finally:
+        if sent_time is None or received_time is None:
+            response_time = 0
+        else:
+            response_time = received_time - sent_time
         s.close()
-    r = dns.message.from_wire(wire, keyring=q.keyring, request_mac=q.mac,
-                              one_rr_per_rrset=one_rr_per_rrset)
+    r.time = response_time
     if not q.is_response(r):
         raise BadResponse
     return r
+
 
 def _net_read(sock, count, expiration):
     """Read the specified number of bytes from sock.  Keep trying until we
@@ -221,15 +322,16 @@ def _net_read(sock, count, expiration):
     A Timeout exception will be raised if the operation is not completed
     by the expiration time.
     """
-    s = ''
+    s = b''
     while count > 0:
         _wait_for_readable(sock, expiration)
         n = sock.recv(count)
-        if n == '':
+        if n == b'':
             raise EOFError
         count = count - len(n)
         s = s + n
     return s
+
 
 def _net_write(sock, data, expiration):
     """Write the specified data to the socket.
@@ -242,15 +344,66 @@ def _net_write(sock, data, expiration):
         _wait_for_writable(sock, expiration)
         current += sock.send(data[current:])
 
+
+def send_tcp(sock, what, expiration=None):
+    """Send a DNS message to the specified TCP socket.
+
+    @param sock: the socket
+    @type sock: socket.socket
+    @param what: the message to send
+    @type what: wire format bytes or a dns.message.Message
+    @param expiration: The absolute time at which a timeout exception should
+    be raised.
+    @type expiration: float
+    @rtype: (int, double) tuple of bytes sent and the sent time.
+    """
+    if isinstance(what, dns.message.Message):
+        what = what.to_wire()
+    l = len(what)
+    # copying the wire into tcpmsg is inefficient, but lets us
+    # avoid writev() or doing a short write that would get pushed
+    # onto the net
+    tcpmsg = struct.pack("!H", l) + what
+    _wait_for_writable(sock, expiration)
+    sent_time = time.time()
+    _net_write(sock, tcpmsg, expiration)
+    return (len(tcpmsg), sent_time)
+
+def receive_tcp(sock, expiration=None, one_rr_per_rrset=False,
+                keyring=None, request_mac=b''):
+    """Read a DNS message from a TCP socket.
+
+    @param sock: the socket
+    @type sock: socket.socket
+    @param one_rr_per_rrset: Put each RR into its own RRset
+    @type one_rr_per_rrset: bool
+    @param keyring: the keyring to use for TSIG
+    @type keyring: keyring dict
+    @param request_mac: the MAC of the request (for TSIG)
+    @type request_mac: bytes
+    @rtype: dns.message.Message object
+    """
+    ldata = _net_read(sock, 2, expiration)
+    (l,) = struct.unpack("!H", ldata)
+    wire = _net_read(sock, l, expiration)
+    received_time = time.time()
+    r = dns.message.from_wire(wire, keyring=keyring, request_mac=request_mac,
+                              one_rr_per_rrset=one_rr_per_rrset)
+    return (r, received_time)
+
 def _connect(s, address):
     try:
         s.connect(address)
     except socket.error:
         (ty, v) = sys.exc_info()[:2]
-        if v[0] != errno.EINPROGRESS and \
-               v[0] != errno.EWOULDBLOCK and \
-               v[0] != errno.EALREADY:
+
+        if hasattr(v, 'errno'):
+            v_err = v.errno
+        else:
+            v_err = v[0]
+        if v_err not in [errno.EINPROGRESS, errno.EWOULDBLOCK, errno.EALREADY]:
             raise v
+
 
 def tcp(q, where, timeout=None, port=53, af=None, source=None, source_port=0,
         one_rr_per_rrset=False):
@@ -266,11 +419,11 @@ def tcp(q, where, timeout=None, port=53, af=None, source=None, source_port=0,
     @param port: The port to which to send the message.  The default is 53.
     @type port: int
     @param af: the address family to use.  The default is None, which
-    causes the address family to use to be inferred from the form of of where.
+    causes the address family to use to be inferred from the form of where.
     If the inference attempt fails, AF_INET is used.
     @type af: int
     @rtype: dns.message.Message object
-    @param source: source address.  The default is the IPv4 wildcard address.
+    @param source: source address.  The default is the wildcard address.
     @type source: string
     @param source_port: The port from which to send the message.
     The default is 0.
@@ -280,44 +433,31 @@ def tcp(q, where, timeout=None, port=53, af=None, source=None, source_port=0,
     """
 
     wire = q.to_wire()
-    if af is None:
-        try:
-            af = dns.inet.af_for_address(where)
-        except Exception:
-            af = dns.inet.AF_INET
-    if af == dns.inet.AF_INET:
-        destination = (where, port)
-        if source is not None:
-            source = (source, source_port)
-    elif af == dns.inet.AF_INET6:
-        destination = (where, port, 0, 0)
-        if source is not None:
-            source = (source, source_port, 0, 0)
-    s = socket.socket(af, socket.SOCK_STREAM, 0)
+    (af, destination, source) = _destination_and_source(af, where, port,
+                                                        source, source_port)
+    s = socket_factory(af, socket.SOCK_STREAM, 0)
+    begin_time = None
     try:
         expiration = _compute_expiration(timeout)
         s.setblocking(0)
+        begin_time = time.time()
         if source is not None:
             s.bind(source)
         _connect(s, destination)
-
-        l = len(wire)
-
-        # copying the wire into tcpmsg is inefficient, but lets us
-        # avoid writev() or doing a short write that would get pushed
-        # onto the net
-        tcpmsg = struct.pack("!H", l) + wire
-        _net_write(s, tcpmsg, expiration)
-        ldata = _net_read(s, 2, expiration)
-        (l,) = struct.unpack("!H", ldata)
-        wire = _net_read(s, l, expiration)
+        send_tcp(s, wire, expiration)
+        (r, received_time) = receive_tcp(s, expiration, one_rr_per_rrset,
+                                         q.keyring, q.request_mac)
     finally:
+        if begin_time is None or received_time is None:
+            response_time = 0
+        else:
+            response_time = received_time - begin_time
         s.close()
-    r = dns.message.from_wire(wire, keyring=q.keyring, request_mac=q.mac,
-                              one_rr_per_rrset=one_rr_per_rrset)
+    r.time = response_time
     if not q.is_response(r):
         raise BadResponse
     return r
+
 
 def xfr(where, zone, rdtype=dns.rdatatype.AXFR, rdclass=dns.rdataclass.IN,
         timeout=None, port=53, keyring=None, keyname=None, relativize=True,
@@ -333,7 +473,7 @@ def xfr(where, zone, rdtype=dns.rdatatype.AXFR, rdclass=dns.rdataclass.IN,
     dns.rdatatype.AXFR.
     @type rdtype: int or string
     @param rdclass: The class of the zone transfer.  The default is
-    dns.rdatatype.IN.
+    dns.rdataclass.IN.
     @type rdclass: int or string
     @param timeout: The number of seconds to wait for each response message.
     If None, the default, wait forever.
@@ -349,7 +489,7 @@ def xfr(where, zone, rdtype=dns.rdatatype.AXFR, rdclass=dns.rdataclass.IN,
     the one specified to dns.zone.from_xfr().
     @type relativize: bool
     @param af: the address family to use.  The default is None, which
-    causes the address family to use to be inferred from the form of of where.
+    causes the address family to use to be inferred from the form of where.
     If the inference attempt fails, AF_INET is used.
     @type af: int
     @param lifetime: The total number of seconds to spend doing the transfer.
@@ -357,7 +497,7 @@ def xfr(where, zone, rdtype=dns.rdatatype.AXFR, rdclass=dns.rdataclass.IN,
     take.
     @type lifetime: float
     @rtype: generator of dns.message.Message objects.
-    @param source: source address.  The default is the IPv4 wildcard address.
+    @param source: source address.  The default is the wildcard address.
     @type source: string
     @param source_port: The port from which to send the message.
     The default is 0.
@@ -372,37 +512,26 @@ def xfr(where, zone, rdtype=dns.rdatatype.AXFR, rdclass=dns.rdataclass.IN,
     @type keyalgorithm: string
     """
 
-    if isinstance(zone, (str, unicode)):
+    if isinstance(zone, string_types):
         zone = dns.name.from_text(zone)
-    if isinstance(rdtype, (str, unicode)):
+    if isinstance(rdtype, string_types):
         rdtype = dns.rdatatype.from_text(rdtype)
     q = dns.message.make_query(zone, rdtype, rdclass)
     if rdtype == dns.rdatatype.IXFR:
         rrset = dns.rrset.from_text(zone, 0, 'IN', 'SOA',
                                     '. . %u 0 0 0 0' % serial)
         q.authority.append(rrset)
-    if not keyring is None:
+    if keyring is not None:
         q.use_tsig(keyring, keyname, algorithm=keyalgorithm)
     wire = q.to_wire()
-    if af is None:
-        try:
-            af = dns.inet.af_for_address(where)
-        except Exception:
-            af = dns.inet.AF_INET
-    if af == dns.inet.AF_INET:
-        destination = (where, port)
-        if source is not None:
-            source = (source, source_port)
-    elif af == dns.inet.AF_INET6:
-        destination = (where, port, 0, 0)
-        if source is not None:
-            source = (source, source_port, 0, 0)
+    (af, destination, source) = _destination_and_source(af, where, port,
+                                                        source, source_port)
     if use_udp:
         if rdtype != dns.rdatatype.IXFR:
             raise ValueError('cannot do a UDP AXFR')
-        s = socket.socket(af, socket.SOCK_DGRAM, 0)
+        s = socket_factory(af, socket.SOCK_DGRAM, 0)
     else:
-        s = socket.socket(af, socket.SOCK_STREAM, 0)
+        s = socket_factory(af, socket.SOCK_STREAM, 0)
     s.setblocking(0)
     if source is not None:
         s.bind(source)
@@ -416,8 +545,9 @@ def xfr(where, zone, rdtype=dns.rdatatype.AXFR, rdclass=dns.rdataclass.IN,
         tcpmsg = struct.pack("!H", l) + wire
         _net_write(s, tcpmsg, expiration)
     done = False
+    delete_mode = True
+    expecting_SOA = False
     soa_rrset = None
-    soa_count = 0
     if relativize:
         origin = zone
         oname = dns.name.empty
@@ -437,25 +567,25 @@ def xfr(where, zone, rdtype=dns.rdatatype.AXFR, rdclass=dns.rdataclass.IN,
             ldata = _net_read(s, 2, mexpiration)
             (l,) = struct.unpack("!H", ldata)
             wire = _net_read(s, l, mexpiration)
+        is_ixfr = (rdtype == dns.rdatatype.IXFR)
         r = dns.message.from_wire(wire, keyring=q.keyring, request_mac=q.mac,
                                   xfr=True, origin=origin, tsig_ctx=tsig_ctx,
                                   multi=True, first=first,
-                                  one_rr_per_rrset=(rdtype==dns.rdatatype.IXFR))
+                                  one_rr_per_rrset=is_ixfr)
         tsig_ctx = r.tsig_ctx
         first = False
         answer_index = 0
-        delete_mode = False
-        expecting_SOA = False
         if soa_rrset is None:
             if not r.answer or r.answer[0].name != oname:
-                raise dns.exception.FormError
+                raise dns.exception.FormError(
+                    "No answer or RRset not for qname")
             rrset = r.answer[0]
             if rrset.rdtype != dns.rdatatype.SOA:
                 raise dns.exception.FormError("first RRset is not an SOA")
             answer_index = 1
             soa_rrset = rrset.copy()
             if rdtype == dns.rdatatype.IXFR:
-                if soa_rrset[0].serial == serial:
+                if soa_rrset[0].serial <= serial:
                     #
                     # We're already up-to-date.
                     #
@@ -472,11 +602,19 @@ def xfr(where, zone, rdtype=dns.rdatatype.AXFR, rdclass=dns.rdataclass.IN,
             if rrset.rdtype == dns.rdatatype.SOA and rrset.name == oname:
                 if expecting_SOA:
                     if rrset[0].serial != serial:
-                        raise dns.exception.FormError("IXFR base serial mismatch")
+                        raise dns.exception.FormError(
+                            "IXFR base serial mismatch")
                     expecting_SOA = False
                 elif rdtype == dns.rdatatype.IXFR:
                     delete_mode = not delete_mode
-                if rrset == soa_rrset and not delete_mode:
+                #
+                # If this SOA RRset is equal to the first we saw then we're
+                # finished. If this is an IXFR we also check that we're seeing
+                # the record in the expected part of the response.
+                #
+                if rrset == soa_rrset and \
+                        (rdtype == dns.rdatatype.AXFR or
+                         (rdtype == dns.rdatatype.IXFR and delete_mode)):
                     done = True
             elif expecting_SOA:
                 #

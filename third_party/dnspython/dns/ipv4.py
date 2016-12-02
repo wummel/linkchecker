@@ -15,22 +15,45 @@
 
 """IPv4 helper functions."""
 
-import socket
-import sys
+import struct
 
-if sys.hexversion < 0x02030000 or sys.platform == 'win32':
-    #
-    # Some versions of Python 2.2 have an inet_aton which rejects
-    # the valid IP address '255.255.255.255'.  It appears this
-    # problem is still present on the Win32 platform even in 2.3.
-    # We'll work around the problem.
-    #
-    def inet_aton(text):
-        if text == '255.255.255.255':
-            return '\xff' * 4
-        else:
-            return socket.inet_aton(text)
-else:
-    inet_aton = socket.inet_aton
+import dns.exception
+from ._compat import binary_type
 
-inet_ntoa = socket.inet_ntoa
+def inet_ntoa(address):
+    """Convert an IPv4 address in network form to text form.
+
+    @param address: The IPv4 address
+    @type address: string
+    @returns: string
+    """
+    if len(address) != 4:
+        raise dns.exception.SyntaxError
+    if not isinstance(address, bytearray):
+        address = bytearray(address)
+    return (u'%u.%u.%u.%u' % (address[0], address[1],
+                              address[2], address[3])).encode()
+
+def inet_aton(text):
+    """Convert an IPv4 address in text form to network form.
+
+    @param text: The IPv4 address
+    @type text: string
+    @returns: string
+    """
+    if not isinstance(text, binary_type):
+        text = text.encode()
+    parts = text.split(b'.')
+    if len(parts) != 4:
+        raise dns.exception.SyntaxError
+    for part in parts:
+        if not part.isdigit():
+            raise dns.exception.SyntaxError
+        if len(part) > 1 and part[0] == '0':
+            # No leading zeros
+            raise dns.exception.SyntaxError
+    try:
+        bytes = [int(part) for part in parts]
+        return struct.pack('BBBB', *bytes)
+    except:
+        raise dns.exception.SyntaxError

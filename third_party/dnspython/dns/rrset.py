@@ -15,12 +15,16 @@
 
 """DNS RRsets (an RRset is a named rdataset)"""
 
+
 import dns.name
 import dns.rdataset
 import dns.rdataclass
 import dns.renderer
+from ._compat import string_types
+
 
 class RRset(dns.rdataset.Rdataset):
+
     """A DNS RRset (named rdataset).
 
     RRset inherits from Rdataset, and RRsets can be treated as
@@ -51,7 +55,7 @@ class RRset(dns.rdataset.Rdataset):
             ctext = ''
         else:
             ctext = '(' + dns.rdatatype.to_text(self.covers) + ')'
-        if not self.deleting is None:
+        if self.deleting is not None:
             dtext = ' delete=' + dns.rdataclass.to_text(self.deleting)
         else:
             dtext = ''
@@ -61,9 +65,6 @@ class RRset(dns.rdataset.Rdataset):
 
     def __str__(self):
         return self.to_text()
-
-    def __hash__(self):
-        return hash(self.name) + super(RRSet, self).__hash__()
 
     def __eq__(self, other):
         """Two RRsets are equal if they have the same name and the same
@@ -118,18 +119,19 @@ class RRset(dns.rdataset.Rdataset):
         return dns.rdataset.from_rdata_list(self.ttl, list(self))
 
 
-def from_text_list(name, ttl, rdclass, rdtype, text_rdatas):
+def from_text_list(name, ttl, rdclass, rdtype, text_rdatas,
+                   idna_codec=None):
     """Create an RRset with the specified name, TTL, class, and type, and with
     the specified list of rdatas in text format.
 
     @rtype: dns.rrset.RRset object
     """
 
-    if isinstance(name, (str, unicode)):
-        name = dns.name.from_text(name, None)
-    if isinstance(rdclass, (str, unicode)):
+    if isinstance(name, string_types):
+        name = dns.name.from_text(name, None, idna_codec=idna_codec)
+    if isinstance(rdclass, string_types):
         rdclass = dns.rdataclass.from_text(rdclass)
-    if isinstance(rdtype, (str, unicode)):
+    if isinstance(rdtype, string_types):
         rdtype = dns.rdatatype.from_text(rdtype)
     r = RRset(name, rdclass, rdtype)
     r.update_ttl(ttl)
@@ -137,6 +139,7 @@ def from_text_list(name, ttl, rdclass, rdtype, text_rdatas):
         rd = dns.rdata.from_text(r.rdclass, r.rdtype, t)
         r.add(rd)
     return r
+
 
 def from_text(name, ttl, rdclass, rdtype, *text_rdatas):
     """Create an RRset with the specified name, TTL, class, and type and with
@@ -147,15 +150,16 @@ def from_text(name, ttl, rdclass, rdtype, *text_rdatas):
 
     return from_text_list(name, ttl, rdclass, rdtype, text_rdatas)
 
-def from_rdata_list(name, ttl, rdatas):
+
+def from_rdata_list(name, ttl, rdatas, idna_codec=None):
     """Create an RRset with the specified name and TTL, and with
     the specified list of rdata objects.
 
     @rtype: dns.rrset.RRset object
     """
 
-    if isinstance(name, (str, unicode)):
-        name = dns.name.from_text(name, None)
+    if isinstance(name, string_types):
+        name = dns.name.from_text(name, None, idna_codec=idna_codec)
 
     if len(rdatas) == 0:
         raise ValueError("rdata list must not be empty")
@@ -164,9 +168,9 @@ def from_rdata_list(name, ttl, rdatas):
         if r is None:
             r = RRset(name, rd.rdclass, rd.rdtype)
             r.update_ttl(ttl)
-            first_time = False
         r.add(rd)
     return r
+
 
 def from_rdata(name, ttl, *rdatas):
     """Create an RRset with the specified name and TTL, and with

@@ -21,15 +21,26 @@
 @type empty: dns.name.Name object
 """
 
-import cStringIO
+from io import BytesIO
 import struct
 import sys
-
-if sys.hexversion >= 0x02030000:
-    import encodings.idna
+import copy
+import encodings.idna
+try:
+    import idna
+    have_idna_2008 = True
+except ImportError:
+    have_idna_2008 = False
 
 import dns.exception
 import dns.wiredata
+
+from ._compat import long, binary_type, text_type, unichr, maybe_decode
+
+try:
+    maxint = sys.maxint
+except AttributeError:
+    maxint = (1 << (8 * struct.calcsize("P"))) // 2 - 1
 
 NAMERELN_NONE = 0
 NAMERELN_SUPERDOMAIN = 1
@@ -37,75 +48,236 @@ NAMERELN_SUBDOMAIN = 2
 NAMERELN_EQUAL = 3
 NAMERELN_COMMONANCESTOR = 4
 
+
 class EmptyLabel(dns.exception.SyntaxError):
-    """Raised if a label is empty."""
-    pass
+
+    """A DNS label is empty."""
+
 
 class BadEscape(dns.exception.SyntaxError):
-    """Raised if an escaped code in a text format name is invalid."""
-    pass
+
+    """An escaped code in a text format of DNS name is invalid."""
+
 
 class BadPointer(dns.exception.FormError):
-    """Raised if a compression pointer points forward instead of backward."""
-    pass
+
+    """A DNS compression pointer points forward instead of backward."""
+
 
 class BadLabelType(dns.exception.FormError):
-    """Raised if the label type of a wire format name is unknown."""
-    pass
+
+    """The label type in DNS name wire format is unknown."""
+
 
 class NeedAbsoluteNameOrOrigin(dns.exception.DNSException):
-    """Raised if an attempt is made to convert a non-absolute name to
-    wire when there is also a non-absolute (or missing) origin."""
-    pass
+
+    """An attempt was made to convert a non-absolute name to
+    wire when there was also a non-absolute (or missing) origin."""
+
 
 class NameTooLong(dns.exception.FormError):
-    """Raised if a name is > 255 octets long."""
-    pass
+
+    """A DNS name is > 255 octets long."""
+
 
 class LabelTooLong(dns.exception.SyntaxError):
-    """Raised if a label is > 63 octets long."""
-    pass
+
+    """A DNS label is > 63 octets long."""
+
 
 class AbsoluteConcatenation(dns.exception.DNSException):
-    """Raised if an attempt is made to append anything other than the
-    empty name to an absolute name."""
-    pass
+
+    """An attempt was made to append anything other than the
+    empty name to an absolute DNS name."""
+
 
 class NoParent(dns.exception.DNSException):
-    """Raised if an attempt is made to get the parent of the root name
+
+    """An attempt was made to get the parent of the root name
     or the empty name."""
-    pass
 
-_escaped = {
-    '"' : True,
-    '(' : True,
-    ')' : True,
-    '.' : True,
-    ';' : True,
-    '\\' : True,
-    '@' : True,
-    '$' : True
-    }
+class NoIDNA2008(dns.exception.DNSException):
 
-def _escapify(label):
+    """IDNA 2008 processing was requested but the idna module is not
+    available."""
+
+
+class IDNAException(dns.exception.DNSException):
+
+    """IDNA processing raised an exception."""
+
+    supp_kwargs = set(['idna_exception'])
+    fmt = "IDNA processing exception: {idna_exception}"
+
+class IDNACodec(object):
+
+    """Abstract base class for IDNA encoder/decoders."""
+
+    def __init__(self):
+        pass
+
+    def encode(self, label):
+        raise NotImplementedError
+
+    def decode(self, label):
+        # We do not apply any IDNA policy on decode; we just
+        downcased = label.lower()
+        if downcased.startswith(b'xn--'):
+            try:
+                label = downcased[4:].decode('punycode')
+            except Exception as e:
+                raise IDNAException(idna_exception=e)
+        else:
+            label = maybe_decode(label)
+        return _escapify(label, True)
+
+class IDNA2003Codec(IDNACodec):
+
+    """IDNA 2003 encoder/decoder."""
+
+    def __init__(self, strict_decode=False):
+        """Initialize the IDNA 2003 encoder/decoder.
+        @param strict_decode: If True, then IDNA2003 checking is done when
+        decoding.  This can cause failures if the name was encoded with
+        IDNA2008.  The default is False.
+        @type strict_decode: bool
+        """
+        super(IDNA2003Codec, self).__init__()
+        self.strict_decode = strict_decode
+
+    def encode(self, label):
+        if label == '':
+            return b''
+        try:
+            return encodings.idna.ToASCII(label)
+        except UnicodeError:
+            raise LabelTooLong
+
+    def decode(self, label):
+        if not self.strict_decode:
+            return super(IDNA2003Codec, self).decode(label)
+        if label == b'':
+            return u''
+        try:
+            return _escapify(encodings.idna.ToUnicode(label), True)
+        except Exception as e:
+            raise IDNAException(idna_exception=e)
+
+class IDNA2008Codec(IDNACodec):
+
+    """IDNA 2008 encoder/decoder."""
+
+    def __init__(self, uts_46=False, transitional=False,
+                 allow_pure_ascii=False, strict_decode=False):
+        """Initialize the IDNA 2008 encoder/decoder.
+        @param uts_46: If True, apply Unicode IDNA compatibility processing
+        as described in Unicode Technical Standard #46
+        (U{http://unicode.org/reports/tr46/}).  This parameter is only
+        meaningful if IDNA 2008 is in use.  If False, do not apply
+        the mapping.  The default is False
+        @type uts_46: bool
+        @param transitional: If True, use the "transitional" mode described
+        in Unicode Technical Standard #46.  This parameter is only
+        meaningful if IDNA 2008 is in use.  The default is False.
+        @type transitional: bool
+        @param allow_pure_ascii: If True, then a label which
+        consists of only ASCII characters is allowed.  This is less strict
+        than regular IDNA 2008, but is also necessary for mixed names,
+        e.g. a name with starting with "_sip._tcp." and ending in an IDN
+        suffixm which would otherwise be disallowed.  The default is False
+        @type allow_pure_ascii: bool
+        @param strict_decode: If True, then IDNA2008 checking is done when
+        decoding.  This can cause failures if the name was encoded with
+        IDNA2003.  The default is False.
+        @type strict_decode: bool
+        """
+        super(IDNA2008Codec, self).__init__()
+        self.uts_46 = uts_46
+        self.transitional = transitional
+        self.allow_pure_ascii = allow_pure_ascii
+        self.strict_decode = strict_decode
+
+    def is_all_ascii(self, label):
+        for c in label:
+            if ord(c) > 0x7f:
+                return False
+        return True
+
+    def encode(self, label):
+        if label == '':
+            return b''
+        if self.allow_pure_ascii and self.is_all_ascii(label):
+            return label.encode('ascii')
+        if not have_idna_2008:
+            raise NoIDNA2008
+        try:
+            if self.uts_46:
+                label = idna.uts46_remap(label, False, self.transitional)
+            return idna.alabel(label)
+        except idna.IDNAError as e:
+            raise IDNAException(idna_exception=e)
+
+    def decode(self, label):
+        if not self.strict_decode:
+            return super(IDNA2008Codec, self).decode(label)
+        if label == b'':
+            return u''
+        if not have_idna_2008:
+            raise NoIDNA2008
+        try:
+            if self.uts_46:
+                label = idna.uts46_remap(label, False, False)
+            return _escapify(idna.ulabel(label), True)
+        except idna.IDNAError as e:
+            raise IDNAException(idna_exception=e)
+
+_escaped = bytearray(b'"().;\\@$')
+
+IDNA_2003_Practical = IDNA2003Codec(False)
+IDNA_2003_Strict = IDNA2003Codec(True)
+IDNA_2003 = IDNA_2003_Practical
+IDNA_2008_Practical = IDNA2008Codec(True, False, True, False)
+IDNA_2008_UTS_46 = IDNA2008Codec(True, False, False, False)
+IDNA_2008_Strict = IDNA2008Codec(False, False, False, True)
+IDNA_2008_Transitional = IDNA2008Codec(True, True, False, False)
+IDNA_2008 = IDNA_2008_Practical
+
+def _escapify(label, unicode_mode=False):
     """Escape the characters in label which need it.
+    @param unicode_mode: escapify only special and whitespace (<= 0x20)
+    characters
     @returns: the escaped string
     @rtype: string"""
-    text = ''
+    if not unicode_mode:
+        text = ''
+        if isinstance(label, text_type):
+            label = label.encode()
+        for c in bytearray(label):
+            if c in _escaped:
+                text += '\\' + chr(c)
+            elif c > 0x20 and c < 0x7F:
+                text += chr(c)
+            else:
+                text += '\\%03d' % c
+        return text.encode()
+
+    text = u''
+    if isinstance(label, binary_type):
+        label = label.decode()
     for c in label:
-        if c in _escaped:
-            text += '\\' + c
-        elif ord(c) > 0x20 and ord(c) < 0x7F:
+        if c > u'\x20' and c < u'\x7f':
             text += c
         else:
-            text += '\\%03d' % ord(c)
+            if c >= u'\x7f':
+                text += c
+            else:
+                text += u'\\%03d' % ord(c)
     return text
 
 def _validate_labels(labels):
     """Check for empty labels in the middle of a label sequence,
     labels that are too long, and for too many labels.
     @raises NameTooLong: the name as a whole is too long
-    @raises LabelTooLong: an individual label is too long
     @raises EmptyLabel: a label is empty (i.e. the root label) and appears
     in a position other than the end of the label sequence"""
 
@@ -118,7 +290,7 @@ def _validate_labels(labels):
         total += ll + 1
         if ll > 63:
             raise LabelTooLong
-        if i < 0 and label == '':
+        if i < 0 and label == b'':
             i = j
         j += 1
     if total > 255:
@@ -126,7 +298,17 @@ def _validate_labels(labels):
     if i >= 0 and i != l - 1:
         raise EmptyLabel
 
+
+def _ensure_bytes(label):
+    if isinstance(label, binary_type):
+        return label
+    if isinstance(label, text_type):
+        return label.encode()
+    raise ValueError
+
+
 class Name(object):
+
     """A DNS name.
 
     The dns.name.Name class represents a DNS name as a tuple of labels.
@@ -142,42 +324,55 @@ class Name(object):
         @param labels: the labels
         @type labels: any iterable whose values are strings
         """
-
+        labels = [_ensure_bytes(x) for x in labels]
         super(Name, self).__setattr__('labels', tuple(labels))
         _validate_labels(self.labels)
 
     def __setattr__(self, name, value):
         raise TypeError("object doesn't support attribute assignment")
 
+    def __copy__(self):
+        return Name(self.labels)
+
+    def __deepcopy__(self, memo):
+        return Name(copy.deepcopy(self.labels, memo))
+
+    def __getstate__(self):
+        return {'labels': self.labels}
+
+    def __setstate__(self, state):
+        super(Name, self).__setattr__('labels', state['labels'])
+        _validate_labels(self.labels)
+
     def is_absolute(self):
         """Is the most significant label of this name the root label?
         @rtype: bool
         """
 
-        return len(self.labels) > 0 and self.labels[-1] == ''
+        return len(self.labels) > 0 and self.labels[-1] == b''
 
     def is_wild(self):
         """Is this name wild?  (I.e. Is the least significant label '*'?)
         @rtype: bool
         """
 
-        return len(self.labels) > 0 and self.labels[0] == '*'
+        return len(self.labels) > 0 and self.labels[0] == b'*'
 
     def __hash__(self):
         """Return a case-insensitive hash of the name.
         @rtype: int
         """
 
-        h = 0L
+        h = long(0)
         for label in self.labels:
-            for c in label:
-                h += ( h << 3 ) + ord(c.lower())
-        return int(h % sys.maxint)
+            for c in bytearray(label.lower()):
+                h += (h << 3) + c
+        return int(h % maxint)
 
     def fullcompare(self, other):
         """Compare two names, returning a 3-tuple (relation, order, nlabels).
 
-        I{relation} describes the relation ship beween the names,
+        I{relation} describes the relation ship between the names,
         and is one of: dns.name.NAMERELN_NONE,
         dns.name.NAMERELN_SUPERDOMAIN, dns.name.NAMERELN_SUBDOMAIN,
         dns.name.NAMERELN_EQUAL, or dns.name.NAMERELN_COMMONANCESTOR
@@ -309,7 +504,7 @@ class Name(object):
     def __str__(self):
         return self.to_text(False)
 
-    def to_text(self, omit_final_dot = False):
+    def to_text(self, omit_final_dot=False):
         """Convert name to text format.
         @param omit_final_dot: If True, don't emit the final dot (denoting the
         root label) for absolute names.  The default is False.
@@ -317,36 +512,44 @@ class Name(object):
         """
 
         if len(self.labels) == 0:
-            return '@'
-        if len(self.labels) == 1 and self.labels[0] == '':
-            return '.'
+            return maybe_decode(b'@')
+        if len(self.labels) == 1 and self.labels[0] == b'':
+            return maybe_decode(b'.')
         if omit_final_dot and self.is_absolute():
             l = self.labels[:-1]
         else:
             l = self.labels
-        s = '.'.join(map(_escapify, l))
-        return s
+        s = b'.'.join(map(_escapify, l))
+        return maybe_decode(s)
 
-    def to_unicode(self, omit_final_dot = False):
+    def to_unicode(self, omit_final_dot=False, idna_codec=None):
         """Convert name to Unicode text format.
 
-        IDN ACE lables are converted to Unicode.
+        IDN ACE labels are converted to Unicode.
 
         @param omit_final_dot: If True, don't emit the final dot (denoting the
         root label) for absolute names.  The default is False.
+        @type omit_final_dot: bool
+        @param idna_codec: IDNA encoder/decoder.  If None, the
+        IDNA_2003_Practical encoder/decoder is used.  The IDNA_2003_Practical
+        decoder does not impose any policy, it just decodes punycode, so if
+        you don't want checking for compliance, you can use this decoder for
+        IDNA2008 as well.
+        @type idna_codec: dns.name.IDNA
         @rtype: string
         """
 
         if len(self.labels) == 0:
             return u'@'
-        if len(self.labels) == 1 and self.labels[0] == '':
+        if len(self.labels) == 1 and self.labels[0] == b'':
             return u'.'
         if omit_final_dot and self.is_absolute():
             l = self.labels[:-1]
         else:
             l = self.labels
-        s = u'.'.join([encodings.idna.ToUnicode(_escapify(x)) for x in l])
-        return s
+        if idna_codec is None:
+            idna_codec = IDNA_2003_Practical
+        return u'.'.join([idna_codec.decode(x) for x in l])
 
     def to_digestable(self, origin=None):
         """Convert name to a format suitable for digesting in hashes.
@@ -369,14 +572,15 @@ class Name(object):
             labels.extend(list(origin.labels))
         else:
             labels = self.labels
-        dlabels = ["%s%s" % (chr(len(x)), x.lower()) for x in labels]
-        return ''.join(dlabels)
+        dlabels = [struct.pack('!B%ds' % len(x), len(x), x.lower())
+                   for x in labels]
+        return b''.join(dlabels)
 
-    def to_wire(self, file = None, compress = None, origin = None):
+    def to_wire(self, file=None, compress=None, origin=None):
         """Convert name to wire format, possibly compressing it.
 
         @param file: the file where the name is emitted (typically
-        a cStringIO file).  If None, a string containing the wire name
+        a BytesIO file).  If None, a string containing the wire name
         will be returned.
         @type file: file or None
         @param compress: The compression table.  If None (the default) names
@@ -391,7 +595,7 @@ class Name(object):
         """
 
         if file is None:
-            file = cStringIO.StringIO()
+            file = BytesIO()
             want_return = True
         else:
             want_return = False
@@ -407,22 +611,22 @@ class Name(object):
         for label in labels:
             n = Name(labels[i:])
             i += 1
-            if not compress is None:
+            if compress is not None:
                 pos = compress.get(n)
             else:
                 pos = None
-            if not pos is None:
+            if pos is not None:
                 value = 0xc000 + pos
                 s = struct.pack('!H', value)
                 file.write(s)
                 break
             else:
-                if not compress is None and len(n) > 1:
+                if compress is not None and len(n) > 1:
                     pos = file.tell()
-                    if pos < 0xc000:
+                    if pos <= 0x3fff:
                         compress[n] = pos
                 l = len(label)
-                file.write(chr(l))
+                file.write(struct.pack('!B', l))
                 if l > 0:
                     file.write(label)
         if want_return:
@@ -437,9 +641,6 @@ class Name(object):
 
     def __getitem__(self, index):
         return self.labels[index]
-
-    def __getslice__(self, start, stop):
-        return self.labels[start:stop]
 
     def __add__(self, other):
         return self.concatenate(other)
@@ -464,8 +665,9 @@ class Name(object):
         elif depth == l:
             return (dns.name.empty, self)
         elif depth < 0 or depth > l:
-            raise ValueError('depth must be >= 0 and <= the length of the name')
-        return (Name(self[: -depth]), Name(self[-depth :]))
+            raise ValueError(
+                'depth must be >= 0 and <= the length of the name')
+        return (Name(self[: -depth]), Name(self[-depth:]))
 
     def concatenate(self, other):
         """Return a new name which is the concatenation of self and other.
@@ -486,7 +688,7 @@ class Name(object):
         @rtype: dns.name.Name object
         """
 
-        if not origin is None and self.is_subdomain(origin):
+        if origin is not None and self.is_subdomain(origin):
             return Name(self[: -len(origin)])
         else:
             return self
@@ -528,18 +730,26 @@ class Name(object):
             raise NoParent
         return Name(self.labels[1:])
 
-root = Name([''])
+root = Name([b''])
 empty = Name([])
 
-def from_unicode(text, origin = root):
+
+def from_unicode(text, origin=root, idna_codec=None):
     """Convert unicode text into a Name object.
 
-    Lables are encoded in IDN ACE form.
+    Labels are encoded in IDN ACE form.
 
+    @param text: The text to convert into a name.
+    @type text: Unicode string
+    @param origin: The origin to append to non-absolute names.
+    @type origin: dns.name.Name
+    @param idna_codec: IDNA encoder/decoder.  If None, the default IDNA 2003
+    encoder/decoder is used.
+    @type idna_codec: dns.name.IDNA
     @rtype: dns.name.Name object
     """
 
-    if not isinstance(text, unicode):
+    if not isinstance(text, text_type):
         raise ValueError("input to from_unicode() must be a unicode string")
     if not (origin is None or isinstance(origin, Name)):
         raise ValueError("origin must be a Name or None")
@@ -548,11 +758,13 @@ def from_unicode(text, origin = root):
     escaping = False
     edigits = 0
     total = 0
+    if idna_codec is None:
+        idna_codec = IDNA_2003
     if text == u'@':
         text = u''
     if text:
         if text == u'.':
-            return Name([''])        # no Unicode "u" on this constant!
+            return Name([b''])        # no Unicode "u" on this constant!
         for c in text:
             if escaping:
                 if edigits == 0:
@@ -570,12 +782,11 @@ def from_unicode(text, origin = root):
                     edigits += 1
                     if edigits == 3:
                         escaping = False
-                        label += chr(total)
-            elif c == u'.' or c == u'\u3002' or \
-                 c == u'\uff0e' or c == u'\uff61':
+                        label += unichr(total)
+            elif c in [u'.', u'\u3002', u'\uff0e', u'\uff61']:
                 if len(label) == 0:
                     raise EmptyLabel
-                labels.append(encodings.idna.ToASCII(label))
+                labels.append(idna_codec.encode(label))
                 label = u''
             elif c == u'\\':
                 escaping = True
@@ -586,73 +797,84 @@ def from_unicode(text, origin = root):
         if escaping:
             raise BadEscape
         if len(label) > 0:
-            labels.append(encodings.idna.ToASCII(label))
+            labels.append(idna_codec.encode(label))
         else:
-            labels.append('')
-    if (len(labels) == 0 or labels[-1] != '') and not origin is None:
+            labels.append(b'')
+
+    if (len(labels) == 0 or labels[-1] != b'') and origin is not None:
         labels.extend(list(origin.labels))
     return Name(labels)
 
-def from_text(text, origin = root):
+
+def from_text(text, origin=root, idna_codec=None):
     """Convert text into a Name object.
+
+    @param text: The text to convert into a name.
+    @type text: string
+    @param origin: The origin to append to non-absolute names.
+    @type origin: dns.name.Name
+    @param idna_codec: IDNA encoder/decoder.  If None, the default IDNA 2003
+    encoder/decoder is used.
+    @type idna_codec: dns.name.IDNA
     @rtype: dns.name.Name object
     """
 
-    if not isinstance(text, str):
-        if isinstance(text, unicode) and sys.hexversion >= 0x02030000:
-            return from_unicode(text, origin)
-        else:
-            raise ValueError("input to from_text() must be a string")
+    if isinstance(text, text_type):
+        return from_unicode(text, origin, idna_codec)
+    if not isinstance(text, binary_type):
+        raise ValueError("input to from_text() must be a string")
     if not (origin is None or isinstance(origin, Name)):
         raise ValueError("origin must be a Name or None")
     labels = []
-    label = ''
+    label = b''
     escaping = False
     edigits = 0
     total = 0
-    if text == '@':
-        text = ''
+    if text == b'@':
+        text = b''
     if text:
-        if text == '.':
-            return Name([''])
-        for c in text:
+        if text == b'.':
+            return Name([b''])
+        for c in bytearray(text):
+            byte_ = struct.pack('!B', c)
             if escaping:
                 if edigits == 0:
-                    if c.isdigit():
-                        total = int(c)
+                    if byte_.isdigit():
+                        total = int(byte_)
                         edigits += 1
                     else:
-                        label += c
+                        label += byte_
                         escaping = False
                 else:
-                    if not c.isdigit():
+                    if not byte_.isdigit():
                         raise BadEscape
                     total *= 10
-                    total += int(c)
+                    total += int(byte_)
                     edigits += 1
                     if edigits == 3:
                         escaping = False
-                        label += chr(total)
-            elif c == '.':
+                        label += struct.pack('!B', total)
+            elif byte_ == b'.':
                 if len(label) == 0:
                     raise EmptyLabel
                 labels.append(label)
-                label = ''
-            elif c == '\\':
+                label = b''
+            elif byte_ == b'\\':
                 escaping = True
                 edigits = 0
                 total = 0
             else:
-                label += c
+                label += byte_
         if escaping:
             raise BadEscape
         if len(label) > 0:
             labels.append(label)
         else:
-            labels.append('')
-    if (len(labels) == 0 or labels[-1] != '') and not origin is None:
+            labels.append(b'')
+    if (len(labels) == 0 or labels[-1] != b'') and origin is not None:
         labels.extend(list(origin.labels))
     return Name(labels)
+
 
 def from_wire(message, current):
     """Convert possibly compressed wire format into a Name.
@@ -669,23 +891,23 @@ def from_wire(message, current):
     @rtype: (dns.name.Name object, int) tuple
     """
 
-    if not isinstance(message, str):
+    if not isinstance(message, binary_type):
         raise ValueError("input to from_wire() must be a byte string")
     message = dns.wiredata.maybe_wrap(message)
     labels = []
     biggest_pointer = current
     hops = 0
-    count = ord(message[current])
+    count = message[current]
     current += 1
     cused = 1
     while count != 0:
         if count < 64:
-            labels.append(message[current : current + count].unwrap())
+            labels.append(message[current: current + count].unwrap())
             current += count
             if hops == 0:
                 cused += count
         elif count >= 192:
-            current = (count & 0x3f) * 256 + ord(message[current])
+            current = (count & 0x3f) * 256 + message[current]
             if hops == 0:
                 cused += 1
             if current >= biggest_pointer:
@@ -694,7 +916,7 @@ def from_wire(message, current):
             hops += 1
         else:
             raise BadLabelType
-        count = ord(message[current])
+        count = message[current]
         current += 1
         if hops == 0:
             cused += 1

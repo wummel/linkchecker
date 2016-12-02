@@ -16,8 +16,8 @@
 """dnspython release version information."""
 
 MAJOR = 1
-MINOR = 9
-MICRO = 5
+MINOR = 16
+MICRO = 0
 RELEASELEVEL = 0x0f
 SERIAL = 0
 
@@ -31,4 +31,4 @@ else:
               (MAJOR, MINOR, MICRO, RELEASELEVEL, SERIAL)
 
 hexversion = MAJOR << 24 | MINOR << 16 | MICRO << 8 | RELEASELEVEL << 4 | \
-             SERIAL
+    SERIAL

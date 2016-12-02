@@ -20,7 +20,4 @@ PYTHON=python
 check: test
 
 test:
-	@for i in *.py; do \
-		echo "Running $$i:"; \
-		PYTHONPATH=.. ${PYTHON} $$i || exit 1; \
-	done
+	${PYTHON} ./utest.py

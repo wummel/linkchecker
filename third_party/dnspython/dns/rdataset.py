@@ -16,7 +16,7 @@
 """DNS rdatasets (an rdataset is a set of rdatas of a given type and class)"""
 
 import random
-import StringIO
+from io import StringIO
 import struct
 
 import dns.exception
@@ -24,20 +24,25 @@ import dns.rdatatype
 import dns.rdataclass
 import dns.rdata
 import dns.set
+from ._compat import string_types
 
 # define SimpleSet here for backwards compatibility
 SimpleSet = dns.set.Set
 
+
 class DifferingCovers(dns.exception.DNSException):
-    """Raised if an attempt is made to add a SIG/RRSIG whose covered type
+
+    """An attempt was made to add a DNS SIG/RRSIG whose covered type
     is not the same as that of the other rdatas in the rdataset."""
-    pass
+
 
 class IncompatibleTypes(dns.exception.DNSException):
-    """Raised if an attempt is made to add rdata of an incompatible type."""
-    pass
+
+    """An attempt was made to add DNS RR data of an incompatible type."""
+
 
 class Rdataset(dns.set.Set):
+
     """A DNS rdataset.
 
     @ivar rdclass: The class of the rdataset
@@ -110,7 +115,7 @@ class Rdataset(dns.set.Set):
         #
         if self.rdclass != rd.rdclass or self.rdtype != rd.rdtype:
             raise IncompatibleTypes
-        if not ttl is None:
+        if ttl is not None:
             self.update_ttl(ttl)
         if self.rdtype == dns.rdatatype.RRSIG or \
            self.rdtype == dns.rdatatype.SIG:
@@ -151,10 +156,6 @@ class Rdataset(dns.set.Set):
     def __str__(self):
         return self.to_text()
 
-    def __hash__(self):
-        return hash((self.rdclass, self.rdtype, self.covers)) + \
-            super(Rdataset, self).__hash__()
-
     def __eq__(self, other):
         """Two rdatasets are equal if they have the same class, type, and
         covers, and contain the same rdata.
@@ -189,15 +190,15 @@ class Rdataset(dns.set.Set):
         @type origin: dns.name.Name object
         @param relativize: True if names should names be relativized
         @type relativize: bool"""
-        if not name is None:
+        if name is not None:
             name = name.choose_relativity(origin, relativize)
             ntext = str(name)
             pad = ' '
         else:
             ntext = ''
             pad = ''
-        s = StringIO.StringIO()
-        if not override_rdclass is None:
+        s = StringIO()
+        if override_rdclass is not None:
             rdclass = override_rdclass
         else:
             rdclass = self.rdclass
@@ -207,15 +208,16 @@ class Rdataset(dns.set.Set):
             # some dynamic updates, so we don't need to print out the TTL
             # (which is meaningless anyway).
             #
-            print >> s, '%s%s%s %s' % (ntext, pad,
-                                       dns.rdataclass.to_text(rdclass),
-                                       dns.rdatatype.to_text(self.rdtype))
+            s.write(u'%s%s%s %s\n' % (ntext, pad,
+                                      dns.rdataclass.to_text(rdclass),
+                                      dns.rdatatype.to_text(self.rdtype)))
         else:
             for rd in self:
-                print >> s, '%s%s%d %s %s %s' % \
-                      (ntext, pad, self.ttl, dns.rdataclass.to_text(rdclass),
-                       dns.rdatatype.to_text(self.rdtype),
-                       rd.to_text(origin=origin, relativize=relativize, **kw))
+                s.write(u'%s%s%d %s %s %s\n' %
+                        (ntext, pad, self.ttl, dns.rdataclass.to_text(rdclass),
+                         dns.rdatatype.to_text(self.rdtype),
+                         rd.to_text(origin=origin, relativize=relativize,
+                         **kw)))
         #
         # We strip off the final \n for the caller's convenience in printing
         #
@@ -237,8 +239,8 @@ class Rdataset(dns.set.Set):
         @rtype: int
         """
 
-        if not override_rdclass is None:
-            rdclass =  override_rdclass
+        if override_rdclass is not None:
+            rdclass = override_rdclass
             want_shuffle = False
         else:
             rdclass = self.rdclass
@@ -278,6 +280,7 @@ class Rdataset(dns.set.Set):
             return True
         return False
 
+
 def from_text_list(rdclass, rdtype, ttl, text_rdatas):
     """Create an rdataset with the specified class, type, and TTL, and with
     the specified list of rdatas in text format.
@@ -285,9 +288,9 @@ def from_text_list(rdclass, rdtype, ttl, text_rdatas):
     @rtype: dns.rdataset.Rdataset object
     """
 
-    if isinstance(rdclass, (str, unicode)):
+    if isinstance(rdclass, string_types):
         rdclass = dns.rdataclass.from_text(rdclass)
-    if isinstance(rdtype, (str, unicode)):
+    if isinstance(rdtype, string_types):
         rdtype = dns.rdatatype.from_text(rdtype)
     r = Rdataset(rdclass, rdtype)
     r.update_ttl(ttl)
@@ -295,6 +298,7 @@ def from_text_list(rdclass, rdtype, ttl, text_rdatas):
         rd = dns.rdata.from_text(r.rdclass, r.rdtype, t)
         r.add(rd)
     return r
+
 
 def from_text(rdclass, rdtype, ttl, *text_rdatas):
     """Create an rdataset with the specified class, type, and TTL, and with
@@ -304,6 +308,7 @@ def from_text(rdclass, rdtype, ttl, *text_rdatas):
     """
 
     return from_text_list(rdclass, rdtype, ttl, text_rdatas)
+
 
 def from_rdata_list(ttl, rdatas):
     """Create an rdataset with the specified TTL, and with
@@ -319,9 +324,9 @@ def from_rdata_list(ttl, rdatas):
         if r is None:
             r = Rdataset(rd.rdclass, rd.rdtype)
             r.update_ttl(ttl)
-            first_time = False
         r.add(rd)
     return r
+
 
 def from_rdata(ttl, *rdatas):
     """Create an rdataset with the specified TTL, and with

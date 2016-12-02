@@ -24,23 +24,24 @@ NOTIFY = 4
 UPDATE = 5
 
 _by_text = {
-    'QUERY' : QUERY,
-    'IQUERY' : IQUERY,
-    'STATUS' : STATUS,
-    'NOTIFY' : NOTIFY,
-    'UPDATE' : UPDATE
+    'QUERY': QUERY,
+    'IQUERY': IQUERY,
+    'STATUS': STATUS,
+    'NOTIFY': NOTIFY,
+    'UPDATE': UPDATE
 }
 
 # We construct the inverse mapping programmatically to ensure that we
 # cannot make any mistakes (e.g. omissions, cut-and-paste errors) that
 # would cause the mapping not to be true inverse.
 
-_by_value = dict([(y, x) for x, y in _by_text.iteritems()])
+_by_value = dict((y, x) for x, y in _by_text.items())
 
 
 class UnknownOpcode(dns.exception.DNSException):
-    """Raised if an opcode is unknown."""
-    pass
+
+    """An DNS opcode is unknown."""
+
 
 def from_text(text):
     """Convert text into an opcode.
@@ -60,6 +61,7 @@ def from_text(text):
         raise UnknownOpcode
     return value
 
+
 def from_flags(flags):
     """Extract an opcode from DNS message flags.
 
@@ -69,6 +71,7 @@ def from_flags(flags):
 
     return (flags & 0x7800) >> 11
 
+
 def to_flags(value):
     """Convert an opcode to a value suitable for ORing into DNS message
     flags.
@@ -76,6 +79,7 @@ def to_flags(value):
     """
 
     return (value << 11) & 0x7800
+
 
 def to_text(value):
     """Convert an opcode to text.
@@ -91,6 +95,7 @@ def to_text(value):
         text = str(value)
     return text
 
+
 def is_update(flags):
     """True if the opcode in flags is UPDATE.
 
@@ -99,6 +104,4 @@ def is_update(flags):
     @rtype: bool
     """
 
-    if (from_flags(flags) == UPDATE):
-        return True
-    return False
+    return from_flags(flags) == UPDATE

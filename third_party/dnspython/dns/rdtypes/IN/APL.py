@@ -13,15 +13,18 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
 # OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-import cStringIO
 import struct
+import binascii
 
 import dns.exception
 import dns.inet
 import dns.rdata
 import dns.tokenizer
+from dns._compat import xrange, maybe_chr
+
 
 class APLItem(object):
+
     """An APL list item.
 
     @ivar family: the address family (IANA address family registry)
@@ -54,16 +57,16 @@ class APLItem(object):
         elif self.family == 2:
             address = dns.inet.inet_pton(dns.inet.AF_INET6, self.address)
         else:
-            address = self.address.decode('hex_codec')
+            address = binascii.unhexlify(self.address)
         #
         # Truncate least significant zero bytes.
         #
         last = 0
         for i in xrange(len(address) - 1, -1, -1):
-            if address[i] != chr(0):
+            if address[i] != maybe_chr(0):
                 last = i + 1
                 break
-        address = address[0 : last]
+        address = address[0: last]
         l = len(address)
         assert l < 128
         if self.negation:
@@ -72,7 +75,9 @@ class APLItem(object):
         file.write(header)
         file.write(address)
 
+
 class APL(dns.rdata.Rdata):
+
     """APL record.
 
     @ivar items: a list of APL items
@@ -86,9 +91,10 @@ class APL(dns.rdata.Rdata):
         self.items = items
 
     def to_text(self, origin=None, relativize=True, **kw):
-        return ' '.join(map(lambda x: str(x), self.items))
+        return ' '.join(map(str, self.items))
 
-    def from_text(cls, rdclass, rdtype, tok, origin = None, relativize = True):
+    @classmethod
+    def from_text(cls, rdclass, rdtype, tok, origin=None, relativize=True):
         items = []
         while 1:
             token = tok.get().unescape()
@@ -109,18 +115,19 @@ class APL(dns.rdata.Rdata):
 
         return cls(rdclass, rdtype, items)
 
-    from_text = classmethod(from_text)
-
-    def to_wire(self, file, compress = None, origin = None):
+    def to_wire(self, file, compress=None, origin=None):
         for item in self.items:
             item.to_wire(file)
 
-    def from_wire(cls, rdclass, rdtype, wire, current, rdlen, origin = None):
+    @classmethod
+    def from_wire(cls, rdclass, rdtype, wire, current, rdlen, origin=None):
         items = []
         while 1:
+            if rdlen == 0:
+                break
             if rdlen < 4:
                 raise dns.exception.FormError
-            header = struct.unpack('!HBB', wire[current : current + 4])
+            header = struct.unpack('!HBB', wire[current: current + 4])
             afdlen = header[2]
             if afdlen > 127:
                 negation = True
@@ -131,15 +138,15 @@ class APL(dns.rdata.Rdata):
             rdlen -= 4
             if rdlen < afdlen:
                 raise dns.exception.FormError
-            address = wire[current : current + afdlen].unwrap()
+            address = wire[current: current + afdlen].unwrap()
             l = len(address)
             if header[0] == 1:
                 if l < 4:
-                    address += '\x00' * (4 - l)
+                    address += b'\x00' * (4 - l)
                 address = dns.inet.inet_ntop(dns.inet.AF_INET, address)
             elif header[0] == 2:
                 if l < 16:
-                    address += '\x00' * (16 - l)
+                    address += b'\x00' * (16 - l)
                 address = dns.inet.inet_ntop(dns.inet.AF_INET6, address)
             else:
                 #
@@ -151,20 +158,4 @@ class APL(dns.rdata.Rdata):
             rdlen -= afdlen
             item = APLItem(header[0], negation, address, header[1])
             items.append(item)
-            if rdlen == 0:
-                break
         return cls(rdclass, rdtype, items)
-
-    from_wire = classmethod(from_wire)
-
-    def _cmp(self, other):
-        f = cStringIO.StringIO()
-        self.to_wire(f)
-        wire1 = f.getvalue()
-        f.seek(0)
-        f.truncate()
-        other.to_wire(f)
-        wire2 = f.getvalue()
-        f.close()
-
-        return cmp(wire1, wire2)
