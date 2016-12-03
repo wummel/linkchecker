@@ -154,7 +154,7 @@ class GzipFile:
 
     def _init_write(self, filename):
         self.name = filename
-        self.crc = zlib.crc32("") & 0xffffffffL
+        self.crc = zlib.crc32("") & 0xffffffff
         self.size = 0
         self.writebuf = []
         self.bufsize = 0
@@ -223,7 +223,7 @@ class GzipFile:
             raise IOError(errno.EBADF, "write() on read-only GzipFile object")
 
         if self.fileobj is None:
-            raise ValueError, "write() on closed GzipFile object"
+            raise ValueError("write() on closed GzipFile object")
         if len(data) > 0:
             self.size = self.size + len(data)
             self.crc = zlib.crc32(data, self.crc) & 0xffffffff
@@ -343,7 +343,7 @@ class GzipFile:
             raise IOError("CRC check failed %s != %s" % (hex(crc32),
                                                          hex(self.crc)))
         elif isize != (self.size & 0xffffffff):
-            raise IOError, "Incorrect length of data produced"
+            raise IOError("Incorrect length of data produced")
 
         # Gzip files can be padded with zeroes and still have archives.
         # Consume all zero bytes and set the file position to the first
@@ -532,7 +532,7 @@ def _test():
                 g = sys.stdout
             else:
                 if arg[-3:] != ".gz":
-                    print "filename doesn't end in .gz:", repr(arg)
+                    print("filename doesn't end in .gz:", repr(arg))
                     continue
                 f = open(arg, "rb")
                 g = __builtin__.open(arg[:-3], "wb")

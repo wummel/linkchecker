@@ -17,7 +17,10 @@
 """
 Parse links in PDF files with pdfminer.
 """
-from cStringIO import StringIO
+try: # Python 2
+    from cStringIO import StringIO
+except: # Python 3
+    from io import StringIO
 from . import _ParserPlugin
 try:
     from pdfminer.pdfparser import PDFParser
