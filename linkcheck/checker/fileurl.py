@@ -25,13 +25,17 @@ try:
 except ImportError:
     # Python 3
     from urllib import parse as urlparse
-import urllib
+try:  # Python 3
+    from urllib import request as urllib_request
+except ImportError:  # Python 2
+    import urllib as urllib_request
 try:
     from urllib2 import urlopen
 except ImportError:
     # Python 3
     from urllib.request import urlopen
 from datetime import datetime
+from builtins import str
 
 from . import urlbase, get_index_html
 from .. import log, LOG_CHECK, fileutil, mimeutil, LinkCheckerError, url as urlutil
@@ -79,7 +83,7 @@ def get_os_filename (path):
     """Return filesystem path for given URL path."""
     if os.name == 'nt':
         path = prepare_urlpath_for_nt(path)
-    res = urllib.url2pathname(fileutil.pathencode(path))
+    res = urllib_request.url2pathname(fileutil.pathencode(path))
     if os.name == 'nt' and res.endswith(':') and len(res) == 2:
         # Work around http://bugs.python.org/issue11474
         res += os.sep
@@ -135,7 +139,7 @@ class FileUrl (urlbase.UrlBase):
             base_url = re.sub("^file://(/?)([a-zA-Z]):", r"file:///\2|", base_url)
             # transform file://path into file:///path
             base_url = re.sub("^file://([^/])", r"file:///\1", base_url)
-        self.base_url = unicode(base_url)
+        self.base_url = str(base_url)
 
     def build_url (self):
         """

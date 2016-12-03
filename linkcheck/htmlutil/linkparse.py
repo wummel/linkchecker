@@ -21,6 +21,7 @@ Find link tags in HTML text.
 import re
 from .. import strformat, log, LOG_CHECK, url as urlutil
 from . import linkname
+from builtins import str
 
 MAX_NAMELEN = 256
 MAX_TITLELEN = 256
@@ -250,11 +251,11 @@ class LinkFinder (TagFinder):
 
     def parse_tag (self, tag, attr, value, name, base):
         """Add given url data to url list."""
-        assert isinstance(tag, unicode), repr(tag)
-        assert isinstance(attr, unicode), repr(attr)
-        assert isinstance(name, unicode), repr(name)
-        assert isinstance(base, unicode), repr(base)
-        assert isinstance(value, unicode) or value is None, repr(value)
+        assert isinstance(tag, str), repr(tag)
+        assert isinstance(attr, str), repr(attr)
+        assert isinstance(name, str), repr(name)
+        assert isinstance(base, str), repr(base)
+        assert isinstance(value, str) or value is None, repr(value)
         # look for meta refresh
         if tag == u'meta' and value:
             mo = refresh_re.match(value)
@@ -278,6 +279,6 @@ class LinkFinder (TagFinder):
 
     def found_url(self, url, name, base):
         """Add newly found URL to queue."""
-        assert isinstance(url, unicode) or url is None, repr(url)
+        assert isinstance(url, str) or url is None, repr(url)
         self.callback(url, line=self.parser.last_lineno(),
                       column=self.parser.last_column(), name=name, base=base)

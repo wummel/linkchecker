@@ -165,6 +165,7 @@ try:
     from htmlentitydefs import name2codepoint
 except ImportError:
     from html.entities import name2codepoint
+from builtins import chr
 
 
 def _resolve_entity (mo):
@@ -193,7 +194,7 @@ def _resolve_entity (mo):
         # unknown entity -> ignore
         return u''
     try:
-        return unichr(num)
+        return chr(num)
     except ValueError:
         return u''
 
@@ -243,12 +244,12 @@ def get_ctype_charset (text):
     Extract charset information from mime content type string, eg.
     "text/html; charset=iso8859-1".
     """
-    for param in text.lower().split(';'):
+    for param in text.lower().split(b';'):
         param = param.strip()
-        if param.startswith('charset='):
+        if param.startswith(b'charset='):
             charset = param[8:].strip()
             try:
-                codecs.lookup(charset)
+                codecs.lookup(str(charset))
                 return charset
             except (LookupError, ValueError):
                 pass
@@ -265,4 +266,4 @@ def set_doctype (parsobj, doctype):
     @return: None
     """
     if u"XHTML" in doctype:
-        parsobj.doctype = "XHTML"
+        parsobj.doctype = b"XHTML"

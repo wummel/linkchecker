@@ -25,6 +25,7 @@ import time
 import codecs
 import abc
 from .. import log, LOG_CHECK, strformat, dummy, configuration, i18n
+from builtins import str
 
 _ = lambda x: x
 Fields = dict(
@@ -207,7 +208,7 @@ class _Logger (object):
 
     def encode (self, s):
         """Encode string with output encoding."""
-        assert isinstance(s, unicode)
+        assert isinstance(s, str)
         return s.encode(self.output_encoding, self.codec_errors)
 
     def init_fileoutput (self, args):
@@ -323,7 +324,7 @@ class _Logger (object):
         """
         Write string to output descriptor plus a newline.
         """
-        self.write(u"%s%s" % (s, unicode(os.linesep)), **args)
+        self.write(u"%s%s" % (s, str(os.linesep)), **args)
 
     def has_part (self, name):
         """

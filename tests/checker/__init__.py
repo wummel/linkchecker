@@ -28,6 +28,8 @@ import linkcheck.director
 import linkcheck.logger
 from .. import get_file
 
+from builtins import str
+
 # helper alias
 get_url_from = linkcheck.checker.get_url_from
 
@@ -94,10 +96,10 @@ class TestLogger (linkcheck.logger._Logger):
         Stores differences between expected and result in self.diff.
         """
         for line in difflib.unified_diff(self.expected, self.result):
-            if not isinstance(line, unicode):
+            if not isinstance(line, str):
                 # The ---, +++ and @@ lines from diff format are ascii encoded.
                 # Make them unicode.
-                line = unicode(line, "ascii", "replace")
+                line = str(line, "ascii", "replace")
             self.diff.append(line)
 
 
@@ -195,7 +197,7 @@ class LinkCheckTest (unittest.TestCase):
         linkcheck.director.check_urls(aggregate)
         diff = aggregate.config['logger'].diff
         if diff:
-            msg = unicode(os.linesep).join([url] + diff)
+            msg = str(os.linesep).join([url] + diff)
             self.fail_unicode(msg)
 
     def fail_unicode (self, msg):
@@ -207,7 +209,7 @@ class LinkCheckTest (unittest.TestCase):
     def direct (self, url, resultlines, parts=None, recursionlevel=0,
                 confargs=None):
         """Check url with expected result."""
-        assert isinstance(url, unicode), repr(url)
+        assert isinstance(url, str), repr(url)
         if confargs is None:
             confargs = {'recursionlevel': recursionlevel}
         else:
@@ -225,7 +227,7 @@ class LinkCheckTest (unittest.TestCase):
         if diff:
             l = [u"Differences found testing %s" % url]
             l.extend(x.rstrip() for x in diff[2:])
-            self.fail_unicode(unicode(os.linesep).join(l))
+            self.fail_unicode(str(os.linesep).join(l))
 
 
 class MailTest (LinkCheckTest):

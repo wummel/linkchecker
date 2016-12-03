@@ -19,7 +19,7 @@ Default HTML parser handler classes.
 """
 
 import sys
-
+from builtins import bytes
 
 class HtmlPrinter (object):
     """
@@ -85,7 +85,7 @@ class HtmlPrettyPrinter (object):
         @return: None
         """
         data = data.encode(self.encoding, "ignore")
-        self.fd.write("<!--%s-->" % data)
+        self.fd.write(b"<!--%s-->" % data)
 
     def start_element (self, tag, attrs):
         """
@@ -124,15 +124,15 @@ class HtmlPrettyPrinter (object):
         @return: None
         """
         tag = tag.encode(self.encoding, "ignore")
-        self.fd.write("<%s" % tag.replace("/", ""))
+        self.fd.write(b"<%s" % tag.replace(b"/", b""))
         for key, val in attrs.items():
             key = key.encode(self.encoding, "ignore")
             if val is None:
-                self.fd.write(" %s" % key)
+                self.fd.write(b" %s" % key)
             else:
                 val = val.encode(self.encoding, "ignore")
-                self.fd.write(' %s="%s"' % (key, quote_attrval(val)))
-        self.fd.write(end)
+                self.fd.write(b' %s="%s"' % (key, quote_attrval(val)))
+        self.fd.write(end.encode("utf8"))
 
     def end_element (self, tag):
         """
@@ -143,7 +143,7 @@ class HtmlPrettyPrinter (object):
         @return: None
         """
         tag = tag.encode(self.encoding, "ignore")
-        self.fd.write("</%s>" % tag)
+        self.fd.write(b"</%s>" % tag)
 
     def doctype (self, data):
         """
@@ -154,7 +154,7 @@ class HtmlPrettyPrinter (object):
         @return: None
         """
         data = data.encode(self.encoding, "ignore")
-        self.fd.write("<!DOCTYPE%s>" % data)
+        self.fd.write(b"<!DOCTYPE%s>" % data)
 
     def pi (self, data):
         """
@@ -165,7 +165,7 @@ class HtmlPrettyPrinter (object):
         @return: None
         """
         data = data.encode(self.encoding, "ignore")
-        self.fd.write("<?%s?>" % data)
+        self.fd.write(b"<?%s?>" % data)
 
     def cdata (self, data):
         """
@@ -176,7 +176,7 @@ class HtmlPrettyPrinter (object):
         @return: None
         """
         data = data.encode(self.encoding, "ignore")
-        self.fd.write("<![CDATA[%s]]>" % data)
+        self.fd.write(b"<![CDATA[%s]]>" % data)
 
     def characters (self, data):
         """
@@ -200,15 +200,15 @@ def quote_attrval (s):
     @rtype: string
     """
     res = []
-    for c in s:
-        if ord(c) <= 127:
+    for c in bytearray(s):
+        if c <= 127:
             # ASCII
-            if c == u'&':
-                res.append(u"&amp;")
-            elif c == u'"':
-                res.append(u"&quot;")
+            if bytes([c]) == b'&':
+                res.append(b"&amp;")
+            elif bytes([c]) == b'"':
+                res.append(b"&quot;")
             else:
-                res.append(c)
+                res.append(bytes([c]))
         else:
-            res.append(u"&#%d;" % ord(c))
-    return u"".join(res)
+            res.append(b"&#%d;" % c)
+    return b"".join(res)

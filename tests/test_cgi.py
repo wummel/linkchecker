@@ -19,7 +19,10 @@ Test cgi form routines.
 """
 import unittest
 import wsgiref
-import urllib
+try:  # Python 3
+    from urllib import parse as urllib_parse
+except ImportError:  # Python 2
+    import urllib as urllib_parse
 from io import BytesIO
 from wsgiref.util import setup_testing_defaults
 from linkcheck.lc_cgi import checkform, checklink, LCFormError, application
@@ -58,7 +61,7 @@ class TestWsgi (unittest.TestCase):
 
     def test_application (self):
         form = dict(url="http://www.example.com/", level="0")
-        formdata = urllib.urlencode(form)
+        formdata = urllib_parse.urlencode(form)
         environ = {'wsgi.input': BytesIO(formdata)}
         setup_testing_defaults(environ)
         test_response = ""

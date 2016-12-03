@@ -34,6 +34,7 @@ from ..htmlutil import linkparse
 # import warnings
 from .const import WARN_HTTP_EMPTY_CONTENT
 from requests.sessions import REDIRECT_STATI
+from io import BytesIO
 
 # assumed HTTP header encoding
 HEADER_ENCODING = "iso-8859-1"
@@ -303,7 +304,7 @@ class HttpUrl (internpaturl.InternPatternUrl, proxysupport.ProxySupport):
         """Return data and data size for this URL.
         Can be overridden in subclasses."""
         maxbytes = self.aggregate.config["maxfilesizedownload"]
-        buf = StringIO()
+        buf = BytesIO()
         for data in self.url_connection.iter_content(chunk_size=self.ReadChunkBytes):
             if buf.tell() + len(data) > maxbytes:
                 raise LinkCheckerError(_("File size too large"))

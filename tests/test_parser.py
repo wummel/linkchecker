@@ -28,159 +28,159 @@ import unittest
 # (<test pattern>, <expected parse output>)
 parsetests = [
     # start tags
-    ("""<a  b="c" >""", """<a b="c">"""),
-    ("""<a  b='c' >""", """<a b="c">"""),
-    ("""<a  b=c" >""", """<a b="c">"""),
-    ("""<a  b=c' >""", """<a b="c'">"""),
-    ("""<a  b="c >""", """<a  b="c >"""),
-    ("""<a  b="" >""", """<a b="">"""),
-    ("""<a  b='' >""", """<a b="">"""),
-    ("""<a  b=>""", """<a b="">"""),
-    ("""<a  b= >""", """<a b="">"""),
-    ("""<a  =c>""", """<a c>"""),
-    ("""<a  =c >""", """<a c>"""),
-    ("""<a  =>""", """<a>"""),
-    ("""<a  = >""", """<a>"""),
-    ("""<a  b= "c" >""", """<a b="c">"""),
-    ("""<a  b ="c" >""", """<a b="c">"""),
-    ("""<a  b = "c" >""", """<a b="c">"""),
-    ("""<a >""", """<a>"""),
-    ("""< a>""", """<a>"""),
-    ("""< a >""", """<a>"""),
-    ("""<>""", """<>"""),
-    ("""< >""", """< >"""),
-    ("""<aä>""", """<a>"""),
-    ("""<a aä="b">""", """<a a="b">"""),
-    ("""<a a="bä">""", """<a a="b&#228;">"""),
+    ("""<a  b="c" >""", b"""<a b="c">"""),
+    ("""<a  b='c' >""", b"""<a b="c">"""),
+    ("""<a  b=c" >""", b"""<a b="c">"""),
+    ("""<a  b=c' >""", b"""<a b="c'">"""),
+    ("""<a  b="c >""", b"""<a  b="c >"""),
+    ("""<a  b="" >""", b"""<a b="">"""),
+    ("""<a  b='' >""", b"""<a b="">"""),
+    ("""<a  b=>""", b"""<a b="">"""),
+    ("""<a  b= >""", b"""<a b="">"""),
+    ("""<a  =c>""", b"""<a c>"""),
+    ("""<a  =c >""", b"""<a c>"""),
+    ("""<a  =>""", b"""<a>"""),
+    ("""<a  = >""", b"""<a>"""),
+    ("""<a  b= "c" >""", b"""<a b="c">"""),
+    ("""<a  b ="c" >""", b"""<a b="c">"""),
+    ("""<a  b = "c" >""", b"""<a b="c">"""),
+    ("""<a >""", b"""<a>"""),
+    ("""< a>""", b"""<a>"""),
+    ("""< a >""", b"""<a>"""),
+    ("""<>""", b"""<>"""),
+    ("""< >""", b"""< >"""),
+    ("""<aä>""", b"""<a>"""),
+    ("""<a aä="b">""", b"""<a a="b">"""),
+    ("""<a a="bä">""", b"""<a a="b&#228;">"""),
     # multiple attribute names should be ignored...
-    ("""<a b="c" b="c" >""", """<a b="c">"""),
+    ("""<a b="c" b="c" >""", b"""<a b="c">"""),
     # ... but which one wins - in our implementation the last one
-    ("""<a b="c" b="d" >""", """<a b="d">"""),
+    ("""<a b="c" b="d" >""", b"""<a b="d">"""),
     # reduce test
-    ("""<a  b="c"><""", """<a b="c"><"""),
-    ("""d>""", """d>"""),
+    ("""<a  b="c"><""", b"""<a b="c"><"""),
+    ("""d>""", b"""d>"""),
     # numbers in tag
-    ("""<h1>bla</h1>""", """<h1>bla</h1>"""),
+    ("""<h1>bla</h1>""", b"""<h1>bla</h1>"""),
     # more start tags
-    ("""<a  b=c"><a b="c">""", """<a b="c"><a b="c">"""),
-    ("""<a  b=/c/></a><br>""", """<a b="/c/"></a><br>"""),
-    ("""<br/>""", """<br>"""),
-    ("""<a  b="50%"><br>""", """<a b="50%"><br>"""),
+    ("""<a  b=c"><a b="c">""", b"""<a b="c"><a b="c">"""),
+    ("""<a  b=/c/></a><br>""", b"""<a b="/c/"></a><br>"""),
+    ("""<br/>""", b"""<br>"""),
+    ("""<a  b="50%"><br>""", b"""<a b="50%"><br>"""),
     # comments
-    ("""<!---->< 1>""", """<!----><1>"""),
-    ("""<!-- a - b -->< 2>""", """<!-- a - b --><2>"""),
-    ("""<!----->< 3>""", """<!-----><3>"""),
-    ("""<!------>< 4>""", """<!------><4>"""),
-    ("""<!------->< 5>""", """<!-------><5>"""),
-    ("""<!-- -->< 7>""", """<!-- --><7>"""),
-    ("""<!---- />-->""", """<!---- />-->"""),
-    ("""<!-- a-2 -->< 9>""", """<!-- a-2 --><9>"""),
-    ("""<!-- --- -->< 10>""", """<!-- --- --><10>"""),
-    ("""<!>""", """<!---->"""), # empty comment
+    ("""<!---->< 1>""", b"""<!----><1>"""),
+    ("""<!-- a - b -->< 2>""", b"""<!-- a - b --><2>"""),
+    ("""<!----->< 3>""", b"""<!-----><3>"""),
+    ("""<!------>< 4>""", b"""<!------><4>"""),
+    ("""<!------->< 5>""", b"""<!-------><5>"""),
+    ("""<!-- -->< 7>""", b"""<!-- --><7>"""),
+    ("""<!---- />-->""", b"""<!---- />-->"""),
+    ("""<!-- a-2 -->< 9>""", b"""<!-- a-2 --><9>"""),
+    ("""<!-- --- -->< 10>""", b"""<!-- --- --><10>"""),
+    ("""<!>""", b"""<!---->"""), # empty comment
     # invalid comments
-    ("""<!-- -- >< 8>""", """<!-- --><8>"""),
-    ("""<!---- >< 6>""", """<!----><6>"""),
-    ("""<!- blubb ->""", """<!-- blubb -->"""),
-    ("""<! -- blubb -->""", """<!-- blubb -->"""),
-    ("""<!-- blubb -- >""", """<!-- blubb -->"""),
-    ("""<! blubb !>< a>""", """<!--blubb !--><a>"""),
-    ("""<! blubb >< a>""", """<!--blubb --><a>"""),
+    ("""<!-- -- >< 8>""", b"""<!-- --><8>"""),
+    ("""<!---- >< 6>""", b"""<!----><6>"""),
+    ("""<!- blubb ->""", b"""<!-- blubb -->"""),
+    ("""<! -- blubb -->""", b"""<!-- blubb -->"""),
+    ("""<!-- blubb -- >""", b"""<!-- blubb -->"""),
+    ("""<! blubb !>< a>""", b"""<!--blubb !--><a>"""),
+    ("""<! blubb >< a>""", b"""<!--blubb --><a>"""),
     # end tags
-    ("""</a>""", """</a>"""),
-    ("""</ a>""", """</a>"""),
-    ("""</ a >""", """</a>"""),
-    ("""</a >""", """</a>"""),
-    ("""< / a>""", """</a>"""),
-    ("""< /a>""", """</a>"""),
-    ("""</aä>""", """</a>"""),
+    ("""</a>""", b"""</a>"""),
+    ("""</ a>""", b"""</a>"""),
+    ("""</ a >""", b"""</a>"""),
+    ("""</a >""", b"""</a>"""),
+    ("""< / a>""", b"""</a>"""),
+    ("""< /a>""", b"""</a>"""),
+    ("""</aä>""", b"""</a>"""),
     # start and end tag (HTML doctype assumed)
-    ("""<a/>""", """<a/>"""),
-    ("""<meta/>""", """<meta>"""),
-    ("""<MetA/>""", """<meta>"""),
+    ("""<a/>""", b"""<a/>"""),
+    ("""<meta/>""", b"""<meta>"""),
+    ("""<MetA/>""", b"""<meta>"""),
     # declaration tags
     ("""<!DOCtype adrbook SYSTEM "adrbook.dtd">""",
-     """<!DOCTYPE adrbook SYSTEM "adrbook.dtd">"""),
+     b"""<!DOCTYPE adrbook SYSTEM "adrbook.dtd">"""),
     # misc
     ("""<?xmL version="1.0" encoding="latin1"?>""",
-     """<?xmL version="1.0" encoding="latin1"?>"""),
+     b"""<?xmL version="1.0" encoding="latin1"?>"""),
     # javascript
-    ("""<script >\n</script>""", """<script>\n</script>"""),
+    ("""<script >\n</script>""", b"""<script>\n</script>"""),
     ("""<sCrIpt lang="a">bla </a> fasel</scripT>""",
-     """<script lang="a">bla </a> fasel</script>"""),
+     b"""<script lang="a">bla </a> fasel</script>"""),
     ("""<script ><!--bla//-->// </script >""",
-     """<script><!--bla//-->// </script>"""),
+     b"""<script><!--bla//-->// </script>"""),
     # line continuation (Dr. Fun webpage)
-    ("""<img bo\\\nrder=0 >""", """<img border="0">"""),
-    ("""<img align="mid\\\ndle">""", """<img align="middle">"""),
-    ("""<img align='mid\\\ndle'>""", """<img align="middle">"""),
+    ("""<img bo\\\nrder=0 >""", b"""<img border="0">"""),
+    ("""<img align="mid\\\ndle">""", b"""<img align="middle">"""),
+    ("""<img align='mid\\\ndle'>""", b"""<img align="middle">"""),
     # href with $
-    ("""<a href="123$456">""", """<a href="123$456">"""),
+    ("""<a href="123$456">""", b"""<a href="123$456">"""),
     # quoting
-    ("""<a  href=/ >""", """<a href="/">"""),
-    ("""<a  href= />""", """<a href="/">"""),
-    ("""<a  href= >""", """<a href="">"""),
-    ("""<a  href="'" >""", """<a href="'">"""),
-    ("""<a  href='"' >""", """<a href="&quot;">"""),
-    ("""<a  href="bla" %]" >""", """<a href="bla">"""),
-    ("""<a  href=bla" >""", """<a href="bla">"""),
+    ("""<a  href=/ >""", b"""<a href="/">"""),
+    ("""<a  href= />""", b"""<a href="/">"""),
+    ("""<a  href= >""", b"""<a href="">"""),
+    ("""<a  href="'" >""", b"""<a href="'">"""),
+    ("""<a  href='"' >""", b"""<a href="&quot;">"""),
+    ("""<a  href="bla" %]" >""", b"""<a href="bla">"""),
+    ("""<a  href=bla" >""", b"""<a href="bla">"""),
     ("""<a onmouseover=blubb('nav1','',"""\
      """'/images/nav.gif',1);move(this); b="c">""",
      """<a onmouseover="blubb('nav1','',"""\
      """'/images/nav.gif',1);move(this);" b="c">"""),
     ("""<a onClick=location.href('/index.htm') b="c">""",
-     """<a onclick="location.href('/index.htm')" b="c">"""),
+     b"""<a onclick="location.href('/index.htm')" b="c">"""),
     # entity resolving
-    ("""<a  href="&#6D;ailto:" >""", """<a href="ailto:">"""),
-    ("""<a  href="&amp;ailto:" >""", """<a href="&amp;ailto:">"""),
-    ("""<a  href="&amp;amp;ailto:" >""", """<a href="&amp;amp;ailto:">"""),
-    ("""<a  href="&hulla;ailto:" >""", """<a href="ailto:">"""),
-    ("""<a  href="&#109;ailto:" >""", """<a href="mailto:">"""),
-    ("""<a  href="&#x6D;ailto:" >""", """<a href="mailto:">"""),
+    ("""<a  href="&#6D;ailto:" >""", b"""<a href="ailto:">"""),
+    ("""<a  href="&amp;ailto:" >""", b"""<a href="&amp;ailto:">"""),
+    ("""<a  href="&amp;amp;ailto:" >""", b"""<a href="&amp;amp;ailto:">"""),
+    ("""<a  href="&hulla;ailto:" >""", b"""<a href="ailto:">"""),
+    ("""<a  href="&#109;ailto:" >""", b"""<a href="mailto:">"""),
+    ("""<a  href="&#x6D;ailto:" >""", b"""<a href="mailto:">"""),
     # note that \u8156 is not valid encoding and therefore gets removed
-    ("""<a  href="&#8156;ailto:" >""", """<a href="ailto:">"""),
+    ("""<a  href="&#8156;ailto:" >""", b"""<a href="ailto:">"""),
     # non-ascii characters
-    ("""<Üzgür> fahr </langsamer> ¹²³¼½¬{""",
-     """<Üzgür> fahr </langsamer> ¹²³¼½¬{"""),
+    ("""<Üzgür> fahr </langsamer> ¿¿¿¿¿¿{""",
+     """<Üzgür> fahr </langsamer> ¿¿¿¿¿¿{"""),
     # mailto link
     ("""<a  href=mailto:calvin@LocalHost?subject=Hallo&to=michi>1</a>""",
-     """<a href="mailto:calvin@LocalHost?subject=Hallo&amp;to=michi">1</a>"""),
+     b"""<a href="mailto:calvin@LocalHost?subject=Hallo&amp;to=michi">1</a>"""),
     # doctype XHTML
     ("""<!DOCTYPe html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><MeTa a="b"/>""",
-     """<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><meta a="b"/>"""),
+     b"""<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><meta a="b"/>"""),
     # meta tag with charset encoding
     ("""<meta http-equiv="content-type" content>""",
-     """<meta http-equiv="content-type" content>"""),
+     b"""<meta http-equiv="content-type" content>"""),
     ("""<meta http-equiv="content-type" content=>""",
-     """<meta http-equiv="content-type" content="">"""),
+     b"""<meta http-equiv="content-type" content="">"""),
     ("""<meta http-equiv="content-type" content="hulla">""",
-     """<meta http-equiv="content-type" content="hulla">"""),
+     b"""<meta http-equiv="content-type" content="hulla">"""),
     ("""<meta http-equiv="content-type" content="text/html; charset=iso8859-1">""",
-     """<meta http-equiv="content-type" content="text/html; charset=iso8859-1">"""),
+     b"""<meta http-equiv="content-type" content="text/html; charset=iso8859-1">"""),
     ("""<meta http-equiv="content-type" content="text/html; charset=hulla">""",
-     """<meta http-equiv="content-type" content="text/html; charset=hulla">"""),
+     b"""<meta http-equiv="content-type" content="text/html; charset=hulla">"""),
     # CDATA
-    ("""<![CDATA[<a>hallo</a>]]>""", """<![CDATA[<a>hallo</a>]]>"""),
+    ("""<![CDATA[<a>hallo</a>]]>""", b"""<![CDATA[<a>hallo</a>]]>"""),
     # missing > in end tag
-    ("""</td <td  a="b" >""", """</td><td a="b">"""),
-    ("""</td<td  a="b" >""", """</td><td a="b">"""),
+    ("""</td <td  a="b" >""", b"""</td><td a="b">"""),
+    ("""</td<td  a="b" >""", b"""</td><td a="b">"""),
     # missing beginning quote
-    ("""<td a=b">""", """<td a="b">"""),
+    ("""<td a=b">""", b"""<td a="b">"""),
     # stray < before start tag
-    ("""<0.<td  a="b" >""", """<0.<td a="b">"""),
+    ("""<0.<td  a="b" >""", b"""<0.<td a="b">"""),
     # stray < before end tag
-    ("""<0.</td >""", """<0.</td>"""),
+    ("""<0.</td >""", b"""<0.</td>"""),
     # missing end quote (XXX TODO)
-    #("""<td a="b>\n""", """<td a="b">\n"""),
-    #("""<td a="b></td>\na""", """<td a="b"></td>\na"""),
-    #("""<a  b="c><a b="c>\n""", """<a b="c"><a b="c">\n"""),
-    #("""<td a="b c="d"></td>\n""", """<td a="b" c="d"></td>\n"""),
+    #("""<td a="b>\n""", b"""<td a="b">\n"""),
+    #("""<td a="b></td>\na""", b"""<td a="b"></td>\na"""),
+    #("""<a  b="c><a b="c>\n""", b"""<a b="c"><a b="c">\n"""),
+    #("""<td a="b c="d"></td>\n""", b"""<td a="b" c="d"></td>\n"""),
     # HTML5 tags
-    ("""<audio  src=bla>""", """<audio src="bla">"""),
-    ("""<button  formaction=bla>""", """<button formaction="bla">"""),
-    ("""<html  manifest=bla>""", """<html manifest="bla">"""),
-    ("""<source  src=bla>""", """<source src="bla">"""),
-    ("""<track  src=bla>""", """<track src="bla">"""),
-    ("""<video  src=bla>""", """<video src="bla">"""),
+    ("""<audio  src=bla>""", b"""<audio src="bla">"""),
+    ("""<button  formaction=bla>""", b"""<button formaction="bla">"""),
+    ("""<html  manifest=bla>""", b"""<html manifest="bla">"""),
+    ("""<source  src=bla>""", b"""<source src="bla">"""),
+    ("""<track  src=bla>""", b"""<track src="bla">"""),
+    ("""<video  src=bla>""", b"""<video src="bla">"""),
 ]
 
 flushtests = [
@@ -286,8 +286,8 @@ class TestParser (unittest.TestCase):
             def start_element (self_handler, tag, attrs):
                 # use self reference of TestParser instance
                 self.assertRaises(TypeError, self.htmlparser.peek, -1)
-                self.assertEqual(self.htmlparser.peek(0), "")
-                self.assertEqual(self.htmlparser.peek(4), "name")
+                self.assertEqual(self.htmlparser.peek(0), b"")
+                self.assertEqual(self.htmlparser.peek(4), b"name")
 
         self.htmlparser.handler = NamePeeker()
         self.htmlparser.feed(data)
@@ -304,6 +304,6 @@ class TestParser (unittest.TestCase):
 
     def encoding_test (self, html, expected):
         parser = linkcheck.HtmlParser.htmlsax.parser()
-        self.assertEqual(parser.encoding, "iso8859-1")
+        self.assertEqual(parser.encoding, b"iso8859-1")
         parser.feed(html)
         self.assertEqual(parser.encoding, expected)
