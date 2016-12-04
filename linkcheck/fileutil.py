@@ -25,7 +25,6 @@ import fnmatch
 import tempfile
 import importlib
 from distutils.spawn import find_executable
-from builtins import str
 
 from .decorators import memoized
 
@@ -167,7 +166,7 @@ else:
 
 def pathencode (path):
     """Encode a path string with the platform file system encoding."""
-    if isinstance(path, str) and not os.path.supports_unicode_filenames:
+    if isinstance(path, bytes) and not os.path.supports_unicode_filenames:
         path = path.encode(FSCODING, "replace")
     return path
 
