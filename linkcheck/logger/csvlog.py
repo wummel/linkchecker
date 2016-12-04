@@ -19,7 +19,10 @@ A CSV logger.
 """
 import csv
 import os
-from io import BytesIO
+try: # Python 2
+    from cStringIO import StringIO
+except: # Python 3
+    from io import StringIO
 from . import _Logger
 from .. import strformat
 
@@ -69,7 +72,7 @@ class CSVLogger (_Logger):
         else:
             # write empty string to initialize file output
             self.write(u"")
-        self.queue = BytesIO()
+        self.queue = StringIO()
         self.writer = csv.writer(self.queue, dialect=self.dialect,
                delimiter=self.separator, lineterminator=self.linesep,
                quotechar=self.quotechar)
@@ -124,7 +127,6 @@ class CSVLogger (_Logger):
         self.writer.writerow([s.encode("utf-8", self.codec_errors) for s in row])
         # Fetch UTF-8 output from the queue ...
         data = self.queue.getvalue()
-        data = data.decode("utf-8")
         # ... and write to the target stream
         self.write(data)
         # empty queue
