@@ -18,6 +18,8 @@
 Default HTML parser handler classes.
 """
 
+from __future__ import print_function
+
 import sys
 from builtins import bytes
 
@@ -43,7 +45,7 @@ class HtmlPrinter (object):
         @type attrs: tuple
         @return: None
         """
-        print >> self.fd, self.mem, attrs
+        print(str(self.mem), str(attrs), file=self.fd)
 
     def __getattr__ (self, name):
         """
