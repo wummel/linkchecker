@@ -20,6 +20,7 @@ The default text logger.
 import time
 from . import _Logger
 from .. import ansicolor, strformat, configuration, i18n
+from builtins import str as text
 
 
 class TextLogger (_Logger):
@@ -172,7 +173,7 @@ class TextLogger (_Logger):
     def write_real (self, url_data):
         """Write url_data.url."""
         self.write(self.part("realurl") + self.spaces("realurl"))
-        self.writeln(unicode(url_data.url), color=self.colorreal)
+        self.writeln(text(url_data.url), color=self.colorreal)
 
     def write_dltime (self, url_data):
         """Write url_data.dltime."""

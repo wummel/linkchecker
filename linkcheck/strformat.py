@@ -42,7 +42,7 @@ import locale
 import pydoc
 from . import i18n
 
-from builtins import str as unicode
+from builtins import str as text
 
 
 def unicode_safe (s, encoding=i18n.default_encoding, errors='replace'):
@@ -56,10 +56,10 @@ def unicode_safe (s, encoding=i18n.default_encoding, errors='replace'):
     @rtype: unicode
     """
     assert s is not None, "argument to unicode_safe was None"
-    if isinstance(s, unicode):
+    if isinstance(s, text):
         # s is already unicode, nothing to do
         return s
-    return unicode(str(s), encoding, errors)
+    return text(bytes(s), encoding, errors)
 
 
 def ascii_safe (s):
@@ -71,7 +71,7 @@ def ascii_safe (s):
     @return: encoded ASCII version of s, or None if s was None
     @rtype: string
     """
-    if isinstance(s, unicode):
+    if isinstance(s, text):
         s = s.encode('ascii', 'ignore')
     return s
 

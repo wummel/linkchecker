@@ -8,3 +8,4 @@ argcomplete
 # for building on osx:
 #py2app
 future
+six
