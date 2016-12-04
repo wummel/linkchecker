@@ -32,6 +32,7 @@ except ImportError:
 from . import configuration, strformat, checker, director, get_link_pat, \
     init_i18n, url as urlutil
 from .decorators import synchronized
+from builtins import str
 
 # 5 minutes timeout for requests
 MAX_REQUEST_SECONDS = 300
@@ -104,7 +105,7 @@ class ThreadsafeIO (object):
     @synchronized(_lock)
     def write (self, data):
         """Write given unicode data to buffer."""
-        assert isinstance(data, unicode)
+        assert isinstance(data, str)
         if self.closed:
             raise IOError("Write on closed I/O object")
         if data:
