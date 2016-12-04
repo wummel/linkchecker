@@ -27,7 +27,10 @@ try: # Python 3
 except ImportError: # Python 2
     from httplib import HTTPMessage
 import requests
-from io import BytesIO
+try: # Python 2
+    from StringIO import StringIO
+except: # Python 3
+    from io import StringIO
 
 
 def from_file (filename):
@@ -58,7 +61,7 @@ def from_headers (strheader):
     @raises: ValueError for incomplete or invalid data
     """
     res = []
-    fp = BytesIO(strheader)
+    fp = StringIO(strheader)
     headers = HTTPMessage(fp, seekable=True)
     if "Host" not in headers:
         raise ValueError("Required header 'Host:' missing")
