@@ -42,7 +42,7 @@ import locale
 import pydoc
 from . import i18n
 
-from builtins import str as text
+from builtins import str as str_text
 
 
 def unicode_safe (s, encoding=i18n.default_encoding, errors='replace'):
@@ -56,10 +56,10 @@ def unicode_safe (s, encoding=i18n.default_encoding, errors='replace'):
     @rtype: unicode
     """
     assert s is not None, "argument to unicode_safe was None"
-    if isinstance(s, text):
+    if isinstance(s, str_text):
         # s is already unicode, nothing to do
         return s
-    return text(bytes(s), encoding, errors)
+    return str_text(s)
 
 
 def ascii_safe (s):
@@ -71,7 +71,7 @@ def ascii_safe (s):
     @return: encoded ASCII version of s, or None if s was None
     @rtype: string
     """
-    if isinstance(s, text):
+    if isinstance(s, str_text):
         s = s.encode('ascii', 'ignore')
     return s
 
@@ -316,7 +316,7 @@ def limit (s, length=72):
 
 def strline (s):
     """Display string representation on one line."""
-    return strip_control_chars(u"`%s'" % unicode(s).replace(u"\n", u"\\n"))
+    return strip_control_chars(u"`%s'" % str_text(s).replace(u"\n", u"\\n"))
 
 
 def format_feature_warning (**kwargs):
