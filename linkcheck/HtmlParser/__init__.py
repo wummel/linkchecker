@@ -244,9 +244,9 @@ def get_ctype_charset (text):
     Extract charset information from mime content type string, eg.
     "text/html; charset=iso8859-1".
     """
-    for param in text.lower().split(b';'):
+    for param in text.lower().split(';'):
         param = param.strip()
-        if param.startswith(b'charset='):
+        if param.startswith('charset='):
             charset = param[8:].strip()
             try:
                 codecs.lookup(str(charset))
