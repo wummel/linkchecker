@@ -27,12 +27,12 @@ class StoppableThread (threading.Thread):
     def __init__ (self):
         """Store stop event."""
         super(StoppableThread, self).__init__()
-        self._stop = threading.Event()
+        self._stopper = threading.Event()
 
     def stop (self):
         """Set stop event."""
-        self._stop.set()
+        self._stopper.set()
 
     def stopped (self, timeout=None):
         """Return True if stop event is set."""
-        return self._stop.wait(timeout)
+        return self._stopper.wait(timeout)
