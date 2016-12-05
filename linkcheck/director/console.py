@@ -22,15 +22,16 @@ import sys
 import os
 import time
 from .. import i18n, configuration, strformat, better_exchook2
+from builtins import str as str_text
 
 # Output to stdout and stderr, encoded with the default encoding
-stderr = i18n.get_encoded_writer(out=sys.stderr)
-stdout = i18n.get_encoded_writer()
+stderr = sys.stderr
+stdout = sys.stdout
 
 
 def encode (text):
     """Encode text with default encoding if its Unicode."""
-    if isinstance(text, unicode):
+    if isinstance(text, str_text):
         return text.encode(i18n.default_encoding, 'ignore')
     return text
 
@@ -63,7 +64,7 @@ class StatusLogger (object):
 
     def writeln (self, msg):
         """Write status message and line break to file descriptor."""
-        self.fd.write(u"%s%s" % (msg, unicode(os.linesep)))
+        self.fd.write(u"%s%s" % (msg, str_text(os.linesep)))
 
     def flush (self):
         """Flush file descriptor."""

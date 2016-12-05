@@ -248,8 +248,7 @@ class _Logger (object):
     def create_fd (self):
         """Create open file descriptor."""
         if self.filename is None:
-            return i18n.get_encoded_writer(encoding=self.output_encoding,
-                                           errors=self.codec_errors)
+            return sys.stdout
         return codecs.open(self.filename, "wb", self.output_encoding,
                            self.codec_errors)
 
