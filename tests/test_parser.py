@@ -51,7 +51,7 @@ parsetests = [
     ("""< >""", b"""< >"""),
     ("""<aä>""", b"""<a>"""),
     ("""<a aä="b">""", b"""<a a="b">"""),
-    ("""<a a="bä">""", b"""<a a="b&#228;">"""),
+    (u"""<a a="bä">""", b"""<a a="b&#195;&#164;">"""),
     # multiple attribute names should be ignored...
     ("""<a b="c" b="c" >""", b"""<a b="c">"""),
     # ... but which one wins - in our implementation the last one
@@ -125,8 +125,8 @@ parsetests = [
     ("""<a  href=bla" >""", b"""<a href="bla">"""),
     ("""<a onmouseover=blubb('nav1','',"""\
      """'/images/nav.gif',1);move(this); b="c">""",
-     """<a onmouseover="blubb('nav1','',"""\
-     """'/images/nav.gif',1);move(this);" b="c">"""),
+     b"""<a onmouseover="blubb('nav1','',"""\
+     b"""'/images/nav.gif',1);move(this);" b="c">"""),
     ("""<a onClick=location.href('/index.htm') b="c">""",
      b"""<a onclick="location.href('/index.htm')" b="c">"""),
     # entity resolving
@@ -139,8 +139,8 @@ parsetests = [
     # note that \u8156 is not valid encoding and therefore gets removed
     ("""<a  href="&#8156;ailto:" >""", b"""<a href="ailto:">"""),
     # non-ascii characters
-    ("""<Üzgür> fahr </langsamer> ¿¿¿¿¿¿{""",
-     """<Üzgür> fahr </langsamer> ¿¿¿¿¿¿{"""),
+    ("""<ÃœzgÃ¼r> fahr </langsamer> Å¡Ë›Å‚ÅºËÅ¹{""",
+     """<ÃœzgÃ¼r> fahr </langsamer> Å¡Ë›Å‚ÅºËÅ¹{"""),
     # mailto link
     ("""<a  href=mailto:calvin@LocalHost?subject=Hallo&to=michi>1</a>""",
      b"""<a href="mailto:calvin@LocalHost?subject=Hallo&amp;to=michi">1</a>"""),
@@ -184,10 +184,10 @@ parsetests = [
 ]
 
 flushtests = [
-    ("<", "<"),
-    ("<a", "<a"),
-    ("<!a", "<!a"),
-    ("<?a", "<?a"),
+    ("<", b"<"),
+    ("<a", b"<a"),
+    ("<!a", b"<!a"),
+    ("<?a", b"<?a"),
 ]
 
 
@@ -294,13 +294,13 @@ class TestParser (unittest.TestCase):
 
     def test_encoding_detection (self):
         html = '<meta http-equiv="content-type" content="text/html; charset=UTF-8">'
-        self.encoding_test(html, "utf-8")
+        self.encoding_test(html, b"utf-8")
         html = '<meta charset="UTF-8">'
-        self.encoding_test(html, "utf-8")
+        self.encoding_test(html, b"utf-8")
         html = '<meta charset="hulla">'
-        self.encoding_test(html, "iso8859-1")
+        self.encoding_test(html, b"iso8859-1")
         html = '<meta http-equiv="content-type" content="text/html; charset=blabla">'
-        self.encoding_test(html, "iso8859-1")
+        self.encoding_test(html, b"iso8859-1")
 
     def encoding_test (self, html, expected):
         parser = linkcheck.HtmlParser.htmlsax.parser()

@@ -212,7 +212,7 @@ def resolve_entities (s):
     """
     return _entity_re.sub(_resolve_entity, s)
 
-SUPPORTED_CHARSETS = ["utf-8", "iso-8859-1", "iso-8859-15"]
+SUPPORTED_CHARSETS = [b"utf-8", b"iso-8859-1", b"iso-8859-15"]
 
 _encoding_ro = re.compile(r"charset=(?P<encoding>[-0-9a-zA-Z]+)")
 
@@ -244,12 +244,12 @@ def get_ctype_charset (text):
     Extract charset information from mime content type string, eg.
     "text/html; charset=iso8859-1".
     """
-    for param in text.lower().split(';'):
+    for param in text.lower().split(b';'):
         param = param.strip()
-        if param.startswith('charset='):
+        if param.startswith(b'charset='):
             charset = param[8:].strip()
             try:
-                codecs.lookup(str(charset))
+                codecs.lookup(str(charset.decode("ascii")))
                 return charset
             except (LookupError, ValueError):
                 pass

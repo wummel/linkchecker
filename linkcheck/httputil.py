@@ -150,7 +150,7 @@ def get_charset(headers):
     @rtype: string or None
     """
     from linkcheck.HtmlParser import get_ctype_charset
-    return get_ctype_charset(headers.get('Content-Type', ''))
+    return get_ctype_charset(headers.get('Content-Type', '').encode('ascii', 'ignore'))
 
 
 def get_content_encoding (headers):
