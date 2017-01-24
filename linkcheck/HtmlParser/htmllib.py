@@ -127,7 +127,7 @@ class HtmlPrettyPrinter (object):
         @return: None
         """
         tag = tag.encode(self.encoding, "ignore")
-        self.fd.write(b"<%s" % tag.replace(b"/", b""))
+        self.fd.write(b"<" + tag.replace(b"/", b""))
         for key, val in attrs.items():
             key = key.encode(self.encoding, "ignore")
             if val is None:
