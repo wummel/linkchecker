@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 # Copyright (C) 2004-2014 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -127,8 +127,8 @@ class TestUrl (unittest.TestCase):
         url = "http://example.com/?u=http://example2.com?b="
         nurl = "http://example.com/?u=http://example2.com?b="
         self.urlnormtest(url, nurl)
-        url = "http://localhost:8001/?quoted=ü"
-        nurl = "http://localhost:8001/?quoted=%FC"
+        url = "http://localhost:8001/?quoted=Ã¼"
+        nurl = "http://localhost:8001/?quoted=%C3%BC"
         self.urlnormtest(url, nurl, encoding="iso-8859-1")
         url = "http://host/?a=b/c+d="
         nurl = "http://host/?a=b/c%20d%3D"
@@ -399,7 +399,7 @@ class TestUrl (unittest.TestCase):
         url = u"file:///a/b.txt"
         nurl = url
         self.urlnormtest(url, nurl)
-        url = u"file:///a/ä.txt"
+        url = u"file:///a/Ã¤.txt"
         nurl = u"file:///a/%E4.txt"
         self.urlnormtest(url, nurl, encoding="iso-8859-1")
         #url = u"file:///\u041c\u043e\u0448\u043a\u043e\u0432\u0430.bin"
@@ -407,7 +407,7 @@ class TestUrl (unittest.TestCase):
         #self.urlnormtest(url, nurl)
 
     def test_norm_invalid (self):
-        url = u"äöü?:"
+        url = u"Ã¤Ã¶Ã¼?:"
         nurl = u"%E4%F6%FC?:"
         self.urlnormtest(url, nurl, encoding="iso-8859-1")
 
@@ -475,7 +475,7 @@ class TestUrl (unittest.TestCase):
 
     def test_idn_encoding (self):
         # Test idna encoding.
-        url = u'www.öko.de'
+        url = u'www.Ã¶ko.de'
         idna_encode = linkcheck.url.idna_encode
         encurl, is_idn = idna_encode(url)
         self.assertTrue(is_idn)
@@ -484,7 +484,7 @@ class TestUrl (unittest.TestCase):
         encurl, is_idn = idna_encode(url)
         self.assertFalse(is_idn)
         self.assertFalse(encurl)
-        url = u"ä.."
+        url = u"Ã¤.."
         self.assertRaises(UnicodeError, idna_encode, url)
 
     def test_match_host (self):

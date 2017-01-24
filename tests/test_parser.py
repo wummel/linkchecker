@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 # Copyright (C) 2004-2012 Bastian Kleineidam
 #
 # This program is free software; you can redistribute it and/or modify
@@ -49,9 +49,9 @@ parsetests = [
     ("""< a >""", b"""<a>"""),
     ("""<>""", b"""<>"""),
     ("""< >""", b"""< >"""),
-    ("""<a�>""", b"""<a>"""),
-    ("""<a a�="b">""", b"""<a a="b">"""),
-    (u"""<a a="b�">""", b"""<a a="b&#195;&#164;">"""),
+    ("""<aä>""", b"""<a>"""),
+    ("""<a aä="b">""", b"""<a a="b">"""),
+    ("""<a a="bü">""", b"""<a a="b&#195;&#188;">"""),
     # multiple attribute names should be ignored...
     ("""<a b="c" b="c" >""", b"""<a b="c">"""),
     # ... but which one wins - in our implementation the last one
@@ -92,7 +92,7 @@ parsetests = [
     ("""</a >""", b"""</a>"""),
     ("""< / a>""", b"""</a>"""),
     ("""< /a>""", b"""</a>"""),
-    ("""</a�>""", b"""</a>"""),
+    ("""</aä>""", b"""</a>"""),
     # start and end tag (HTML doctype assumed)
     ("""<a/>""", b"""<a/>"""),
     ("""<meta/>""", b"""<meta>"""),
@@ -140,7 +140,7 @@ parsetests = [
     ("""<a  href="&#8156;ailto:" >""", b"""<a href="ailto:">"""),
     # non-ascii characters
     ("""<Üzgür> fahr </langsamer> š˛łź˝Ź{""",
-     """<Üzgür> fahr </langsamer> š˛łź˝Ź{"""),
+     b"""<\xc3\x9czg\xc3\xbcr> fahr </langsamer> \xc5\xa1\xcb\x9b\xc5\x82\xc5\xba\xcb\x9d\xc5\xb9{"""),
     # mailto link
     ("""<a  href=mailto:calvin@LocalHost?subject=Hallo&to=michi>1</a>""",
      b"""<a href="mailto:calvin@LocalHost?subject=Hallo&amp;to=michi">1</a>"""),
