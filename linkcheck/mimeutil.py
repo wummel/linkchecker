@@ -52,12 +52,12 @@ def add_mimetype(mimedb, mimetype, extension):
 
 # if file extension lookup was unsuccessful, look at the content
 PARSE_CONTENTS = {
-    "text/html": re.compile(b'^(?i)<(!DOCTYPE html|html|head|title)'),
-    "text/plain+opera": re.compile(b'^Opera Hotlist'),
-    "text/plain+chromium": re.compile(b'^{\s*"checksum":'),
-    "text/plain+linkchecker": re.compile(b'(?i)^# LinkChecker URL list'),
-    "application/xml+sitemapindex": re.compile(b'(?i)<\?xml[^<]+<sitemapindex\s+'),
-    "application/xml+sitemap": re.compile(b'(?i)<\?xml[^<]+<urlset\s+'),
+    "text/html": re.compile(r'^(?i)<(!DOCTYPE html|html|head|title)'),
+    "text/plain+opera": re.compile(r'^Opera Hotlist'),
+    "text/plain+chromium": re.compile(r'^{\s*"checksum":'),
+    "text/plain+linkchecker": re.compile(r'(?i)^# LinkChecker URL list'),
+    "application/xml+sitemapindex": re.compile(r'(?i)<\?xml[^<]+<sitemapindex\s+'),
+    "application/xml+sitemap": re.compile(r'(?i)<\?xml[^<]+<urlset\s+'),
 }
 
 def guess_mimetype (filename, read=None):
@@ -95,6 +95,8 @@ def guess_mimetype_read(read):
         pass
     else:
         for cmime, ro in PARSE_CONTENTS.items():
+            if isinstance(data, bytes):
+                data = data.decode()
             if ro.search(data):
                 mime = cmime
                 break
