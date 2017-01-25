@@ -134,7 +134,7 @@ class HtmlPrettyPrinter (object):
                 self.fd.write(b" %s" % key)
             else:
                 val = val.encode(self.encoding, "ignore")
-                self.fd.write(b' %s="%s"' % (key, quote_attrval(val)))
+                self.fd.write(b' {}="{}"'.format(key, quote_attrval(val)))
         self.fd.write(end.encode("utf8"))
 
     def end_element (self, tag):
