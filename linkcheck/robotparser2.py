@@ -22,10 +22,8 @@ http://www.robotstxt.org/wc/norobots-rfc.html
 """
 try: # Python 3
     from urllib import parse as urllib_parse
-    from urllib.parse import unquote_to_bytes
 except ImportError: # Python 2
     import urllib as urllib_parse
-    from urllib import unquote as unquote_to_bytes
 try: # Python 3
     from urllib import parse as urlparse
 except ImportError: # Python 2
@@ -103,7 +101,7 @@ class RobotFileParser (object):
             response.raise_for_status()
             content_type = response.headers.get('content-type')
             if content_type and content_type.lower().startswith('text/plain'):
-                self.parse(response.iter_lines())
+                self.parse(response.iter_lines(decode_unicode=True))
             else:
                 log.debug(LOG_CHECK, "%r allow all (no text content)", self.url)
                 self.allow_all = True
@@ -157,16 +155,16 @@ class RobotFileParser (object):
                     entry = Entry()
                     state = 0
             # remove optional comment and strip line
-            i = line.find(b'#')
+            i = line.find('#')
             if i >= 0:
                 line = line[:i]
             line = line.strip()
             if not line:
                 continue
-            line = line.split(b':', 1)
+            line = line.split(':', 1)
             if len(line) == 2:
                 line[0] = line[0].strip().lower()
-                line[1] = unquote_to_bytes(line[1].strip())
+                line[1] = urllib_parse.unquote(line[1].strip())
                 if line[0] == "user-agent":
                     if state == 2:
                         log.debug(LOG_CHECK, "%r line %d: missing blank line before user-agent directive", self.url, linenumber)

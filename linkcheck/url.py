@@ -251,11 +251,6 @@ def url_fix_mailto_urlsplit (urlparts):
 
 def url_parse_query (query, encoding=None):
     """Parse and re-join the given CGI query."""
-    if 'unicode' in globals() and isinstance(query, unicode):
-        if encoding is None:
-            encoding = url_encoding
-        query = query.encode(encoding, 'ignore')
-    # if ? is in the query, split it off, seen at msdn.microsoft.com
     append = ""
     while '?' in query:
         query, rest = query.rsplit('?', 1)
@@ -294,16 +289,6 @@ def url_norm (url, encoding=None):
     @return: (normed url, idna flag)
     @rtype: tuple of length two
     """
-    if 'unicode' in globals() and isinstance(url, unicode):
-        # try to decode the URL to ascii since urllib.unquote()
-        # handles non-unicode strings differently
-        try:
-            url = url.encode('ascii')
-        except UnicodeEncodeError:
-            pass
-        encode_unicode = True
-    else:
-        encode_unicode = False
     urlparts = list(urlparse.urlsplit(url))
     # scheme
     urlparts[0] = urllib_parse.unquote(urlparts[0]).lower()
@@ -336,8 +321,6 @@ def url_norm (url, encoding=None):
     if url.endswith('#') and not urlparts[4]:
         # re-append trailing empty fragment
         res += '#'
-    if encode_unicode:
-        res = str_text(res)
     return (res, is_idn)
 
 
@@ -410,9 +393,11 @@ def url_quote_part (s, safechars='/', encoding=None):
     if isinstance(s, str_text):
         if encoding is None:
             encoding = url_encoding
-    if encoding:
         s = s.encode(encoding, 'ignore')
-    return urllib_parse.quote(s, safechars)
+    return_value = urllib_parse.quote(s, safechars)
+    if isinstance(return_value, bytes):
+        return_value = return_value.decode()
+    return return_value
 
 def document_quote (document):
     """Quote given document."""

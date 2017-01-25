@@ -35,7 +35,7 @@ except ImportError:
     # Python 3
     from urllib.request import urlopen
 from datetime import datetime
-from builtins import str
+from builtins import str as str_text
 
 from . import urlbase, get_index_html
 from .. import log, LOG_CHECK, fileutil, mimeutil, LinkCheckerError, url as urlutil
@@ -139,7 +139,7 @@ class FileUrl (urlbase.UrlBase):
             base_url = re.sub("^file://(/?)([a-zA-Z]):", r"file:///\2|", base_url)
             # transform file://path into file:///path
             base_url = re.sub("^file://([^/])", r"file:///\1", base_url)
-        self.base_url = str(base_url)
+        self.base_url = str_text(base_url)
 
     def build_url (self):
         """

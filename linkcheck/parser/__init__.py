@@ -92,7 +92,7 @@ def parse_css (url_data):
     strip_comments = linkparse.strip_c_comments
     for line in strip_comments(url_data.get_content()).splitlines():
         lineno += 1
-        for mo in linkfinder(line):
+        for mo in linkfinder(line.decode()):
             column = mo.start("url")
             url = strformat.unquote(mo.group("url").strip())
             url_data.add_url(url, line=lineno, column=column)
