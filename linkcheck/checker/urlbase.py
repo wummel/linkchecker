@@ -41,7 +41,7 @@ try:
 except ImportError:
     # Python 3
     from io import StringIO
-from builtins import str
+from builtins import str as str_text
 from six import python_2_unicode_compatible
 
 from . import absolute_url, get_url_from
@@ -149,20 +149,20 @@ class UrlBase (object):
         """
         self.base_ref = base_ref
         if self.base_ref is not None:
-            assert isinstance(self.base_ref, str), repr(self.base_ref)
+            assert isinstance(self.base_ref, str_text), repr(self.base_ref)
         self.base_url = base_url.strip() if base_url else base_url
         if self.base_url is not None:
-            assert isinstance(self.base_url, str), repr(self.base_url)
+            assert isinstance(self.base_url, str_text), repr(self.base_url)
         self.parent_url = parent_url
         if self.parent_url is not None:
-            assert isinstance(self.parent_url, str), repr(self.parent_url)
+            assert isinstance(self.parent_url, str_text), repr(self.parent_url)
         self.recursion_level = recursion_level
         self.aggregate = aggregate
         self.line = line
         self.column = column
         self.page = page
         self.name = name
-        assert isinstance(self.name, str), repr(self.name)
+        assert isinstance(self.name, str_text), repr(self.name)
         self.encoding = url_encoding
         self.charset = None
         self.extern = extern
@@ -237,7 +237,7 @@ class UrlBase (object):
               "Double result %r (previous %r) for %s", msg, self.result, self)
         else:
             self.has_result = True
-        if not isinstance(msg, str):
+        if not isinstance(msg, str_text):
             log.warn(LOG_CHECK, "Non-unicode result for %s: %r", self, msg)
         elif not msg:
             log.warn(LOG_CHECK, "Empty result for %s", self)
@@ -321,7 +321,7 @@ class UrlBase (object):
         # URLs with different anchors to have the same content
         self.cache_url = urlutil.urlunsplit(self.urlparts[:4]+[u''])
         if self.cache_url is not None:
-            assert isinstance(self.cache_url, str), repr(self.cache_url)
+            assert isinstance(self.cache_url, str_text), repr(self.cache_url)
 
     def check_syntax (self):
         """
@@ -418,7 +418,7 @@ class UrlBase (object):
         # safe anchor for later checking
         self.anchor = self.urlparts[4]
         if self.anchor is not None:
-            assert isinstance(self.anchor, str), repr(self.anchor)
+            assert isinstance(self.anchor, str_text), repr(self.anchor)
 
     def check_obfuscated_ip (self):
         """Warn if host of this URL is obfuscated IP address."""
@@ -450,7 +450,7 @@ class UrlBase (object):
 
     def local_check (self):
         """Local check function can be overridden in subclasses."""
-        log.debug(LOG_CHECK, "Checking %s", str(self))
+        log.debug(LOG_CHECK, "Checking %s", str_text(self))
         # strict extern URLs should not be checked
         assert not self.extern[1], 'checking strict extern URL'
         # check connection
@@ -467,7 +467,7 @@ class UrlBase (object):
                 value = _('Hostname not found')
             elif isinstance(exc, UnicodeError):
                 # idna.encode(host) failed
-                value = _('Bad hostname %(host)r: %(msg)s') % {'host': self.host, 'msg': str(value)}
+                value = _('Bad hostname %(host)r: %(msg)s') % {'host': self.host, 'msg': str_text(value)}
             self.set_result(unicode_safe(value), valid=False)
 
     def check_content(self):
@@ -484,7 +484,7 @@ class UrlBase (object):
             except tuple(ExcList):
                 value = self.handle_exception()
                 self.add_warning(_("could not get content: %(msg)s") %
-                     {"msg": str(value)}, tag=WARN_URL_ERROR_GETTING_CONTENT)
+                     {"msg": str_text(value)}, tag=WARN_URL_ERROR_GETTING_CONTENT)
         return False
 
     def close_connection (self):
@@ -514,7 +514,7 @@ class UrlBase (object):
             # EBADF occurs when operating on an already socket
             self.caching = False
         # format unicode message "<exception name>: <error message>"
-        errmsg = str(etype.__name__)
+        errmsg = str_text(etype.__name__)
         uvalue = strformat.unicode_safe(evalue)
         if uvalue:
             errmsg += u": %s" % uvalue
@@ -727,7 +727,7 @@ class UrlBase (object):
         @return: URL info, encoded with the output logger encoding
         @rtype: string
         """
-        s = str(self)
+        s = str_text(self)
         return self.aggregate.config['logger'].encode(s)
 
     def __repr__ (self):
