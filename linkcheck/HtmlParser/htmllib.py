@@ -18,8 +18,6 @@
 Default HTML parser handler classes.
 """
 
-from __future__ import print_function
-
 import sys
 from builtins import bytes, str as str_text
 
