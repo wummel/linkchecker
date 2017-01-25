@@ -28,7 +28,7 @@ except ImportError: # Python 2
     import urlparse
 import requests
 
-from builtins import str
+from builtins import str as str_text
 from . import log, LOG_CHECK
 
 for scheme in ('ldap', 'irc'):
@@ -178,7 +178,7 @@ def idna_encode (host):
     to RFC 3490.
     @raise: UnicodeError if hostname is not properly IDN encoded.
     """
-    if isinstance(host, str):
+    if isinstance(host, str_text):
         try:
             host.encode('ascii')
             return host, False
@@ -337,7 +337,7 @@ def url_norm (url, encoding=None):
         # re-append trailing empty fragment
         res += '#'
     if encode_unicode:
-        res = str(res)
+        res = str_text(res)
     return (res, is_idn)
 
 
@@ -407,6 +407,9 @@ def url_quote (url):
 def url_quote_part (s, safechars='/', encoding=None):
     """Wrap urllib.quote() to support unicode strings. A unicode string
     is first converted to UTF-8. After that urllib.quote() is called."""
+    if isinstance(s, str_text):
+        if encoding is None:
+            encoding = url_encoding
     if encoding:
         s = s.encode(encoding, 'ignore')
     return urllib_parse.quote(s, safechars)
@@ -540,8 +543,8 @@ def get_content(url, user=None, password=None, proxy=None, data=None,
     except (requests.exceptions.RequestException,
             requests.exceptions.BaseHTTPError) as msg:
         log.warn(LOG_CHECK, ("Could not get content of URL %(url)s: %(msg)s.") \
-          % {"url": url, "msg": str(msg)})
-        return None, str(msg)
+          % {"url": url, "msg": str_text(msg)})
+        return None, str_text(msg)
 
 
 def shorten_duplicate_content_url(url):

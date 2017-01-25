@@ -116,14 +116,14 @@ class TestLinkparser (unittest.TestCase):
 
     def test_comment_stripping (self):
         strip = linkparse.strip_c_comments
-        content = "/* url('http://example.org')*/"
-        self.assertEqual(strip(content), "")
-        content = "/* * * **/"
-        self.assertEqual(strip(content), "")
-        content = "/* * /* * **//* */"
-        self.assertEqual(strip(content), "")
-        content = "a/* */b/* */c"
-        self.assertEqual(strip(content), "abc")
+        content = b"/* url('http://example.org')*/"
+        self.assertEqual(strip(content), b"")
+        content = b"/* * * **/"
+        self.assertEqual(strip(content), b"")
+        content = b"/* * /* * **//* */"
+        self.assertEqual(strip(content), b"")
+        content = b"a/* */b/* */c"
+        self.assertEqual(strip(content), b"abc")
 
     def test_url_quoting(self):
         url = u'http://example.com/bla/a=b'

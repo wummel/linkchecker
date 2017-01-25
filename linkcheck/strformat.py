@@ -59,7 +59,7 @@ def unicode_safe (s, encoding=i18n.default_encoding, errors='replace'):
     if isinstance(s, str_text):
         # s is already unicode, nothing to do
         return s
-    return str_text(str(s), encoding, errors)
+    return str(s).encode("utf-8", errors).decode()
 
 
 def ascii_safe (s):
