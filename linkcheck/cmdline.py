@@ -29,7 +29,7 @@ class LCArgumentParser(argparse.ArgumentParser):
 
     def print_help(self, file=sys.stdout):
         """Print a help message to stdout."""
-        msg = console.encode(self.format_help())
+        msg = self.format_help()
         if fileutil.is_tty(file):
             strformat.paginate(msg)
         else:
