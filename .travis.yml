@@ -13,9 +13,12 @@ addons:
 # command to install dependencies
 install:
   - pip install -r requirements.txt
-  - pip install pyftpdlib pytest-xdist
+  - pip install pyftpdlib pytest-xdist pytest-cov coveralls
 # command to run tests
-script: make test PYTESTOPTS="--tb=short" TESTS="tests/test_*.py tests/configuration/test_*.py tests/logger/test_*.py tests/cache/test_*.py tests/checker/test_httpbin.py"
+script:
+  - make test PYTESTOPTS="--tb=short --cov=linkcheck" TESTS="tests/test_*.py tests/configuration/test_*.py tests/logger/test_*.py tests/cache/test_*.py tests/checker/test_httpbin.py"
 # do not send emails of broken builds
 notifications:
   email: false
+after_script:
+  - coveralls
