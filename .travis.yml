@@ -1,10 +1,6 @@
 language: python
 python:
   - "2.7"
-# whitelist of git branches to build
-branches:
-  only:
-    - master
 # install required system packages
 addons:
   apt:
