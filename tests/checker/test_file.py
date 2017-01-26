@@ -32,7 +32,7 @@ def unzip (filename, targetdir):
     zf = zipfile.ZipFile(filename)
     for name in zf.namelist():
         if name.endswith('/'):
-            os.mkdir(os.path.join(targetdir, name), 0700)
+            os.mkdir(os.path.join(targetdir, name), 0o700)
         else:
             outfile = open(os.path.join(targetdir, name), 'wb')
             try:

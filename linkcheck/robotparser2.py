@@ -278,7 +278,7 @@ class RuleLine (object):
             # an empty value means allow all
             allowance = True
             path = '/'
-        self.path = urllib_parse.quote(path)
+        self.path = urllib_parse.quote(path.encode("utf-8"))
         self.allowance = allowance
 
     def applies_to (self, path):
