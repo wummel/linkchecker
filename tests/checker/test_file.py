@@ -19,6 +19,7 @@ Test file parsing.
 """
 import os
 import sys
+import pytest
 import zipfile
 from tests import need_word, need_pdflib
 from . import LinkCheckTest, get_file
@@ -80,6 +81,10 @@ class TestFile (LinkCheckTest):
     def test_urllist (self):
         self.file_test("urllist.txt")
 
+    @pytest.mark.skipif(
+        os.environ["TEST_SKIP"] == "travis",
+        reason="this test doesn't work in Travis yet",
+    )
     def test_directory_listing (self):
         # unpack non-unicode filename which cannot be stored
         # in the SF subversion repository
