@@ -27,7 +27,7 @@ try:
     from urllib import parse as urllib_parse
 except ImportError:
     import urllib as urllib_parse
-from io import StringIO
+from io import BytesIO
 from . import LinkCheckTest
 
 
@@ -124,17 +124,20 @@ class NoQueryHttpRequestHandler (StoppableHttpRequestHandler):
         interface the same as for send_head().
 
         """
-        f = StringIO()
-        f.write(u'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">')
-        f.write(u"<html>\n<title>Dummy directory listing</title>\n")
-        f.write(u"<body>\n<h2>Dummy test directory listing</h2>\n")
-        f.write(u"<hr>\n<ul>\n")
+        f = BytesIO()
+        f.write(b'<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">')
+        f.write(b"<html>\n<title>Dummy directory listing</title>\n")
+        f.write(b"<body>\n<h2>Dummy test directory listing</h2>\n")
+        f.write(b"<hr>\n<ul>\n")
         list = [u"example1.txt", u"example2.html", u"example3"]
         for name in list:
             displayname = linkname = name
-            f.write(u'<li><a href="%s">%s</a>\n'
-                    % (urllib_parse.quote(linkname), cgi.escape(displayname)))
-        f.write(u"</ul>\n<hr>\n</body>\n</html>\n")
+            list_item = (
+                u'<li><a href="%s">%s</a>\n'
+                % (urllib_parse.quote(linkname), cgi.escape(displayname))
+            )
+            f.write(list_item.encode())
+        f.write(b"</ul>\n<hr>\n</body>\n</html>\n")
         length = f.tell()
         f.seek(0)
         self.send_response(200)
