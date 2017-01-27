@@ -23,7 +23,7 @@ import cgi
 try: # Python 3
     from urllib import parse as urlparse
 except ImportError:
-    import urlparse
+    import urllib as urlparse
 from .. import strformat, url as urlutil, log, LOG_CHECK
 
 MAX_FILESIZE = 1024*1024*10 # 10MB
