@@ -67,7 +67,7 @@ def start_server (host, port):
     def on_connect(client):
         clients.append(client)
         client.send("Telnet test server\n")
-    server = miniboa.TelnetServer(port=port, host=host, on_connect=on_connect)
+    server = miniboa.TelnetServer(port=port, address=host, on_connect=on_connect)
     port = server.server_socket.getsockname()[1]
     t = threading.Thread(None, serve_forever, args=(server, clients))
     t.start()
