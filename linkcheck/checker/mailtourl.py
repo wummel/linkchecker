@@ -246,7 +246,6 @@ class MailtoUrl (urlbase.UrlBase):
         """
         from dns.exception import DNSException
         log.debug(LOG_CHECK, "checking mail address %r", mail)
-        mail = strformat.ascii_safe(mail)
         username, domain = mail.rsplit('@', 1)
         log.debug(LOG_CHECK, "looking up MX mailhost %r", domain)
         try:
