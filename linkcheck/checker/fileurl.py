@@ -29,11 +29,10 @@ try:  # Python 3
     from urllib import request as urllib_request
 except ImportError:  # Python 2
     import urllib as urllib_request
-try:
-    from urllib2 import urlopen
-except ImportError:
-    # Python 3
+try:  # Python 3
     from urllib.request import urlopen
+except ImportError:
+    from urllib import urlopen
 from datetime import datetime
 from builtins import str as str_text
 
