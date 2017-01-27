@@ -20,7 +20,10 @@ Main functions for link checking.
 
 import os
 import cgi
-import urllib
+try: # Python 3
+    from urllib import parse as urlparse
+except ImportError:
+    import urlparse
 from .. import strformat, url as urlutil, log, LOG_CHECK
 
 MAX_FILESIZE = 1024*1024*10 # 10MB
@@ -165,7 +168,7 @@ def get_index_html (urls):
     for entry in urls:
         name = cgi.escape(entry)
         try:
-            url = cgi.escape(urllib.quote(entry))
+            url = cgi.escape(urlparse.quote(entry))
         except KeyError:
             # Some unicode entries raise KeyError.
             url = name
