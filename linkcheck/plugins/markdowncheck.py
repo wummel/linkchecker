@@ -31,6 +31,7 @@ import re
 from . import _ContentPlugin
 from .. import log, LOG_PLUGIN
 
+from builtins import str as str_text
 
 class MarkdownCheck(_ContentPlugin):
     """Markdown parsing plugin."""
@@ -94,7 +95,7 @@ class MarkdownCheck(_ContentPlugin):
 
     def check(self, url_data):
         """Extracts urls from the file."""
-        content = url_data.get_content()
+        content = url_data.get_content().decode()
         self._check_by_re(url_data, content)
         self._check_inline_links(url_data, content)
 
@@ -108,7 +109,7 @@ class MarkdownCheck(_ContentPlugin):
         """
         line = content.count('\n', 0, url_pos) + 1
         column = url_pos - content.rfind('\n', 0, url_pos)
-        url_data.add_url(url_text.translate(None, '\n '), line=line, column=column)
+        url_data.add_url(url_text.translate(str_text.maketrans("", "", '\n ')), line=line, column=column)
 
     def _check_by_re(self, url_data, content):
         """ Finds urls by re.
