@@ -19,7 +19,7 @@ Test internal pattern construction
 """
 import linkcheck.director
 import linkcheck.configuration
-from __init__ import LinkCheckTest, get_url_from
+from .__init__ import LinkCheckTest, get_url_from
 
 
 class TestInternpat (LinkCheckTest):
