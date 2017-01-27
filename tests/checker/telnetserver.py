@@ -78,7 +78,7 @@ def start_server (host, port):
         try:
             client = telnetlib.Telnet(timeout=TIMEOUT)
             client.open(host, port)
-            client.write("exit\n")
+            client.write(b"exit\n")
             break
         except:
             time.sleep(0.5)
@@ -89,7 +89,7 @@ def stop_server (host, port):
     """Stop a running FTP server."""
     client = telnetlib.Telnet(timeout=TIMEOUT)
     client.open(host, port)
-    client.write("stop\n")
+    client.write(b"stop\n")
 
 
 def serve_forever(server, clients):
