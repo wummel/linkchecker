@@ -224,6 +224,7 @@ ignored_schemes_provisional = r"""
 |ut2004     # ut2004
 |ventrilo   # ventrilo
 |view\-source # view-source
+|whatsapp   # whatsapp
 |webcal     # webcal
 |wtai       # wtai
 |wyciwyg    # wyciwyg
