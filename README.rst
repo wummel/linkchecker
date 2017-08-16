@@ -1,3 +1,8 @@
+DEPRECATED
+==========
+
+**This repository is no longer maintained. Use https://github.com/linkcheck/linkchecker instead.**
+
 LinkChecker
 ============
 
