@@ -1,3 +1,5 @@
+This project is inactive. Instead, see https://linkcheck.github.io/linkchecker/
+
 LinkChecker
 ============
 
