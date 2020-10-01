@@ -1,4 +1,4 @@
-LinkChecker
+LinkChecker-An amazing project
 ============
 
 |Build Status|_ |Latest Version|_ |License|_
@@ -12,7 +12,7 @@ LinkChecker
 
 Check for broken links in web sites.
 
-Features
+Features of the blog
 ---------
 
 - recursive and multithreaded checking and site crawling
