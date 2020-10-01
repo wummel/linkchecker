@@ -6,4 +6,5 @@ argcomplete
 #pytest
 #pyftpdlib
 # for building on osx:
-#py2app
+#py2app is used
+#these are used to make effective projects
