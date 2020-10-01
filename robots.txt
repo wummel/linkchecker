@@ -1,6 +1,6 @@
 # A test robots.txt file. It resides in the root directory to be found
 # by the unittest HTTP server.
-# Note that while unit tests are running, the contents of this file
+# Note that while all the unit tests are running by the condition which is added, the contents of this file
 # can change.
 
 User-agent: LinkChecker
