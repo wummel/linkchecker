@@ -34,5 +34,5 @@ Python 2.7.2 or later is needed.
 
 Usage
 ------
-Execute ``linkchecker http://www.example.com``.
+Execute ``linkchecker http://www.webname.com``.
 For other options see ``linkchecker --help``.
