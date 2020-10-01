@@ -1,4 +1,4 @@
-# This Makefile is only used by developers.
+# This Makefile is only used by all developers.
 PYVER:=2.7
 PYTHON?=python$(PYVER)
 VERSION:=$(shell $(PYTHON) setup.py --version)
