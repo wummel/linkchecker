@@ -23,6 +23,7 @@ Features
 - username/password authorization for HTTP, FTP and Telnet
 - honors robots.txt exclusion protocol
 - Cookie support
+- CSS and Mobile Responsive Support
 - HTML5 support
 - a command line and web interface
 - various check plugins available, eg. HTML syntax and antivirus checks.
