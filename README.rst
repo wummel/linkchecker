@@ -1,4 +1,4 @@
-LinkChecker
+LinkChecker - An Amazing Project 
 ============
 
 |Build Status|_ |Latest Version|_ |License|_
