@@ -1,4 +1,4 @@
-LinkChecker
+LinkChecker - Latest Version
 ============
 
 |Build Status|_ |Latest Version|_ |License|_
