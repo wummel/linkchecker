@@ -20,7 +20,7 @@ Features
 - HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Telnet and local file links support
 - restrict link checking with regular expression filters for URLs
 - proxy support
-- username/password authorization for HTTP, FTP and Telnet
+- username or password authorization for HTTP, FTP and Telnet
 - honors robots.txt exclusion protocol
 - Cookie support
 - HTML5 support
@@ -35,4 +35,4 @@ Python 2.7.2 or later is needed.
 Usage
 ------
 Execute ``linkchecker http://www.example.com``.
-For other options see ``linkchecker --help``.
+For further options see ``linkchecker --help``.
