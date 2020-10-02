@@ -1,4 +1,4 @@
-LinkChecker
+Link chequed
 ============
 
 |Build Status|_ |Latest Version|_ |License|_
