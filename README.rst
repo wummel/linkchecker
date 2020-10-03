@@ -1,4 +1,4 @@
-LinkChecker
+LinkChecker - An amazing detector
 ============
 
 |Build Status|_ |Latest Version|_ |License|_
