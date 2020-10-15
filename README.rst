@@ -10,21 +10,21 @@ LinkChecker
 .. |License| image:: http://img.shields.io/badge/license-GPL2-d49a6a.svg
 .. _License: http://opensource.org/licenses/GPL-2.0
 
-Check for broken links in web sites.
+Check for broken links in Websites.
 
 Features
 ---------
 
-- recursive and multithreaded checking and site crawling
-- output in colored or normal text, HTML, SQL, CSV, XML or a sitemap graph in different formats
-- HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Telnet and local file links support
-- restrict link checking with regular expression filters for URLs
-- proxy support
-- username/password authorization for HTTP, FTP and Telnet
-- honors robots.txt exclusion protocol
-- Cookie support
-- HTML5 support
-- a command line and web interface
+- Recursive and Multithreaded checking and site crawling.
+- Output is in colored or normal text, HTML, SQL, CSV, XML or a sitemap graph in different formats.
+- HTTP/1.1, HTTPS, FTP, mailto:, news:, nntp:, Telnet and local file links support.
+- Restrict link checking with regular expression filters for URLs.
+- Proxy support.
+- Username/Password authorization for HTTP, FTP and Telnet.
+- Honors robots.txt exclusion protocol.
+- Cookie support.
+- HTML5 support.
+- a command line and web interface.
 - various check plugins available, eg. HTML syntax and antivirus checks.
 
 Installation
