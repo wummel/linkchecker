@@ -10,7 +10,7 @@ LinkChecker
 .. |License| image:: http://img.shields.io/badge/license-GPL2-d49a6a.svg
 .. _License: http://opensource.org/licenses/GPL-2.0
 
-Check for broken links in websites.
+Check for broken links in Websites.
 
 Features
 ---------
