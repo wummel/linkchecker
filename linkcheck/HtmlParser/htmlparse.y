@@ -207,7 +207,7 @@ element: T_WAIT {
 }
 | T_ERROR
 {
-    /* an error occured in the scanner, the python exception must be set */
+    /* an error occurred in the scanner, the python exception must be set */
     UserData* ud = yyget_extra(scanner);
     PyErr_Fetch(&(ud->exc_type), &(ud->exc_val), &(ud->exc_tb));
     YYABORT;

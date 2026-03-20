@@ -24,8 +24,8 @@ import struct
 from .. import log, LOG_CHECK
 
 
-# IP Adress regular expressions
-# Note that each IPv4 octet can be encoded in dezimal, hexadezimal and octal.
+# IP Address regular expressions
+# Note that each IPv4 octet can be encoded in decimal, hexadecimal and octal.
 _ipv4_num = r"\d{1,3}"
 _ipv4_hex = r"0*[\da-f]{1,2}"
 _ipv4_oct = r"0+[0-7]{0, 3}"
@@ -203,7 +203,7 @@ def strhosts2map (strhosts):
 def hosts2map (hosts):
     """
     Return a set of named hosts, and a list of subnets (host/netmask
-    adresses).
+    addresses).
     Only IPv4 host/netmasks are supported.
     """
     hostset = set()

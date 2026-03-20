@@ -279,9 +279,9 @@ A cookie file contains standard HTTP header (RFC 2616) data with the
 following possible names:
 <DL COMPACT>
 <DT><B>Host</B> (required)<DD>
-Sets the domain the cookies are valid for.
+Sets the domain for which the cookies are valid.
 <DT><B>Path</B> (optional)<DD>
-Gives the path the cookies are value for; default path is <B>/</B>.
+Gives the path for which the cookies are valid; default path is <B>/</B>.
 <DT><B>Set-cookie</B> (required)<DD>
 Set cookie name/value. Can be given more than once.
 </DL>
@@ -348,7 +348,7 @@ HTML or other parseable file contents are checked for recursion.
 A mailto: link eventually resolves to a list of email addresses.
 If one address fails, the whole list will fail.
 For each mail address we check the following things:
-<BR>&nbsp;&nbsp;1)&nbsp;Check&nbsp;the&nbsp;adress&nbsp;syntax,&nbsp;both&nbsp;of&nbsp;the&nbsp;part&nbsp;before&nbsp;and&nbsp;after
+<BR>&nbsp;&nbsp;1)&nbsp;Check&nbsp;the&nbsp;address&nbsp;syntax,&nbsp;both&nbsp;of&nbsp;the&nbsp;part&nbsp;before&nbsp;and&nbsp;after
 <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;@&nbsp;sign.
 <BR>&nbsp;&nbsp;2)&nbsp;Look&nbsp;up&nbsp;the&nbsp;MX&nbsp;DNS&nbsp;records.&nbsp;If&nbsp;we&nbsp;found&nbsp;no&nbsp;MX&nbsp;record,
 <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;an&nbsp;error.
@@ -443,7 +443,7 @@ connection to the internet (e.g. with diald), it will connect when
 checking links not pointing to your local host.
 Use the <B>--ignore-url</B> option to prevent this.
 <P>
-Javascript links are not supported.
+JavaScript links are not supported.
 <P>
 If your platform does not support threading, LinkChecker disables it
 automatically.

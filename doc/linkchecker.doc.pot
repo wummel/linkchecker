@@ -787,7 +787,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/linkchecker.1:267
-msgid "Sets the domain the cookies are valid for."
+msgid "Sets the domain for which the cookies are valid."
 msgstr ""
 
 #. type: TP
@@ -798,7 +798,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/linkchecker.1:270
-msgid "Gives the path the cookies are value for; default path is B</>."
+msgid "Gives the path for which the cookies are valid; default path is B</>."
 msgstr ""
 
 #. type: TP
@@ -972,7 +972,7 @@ msgstr ""
 #: en/linkchecker.1:349
 #, no-wrap
 msgid ""
-"  1) Check the adress syntax, both of the part before and after\n"
+"  1) Check the address syntax, both of the part before and after\n"
 "     the @ sign.\n"
 "  2) Look up the MX DNS records. If we found no MX record,\n"
 "     print an error.\n"
@@ -1000,7 +1000,7 @@ msgstr ""
 #, no-wrap
 msgid ""
 "  1) connect to the specified host\n"
-"  2) try to login with the given user and password. The default\n"
+"  2) try to log in with the given user and password. The default\n"
 "     user is ``anonymous``, the default password is ``anonymous@``.\n"
 "  3) try to change to the given directory\n"
 "  4) list the file with the NLST command\n"
@@ -1016,7 +1016,7 @@ msgstr ""
 #: en/linkchecker.1:365
 #, no-wrap
 msgid ""
-"  We try to connect and if user/password are given, login to the\n"
+"  We try to connect and if user/password are given, log in to the\n"
 "  given telnet server.\n"
 msgstr ""
 
@@ -1183,7 +1183,7 @@ msgstr ""
 
 #. type: Plain text
 #: en/linkchecker.1:436
-msgid "Javascript links are not supported."
+msgid "JavaScript links are not supported."
 msgstr ""
 
 #. type: Plain text

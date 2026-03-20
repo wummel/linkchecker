@@ -484,7 +484,7 @@ def get_kde_ftp_proxy ():
         log.debug(LOG_CHECK, "error getting FTP proxy from KDE: %s", msg)
         pass
 
-# The following KDE functions are largely ported and ajusted from
+# The following KDE functions are largely ported and adjusted from
 # Google Chromium:
 # http://src.chromium.org/viewvc/chrome/trunk/src/net/proxy/proxy_config_service_linux.cc?revision=HEAD&view=markup
 # Copyright (c) 2010 The Chromium Authors. All rights reserved.

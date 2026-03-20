@@ -89,7 +89,7 @@ if geoip_dat:
 def get_location (host):
     """Get translated country and optional city name.
 
-    @return: country with optional city or an boolean False if not found
+    @return: country with optional city or a boolean False if not found
     """
     if geoip is None:
         # no geoip available

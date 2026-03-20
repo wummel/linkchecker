@@ -454,7 +454,7 @@ def url_needs_quoting (url):
     """
     if url.rstrip() != url:
         # handle trailing whitespace as a special case
-        # since '$' matches immediately before a end-of-line
+        # since '$' matches immediately before an end-of-line
         return True
     return not _safe_url_chars_ro.match(url)
 

@@ -333,7 +333,7 @@ class GzipFile:
     def _read_eof(self):
         # We've read to the end of the file, so we have to rewind in order
         # to reread the 8 bytes containing the CRC and the file size.
-        # We check the that the computed CRC and size of the
+        # We check that the computed CRC and size of the
         # uncompressed data matches the stored values.  Note that the size
         # stored is the true file size mod 2**32.
         self.fileobj.seek(-8, 1)

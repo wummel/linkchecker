@@ -54,7 +54,7 @@ class NntpUrl (urlbase.UrlBase):
             number = nntp.stat("<"+group+">")[1]
             self.add_info(_('Article number %(num)s found.') % {"num": number})
         else:
-            # split off trailing articel span
+            # split off trailing article span
             group = group.split('/', 1)[0]
             if group:
                 # request group info (resp, count, first, last, name)

@@ -102,7 +102,7 @@ def synchronize (lock, func, log_duration_secs=0):
 
 
 def synchronized (lock):
-    """A decorator calling a function with aqcuired lock."""
+    """A decorator calling a function with acquired lock."""
     return lambda func: synchronize(lock, func)
 
 

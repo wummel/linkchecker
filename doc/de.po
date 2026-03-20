@@ -1027,7 +1027,7 @@ msgstr "B<Host> (erforderlich)"
 # type: Plain text
 #. type: Plain text
 #: en/linkchecker.1:267
-msgid "Sets the domain the cookies are valid for."
+msgid "Sets the domain for which the cookies are valid."
 msgstr "Setzt die Domäne für die die Cookies gültig sind."
 
 # type: TP
@@ -1040,7 +1040,7 @@ msgstr "B<Path> (optional)"
 # type: Plain text
 #. type: Plain text
 #: en/linkchecker.1:270
-msgid "Gives the path the cookies are value for; default path is B</>."
+msgid "Gives the path for which the cookies are valid; default path is B</>."
 msgstr "Gibt den Pfad für den die Cookies gültig sind; Standardpfad ist B</>."
 
 # type: TP

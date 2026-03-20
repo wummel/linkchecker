@@ -29,7 +29,7 @@ in your programs folder
 
 Setup for GNU/Linux
 -------------------
-On all major Linux distributions (Debian, Mandriva, Redhat, Suse, Ubuntu),
+On all major Linux distributions (Debian, Mandriva, Red Hat, Suse, Ubuntu),
 the ``linkchecker`` package is available for install.
 
 

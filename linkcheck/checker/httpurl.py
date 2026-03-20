@@ -20,7 +20,7 @@ Handle http links.
 
 import requests
 # The validity of SSL certs is ignored to be able
-# the check the URL and recurse into it.
+# to check the URL and recurse into it.
 # The warning about invalid SSL certs is given to the
 # user instead.
 import warnings

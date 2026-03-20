@@ -61,7 +61,7 @@ Notes = _("""NOTES
    connection to the internet (e.g. with diald), it will connect when
    checking links not pointing to your local system.
    See the --ignore-url option on how to prevent this.
- o Javascript links are currently ignored.
+ o JavaScript links are currently ignored.
  o If your platform does not support threading, LinkChecker disables it
    automatically.
  o You can supply multiple user/password pairs in a configuration file.
@@ -107,11 +107,11 @@ CookieFormat = _("""COOKIE FILES
 A cookie file contains standard RFC 805 header data with the following
 possible names:
 Scheme (optional)
- Sets the scheme the cookies are valid for; default scheme is 'http'.
+ Sets the scheme for which the cookies are valid; default scheme is 'http'.
 Host (required)
- Sets the domain the cookies are valid for.
+ Sets the domain for which the cookies are valid.
 Path (optional)
- Gives the path the cookies are value for; default path is '/'.
+ Gives the path for which the cookies are valid; default path is '/'.
 Set-cookie (optional)
  Set cookie name/value. Can be given more than once.
 

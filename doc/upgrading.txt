@@ -132,7 +132,7 @@ Python >= 2.5 is now required.
 
 The CGI script access control has been removed. Please use the access
 control of your webserver to restrict access to the CGI script.
-An example configuration file for the Apache weberver has been included
+An example configuration file for the Apache webserver has been included
 in the distribution.
 
 Migrating from 4.4 to 4.5
@@ -155,7 +155,7 @@ should be written as:
     # this is a comment
     ^nntp:
 
-Note the leading spac(es) at the beginning of each line after
+Note the leading space(s) at the beginning of each line after
 ``ignore=``.
 If an indented line starts with a comment sign, it will be ignored.
 
@@ -186,7 +186,7 @@ server, so your checking time might increase if the server enforces
 such a delay through its robots.txt file.
 
 URLs with invalid syntax are now cached, and they get matched now by
-the --ingore-url option.
+the --ignore-url option.
 
 Migrating from 3.0 to 3.1
 -------------------------

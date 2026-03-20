@@ -53,7 +53,7 @@ class TestError (LinkCheckTest):
         self.direct(url, resultlines)
 
     def test_invalid2 (self):
-        # missing scheme alltogether
+        # missing scheme altogether
         url = u"הצü"
         attrs = self.get_attrs(url=url)
         attrs['nurl'] = self.norm("file://%(curdir)s/%(url)s" % attrs)

@@ -212,7 +212,7 @@
 #  ^https?://www\.example\.com/~calvin/ calvin mypass
 #  ^ftp://www\.example\.com/secret/ calvin
 
-# if the website requires a login the URL and optionally the user and
+# if the website requires a login, the URL and optionally the user and
 # password CGI fieldnames can be provided.
 #loginurl=http://www.example.com/
 

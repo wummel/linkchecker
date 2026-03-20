@@ -258,12 +258,12 @@ msgstr ""
 
 #: ../linkcheck/plugins/sslcertcheck.py:78
 #, python-format
-msgid "Invalid SSL certficate \"notAfter\" value %r"
+msgid "Invalid SSL certificate \"notAfter\" value %r"
 msgstr ""
 
 #: ../linkcheck/plugins/sslcertcheck.py:87
 #, python-format
-msgid "SSL certficate is expired on %(expire)s."
+msgid "SSL certificate is expired on %(expire)s."
 msgstr ""
 
 #: ../linkcheck/plugins/sslcertcheck.py:92
@@ -1085,7 +1085,7 @@ msgid ""
 "   connection to the internet (e.g. with diald), it will connect when\n"
 "   checking links not pointing to your local system.\n"
 "   See the --ignore-url option on how to prevent this.\n"
-" o Javascript links are currently ignored.\n"
+" o JavaScript links are currently ignored.\n"
 " o If your platform does not support threading, LinkChecker disables it\n"
 "   automatically.\n"
 " o You can supply multiple user/password pairs in a configuration file.\n"
@@ -1138,11 +1138,11 @@ msgid ""
 "A cookie file contains standard RFC 805 header data with the following\n"
 "possible names:\n"
 "Scheme (optional)\n"
-" Sets the scheme the cookies are valid for; default scheme is 'http'.\n"
+" Sets the scheme for which the cookies are valid; default scheme is 'http'.\n"
 "Host (required)\n"
-" Sets the domain the cookies are valid for.\n"
+" Sets the domain for which the cookies are valid.\n"
 "Path (optional)\n"
-" Gives the path the cookies are value for; default path is '/'.\n"
+" Gives the path for which the cookies are valid; default path is '/'.\n"
 "Set-cookie (optional)\n"
 " Set cookie name/value. Can be given more than once.\n"
 "\n"

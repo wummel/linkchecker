@@ -91,7 +91,7 @@ def cnormpath (path):
 
 release_ro = re.compile(r"\(released (.+)\)")
 def get_release_date ():
-    """Parse and return relase date as string from doc/changelog.txt."""
+    """Parse and return release date as string from doc/changelog.txt."""
     fname = os.path.join("doc", "changelog.txt")
     release_date = "unknown"
     with open(fname) as fd:

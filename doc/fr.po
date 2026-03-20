@@ -930,7 +930,7 @@ msgstr ""
 
 # type: Plain text
 #: en/linkchecker.1:278
-msgid "Sets the scheme the cookies are valid for; default scheme is B<http>."
+msgid "Sets the scheme for which the cookies are valid; default scheme is B<http>."
 msgstr ""
 
 # type: TP
@@ -941,7 +941,7 @@ msgstr ""
 
 # type: Plain text
 #: en/linkchecker.1:281
-msgid "Sets the domain the cookies are valid for."
+msgid "Sets the domain for which the cookies are valid."
 msgstr ""
 
 # type: TP
@@ -952,7 +952,7 @@ msgstr ""
 
 # type: Plain text
 #: en/linkchecker.1:284
-msgid "Gives the path the cookies are value for; default path is B</>."
+msgid "Gives the path for which the cookies are valid; default path is B</>."
 msgstr ""
 
 # type: TP

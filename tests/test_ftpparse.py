@@ -60,7 +60,7 @@ patterns = (
      dict(name='00README.TXT', tryretr=True, trycwd=False)),
     ("CORE.DIR;1          1  8-SEP-1996 16:09 [SYSTEM] (RWE,RWE,RE,RE)",
      dict(name='CORE', tryretr=False, trycwd=True)),
-    # and non-MutliNet VMS:
+    # and non-MultiNet VMS:
     ("CII-MANUAL.TEX;1  213/216  29-JAN-1996 03:33:12  [ANONYMOU,ANONYMOUS]   (RWED,RWED,,)",
      dict(name='CII-MANUAL.TEX', tryretr=True, trycwd=False)),
     # MSDOS format

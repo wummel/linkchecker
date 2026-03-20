@@ -75,16 +75,16 @@ class SslCertificateCheck(_ConnectionPlugin):
         try:
             notAfter = ssl.cert_time_to_seconds(cert['notAfter'])
         except ValueError as msg:
-            msg = _('Invalid SSL certficate "notAfter" value %r') % cert['notAfter']
+            msg = _('Invalid SSL certificate "notAfter" value %r') % cert['notAfter']
             url_data.add_warning(msg)
             return
         curTime = time.time()
-        # Calculate seconds until certifcate expires. Can be negative if
+        # Calculate seconds until certificate expires. Can be negative if
         # the certificate is already expired.
         secondsValid = notAfter - curTime
         args = dict(expire=cert['notAfter'])
         if secondsValid < 0:
-            msg = _('SSL certficate is expired on %(expire)s.')
+            msg = _('SSL certificate is expired on %(expire)s.')
             url_data.add_warning(msg % args)
         else:
             args['valid'] = strformat.strduration_long(secondsValid)

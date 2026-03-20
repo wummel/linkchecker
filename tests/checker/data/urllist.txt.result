@@ -7,7 +7,7 @@ valid
 url javascript:loadthis()
 cache key javascript:loadthis()
 real url javascript:loadthis()
-info Javascript URL ignored.
+info JavaScript URL ignored.
 valid
 
 url file.html

@@ -34,7 +34,7 @@ class TestMailBad (MailTest):
         self.mail_error(u'mailto:"a""@example.com', cache_key=u'mailto:a')
         self.mail_error(u'mailto:""a"@example.com', cache_key=u'mailto:""a"@example.com')
         self.mail_error(u'mailto:"a\\"@example.com', cache_key=u'mailto:a"@example.com')
-        # local part unqouted
+        # local part unquoted
         self.mail_error(u'mailto:.a@example.com')
         self.mail_error(u'mailto:a.@example.com')
         self.mail_error(u'mailto:a..b@example.com')

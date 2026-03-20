@@ -92,7 +92,7 @@ def get_plugins(modules, classes):
     @param modules: the modules to search
     @ptype modules: iterator of modules
     @return: found classes
-    @rytpe: iterator of class objects
+    @rtype: iterator of class objects
     """
     for module in modules:
         for plugin in get_module_plugins(module, classes):

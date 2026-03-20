@@ -39,7 +39,7 @@ ExcCacheList = [
     DNSException,
     socket.error,
     select.error,
-    # nttp errors (including EOFError)
+    # nntp errors (including EOFError)
     nntplib.NNTPError,
     EOFError,
     # http errors

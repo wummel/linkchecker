@@ -69,7 +69,7 @@ def has_module (name, without_error=True):
     except ImportError:
         return False
     except Exception:
-        # some modules raise errors when intitializing
+        # some modules raise errors when initializing
         return not without_error
 
 

@@ -315,7 +315,7 @@ struct yy_buffer_state
 #define YY_BUFFER_NORMAL 1
 	/* When an EOF's been seen but there's still some text to process
 	 * then we mark the buffer as YY_EOF_PENDING, to indicate that we
-	 * shouldn't try reading from the input source any more.  We might
+	 * shouldn't try reading from the input source anymore.  We might
 	 * still have a bunch of tokens to match, though, because of
 	 * possible backing-up.
 	 *
@@ -5476,7 +5476,7 @@ static void yyensure_buffer_stack (yyscan_t yyscanner)
 /* %endif */
 
 /* %if-c-only */
-/** Setup the input buffer state to scan directly from a user-specified character buffer.
+/** Set up the input buffer state to scan directly from a user-specified character buffer.
  * @param base the character buffer
  * @param size the size in bytes of the character buffer
  * @param yyscanner The scanner object.
@@ -5513,7 +5513,7 @@ YY_BUFFER_STATE yy_scan_buffer  (char * base, yy_size_t  size , yyscan_t yyscann
 /* %endif */
 
 /* %if-c-only */
-/** Setup the input buffer state to scan a string. The next call to yylex() will
+/** Set up the input buffer state to scan a string. The next call to yylex() will
  * scan from a @e copy of @a str.
  * @param yystr a NUL-terminated string to scan
  * @param yyscanner The scanner object.
@@ -5529,7 +5529,7 @@ YY_BUFFER_STATE yy_scan_string (yyconst char * yystr , yyscan_t yyscanner)
 /* %endif */
 
 /* %if-c-only */
-/** Setup the input buffer state to scan the given bytes. The next call to yylex() will
+/** Set up the input buffer state to scan the given bytes. The next call to yylex() will
  * scan from a @e copy of @a bytes.
  * @param yybytes the byte buffer to scan
  * @param _yybytes_len the number of bytes in the buffer pointed to by @a bytes.

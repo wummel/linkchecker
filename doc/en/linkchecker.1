@@ -263,10 +263,10 @@ following possible names:
 .
 .TP
 \fBHost\fP (required)
-Sets the domain the cookies are valid for.
+Sets the domain for which the cookies are valid.
 .TP
 \fBPath\fP (optional)
-Gives the path the cookies are value for; default path is \fB/\fP.
+Gives the path for which the cookies are valid; default path is \fB/\fP.
 .TP
 \fBSet-cookie\fP (required)
 Set cookie name/value. Can be given more than once.
@@ -337,7 +337,7 @@ A mailto: link eventually resolves to a list of email addresses.
 If one address fails, the whole list will fail.
 For each mail address we check the following things:
 .
-  1) Check the adress syntax, both of the part before and after
+  1) Check the address syntax, both of the part before and after
      the @ sign.
   2) Look up the MX DNS records. If we found no MX record,
      print an error.
@@ -352,7 +352,7 @@ FTP links (\fBftp:\fP)
   For FTP links we do:
   
   1) connect to the specified host
-  2) try to login with the given user and password. The default
+  2) try to log in with the given user and password. The default
      user is ``anonymous``, the default password is ``anonymous@``.
   3) try to change to the given directory
   4) list the file with the NLST command
@@ -360,7 +360,7 @@ FTP links (\fBftp:\fP)
 .TP
 Telnet links (``telnet:``)
   
-  We try to connect and if user/password are given, login to the
+  We try to connect and if user/password are given, log in to the
   given telnet server.
 
 .TP
@@ -432,7 +432,7 @@ connection to the internet (e.g. with diald), it will connect when
 checking links not pointing to your local host.
 Use the \fB\-\-ignore\-url\fP option to prevent this.
 
-Javascript links are not supported.
+JavaScript links are not supported.
 
 If your platform does not support threading, LinkChecker disables it
 automatically.

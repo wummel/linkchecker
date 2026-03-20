@@ -50,7 +50,7 @@ Fixes:
   Closes: GH bug #521
 - cgi: Sanitize configuration.
   Closes: GH bug #519
-- checking: Use user-supplied authentication and proxies when requestiong
+- checking: Use user-supplied authentication and proxies when requesting
   robot.txt.
 - plugins: Fix Word file check plugin.
   Closes: GH bug #530
@@ -84,7 +84,7 @@ Features:
 
 Changes:
 - checking: Ignored URLs are reported earlier now.
-- checking: Updated the list of unkonwn or ignored URI schemes.
+- checking: Updated the list of unknown or ignored URI schemes.
 - checking: Internal errors do not disable check threads anymore.
 - checking: Disable URL length warning for data: URLs.
 - checking: Do not warn about missing addresses on mailto links that have
@@ -134,7 +134,7 @@ Changes:
   is a maximum redirection limit anyway.
   Closes: GH bug #444, #419
 - checking: Disallowed access by robots.txt is an info now, not
-  a warning. Otherwise it produces a lot of warnings which
+  a warning. Otherwise, it produces a lot of warnings which
   is counter-productive.
 - checking: Do not check SMTP connections for mailto: URLs anymore.
   It resulted in lots of false warnings since spam prevention
@@ -200,7 +200,7 @@ Changes:
 
 Fixes:
 - checking: Apache Coyote (the HTTP server of Tomcat) sends the wrong
-  Content-Type on HEAD requests. Automatically fallback to GET in this
+  Content-Type on HEAD requests. Automatically fall back to GET in this
   case.
   Closes: GH bug #414
 - checking: Do not use GET on POST forms.
@@ -236,7 +236,7 @@ Fixes:
 8.3 "Mahna Mahna Killer" (released 6.1.2013)
 
 Features:
-- project: The Project moved to Github.
+- project: The Project moved to GitHub.
   Closes: GH bug #368
 
 Changes:
@@ -860,7 +860,7 @@ Changes:
 - dependencies: Require and use Python 2.6.
 - cmdline: Removed deprecated options --no-anchor-caching and
   --no-proxy-for.
-- config: Remove backwards compatilibity parsing and require the
+- config: Remove backwards compatibility parsing and require the
   new multiline configuration syntax.
 - logging: Use codecs module for proper output encoding.
   Closes: SF bug #3114624
@@ -907,7 +907,7 @@ Changes:
 - cmdline: Don't log a warning if URL has been redirected.
   Closes: SF bug #3078820
 - checking: Do not print warnings for HTTP -> HTTPS and HTTPS -> HTTP
-  redirects any more.
+  redirects anymore.
 - logging: Changed comment format in GML output to be able to load the
   graph in gephi.
 - gui: Remove timeout and thread options.
@@ -1054,7 +1054,7 @@ Changes:
 - checking: Improved HTML parsing speed:
   a) The parsers for HTML title and robots.txt meta tags stop after seeing
      a <body> tag.
-  b) Anchor references are not always parsed, but onl when the--anchor
+  b) Anchor references are not always parsed, but only when the--anchor
      option was given.
   c) Found HTML links are not queued after parsing the whole file, but
      directly when found. This also saves some memory.
@@ -1074,7 +1074,7 @@ Fixes:
   Closes: SF bug #2806790
 - http: Fixed persistent connection handling: retry connecting to HTTP
   servers which close persistent connections unexpectedly.
-- bookmarks: correctly read the bookmark title from Mozilla places.sqllite
+- bookmarks: correctly read the bookmark title from Mozilla places.sqlite
 - checking: ignore the fragment part (ie. the anchor) of URIs when
   getting and caching HTTP content; follows the HTTP/1.1 specification which
   does not include fragments in the protocol. Thanks to Martin von Gagern
@@ -1223,7 +1223,7 @@ Features:
 
   * Remove gopher: URL checking.
     Type: feature
-    Changed: linkcheck/checker/unkonwnurl.py
+    Changed: linkcheck/checker/unknownurl.py
     Removed: linkcheck/checker/gopherurl.py
 
 4.9 "Michael Clayton" (released 25.4.2008)
@@ -1317,7 +1317,7 @@ Features:
     Changed: linkcheck/linkparse.py, linkcheck/checker/urlbase.py
     Closes: SF bug #1831900
 
-  * Try to detect unkonwn URL schemes from the command line, eg. URLs
+  * Try to detect unknown URL schemes from the command line, eg. URLs
     like "rtsp://foo".
     Type: feature
     Changed: linkchecker, linkcheck/lc_cgi.py,
@@ -1358,7 +1358,7 @@ Features:
     Type: documentation
     Removed: doc/fr/*
 
-  * Correct misnamed colums in create.sql script: r/*string/\1/g
+  * Correct misnamed columns in create.sql script: r/*string/\1/g
     Type: bugfix
     Changed: config/create.sql
     Closes: SF #1849733
@@ -1594,7 +1594,7 @@ Features:
   * The default intern pattern matches both http: and https: schemes
     now.
     Type: feature
-    Changed: linckheck/checker/internpaturl.py
+    Changed: linkcheck/checker/internpaturl.py
 
   * If the robots.txt connection times out, don't bother to check
     the URL but report an error immediately. Avoids having the
@@ -1743,8 +1743,8 @@ Features:
     Type: bugfix
     Changed: linkcheck/checker/httpurl.py
 
-  * Workaround a urllib2.py bug raising ValueError on some failed
-    HTTP authorisations.
+  * Work around a urllib2.py bug raising ValueError on some failed
+    HTTP authorizations.
     Type: bugfix
     Closes: SF bug #1250555
     Changed: linkcheck/robotparser2.py
@@ -2367,7 +2367,7 @@ Features:
 
   * All leading directories of a given output log file are created
     automatically now. Errors creating these directories or opening
-    the log file for writing abort the checking and print a usage mesage.
+    the log file for writing abort the checking and print a usage message.
     Type: feature
     Changed: linkchecker, linkcheck/logger/__init__.py
 
@@ -2505,7 +2505,7 @@ Features:
     Type: feature
     Changed: linkcheck/__init__.py
 
-  * Removed debug print statement when issueing linkchecker --help.
+  * Removed debug print statement when issuing linkchecker --help.
     Type: bugfix
     Changed: linkchecker
 
@@ -2631,7 +2631,7 @@ Features:
     Type: feature
     Changed: linkcheck/checker/cache.py
 
-  * the given user/password authententication is now also used to
+  * the given user/password authentication is now also used to
     get robots.txt files.
     Type: feature
     Changed: linkcheck/robotparser2.py, linkcheck/checker/cache.py
@@ -3041,7 +3041,7 @@ Features:
 1.8.9
   * recompile with bison 1.875a
     Changed files: linkcheck/parser/htmlparse.[ch]
-  * remove stpcpy declaration, fixes compile error on RedHat 7.x
+  * remove stpcpy declaration, fixes compile error on Red Hat 7.x
     Changed files: linkcheck/parser/htmlsax.h
   * clarify keyboard interrupt warning to wait for active connections
     to finish
@@ -3158,9 +3158,9 @@ Features:
   * Add again python-dns, the Debian package maintainer is unresponsive
     Added files: linkcheck/DNS/*.py
     Changed files: INSTALL, setup.py
-  * You must now use named constants for ANSII color codes
+  * You must now use named constants for ANSI color codes
     Changed files: linkcheckerrc, linkcheck/log/ColoredLogger.py
-  * Release RedHat 8.0 rpm packages.
+  * Release Red Hat 8.0 rpm packages.
     Changed files: setup.py, MANIFEST.in
   * remove --robots-txt from manpage, fix HTZP->HTTP typo
     Changed files: linkchecker.1
@@ -3243,7 +3243,7 @@ Features:
 
 1.6.2:
   * Warn about unknown Content-Encodings. Dont parse HTML in this case.
-  * Support deflate content encoding (snatched from Debians reportbug)
+  * Support deflate content encoding (snatched from Debian's reportbug)
   * Add appropriate Accept-Encoding header to HTTP request.
   * Updated german translations
 

@@ -612,7 +612,7 @@ class UrlBase (object):
         pass
 
     def can_get_content (self):
-        """Indicate wether url get_content() can be called."""
+        """Indicate whether url get_content() can be called."""
         return self.size <= self.aggregate.config["maxfilesizedownload"]
 
     def get_content (self):
@@ -837,6 +837,6 @@ class CompactUrlData (object):
     __slots__ = urlDataAttr
 
     def __init__(self, wired_url_data):
-        '''Set all attributes according to the dictionnary wired_url_data'''
+        '''Set all attributes according to the dictionary wired_url_data'''
         for attr in urlDataAttr:
             setattr(self, attr, wired_url_data[attr])

@@ -36,7 +36,7 @@ def write_memory_dump():
     # first do a full garbage collection run
     gc.collect()
     if gc.garbage:
-        log.warn(LOG_CHECK, "Unreachabe objects: %s", pprint.pformat(gc.garbage))
+        log.warn(LOG_CHECK, "Unreachable objects: %s", pprint.pformat(gc.garbage))
     from meliae import scanner
     fo, filename = get_temp_file(mode='wb', suffix='.json', prefix='lcdump_')
     try:

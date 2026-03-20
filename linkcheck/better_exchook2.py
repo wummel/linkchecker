@@ -200,8 +200,8 @@ def better_exchook(etype, value, tb, out=sys.stdout):
 				output('    locals:', out=out)
 				alreadyPrintedLocals = set()
 				for tokenstr in grep_full_py_identifiers(parse_py_statement(line)):
-					splittedtoken = tuple(tokenstr.split("."))
-					for token in map(lambda i: splittedtoken[0:i], range(1, len(splittedtoken) + 1)):
+					splittoken = tuple(tokenstr.split("."))
+					for token in map(lambda i: splittoken[0:i], range(1, len(splittoken) + 1)):
 						if token in alreadyPrintedLocals: continue
 						tokenvalue = None
 						tokenvalue = _trySet(tokenvalue, "<local> ", lambda: pretty_print(_resolveIdentifier(f.f_locals, token)))

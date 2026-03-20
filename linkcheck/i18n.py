@@ -18,7 +18,7 @@
 Application internationalization support.
 """
 
-# i18n suppport
+# i18n support
 import os
 import locale
 import gettext
@@ -89,7 +89,7 @@ def init (domain, directory, loc=None):
     else:
         default_language = "en"
     # Even if the default language is not supported, the encoding should
-    # be installed. Otherwise the Python installation is borked.
+    # be installed. Otherwise, the Python installation is borked.
     default_encoding = encoding
     install_language(default_language)
 
@@ -178,23 +178,23 @@ def norm_locale (loc):
     return loc
 
 
-lang_names = {
+lang_name_native = {
     'en': u'English',
     'de': u'Deutsch',
 }
-lang_transis = {
+lang_name_translated = {
     'de': {'en': u'German'},
     'en': {'de': u'Englisch'},
 }
 
 def lang_name (lang):
     """Return full name of given language."""
-    return lang_names[lang]
+    return lang_name_native[lang]
 
 
 def lang_trans (lang, curlang):
     """Return translated full name of given language."""
-    return lang_transis[lang][curlang]
+    return lang_name_translated[lang][curlang]
 
 
 def get_encoded_writer (out=sys.stdout, encoding=None, errors='replace'):

@@ -103,7 +103,7 @@ def unquote (s, matching=False):
 
     @return: if s evaluates to False, return s as is, else return
         string with stripped quotes
-    @rtype: unquoted string, or s unchanged if it is evaluting to False
+    @rtype: unquoted string, or s unchanged if it is evaluating to False
     """
     if not s:
         return s

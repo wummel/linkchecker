@@ -24,7 +24,7 @@ from ..cache import urlqueue
 from .. import parser
 
 # Interval in which each check thread looks if it's stopped.
-QUEUE_POLL_INTERVALL_SECS = 1.0
+QUEUE_POLL_INTERVAL_SECS = 1.0
 
 
 def check_urls (urlqueue, logger):
@@ -98,7 +98,7 @@ class Checker(task.LoggedCheckedTask):
     def check_url (self):
         """Try to get URL data from queue and check it."""
         try:
-            url_data = self.urlqueue.get(timeout=QUEUE_POLL_INTERVALL_SECS)
+            url_data = self.urlqueue.get(timeout=QUEUE_POLL_INTERVAL_SECS)
             if url_data is not None:
                 try:
                     self.check_url_data(url_data)

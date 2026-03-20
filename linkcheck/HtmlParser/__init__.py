@@ -60,7 +60,7 @@ Fast HTML parser module written in C with the following features:
 - Speed
   The FLEX code is configured to generate a large but fast scanner.
   The parser ignores forbidden or unnecessary HTML end tags.
-  The parser converts tag and attribute names to lower case for easier
+  The parser converts tag and attribute names to lowercase for easier
   matching.
   The parser quotes all attribute values.
   Python memory management interface is used.
@@ -215,7 +215,7 @@ SUPPORTED_CHARSETS = ["utf-8", "iso-8859-1", "iso-8859-15"]
 
 _encoding_ro = re.compile(r"charset=(?P<encoding>[-0-9a-zA-Z]+)")
 
-def set_encoding (parsobj, attrs):
+def set_encoding (parserobj, attrs):
     """
     Set document encoding for the HTML parser according to the <meta>
     tag attribute information.
@@ -235,7 +235,7 @@ def set_encoding (parsobj, attrs):
         charset = charset.encode('ascii', 'ignore').lower()
         charset = get_ctype_charset(charset)
     if charset and charset in SUPPORTED_CHARSETS:
-        parsobj.encoding = charset
+        parserobj.encoding = charset
 
 
 def get_ctype_charset (text):
@@ -255,7 +255,7 @@ def get_ctype_charset (text):
     return None
 
 
-def set_doctype (parsobj, doctype):
+def set_doctype (parserobj, doctype):
     """
     Set document type of the HTML parser according to the given
     document type string.
@@ -265,4 +265,4 @@ def set_doctype (parsobj, doctype):
     @return: None
     """
     if u"XHTML" in doctype:
-        parsobj.doctype = "XHTML"
+        parserobj.doctype = "XHTML"
